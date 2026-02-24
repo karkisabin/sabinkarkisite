@@ -366,7 +366,7 @@
       <div class="page-inner">
         <div class="home-grid">
           <div>
-            <h1 class="home-h1">Hello, and <strong><span id="typewriter"></span><span class="cursor">|</span></strong></h1>
+            <h1 class="home-h1">Hello, and <strong><span id="typewriter"><span class="cursor">|</span></span></strong></h1>
             <p>I'm a medical student at Indiana University School of Medicine, pursuing psychiatry residency. My work spans clinical neuroscience research, healthcare innovation, and legislative advocacy — with a focus on interventional psychiatry, addiction medicine, and scalable approaches to mental health.</p>
             <p>I hope for a future with interdisciplinary explorers and empathetic collaborators, building accessible, high-quality mental healthcare for everyone.</p>
             <div class="meta-row">
@@ -765,27 +765,29 @@
   setTimeout(() => triggerReveals(pages[0]), 200);
 
   // ── TYPEWRITER ──
-  window.addEventListener('DOMContentLoaded', function() {
-    var words = ["welcome!", "glad you are here.", "thanks for stopping by.", "let us build something better.", "the future is worth it."];
-    var wi = 0, ci = 0, deleting = false;
-    var tw = document.getElementById('typewriter');
-    if (!tw) return;
-    tw.textContent = '';
-    function type() {
-      var word = words[wi];
-      if (!deleting) {
+  (function() {
+    var el = document.getElementById('typewriter');
+    if (!el) return;
+    var words = ["welcome!", "glad you are here.", "thanks for stopping by.", "let us build something better.", "the future is worth it.", "hope is a good medicine.", "stay curious.", "empathy is everything.", "the work matters.", "you are in the right place."];
+    var wi = 0, ci = 0, del = false;
+    var cursor = el.querySelector('.cursor');
+    function tick() {
+      var w = words[wi];
+      if (!del) {
         ci++;
-        tw.textContent = word.slice(0, ci);
-        if (ci === word.length) { deleting = true; setTimeout(type, 2200); return; }
+        el.textContent = w.slice(0, ci);
+        if (cursor) el.appendChild(cursor);
+        if (ci === w.length) { del = true; setTimeout(tick, 2200); return; }
       } else {
         ci--;
-        tw.textContent = word.slice(0, ci);
-        if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; setTimeout(type, 300); return; }
+        el.textContent = w.slice(0, ci);
+        if (cursor) el.appendChild(cursor);
+        if (ci === 0) { del = false; wi = (wi+1) % words.length; setTimeout(tick, 300); return; }
       }
-      setTimeout(type, deleting ? 45 : 85);
+      setTimeout(tick, del ? 45 : 85);
     }
-    setTimeout(type, 700);
-  });
+    tick();
+  })();
 
   // ── MAGNETIC SOCIAL LINKS ──
   document.querySelectorAll('.social-row a').forEach(link => {
