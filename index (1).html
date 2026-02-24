@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sabin Karki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --white: #fff;
+      --ink: #1a1a1a;
+      --ink2: #444;
+      --ink3: #777;
+      --ink4: #aaa;
+      --accent: #1a56db;
+      --accent-light: #e8f0fe;
+      --border: #e8e8e8;
+      --max: 680px;
+      --nav-h: 96px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      background: var(--white);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.7;
+      overflow: hidden; /* no scroll on body — pages handle their own scroll */
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: var(--nav-h);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .nav-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--ink) 0%, var(--accent) 50%, var(--ink) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: background-position 0.5s ease;
+      cursor: default;
+    }
+    .nav-name:hover { background-position: right center; }
+
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      list-style: none;
+    }
+    .nav-tabs li { display: flex; align-items: center; }
+    .nav-tabs li:not(:last-child)::after {
+      content: '·';
+      color: var(--ink4);
+      margin: 0 0.55rem;
+      font-size: 0.8rem;
+    }
+    .nav-tabs button {
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--ink3);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .nav-tabs button::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.22s ease;
+    }
+    .nav-tabs button:hover { color: var(--accent); }
+    .nav-tabs button:hover::after { width: 100%; }
+    .nav-tabs button.active {
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .nav-tabs button.active::after { width: 100%; }
+
+    /* ── PAGE CONTAINER ── */
+    .pages-wrap {
+      position: fixed;
+      top: var(--nav-h);
+      left: 0; right: 0; bottom: 0;
+      overflow: hidden;
+    }
+
+    /* Pages sit side by side, slide via transform */
+    .pages-track {
+      display: flex;
+      height: 100%;
+      /* width set by JS */
+      transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+
+    .page {
+      flex: 0 0 100vw;
+      width: 100vw;
+      height: 100%;
+      overflow-y: auto;
+      padding: 2.5rem 2rem 3rem;
+    }
+
+    .page-inner {
+      max-width: 860px;
+    }
+
+    /* ── PAGE ENTRANCE ANIMATION ── */
+    .page-inner {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.38s ease, transform 0.38s ease;
+    }
+    .page.active .page-inner {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .page-title {
+      font-family: 'Lora', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 1.75rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    p { color: var(--ink2); line-height: 1.8; margin-bottom: 0.9rem; font-size: 0.93rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── HOME PAGE ── */
+    .home-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+    .home-h1 {
+      font-family: 'Lora', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+    .cursor {
+      display: inline-block;
+      color: var(--accent);
+      font-weight: 300;
+      animation: blink 0.9s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .meta-row {
+      margin-top: 1.25rem;
+      font-size: 0.88rem;
+      color: var(--ink2);
+      line-height: 2;
+    }
+    .meta-row strong { font-weight: 500; color: var(--ink); }
+
+    .home-imgs { display: flex; flex-direction: column; gap: 0.75rem; }
+    .home-imgs .parallax-img { overflow: hidden; border: 1px solid var(--border); }
+    .home-imgs img { width: 100%; display: block; transition: transform 0.5s ease; }
+    .home-imgs .parallax-img:hover img { transform: scale(1.03); }
+    .img-caption { font-size: 0.7rem; color: var(--ink4); margin-top: 0.35rem; line-height: 1.4; }
+
+    .social-row {
+      display: flex; flex-wrap: wrap; gap: 0.4rem 1.25rem;
+      margin-top: 1.5rem; padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+    .social-row a {
+      font-size: 0.85rem;
+      color: var(--accent);
+      display: inline-block;
+      transition: transform 0.18s ease;
+    }
+    .social-row a:hover { transform: translateY(-2px); text-decoration: none; }
+
+    /* ── SECTION LABEL ── */
+    .sub-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink4);
+      margin-bottom: 1.25rem;
+      margin-top: 2rem;
+    }
+    .sub-label:first-child { margin-top: 0; }
+
+    /* ── ITEMS ── */
+    .item {
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border);
+      border-left: 2px solid transparent;
+      padding-left: 0.75rem;
+      margin-left: -0.75rem;
+      transition: border-color 0.2s;
+    }
+    .item:first-of-type { border-top: 1px solid var(--border); }
+    .item:hover { border-left-color: var(--accent); }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .item h3 {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+    .item-date { font-size: 0.75rem; color: var(--ink4); white-space: nowrap; flex-shrink: 0; }
+    .item-sub { font-size: 0.82rem; color: var(--ink3); font-style: italic; margin-bottom: 0.4rem; }
+    .item p { font-size: 0.88rem; margin-bottom: 0; }
+
+    .tag {
+      display: inline-block;
+      padding: 0.1rem 0.45rem;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 0.65rem;
+      font-weight: 500;
+      border-radius: 2px;
+      margin-left: 0.35rem;
+      vertical-align: middle;
+      cursor: default;
+      transition: background 0.2s, color 0.2s;
+    }
+    .tag:hover { background: var(--accent); color: white; }
+
+    .tag-amber {
+      background: #fef3c7; color: #92400e;
+    }
+    .tag-amber:hover { background: #d97706; color: white; }
+
+    /* row items (pub, award, advocacy) */
+    .row-item {
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.88rem;
+      color: var(--ink2);
+      line-height: 1.6;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+    }
+    .row-item:first-of-type { border-top: 1px solid var(--border); }
+    .row-item .row-right { font-size: 0.75rem; color: var(--ink4); flex-shrink: 0; text-align: right; }
+    .row-item .pub-title { font-weight: 500; color: var(--ink); margin-bottom: 0.15rem; display: block; }
+    .row-item .pub-title a { color: var(--ink); }
+    .row-item .pub-title a:hover { color: var(--accent); }
+    .passed { color: #2d6a4f; font-weight: 500; }
+
+    /* lib */
+    .lib-group { margin-bottom: 2rem; }
+    .lib-group h4 {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--ink4); margin-bottom: 0.6rem;
+    }
+    .lib-group ul { list-style: none; }
+    .lib-group li {
+      font-size: 0.88rem; color: var(--ink2); padding: 0.35rem 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; line-height: 1.5;
+    }
+    .lib-group li:last-child { border-bottom: none; }
+    .lib-group li a { font-size: 0.75rem; color: var(--accent); flex-shrink: 0; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+
+    @media (max-width: 640px) {
+      :root { --nav-h: 72px; }
+      body { overflow: auto; font-size: 14px; }
+      .pages-wrap { position: static; overflow: visible; height: auto; }
+      .pages-track { flex-direction: column; transform: none !important; transition: none; width: 100% !important; }
+      .page { display: none; overflow: visible; height: auto; width: 100% !important; flex: none; padding: 1.5rem 1.1rem 3rem; }
+      .page.active { display: block; }
+      nav { padding: 0.75rem 1.1rem; height: var(--nav-h); gap: 0.35rem; }
+      .nav-name { font-size: 0.78rem; }
+      .nav-tabs button { font-size: 0.72rem; }
+      .nav-tabs li:not(:last-child)::after { margin: 0 0.35rem; }
+      .home-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .home-imgs { flex-direction: row; gap: 0.5rem; }
+      .home-imgs .parallax-img { flex: 1; }
+      .home-imgs img { max-height: 150px; object-fit: cover; }
+      .home-h1 { font-size: 1.2rem; }
+      .page-title { font-size: 1.2rem; }
+      p { font-size: 0.88rem; }
+      .item-header { flex-direction: column; gap: 0.15rem; }
+      .row-item { flex-direction: column; gap: 0.1rem; }
+      .row-item .row-right { text-align: left; }
+      .social-row { gap: 0.35rem 1rem; }
+      .meta-row { font-size: 0.83rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-name">Sabin Karki</div>
+  <ul class="nav-tabs">
+    <li><button class="active" data-page="0">home</button></li>
+    <li><button data-page="1">about</button></li>
+    <li><button data-page="2">research</button></li>
+    <li><button data-page="3">publications</button></li>
+    <li><button data-page="4">startups</button></li>
+    <li><button data-page="5">advocacy</button></li>
+    <li><button data-page="6">writing</button></li>
+    <li><button data-page="7">awards</button></li>
+    <li><button data-page="8">library</button></li>
+  </ul>
+</nav>
+
+<div class="pages-wrap">
+  <div class="pages-track" id="track">
+
+    <!-- PAGE 0: HOME -->
+    <div class="page active" data-index="0">
+      <div class="page-inner">
+        <div class="home-grid">
+          <div>
+            <h1 class="home-h1">Hello, and <strong><span id="typewriter"></span><span class="cursor">|</span></strong></h1>
+            <p>I'm a medical student at Indiana University School of Medicine, pursuing psychiatry residency. My work spans clinical neuroscience research, healthcare innovation, and legislative advocacy — with a focus on interventional psychiatry, addiction medicine, and scalable approaches to mental health.</p>
+            <p>I hope for a future with interdisciplinary explorers and empathetic collaborators, building accessible, high-quality mental healthcare for everyone.</p>
+            <div class="meta-row">
+              <strong>roles</strong> medical student (psychiatry), clinical researcher, biomedical engineer, legislative advocate, design/innovation faculty<br>
+              <strong>interests</strong> writing, podcasting, videography<br>
+              <strong>email</strong> <a href="/cdn-cgi/l/email-protection#2d5e464c5f46446d445803484958"><span class="__cf_email__" data-cfemail="05766e64776e6c456c702b606170">[email&#160;protected]</span></a>
+            </div>
+            <div class="social-row">
+              <a href="https://www.instagram.com/sabincarkey/" target="_blank">Instagram</a>
+              <a href="https://scholar.google.com/citations?hl=en&user=9FGxU00AAAAJ" target="_blank">Google Scholar</a>
+              <a href="http://linkedin.com/in/sabinkarki/" target="_blank">LinkedIn</a>
+              <a href="https://open.spotify.com/user/skventures" target="_blank">Spotify</a>
+              <a href="https://www.youtube.com/watch?v=dSskXkGYWsM" target="_blank">YouTube</a>
+            </div>
+          </div>
+          <div class="home-imgs">
+            <div class="parallax-img">
+              <img src="photo1.png" alt="Johns Hopkins Bayview Medical Center OR" />
+              <div class="img-caption">Johns Hopkins Bayview Medical Center · Photo: Keith Weller</div>
+            </div>
+            <div class="parallax-img">
+              <img src="photo2.png" alt="Sabin Karki at Hopkins Bayview OR" />
+              <div class="img-caption">Experimenting with surgical staplers and clip appliers at Hopkins Bayview · Photo: Keith Weller</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 1: ABOUT -->
+    <div class="page" data-index="1">
+      <div class="page-inner">
+        <h2 class="page-title">About</h2>
+        <p>I'm passionate about psychiatry, neuroscience, and the engineering of better mental healthcare. My research interests include interventional psychiatry, addiction medicine, and innovative, scalable approaches to mental health.</p>
+        <p>At IU's Neural Systems Laboratory, I'm building quantitative models of alcohol tolerance and cognitive-behavioral effects — work foundational to understanding addiction as a disease of individual variation. Previously at Stanford, I studied Body Dysmorphic Disorder and psychiatric comorbidities in surgical populations, and I've published on opioid prescribing patterns with direct relevance to addiction psychiatry. The National Network of Depression Centers recognized my work in interventional psychiatry with a Best Practices Scholarship in 2025.</p>
+        <p>Earlier in training, I co-founded Theramate with a Johns Hopkins psychiatrist — EMR-integrated software to help providers monitor patients with mood and substance use disorders and reduce readmissions for dual-diagnosis patients. It was my first real lesson in what psychiatry needs: not just better drugs, but better systems.</p>
+        <p>I also co-founded and sold Benegraft (acquired by Osteopore, 2021), serve on the investment team at Boomerang Ventures with a psychiatry/neurology focus, and teach design thinking as faculty at Purdue's BME program.</p>
+
+        <div class="sub-label" style="margin-top:1.75rem;">What's New</div>
+        <div class="row-item"><span>Neural Systems Laboratory, IU School of Medicine</span><span class="row-right">2025–</span></div>
+        <div class="row-item"><span>Impatient Optimists, Spotify & YouTube Show</span><span class="row-right">2025–</span></div>
+        <div class="row-item"><span>Boomerang Ventures, VC Fund Team – Psychiatry/Neurology Focus</span><span class="row-right">2023–</span></div>
+        <div class="row-item"><span>Purdue University BME, Design & Innovation Faculty</span><span class="row-right">2024–</span></div>
+
+        <div class="sub-label">Education</div>
+        <div class="row-item"><span>M.D. (in progress), Indiana University School of Medicine</span><span class="row-right">Exp. 2027</span></div>
+        <div class="row-item"><span>M.S. Cellular & Integrative Physiology, IU School of Medicine</span><span class="row-right">2021</span></div>
+        <div class="row-item"><span>B.S. Biomedical Engineering, Johns Hopkins University</span><span class="row-right">2020</span></div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: RESEARCH -->
+    <div class="page" data-index="2">
+      <div class="page-inner">
+        <h2 class="page-title">Clinical & Translational Research</h2>
+
+        <div class="item reveal">
+          <div class="item-header">
+            <h3>Alcohol Pharmacokinetics and Cognitive-Behavioral Effects <span class="tag">Addiction</span></h3>
+            <span class="item-date">2025 – present</span>
+          </div>
+          <div class="item-sub">Student Researcher, Neural Systems Laboratory, IU SOM · Advisor: Dr. Martin Plawecki, MD, PhD</div>
+          <p>Investigating how alcohol exposure drives acute tolerance through integrated pharmacokinetic data, subjective response measures, and neuroadaptation models. Building quantitative mathematical models of individual and group differences in alcohol sensitivity by drinking phenotype.</p>
+        </div>
+
+        <div class="item reveal">
+          <div class="item-header">
+            <h3>Body Dysmorphic Disorder, Psychiatric Risk Stratification & Surgical Outcomes <span class="tag">Psychiatry</span></h3>
+            <span class="item-date">2023 – 2025</span>
+          </div>
+          <div class="item-sub">Visiting Scholar, Stanford University School of Medicine · Advisor: Dr. Sam P. Most, MD</div>
+          <p>Studied the relationship between BDD screening, patient expectations, and cosmetic outcomes. Contributed to research on psychological risk stratification and psychiatric comorbidities in surgical populations. Co-authored publication in <em>Aesthetic Surgery Journal</em>.</p>
+        </div>
+
+        <div class="item reveal">
+          <div class="item-header">
+            <h3>Chronic Opioid Prescribing Patterns After Head & Neck Cancer Surgery <span class="tag">Addiction</span></h3>
+            <span class="item-date">2023 – 2024</span>
+          </div>
+          <div class="item-sub">Student Researcher, IU SOM Dept. of Otolaryngology · Advisor: Dr. Janice Farlow, MD, PhD</div>
+          <p>Analyzed persistent opioid use following surgery, identifying behavioral and clinical risk factors for chronic opioid exposure with direct relevance to addiction psychiatry. Published systematic review in <em>Otolaryngology–Head and Neck Surgery</em>.</p>
+        </div>
+
+        <div class="item reveal">
+          <div class="item-header">
+            <h3>FDA-Approved Home-Based tDCS for Major Depressive Disorder <span class="tag">Interventional</span></h3>
+            <span class="item-date">2025 – 2026</span>
+          </div>
+          <div class="item-sub">INSIGHT IU Medical Research Journal, Jan. 2026 · NNDC Best Practices Scholar, Mayo Clinic</div>
+          <p>Clinical efficacy and implementation considerations of transcranial direct current stimulation for MDD — reviewing evidence for a novel, scalable approach to treatment-resistant depression.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: PUBLICATIONS -->
+    <div class="page" data-index="3">
+      <div class="page-inner">
+        <h2 class="page-title">Publications & Patents</h2>
+
+        <div class="sub-label">Journal Publications</div>
+        <div class="row-item reveal">
+          <div>
+            <span class="pub-title">Clinical Efficacy and Implementation Considerations of FDA-Approved Home-Based tDCS for Major Depressive Disorder <span class="tag">Psychiatry</span></span>
+            Karki S. — <em>INSIGHT IU Medical Research Journal</em>, Jan. 2026
+          </div>
+        </div>
+        <div class="row-item reveal">
+          <div>
+            <span class="pub-title"><a href="https://doi.org/10.1093/asj/sjae045" target="_blank">Rhinoplasty Outcomes in Patients with Symptoms of Body Dysmorphia</a> <span class="tag">Psychiatry</span></span>
+            Losorelli S, Kimura KS, Wei EX, … Karki S, … Most SP. — <em>Aesthetic Surgery Journal</em>, Mar. 2024
+          </div>
+        </div>
+        <div class="row-item reveal">
+          <div>
+            <span class="pub-title"><a href="https://doi.org/10.1002/ohn.1165" target="_blank">Unveiling Prescribing Patterns: Systematic Review of Chronic Opioid Prescriptions After Head and Neck Cancer Surgeries</a> <span class="tag">Addiction</span></span>
+            Karki S, Stephanian BA, et al. — <em>Otolaryngology–Head and Neck Surgery</em>, 2024
+          </div>
+        </div>
+        <div class="row-item reveal">
+          <div>
+            <span class="pub-title"><a href="https://doi.org/10.1089/fpsam.2024.0204" target="_blank">Role of AI and Machine Learning in Facial Aesthetic Surgery: A Systematic Review</a></span>
+            Stephanian B, Karki S, et al. — <em>Facial Plastic Surgery & Aesthetic Medicine</em>, vol. 26, no. 6, 2024
+          </div>
+        </div>
+        <div class="row-item reveal">
+          <div>
+            <span class="pub-title"><a href="https://doi.org/10.1002/wjs.12380" target="_blank">The State of Global Surgery Assessment and Data Collection Tools: A Scoping Review</a></span>
+            Gianaris K, Stephanian B, Karki S, et al. — <em>World Journal of Surgery</em>, Oct. 2024
+          </div>
+        </div>
+        <div class="row-item reveal">
+          <div>
+            <span class="pub-title"><a href="https://journals.iupui.edu/index.php/insight/article/view/27482/25040" target="_blank">Listening Closely</a></span>
+            Karki S. — <em>INSIGHT IU Medicine and Humanities Journal</em>, Apr. 2023 · Narrative medicine
+          </div>
+        </div>
+        <div class="row-item reveal">
+          <div>
+            <span class="pub-title"><a href="https://doi.org/10.1115/1.4048730" target="_blank">A Cartilage Dicing Tool for Rapid Preparation of Rhinoplasty Grafts</a></span>
+            Stephanian BA, Karki S, et al. — <em>Journal of Medical Devices</em>, 14(4), 2020
+          </div>
+        </div>
+
+        <div class="sub-label">Patents</div>
+        <div class="row-item reveal">
+          <div>
+            <span class="pub-title">Corneal Sensory Testing Device and Methods of Using the Same</span>
+            Borschel GH, Stephanian B, Karki S — U.S. Provisional Patent No. 29/944,659, filed May 2024
+          </div>
+        </div>
+        <div class="row-item reveal">
+          <div>
+            <span class="pub-title">Mechanism for Dicing Cartilage</span>
+            Byrne PJ, Stephanian BA, Karki S, et al. — International Patent No. WO2021178955A1, 2021
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: STARTUPS -->
+    <div class="page" data-index="4">
+      <div class="page-inner">
+        <h2 class="page-title">Startups & Translational Work</h2>
+
+        <div class="item reveal">
+          <div class="item-header">
+            <h3>Theramate</h3>
+            <span class="item-date">2017 – 2019</span>
+          </div>
+          <div class="item-sub">Co-Founder & Technical Lead · Johns Hopkins Hexcite Fellow</div>
+          <p>Founded with a Johns Hopkins psychiatrist to build EMR-integrated software allowing providers to monitor patients with mood and substance use disorders, reducing readmissions for dual-diagnosis patients. Only undergraduate admitted to the Hopkins School of Medicine Health Technology Accelerator.</p>
+        </div>
+
+        <div class="item reveal">
+          <div class="item-header">
+            <h3>Benegraft, LLC <span class="tag tag-amber">Acquired 2021</span></h3>
+            <span class="item-date">2018 – 2021</span>
+          </div>
+          <div class="item-sub">CEO & Co-Founder · Acquired by Osteopore</div>
+          <p>Spun out of Johns Hopkins BME. Led a team of seven to commercialize the first surgical instrument to simplify cartilage graft preparation for rhinoplasty. Raised seed funding, authored IP claims, and led acquisition by Osteopore — debuted at AAO-HNSF 2022.</p>
+        </div>
+
+        <div class="item reveal">
+          <div class="item-header">
+            <h3>Boomerang Ventures</h3>
+            <span class="item-date">2023 – present</span>
+          </div>
+          <div class="item-sub">Investment Fund Team · Psychiatry/Neurology Focus · Advisor: Dr. Eric Beier, MD, MBA</div>
+          <p>Conducting due diligence and stakeholder interviews for seed-to-Series A investments in connected healthcare. Focus: digital therapeutics, neurology, VR in pain management, and mental health technology.</p>
+        </div>
+
+        <div class="item reveal">
+          <div class="item-header">
+            <h3>Auris Health <span class="tag tag-amber">Acquired by J&J</span></h3>
+            <span class="item-date">2019</span>
+          </div>
+          <div class="item-sub">Clinical Engineering Intern</div>
+          <p>Performed root cause analysis on FDA MAUDE-flagged issues in Auris's telesurgical platform. Devised first software workflows for clinical data retrieval and analysis using Qubole on Amazon S3.</p>
+        </div>
+
+        <div class="item reveal">
+          <div class="item-header">
+            <h3>Impatient Optimists</h3>
+            <span class="item-date">2025 – present</span>
+          </div>
+          <div class="item-sub">Writer & Creator · Spotify & YouTube</div>
+          <p>Stories about innovators reshaping medicine and leadership. Episodes include <em>Reality Distortion: AI Slop and the Modern Battle for Truth</em> and <em>How a Doctor Brought the da Vinci System to the OR</em>. <a href="https://open.spotify.com/user/skventures" target="_blank">Listen on Spotify →</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 5: ADVOCACY -->
+    <div class="page" data-index="5">
+      <div class="page-inner">
+        <h2 class="page-title">Legislative Advocacy</h2>
+        <p>State Delegate and Medical Student Representative, Indiana State Medical Association. Authored or co-authored the following resolutions and legislation:</p>
+
+        <div class="sub-label" style="margin-top:1.5rem;">Passed into Law</div>
+        <div class="row-item reveal">
+          <span>Supporting Rural Ambulance Services in Indiana</span>
+          <span class="row-right passed">✓ Indiana HB 1385 (2024)</span>
+        </div>
+
+        <div class="sub-label">Adopted Resolutions</div>
+        <div class="row-item reveal"><span>Ethical Incorporation of AI Tools in Health Care</span><span class="row-right">2023</span></div>
+        <div class="row-item reveal"><span>Transparency of Patient Health Data Usage and Sharing</span><span class="row-right">2023</span></div>
+
+        <div class="sub-label">Mental Health & Equity</div>
+        <div class="row-item reveal"><span>Promoting Mental Health Initiatives For Refugees In Indiana</span><span class="row-right">2024</span></div>
+        <div class="row-item reveal"><span>Advocating for All-Payer Coverage for Survivors of Intimate Partner Violence</span><span class="row-right">2023</span></div>
+        <div class="row-item reveal"><span>Supporting Comprehensive Coverage of Chronic Weight Management Medications</span><span class="row-right">2024</span></div>
+        <div class="row-item reveal"><span>Supporting Access to Menstrual Health Products in Indiana Schools</span><span class="row-right">2024</span></div>
+
+        <div class="sub-label">Access & Innovation</div>
+        <div class="row-item reveal"><span>Encouraging Incentivized Health Monitoring for Preventive Care</span><span class="row-right">2024</span></div>
+        <div class="row-item reveal"><span>Promoting Transparency and Accountability in Healthcare Billing</span><span class="row-right">2024</span></div>
+        <div class="row-item reveal"><span>Supporting Exemption from Sales Tax for Essential Family Care Items</span><span class="row-right">2024</span></div>
+      </div>
+    </div>
+
+    <!-- PAGE 6: WRITING -->
+    <div class="page" data-index="6">
+      <div class="page-inner">
+        <h2 class="page-title">Writing & Media</h2>
+
+        <div class="item reveal">
+          <div class="item-sub">Narrative Medicine · INSIGHT IU Medicine and Humanities Journal, 2023</div>
+          <h3><a href="https://journals.iupui.edu/index.php/insight/article/view/27482/25040" target="_blank">Listening Closely</a></h3>
+          <p style="margin-top:0.4rem;">A first-person account of volunteering in the Johns Hopkins pediatric ED — on the gap between clinical care and community need.</p>
+        </div>
+
+        <div class="item reveal">
+          <div class="item-sub">Long-form Essay · Impatient Optimists, July 2025</div>
+          <h3>State of the Self-Driving Car: Where Are They Taking Us?</h3>
+          <p style="margin-top:0.4rem;">A deep technical and societal exploration of autonomous vehicles — from sensor physics to urban planning implications.</p>
+        </div>
+
+        <div class="item reveal">
+          <div class="item-sub">Invited Address · Health Humanities Consortium 2026 International Conference</div>
+          <h3>The Physician Founder: Reengineering Empathy into Biomedical Technology Innovation</h3>
+          <p style="margin-top:0.4rem;">Indianapolis, April 2026.</p>
+        </div>
+
+        <div class="item reveal">
+          <div class="item-sub">Podcast Interview · The Physician Pharmacist Podcast</div>
+          <h3><a href="https://www.youtube.com/watch?v=dSskXkGYWsM" target="_blank">Interview with Nathan Garland</a></h3>
+          <p style="margin-top:0.4rem;">Available on <a href="https://www.youtube.com/watch?v=dSskXkGYWsM" target="_blank">YouTube</a> and <a href="https://open.spotify.com/episode/4POy4PdATGyLRnlOMoVBl4" target="_blank">Spotify</a>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 7: AWARDS -->
+    <div class="page" data-index="7">
+      <div class="page-inner">
+        <h2 class="page-title">Fellowships & Awards</h2>
+        <div class="row-item reveal"><span>National Network of Depression Centers Best Practices Scholarship, Mayo Clinic</span><span class="row-right">2025</span></div>
+        <div class="row-item reveal"><span>NASA Doctoral Research Fellowship, Indiana Space Grant Consortium</span><span class="row-right">2024</span></div>
+        <div class="row-item reveal"><span>Inclusive Excellence Grant, IU School of Medicine</span><span class="row-right">2024</span></div>
+        <div class="row-item reveal"><span>Cancer Screening Community Action Grant, IU SOM</span><span class="row-right">2024</span></div>
+        <div class="row-item reveal"><span>Emerging Leader Award, IU School of Medicine</span><span class="row-right">2023</span></div>
+        <div class="row-item reveal"><span>1st Place, University of Minnesota National Medical Device Design Competition</span><span class="row-right">2020</span></div>
+        <div class="row-item reveal"><span>1st Place, Johns Hopkins University Business Plan Competition</span><span class="row-right">2020</span></div>
+        <div class="row-item reveal"><span>Finalist, National Collegiate Inventors Competition</span><span class="row-right">2020</span></div>
+        <div class="row-item reveal"><span>1st Place, $20,000 Johns Hopkins Ten by Twenty Idea Lab Challenge</span><span class="row-right">2017</span></div>
+        <div class="row-item reveal"><span>Johns Hopkins Medicine Hexcite Tech Accelerator Fellow</span><span class="row-right">2017</span></div>
+        <div class="row-item reveal"><span>NSF I-CORPS DC Research Grant</span><span class="row-right">2019</span></div>
+        <div class="row-item reveal"><span>Mr. Science of Indiana, Office of Governor Michael Pence</span><span class="row-right">2016</span></div>
+        <div class="row-item reveal"><span>National Merit Scholar · Valedictorian, Terre Haute South Vigo High School</span><span class="row-right">2016</span></div>
+        <div class="row-item reveal"><span>Finalist, Intel International Science & Engineering Fair</span><span class="row-right">2016</span></div>
+      </div>
+    </div>
+
+    <!-- PAGE 8: LIBRARY -->
+    <div class="page" data-index="8">
+      <div class="page-inner">
+        <h2 class="page-title">Library</h2>
+        <p>Books, essays, and resources I return to and share with students and trainees building at the intersection of medicine and innovation.</p>
+
+        <div style="margin-top:1.5rem;">
+          <div class="lib-group reveal">
+            <h4>Entrepreneurship</h4>
+            <ul>
+              <li><span>Paul Yock & Stefanos Zenios — <em>Biodesign</em></span></li>
+              <li><span>Paul Graham — Essays</span><a href="http://paulgraham.com/articles.html" target="_blank">Read →</a></li>
+              <li><span>Burfield & Harrison — <em>Regulatory Hacking: A Playbook for Startups</em></span></li>
+              <li><span>Uri Levine — <em>Fall in Love with the Problem, Not the Solution</em></span></li>
+              <li><span>Steve Blank's Site</span><a href="https://steveblank.com/tools-and-blogs-for-entrepreneurs/" target="_blank">Visit →</a></li>
+              <li><span>NVCA Model Legal Documents</span><a href="https://nvca.org/model-legal-documents/" target="_blank">Visit →</a></li>
+              <li><span>Cooley GO (Startup Legal)</span><a href="https://www.cooleygo.com/topic/start/" target="_blank">Visit →</a></li>
+            </ul>
+          </div>
+          <div class="lib-group reveal">
+            <h4>Blogs & Resource Libraries</h4>
+            <ul>
+              <li><span>Growth Unhinged — Product Positioning</span><a href="https://www.growthunhinged.com/p/product-positioning-part-one" target="_blank">Read →</a></li>
+              <li><span>Y Combinator Library</span><a href="https://www.ycombinator.com/library" target="_blank">Visit →</a></li>
+              <li><span>Startup Riders</span><a href="https://www.startupriders.com/" target="_blank">Visit →</a></li>
+              <li><span>Andrew Chen — Substack</span><a href="https://andrewchen.substack.com/" target="_blank">Subscribe →</a></li>
+              <li><span>Antler Academy Library</span><a href="https://www.antler.co/academy-library" target="_blank">Visit →</a></li>
+            </ul>
+          </div>
+          <div class="lib-group reveal">
+            <h4>Healthcare Policy</h4>
+            <ul>
+              <li><span>Eichhorn & Hutchinson — <em>Healing American Healthcare</em></span></li>
+            </ul>
+          </div>
+          <div class="lib-group reveal">
+            <h4>Finance & Investing</h4>
+            <ul>
+              <li><span>Warren Buffett — Annual Letters to BRK Shareholders (<em>The Essays of Warren Buffett</em>, Lawrence Cunningham)</span></li>
+              <li><span>Charlie Munger — <em>Poor Charlie's Almanack</em></span></li>
+              <li><span>Peter Lynch — <em>One Up on Wall Street</em></span></li>
+            </ul>
+          </div>
+          <div class="lib-group reveal">
+            <h4>Personal Philosophy</h4>
+            <ul>
+              <li><span>Hans Rosling — <em>Factfulness</em></span></li>
+              <li><span>David Christian — <em>Origin Story: A Big History of Everything</em></span></li>
+              <li><span>Gov. JB Pritzker, Northwestern Commencement — <em>Cruelty is a Coward's Tool</em></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end track -->
+</div><!-- end pages-wrap -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const track = document.getElementById('track');
+  const pages = document.querySelectorAll('.page');
+  const buttons = document.querySelectorAll('.nav-tabs button');
+  const total = pages.length;
+
+  // Set track width
+  track.style.width = (total * 100) + 'vw';
+
+  let current = 0;
+
+  function goTo(index) {
+    // Deactivate current
+    pages[current].classList.remove('active');
+    buttons[current].classList.remove('active');
+
+    current = index;
+
+    // Slide track
+    track.style.transform = `translateX(-${index * 100}vw)`;
+
+    // Activate new page
+    pages[current].classList.add('active');
+    buttons[current].classList.add('active');
+
+    // Scroll new page to top
+    pages[current].scrollTop = 0;
+
+    // Trigger reveal animations on the new page
+    setTimeout(() => triggerReveals(pages[current]), 80);
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => goTo(parseInt(btn.dataset.page)));
+  });
+
+  // Scroll reveal per page
+  function triggerReveals(page) {
+    const items = page.querySelectorAll('.reveal:not(.visible)');
+    items.forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), i * 55);
+    });
+  }
+
+  // Trigger home page on load
+  setTimeout(() => triggerReveals(pages[0]), 200);
+
+  // ── TYPEWRITER ──
+  const words = ['welcome!', "glad you're here.", 'thanks for stopping by.', "let's build something better.", 'the future is worth it.'];
+  let wi = 0, ci = 0, deleting = false;
+  const tw = document.getElementById('typewriter');
+  tw.textContent = '';
+  function type() {
+    const word = words[wi];
+    if (!deleting) {
+      ci++;
+      tw.textContent = word.slice(0, ci);
+      if (ci === word.length) { deleting = true; setTimeout(type, 2200); return; }
+    } else {
+      ci--;
+      tw.textContent = word.slice(0, ci);
+      if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; setTimeout(type, 300); return; }
+    }
+    setTimeout(type, deleting ? 45 : 85);
+  }
+  setTimeout(type, 700);
+
+  // ── MAGNETIC SOCIAL LINKS ──
+  document.querySelectorAll('.social-row a').forEach(link => {
+    link.addEventListener('mousemove', e => {
+      const rect = link.getBoundingClientRect();
+      const dx = (e.clientX - (rect.left + rect.width / 2)) * 0.3;
+      const dy = (e.clientY - (rect.top + rect.height / 2)) * 0.3;
+      link.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+    link.addEventListener('mouseleave', () => { link.style.transform = ''; });
+  });
+
+  // ── KEYBOA
