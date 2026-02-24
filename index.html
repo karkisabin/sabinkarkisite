@@ -372,7 +372,7 @@
             <div class="meta-row">
               <strong>roles</strong> medical student (psychiatry), clinical researcher, biomedical engineer, legislative advocate, design/innovation faculty<br>
               <strong>interests</strong> writing, podcasting, videography<br>
-              <strong>email</strong> <a href="/cdn-cgi/l/email-protection#2d5e464c5f46446d445803484958"><span class="__cf_email__" data-cfemail="05766e64776e6c456c702b606170">[email&#160;protected]</span></a>
+              <strong>email</strong> <span id="contact-email"></span><script>document.getElementById("contact-email").innerHTML = "<a href=\"mail" + "to:skarki@" + "iu.edu\">skarki@iu.edu</a>";</script>
             </div>
             <div class="social-row">
               <a href="https://www.instagram.com/sabincarkey/" target="_blank">Instagram</a>
@@ -717,7 +717,7 @@
   </div><!-- end track -->
 </div><!-- end pages-wrap -->
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   const track = document.getElementById('track');
   const pages = document.querySelectorAll('.page');
   const buttons = document.querySelectorAll('.nav-tabs button');
@@ -765,7 +765,7 @@
   setTimeout(() => triggerReveals(pages[0]), 200);
 
   // ── TYPEWRITER ──
-  const words = ['welcome!', "glad you're here.", 'thanks for stopping by.', "let's build something better.", 'the future is worth it.'];
+  const words = ["welcome!", "glad you are here.", "thanks for stopping by.", "let us build something better.", "the future is worth it."];
   let wi = 0, ci = 0, deleting = false;
   const tw = document.getElementById('typewriter');
   tw.textContent = '';
