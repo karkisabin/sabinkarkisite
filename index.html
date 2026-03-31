@@ -6,7 +6,7 @@
   <title>Sabin Karki</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
     :root {
       --white: #fff;
@@ -26,8 +26,8 @@
     body {
       background: var(--white);
       color: var(--ink);
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
       font-size: 15px;
       line-height: 1.7;
       overflow: hidden;
@@ -71,7 +71,7 @@
     }
     .nav-tabs button {
       background: none; border: none; padding: 0;
-      font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 400;
+      font-family: 'Jost', sans-serif; font-size: 0.82rem; font-weight: 300;
       color: var(--ink3); cursor: pointer; position: relative; transition: color 0.2s;
     }
     .nav-tabs button::after {
@@ -113,7 +113,7 @@
     /* HOME */
     .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
     .home-h1 {
-      font-family: 'Lora', serif; font-size: 1.5rem; font-weight: 400;
+      font-family: 'Jost', sans-serif; font-size: 1.5rem; font-weight: 300;
       color: var(--accent); margin-bottom: 1rem; line-height: 1.4;
     }
     #tw-text { display: inline; }
@@ -639,8 +639,7 @@
     if (e.key === 'ArrowLeft' && current > 0) goTo(current - 1);
   });
 
-  // TYPEWRITER — tw-text and .cursor are sibling spans so setting
-  // textContent on tw-text never touches the cursor span
+  // TYPEWRITER
   var twText = document.getElementById('tw-text');
   var words = [
     "welcome!",
@@ -654,7 +653,7 @@
     "your work matters.",
     "listen to your heart.",
     "let's be impatiently optimistic together."
-];
+  ];
   var wi = 0, ci = 0, deleting = false;
 
   function tick() {
