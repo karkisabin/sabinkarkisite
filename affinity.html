@@ -216,10 +216,22 @@ button.mark{border:0;background:transparent;color:inherit;cursor:pointer;padding
 .specmenu{position:absolute;top:calc(100% + 6px);left:0;min-width:200px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:6px;z-index:30;display:flex;flex-direction:column}
 .specmenu button{border:0;background:transparent;text-align:left;padding:9px 10px;border-radius:6px;cursor:pointer;font-weight:500}
 .specmenu button:hover,.specmenu button[aria-current="true"]{background:var(--surface-2);font-weight:700}
-.speccards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:6px}
-.speccard{display:flex;flex-direction:column;gap:6px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:18px;cursor:pointer}
-.speccard b{font-family:var(--f-display);font-size:20px}.speccard span{color:var(--muted);font-size:14px}.speccard small{font-weight:600;font-size:13px;margin-top:4px}
-.speccard:hover{border-color:var(--ink)}.speccard.soon{cursor:default;border-style:dashed;background:transparent}.speccard.soon:hover{border-color:var(--line)}
+.speccards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:10px}
+.speccard{display:flex;flex-direction:column;gap:14px;text-align:left;border:1px solid color-mix(in srgb,var(--sp) 35%,var(--line));background:color-mix(in srgb,var(--sp) 7%,var(--surface));border-radius:16px;padding:18px;cursor:pointer;font:inherit;color:inherit;transition:transform .15s ease,box-shadow .15s ease,border-color .15s}
+.speccard:hover{border-color:var(--sp);box-shadow:0 8px 24px color-mix(in srgb,var(--sp) 18%,transparent)}
+@media (prefers-reduced-motion:no-preference){ .speccard:hover{transform:translateY(-2px)} }
+.pv{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px;min-height:150px;align-content:start;pointer-events:none}
+.pv-k{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+.pv-fp{display:grid;gap:6px}
+.pv-r{display:grid;grid-template-columns:38px minmax(0,1fr);gap:8px;align-items:center;font-size:12px;font-weight:600}
+.pv-chips{display:flex;flex-wrap:wrap;gap:5px}.pv-chips .sc{font-size:11.5px;padding:2px 8px;cursor:default;box-shadow:none}
+.pv-dose{display:flex;align-items:baseline;gap:12px}.pv-dose b{font-family:var(--f-display);font-size:26px}.pv-dose span{font-weight:700;color:var(--g-reversal);font-size:16px}
+.pv-tl{position:relative;height:22px}.pv-tl .tl-track,.pv-tl .tl-on,.pv-tl .tl-eff,.pv-tl .tl-tail{top:6px}
+.pv-cap{font-size:12px;color:var(--muted)}
+.sp-foot{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:0 10px}
+.sp-foot b{font-family:var(--f-display);font-size:22px;color:var(--sp)}
+.sp-foot span{grid-column:1;font-size:13px;color:var(--muted)}
+.sp-foot i{grid-row:1/3;grid-column:2;font-style:normal;font-size:22px;color:var(--sp)}
 .ptbar{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 54px);z-index:4}
 .pt-row{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end}
 .pt-f{display:block}.pt-in{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--surface);overflow:hidden}
@@ -244,7 +256,7 @@ table.sheet th,table.sheet td{text-align:left;padding:8px 12px;border-bottom:1px
 table.sheet thead th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
 table.sheet tr.sh-g th{background:var(--surface-2);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
 table.sheet td.num b{font-size:15px}.muted{color:var(--muted)}
-@media (max-width:640px){ .speccards{grid-template-columns:minmax(0,1fr)} .ptbar{position:static} }
+@media (max-width:640px){ .speccards{grid-template-columns:minmax(0,1fr)} .ptbar{position:static} .pv{min-height:0} }
 .ad-main.off{color:var(--sev-adjust);font-size:20px}
 .fb{font-size:11.5px;color:var(--sev-adjust)}
 .pt-pair{display:inline-flex;gap:6px}.pt-pair input{width:56px}
@@ -401,8 +413,6 @@ button.concbtn:hover{border-color:var(--ink);color:var(--ink)}
 
 <main class="wrap">
   <section id="root" class="home" hidden>
-    <h1>Affinity</h1>
-    <p class="lede">Fast, color-coded drug references for clinicians and trainees. Pick a specialty.</p>
     <div class="speccards" id="speccards"></div>
   </section>
   <div id="ptbar" class="ptbar" hidden></div>
@@ -2487,8 +2497,25 @@ function renderTabs(){
   $("#specbtn").innerHTML = (v==="root"?"Choose a specialty":esc(spec().name)) + ` <span aria-hidden="true">▾</span>`;
 }
 function renderRoot(){
-  $("#speccards").innerHTML = SPEC_ORDER.map(k=>{ const S=SPECS[k]; return `<button class="speccard" data-spec="${k}"><b>${S.name}</b><span>${S.blurb}</span><small>${S.order.length} medications →</small></button>`; }).join("")
-    + `<div class="speccard soon"><b>More specialties</b><span>Emergency medicine, internal medicine, and pediatrics are planned.</span></div>`;
+  const pv = {
+    psych: () => {
+      const rows=[["SERT",0.3],["DAT",25],["α1",380]];
+      return `<div class="pv-k">Sertraline</div>
+        <div class="pv-fp">${rows.map(([n,ki])=>`<div class="pv-r"><span>${n}</span><span class="track"><span class="bar" style="width:${fpPos(ki)}%"></span><span class="pt" style="left:${fpPos(ki)}%"></span></span></div>`).join("")}</div>
+        <div class="pv-chips"><span class="sc lv-ok">Pregnancy</span><span class="sc lv-caution">Hepatic</span><span class="sc lv-avoid bx">Boxed</span></div>`; },
+    anes: () => {
+      const t=DRUGS.rocuronium.time, a=tpos(t.onset[0]), b=tpos(t.onset[1]), c=tpos(t.dur[0]), e=tpos(t.dur[1]);
+      return `<div class="pv-k">Rocuronium · RSI</div>
+        <div class="pv-dose"><b>60–120 mg</b><span>6–12 mL</span></div>
+        <div class="pv-tl"><span class="tl-track"></span><span class="tl-on" style="left:${a}%;width:${b-a}%"></span><span class="tl-eff" style="left:${b}%;width:${c-b}%"></span><span class="tl-tail" style="left:${c}%;width:${e-c}%"></span></div>
+        <div class="pv-cap">onset 1–2 min · lasts 31–67 min</div>`; }
+  };
+  const tone = {psych:"var(--g-ap)", anes:"var(--g-induction)"};
+  $("#speccards").innerHTML = SPEC_ORDER.map(k=>{ const S=SPECS[k];
+    return `<button class="speccard" data-spec="${k}" style="--sp:${tone[k]};--drug:${tone[k]}">
+      <div class="pv" aria-hidden="true">${pv[k]()}</div>
+      <div class="sp-foot"><b>${S.name}</b><span>${S.order.length} drugs</span><i aria-hidden="true">→</i></div>
+    </button>`; }).join("");
 }
 function setView(v){
   if(v==="dex" && !state.drug) v="home";
