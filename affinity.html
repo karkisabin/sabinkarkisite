@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Affinity: psychiatric medication cards and regimen burden checker by Sabin Karki.">
+<title>Affinity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: red "dex" band on top; drug index rail + one-page card (overview | side effects / mechanism); regimen view stacks burden bars and interaction flags. */
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --surface-2:#f6f8fa; --ink:#16202b; --muted:#5a6676; --line:#dbe1e7;
+  --accent:#c0283b; --accent-ink:#ffffff;
+  --c-sertraline:#16907f; --c-escitalopram:#2a74c9; --c-bupropion:#c47f0c; --c-quetiapine:#7552c4; --c-aripiprazole:#bd3b86;
+  --sev-avoid:#b9262a; --sev-adjust:#a8680a; --sev-monitor:#2c67a8; --ok:#2f7d4f;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e1318; --surface:#161c23; --surface-2:#1b222b; --ink:#e5eaf0; --muted:#95a1b0; --line:#29323d;
+  --accent:#a8202f; --accent-ink:#ffffff;
+  --c-sertraline:#3cc2ae; --c-escitalopram:#5c9ff0; --c-bupropion:#e8a93a; --c-quetiapine:#a184ec; --c-aripiprazole:#e46cb0;
+  --sev-avoid:#f0676a; --sev-adjust:#eaa53c; --sev-monitor:#6aa6ea; --ok:#5fc08a; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0e1318; --surface:#161c23; --surface-2:#1b222b; --ink:#e5eaf0; --muted:#95a1b0; --line:#29323d;
+  --accent:#a8202f; --accent-ink:#ffffff;
+  --c-sertraline:#3cc2ae; --c-escitalopram:#5c9ff0; --c-bupropion:#e8a93a; --c-quetiapine:#a184ec; --c-aripiprazole:#e46cb0;
+  --sev-avoid:#f0676a; --sev-adjust:#eaa53c; --sev-monitor:#6aa6ea; --ok:#5fc08a; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--accent)}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1280px;margin:0 auto}
+
+/* top band */
+.band{background:var(--accent);color:var(--accent-ink);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.band .wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-block:10px}
+.mark{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:700;font-size:22px;letter-spacing:-.01em}
+.lens{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#bfe6ff 0 18%,#2d8fd6 40%,#0f4f86 100%);box-shadow:0 0 0 3px rgba(255,255,255,.9)}
+.views{display:flex;gap:4px;background:rgba(0,0,0,.18);padding:3px;border-radius:999px}
+.views button{border:0;background:transparent;color:var(--accent-ink);padding:6px 14px;border-radius:999px;cursor:pointer;font-weight:600}
+.views button[aria-pressed="true"]{background:var(--accent-ink);color:var(--accent)}
+.badge{margin-left:auto;font-size:12px;opacity:.92;border:1px solid rgba(255,255,255,.5);padding:3px 10px;border-radius:999px}
+
+main{padding-block:20px 40px}
+
+/* dex layout */
+.dex{display:grid;grid-template-columns:230px minmax(0,1fr);gap:20px;align-items:start}
+.rail{position:sticky;top:76px;display:flex;flex-direction:column;gap:8px}
+.rail input{width:100%;padding:9px 12px;border:1px solid var(--line);background:var(--surface);border-radius:8px}
+.entries{display:flex;flex-direction:column;gap:4px}
+.entry{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;text-align:left;border:1px solid transparent;background:transparent;border-radius:8px;padding:8px 10px;cursor:pointer}
+.entry:hover{background:var(--surface)}
+.entry[aria-current="true"]{background:var(--surface);border-color:var(--line)}
+.entry .dot{width:10px;height:10px;border-radius:50%;grid-row:span 2}
+.entry b{font-weight:600}
+.entry small{color:var(--muted);font-size:12px}
+.entry .num{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.rail .hint{font-size:12px;color:var(--muted);padding:4px 10px}
+
+.card-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 20px;padding-bottom:14px;border-bottom:3px solid var(--drug)}
+.card-head .num{font-family:var(--f-mono);color:var(--muted);font-size:13px}
+.card-head h1{font-family:var(--f-display);font-size:clamp(28px,4vw,40px);line-height:1;margin:2px 0 0;letter-spacing:-.02em}
+.card-head .brand{color:var(--muted);font-size:15px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:color-mix(in srgb,var(--drug) 14%,transparent);color:var(--drug)}
+.add{margin-left:auto;border:1px solid var(--drug);background:transparent;color:var(--drug);border-radius:8px;padding:8px 14px;font-weight:600;cursor:pointer}
+.add[aria-pressed="true"]{background:var(--drug);color:var(--surface)}
+
+.context{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;padding:14px 0}
+.ctx-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;display:block;margin-bottom:4px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;padding:7px 12px;cursor:pointer;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface);font-weight:600}
+select{padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);min-width:220px;max-width:100%}
+
+.panels{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
+.panel.overview{grid-row:span 2}
+.panel h2{font-family:var(--f-display);font-size:17px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.panel h3{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:16px 0 6px;font-weight:600}
+.panel h3:first-of-type{margin-top:0}
+
+.dose{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.dose div{background:var(--surface-2);padding:10px 12px;min-width:0}
+.dose span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.dose strong{font-family:var(--f-mono);font-weight:500;font-size:14px}
+.titr{margin:8px 0 0;font-size:13px}
+.note{font-size:13px;color:var(--muted);margin:6px 0 0}
+.box{border-left:3px solid var(--sev-avoid);background:color-mix(in srgb,var(--sev-avoid) 8%,transparent);padding:8px 12px;border-radius:0 6px 6px 0;font-size:13px;margin-top:8px}
+.box b{color:var(--sev-avoid)}
+ul.plain{margin:0;padding-left:18px}
+ul.plain li{margin:2px 0}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;border:1px solid var(--line);padding:2px 9px;border-radius:999px;background:var(--surface-2)}
+.empty{background:var(--surface-2);border:1px dashed var(--line);border-radius:8px;padding:14px;font-size:13px;color:var(--muted)}
+
+/* burden meters */
+.meters{display:grid;gap:7px}
+.meter{display:grid;grid-template-columns:120px auto 1fr;gap:10px;align-items:center;font-size:13px}
+.pips{display:flex;gap:3px}
+.pip{width:22px;height:8px;border-radius:2px;background:var(--line)}
+.pip.on{background:var(--drug)}
+.lvl{font-size:12px;color:var(--muted)}
+.ae{display:grid;gap:4px;font-size:13px}
+.ae div{display:flex;gap:8px;align-items:baseline}
+.ae .k{font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:1px 6px;border-radius:4px;flex:none}
+.k.common{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.k.serious{background:color-mix(in srgb,var(--sev-avoid) 12%,transparent);color:var(--sev-avoid)}
+
+/* fingerprint */
+.fp{display:grid;gap:6px}
+.fp-row{display:grid;grid-template-columns:70px minmax(0,1fr) 128px;gap:10px;align-items:center;font-size:13px}
+.fp-name{font-weight:600}
+.track{position:relative;height:18px;background:linear-gradient(90deg,transparent 0 19.8%,var(--line) 19.8% 20.2%,transparent 20.2% 39.8%,var(--line) 39.8% 40.2%,transparent 40.2% 59.8%,var(--line) 59.8% 60.2%,transparent 60.2% 79.8%,var(--line) 79.8% 80.2%,transparent 80.2%);border-bottom:1px solid var(--line)}
+.track .bar{position:absolute;left:0;top:7px;height:4px;border-radius:2px;background:color-mix(in srgb,var(--drug) 30%,transparent)}
+.track .pt{position:absolute;top:3px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--drug);border:2px solid var(--surface)}
+.track .pt.met{background:var(--surface);border:2px solid var(--drug)}
+.fp-act{font-size:12px;color:var(--muted);line-height:1.25}
+.fp-act code{font-family:var(--f-mono);color:var(--ink);font-size:12px}
+.fp-scale{display:grid;grid-template-columns:70px minmax(0,1fr) 128px;gap:10px;font-family:var(--f-mono);font-size:10px;color:var(--muted)}
+.fp-scale .ticks{position:relative;height:14px}
+.fp-scale .ticks span{position:absolute;top:0;white-space:nowrap}
+.cyp{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px}
+.cyp dt{color:var(--muted)}
+.cyp dd{margin:0}
+
+/* regimen */
+.reg-head h1{font-family:var(--f-display);font-size:clamp(26px,3.5vw,34px);margin:0;letter-spacing:-.02em}
+.reg-head p{color:var(--muted);margin:4px 0 0;max-width:68ch}
+.picker{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.pick{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px 6px 10px;cursor:pointer}
+.pick .dot{width:10px;height:10px;border-radius:50%;background:var(--drug)}
+.pick[aria-pressed="true"]{border-color:var(--drug);background:color-mix(in srgb,var(--drug) 14%,var(--surface));font-weight:600}
+.reg-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}
+.stack{display:grid;gap:12px}
+.srow{display:grid;grid-template-columns:130px minmax(0,1fr) 92px;gap:12px;align-items:center}
+.srow .name{font-weight:600;font-size:13px}
+.strack{position:relative;height:22px;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;overflow:hidden;display:flex}
+.seg-fill{height:100%;border-right:2px solid var(--surface)}
+.strack .th{position:absolute;top:0;bottom:0;width:0;border-left:1px dashed var(--muted);opacity:.55}
+.pill{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border-radius:999px;text-align:center}
+.pill.none{color:var(--muted);background:var(--surface-2)}
+.pill.low{color:var(--ok);background:color-mix(in srgb,var(--ok) 13%,transparent)}
+.pill.moderate{color:var(--sev-adjust);background:color-mix(in srgb,var(--sev-adjust) 14%,transparent)}
+.pill.high{color:var(--sev-avoid);background:color-mix(in srgb,var(--sev-avoid) 13%,transparent)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted);margin-top:12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.flags{display:grid;gap:10px}
+.flag{border:1px solid var(--line);border-left:4px solid var(--sev);border-radius:0 8px 8px 0;padding:10px 12px;background:var(--surface)}
+.flag header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:4px}
+.flag .sev{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--sev);background:color-mix(in srgb,var(--sev) 12%,transparent);padding:2px 7px;border-radius:4px}
+.flag .pair{font-size:12px;color:var(--muted)}
+.flag p{margin:0;font-size:13px}
+.fine{font-size:12px;color:var(--muted);margin-top:24px;max-width:90ch}
+
+@media (max-width:980px){ .panels,.reg-grid{grid-template-columns:minmax(0,1fr)} .panel.overview{grid-row:auto} }
+@media (max-width:820px){
+  .dex{grid-template-columns:minmax(0,1fr)}
+  .rail{position:static}
+  .entries{flex-direction:row;flex-wrap:wrap}
+  .entry{border-color:var(--line);background:var(--surface)}
+  .badge{margin-left:0}
+}
+@media (max-width:520px){
+  .dose{grid-template-columns:minmax(0,1fr)}
+  .fp-row,.fp-scale{grid-template-columns:52px minmax(0,1fr)}
+  .fp-act{grid-column:2}
+  .fp-scale>span:last-child{display:none}
+  .meter{grid-template-columns:110px auto}
+  .meter .lvl{display:none}
+  .srow{grid-template-columns:minmax(0,1fr) 84px}
+  .srow .strack{grid-column:1/-1;grid-row:2}
+  .add{margin-left:0}
+}
+@media (prefers-reduced-motion:no-preference){ .seg-fill,.pt{transition:all .25s ease} }
+</style>
+<style>body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+
+<header class="band">
+  <div class="wrap">
+    <div class="mark"><span class="lens" aria-hidden="true"></span>Affinity</div>
+    <div class="views" role="group" aria-label="View">
+      <button id="v-dex" aria-pressed="true">Dex</button>
+      <button id="v-reg" aria-pressed="false">Regimen</button>
+    </div>
+    <span class="badge">Prototype · verify before prescribing</span>
+    <a href="/" style="color:var(--accent-ink);font-size:13px;text-decoration:underline">← sabinkarki.com</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="dex" class="dex">
+    <aside class="rail">
+      <label for="q" class="ctx-label">Find a medication</label>
+      <input id="q" type="search" placeholder="Name, brand, or class" autocomplete="off">
+      <div class="entries" id="entries"></div>
+      <div class="hint">Numbers rank 2024 US outpatient Rx volume among psychiatric meds.</div>
+    </aside>
+    <article id="card" style="min-width:0"></article>
+  </section>
+
+  <section id="reg" hidden>
+    <div class="reg-head">
+      <h1>Regimen burden</h1>
+      <p>Select the patient's psychiatric medications. Bars stack each drug's contribution so you can see where side-effect load accumulates, and flags list the interactions that change management.</p>
+    </div>
+    <div class="picker" id="picker"></div>
+    <div class="reg-grid">
+      <div class="panel">
+        <h2>Cumulative burden</h2>
+        <div class="stack" id="stack"></div>
+        <div class="legend" id="legend"></div>
+        <p class="note">Each drug scores 0–3 per domain; bars are additive. "High" means a single drug at 3 or a combined score of 4+. A heuristic for spotting stacking, not a validated risk score.</p>
+      </div>
+      <div class="panel">
+        <h2>Interactions &amp; flags</h2>
+        <div class="flags" id="flags"></div>
+      </div>
+    </div>
+  </section>
+
+  <p class="fine">Educational prototype covering five medications. Doses reflect FDA labeling for immediate-release adult/pediatric use unless noted and are abridged; check current labeling, formulation, and patient factors. Burden ratings are qualitative estimates informed by labeling, Huhn et al. 2019 (Lancet; antipsychotics) and Cipriani et al. 2018 (Lancet; antidepressants). Binding values are approximate Ki from published studies (e.g., NIMH PDSP Ki database) and vary across assays; affinity does not directly predict clinical effect.</p>
+</main>
+
+<script>
+const DOMAINS = [
+  ["sero","Serotonergic"],["qtc","QTc"],["sed","Sedation"],["achol","Anticholinergic"],["metab","Metabolic / weight"],["eps","EPS / akathisia"]
+];
+const LV = ["None","Low","Moderate","High"];
+const AGES = [["peds","Child / adolescent"],["adult","Adult"],["older","Older adult"]];
+const SUICIDE = "Suicidal thoughts and behaviors in children, adolescents, and young adults (<25) on antidepressants. Monitor closely early in treatment and after dose changes.";
+const DEMENTIA = "Increased mortality in elderly patients with dementia-related psychosis. Not approved for that use.";
+
+const DRUGS = {
+ sertraline:{ name:"Sertraline", brand:"Zoloft", cls:"SSRI", rank:1,
+  mech:"Blocks the serotonin transporter (SERT). Among SSRIs it has relatively notable dopamine transporter and sigma-1 binding; the clinical meaning of that is uncertain.",
+  receptors:[["SERT",0.3,"Inhibitor"],["DAT",25,"Inhibitor"],["σ1",32,"Ligand"],["α1",380,"Antagonist"],["NET",420,"Inhibitor"]],
+  cyp:{sub:"Multiple (2B6, 2C19, 2C9, 3A4, 2D6)", inh:"CYP2D6 mild–moderate, dose-dependent (more at ≥150 mg)", note:""},
+  burden:{sero:3,qtc:0,sed:1,achol:0,metab:1,eps:0},
+  ae:[["common","Nausea, loose stools (often early, usually fades)"],["common","Sexual dysfunction"],["common","Insomnia or somnolence, sweating, tremor"],["serious","Hyponatremia (SIADH)"],["serious","Bleeding risk with NSAIDs, aspirin, anticoagulants"]],
+  contra:"MAOI within 14 days; pimozide; disulfiram with the oral concentrate (contains alcohol).",
+  organ:"Hepatic: use lower or less frequent doses. Renal: no adjustment.",
+  preg:"One of the most-studied SSRIs in pregnancy; low infant serum levels in breastfeeding, so often a preferred choice. Late-pregnancy exposure: neonatal adaptation symptoms, small PPHN risk.",
+  monitor:"Mood and suicidality at 1–2 weeks and after each dose change. Sodium in older adults or with diuretics.",
+  boxed:{peds:SUICIDE, adult:SUICIDE},
+  agenote:{peds:"Only pediatric FDA indication is OCD (age 6+). Depression and anxiety use in youth is off-label. Watch for behavioral activation.",
+           adult:"Taper when stopping to avoid discontinuation symptoms. GI effects are the most common early complaint.",
+           older:"Higher risk of hyponatremia, falls, and GI bleeding. The label has no specific geriatric dose; many clinicians start at 25 mg."},
+  dosing:{
+   adult:{
+    "Major depressive disorder":{start:"50 mg daily",range:"50–200 mg/day",max:"200 mg/day",titr:"Increase by 25–50 mg at intervals of at least 1 week."},
+    "OCD":{start:"50 mg daily",range:"50–200 mg/day",max:"200 mg/day",titr:"Increase by 25–50 mg at intervals of at least 1 week."},
+    "Panic disorder":{start:"25 mg daily × 1 week",range:"50–200 mg/day",max:"200 mg/day",titr:"Then 50 mg daily; increase weekly as needed."},
+    "PTSD":{start:"25 mg daily × 1 week",range:"50–200 mg/day",max:"200 mg/day",titr:"Then 50 mg daily; increase weekly as needed."},
+    "Social anxiety disorder":{start:"25 mg daily × 1 week",range:"50–200 mg/day",max:"200 mg/day",titr:"Then 50 mg daily; increase weekly as needed."},
+    "PMDD":{start:"50 mg daily",range:"50–150 mg/day",max:"150 mg/day (continuous)",titr:"Continuous dosing or luteal phase only (luteal max 100 mg/day)."}},
+   peds:{
+    "OCD (ages 6–12)":{start:"25 mg daily",range:"25–200 mg/day",max:"200 mg/day",titr:"Increase at intervals of at least 1 week; consider lower body weight."},
+    "OCD (ages 13–17)":{start:"50 mg daily",range:"50–200 mg/day",max:"200 mg/day",titr:"Increase at intervals of at least 1 week."}},
+   older:{
+    "Major depressive disorder":{start:"25 mg daily (common practice)",range:"50–200 mg/day",max:"200 mg/day",titr:"Titrate slowly; check sodium if new confusion or falls."},
+    "Panic disorder":{start:"25 mg daily",range:"50–200 mg/day",max:"200 mg/day",titr:"Titrate slowly."}}
+  }},
+ escitalopram:{ name:"Escitalopram", brand:"Lexapro", cls:"SSRI", rank:2,
+  mech:"The most SERT-selective SSRI. It also binds an allosteric site on the transporter that prolongs its own binding. Negligible affinity for other receptors explains its clean tolerability profile.",
+  receptors:[["SERT",1.1,"Inhibitor"],["M1",1240,"Antagonist"],["H1",2000,"Antagonist"],["NET",7800,"Inhibitor"],["DAT",27400,"Inhibitor"]],
+  cyp:{sub:"2C19, 3A4, 2D6", inh:"CYP2D6 weak", note:"CYP2C19 poor metabolizers: 10 mg/day max."},
+  burden:{sero:3,qtc:1,sed:1,achol:0,metab:1,eps:0},
+  ae:[["common","Nausea"],["common","Sexual dysfunction"],["common","Insomnia or somnolence, sweating"],["serious","Dose-dependent QTc prolongation (smaller than citalopram)"],["serious","Hyponatremia; bleeding risk with antiplatelets/anticoagulants"]],
+  contra:"MAOI within 14 days; pimozide.",
+  organ:"Hepatic: 10 mg/day. Renal: no adjustment in mild–moderate; caution if CrCl <20.",
+  preg:"Reasonable pregnancy data; low–moderate transfer into breast milk. Same late-pregnancy neonatal considerations as other SSRIs.",
+  monitor:"Mood and suicidality early and after dose changes. ECG if cardiac disease, electrolyte problems, or other QT-prolonging drugs.",
+  boxed:{peds:SUICIDE, adult:SUICIDE},
+  agenote:{peds:"FDA-approved for MDD (12–17) and GAD (7–17).",
+           adult:"Generally well tolerated; sexual dysfunction is the most common reason patients stop.",
+           older:"The label recommends 10 mg/day for most older adults. Watch sodium and QTc."},
+  dosing:{
+   adult:{
+    "Major depressive disorder":{start:"10 mg daily",range:"10–20 mg/day",max:"20 mg/day",titr:"May increase to 20 mg after at least 1 week."},
+    "Generalized anxiety disorder":{start:"10 mg daily",range:"10–20 mg/day",max:"20 mg/day",titr:"May increase to 20 mg after at least 1 week."}},
+   peds:{
+    "MDD (ages 12–17)":{start:"10 mg daily",range:"10–20 mg/day",max:"20 mg/day",titr:"May increase to 20 mg after at least 3 weeks."},
+    "GAD (ages 7–17)":{start:"10 mg daily",range:"10–20 mg/day",max:"20 mg/day",titr:"May increase to 20 mg; check label for interval."}},
+   older:{
+    "Major depressive disorder":{start:"10 mg daily",range:"10 mg/day",max:"10 mg/day recommended",titr:"Label-recommended dose for most older adults."},
+    "Generalized anxiety disorder":{start:"10 mg daily",range:"10 mg/day",max:"10 mg/day recommended",titr:"Label-recommended dose for most older adults."}}
+  }},
+ bupropion:{ name:"Bupropion", brand:"Wellbutrin SR / XL", cls:"NDRI", rank:3,
+  mech:"Weak norepinephrine and dopamine reuptake inhibitor. Much of the effect comes from the active metabolite hydroxybupropion. No meaningful serotonergic action, which is why sexual side effects and weight gain are uncommon.",
+  receptors:[["DAT",520,"Inhibitor"],["SERT",9100,"Inhibitor"],["NET",52000,"Inhibitor (parent; metabolite stronger)"]],
+  cyp:{sub:"2B6", inh:"CYP2D6 strong (parent and hydroxybupropion)", note:"Raises levels of 2D6 substrates: aripiprazole, risperidone, TCAs, metoprolol, and others."},
+  burden:{sero:0,qtc:0,sed:0,achol:0,metab:0,eps:0},
+  ae:[["common","Insomnia (dose in the morning)"],["common","Dry mouth, headache, nausea"],["common","Anxiety or agitation, tremor"],["common","Weight neutral or loss"],["serious","Seizures, dose-related (~0.1% at labeled doses)"],["serious","Hypertension"]],
+  contra:"Seizure disorder; current or prior bulimia or anorexia; abrupt withdrawal from alcohol, benzodiazepines, barbiturates, or antiseizure drugs; MAOI within 14 days.",
+  organ:"Moderate–severe hepatic: XL max 150 mg every other day. Renal (GFR <90): consider reduced dose or frequency.",
+  preg:"Limited but generally reassuring pregnancy data. Rare reports of infant seizure-like events with breastfeeding; monitor the infant.",
+  monitor:"Blood pressure. Mood and suicidality. Screen for seizure risk and eating disorders before starting.",
+  boxed:{peds:SUICIDE, adult:SUICIDE},
+  agenote:{peds:"No FDA-approved pediatric indication; sometimes used off-label for ADHD or depression.",
+           adult:"Keep within the labeled maximum and avoid single doses above 150 mg (SR) to limit seizure risk.",
+           older:"Insomnia and agitation can be more troublesome. Reduce dose or frequency with renal or hepatic impairment."},
+  dosing:{
+   adult:{
+    "Major depressive disorder (XL)":{start:"150 mg every morning",range:"300 mg/day",max:"450 mg/day",titr:"Increase to 300 mg on day 4; 450 mg only after several weeks without response."},
+    "Seasonal affective disorder (XL)":{start:"150 mg every morning",range:"150–300 mg/day",max:"300 mg/day",titr:"Start in autumn; increase to 300 mg after 1 week; taper to 150 mg before stopping in spring."},
+    "Smoking cessation (SR)":{start:"150 mg daily × 3 days",range:"300 mg/day",max:"300 mg/day",titr:"Then 150 mg twice daily (≥8 h apart) for 7–12 weeks; set quit date in week 2."}},
+   peds:{},
+   older:{
+    "Major depressive disorder (XL)":{start:"150 mg every morning",range:"150–300 mg/day",max:"Use lowest effective dose",titr:"Titrate cautiously; adjust for renal or hepatic function."}}
+  }},
+ quetiapine:{ name:"Quetiapine", brand:"Seroquel / Seroquel XR", cls:"Second-gen antipsychotic", rank:9,
+  mech:"Effects shift with dose. Low doses act mainly at H1 and α1 (sedation, orthostasis). Higher doses add 5-HT2A and transient, loosely bound D2 blockade, which keeps EPS and prolactin low. The metabolite norquetiapine inhibits NET and likely contributes to the antidepressant effect.",
+  receptors:[["H1",11,"Antagonist"],["α1",22,"Antagonist"],["NET",25,"Inhibitor (norquetiapine)",true],["5-HT2A",100,"Antagonist"],["D2",380,"Antagonist (fast off)"],["5-HT1A",390,"Partial agonist"],["M1",860,"Antagonist (norquetiapine higher)"]],
+  cyp:{sub:"3A4 (major)", inh:"None clinically meaningful", note:"Strong 3A4 inhibitors (ketoconazole, ritonavir): reduce to 1/6 of dose. Strong inducers (carbamazepine, phenytoin): may need up to 5×."},
+  burden:{sero:0,qtc:2,sed:3,achol:1,metab:2,eps:0},
+  ae:[["common","Sedation, dizziness"],["common","Weight gain, dyslipidemia, hyperglycemia"],["common","Orthostatic hypotension"],["common","Dry mouth, constipation"],["serious","QTc prolongation"],["serious","Cataracts (label recommends lens exams)"]],
+  contra:"No absolute contraindications beyond hypersensitivity.",
+  organ:"Hepatic: start 25 mg/day (IR), increase by 25–50 mg/day. Renal: no adjustment.",
+  preg:"Low transfer into breast milk. Monitor glucose for gestational diabetes risk.",
+  monitor:"Weight/BMI, waist, BP, fasting glucose or A1c, and lipids at baseline and 12 weeks, then at least yearly (ADA/APA consensus). Orthostatic BP. Periodic lens exam.",
+  boxed:{peds:SUICIDE, adult:SUICIDE, older:DEMENTIA},
+  agenote:{peds:"Youth gain more weight and have larger lipid and glucose changes than adults. Check blood pressure; the label notes hypertension in pediatric patients.",
+           adult:"Low-dose use for sleep is off-label and still carries metabolic and QTc risk.",
+           older:"Orthostasis, sedation, and falls are the main concerns. Start low and titrate slowly."},
+  dosing:{
+   adult:{
+    "Schizophrenia":{start:"25 mg twice daily (day 1)",range:"150–750 mg/day",max:"750 mg/day (IR)",titr:"Increase by 25–50 mg 2–3× daily to 300–400 mg/day by day 4."},
+    "Bipolar I mania":{start:"50 mg twice daily (day 1)",range:"400–800 mg/day",max:"800 mg/day",titr:"Increase by 100 mg/day to 400 mg/day by day 4, then by ≤200 mg/day."},
+    "Bipolar depression":{start:"50 mg at bedtime (day 1)",range:"300 mg/day",max:"300 mg/day",titr:"100 → 200 → 300 mg on days 2–4. 600 mg showed no added benefit."},
+    "MDD, adjunctive (XR)":{start:"50 mg XR at bedtime",range:"150–300 mg/day",max:"300 mg/day",titr:"50 mg on days 1–2, then 150 mg on day 3."}},
+   peds:{
+    "Schizophrenia (ages 13–17)":{start:"25 mg twice daily (day 1)",range:"400–800 mg/day",max:"800 mg/day",titr:"Increase to 400 mg/day by day 5, then by ≤100 mg/day."},
+    "Bipolar I mania (ages 10–17)":{start:"25 mg twice daily (day 1)",range:"400–600 mg/day",max:"600 mg/day",titr:"Increase to 400 mg/day by day 5, then by ≤100 mg/day."}},
+   older:{
+    "Schizophrenia":{start:"50 mg/day",range:"Lowest effective dose",max:"Adult max; usually lower",titr:"Increase by 50 mg/day as tolerated."},
+    "Bipolar depression":{start:"25–50 mg at bedtime",range:"Lowest effective dose",max:"300 mg/day",titr:"Titrate more slowly than in younger adults."}}
+  }},
+ aripiprazole:{ name:"Aripiprazole", brand:"Abilify", cls:"Second-gen antipsychotic", rank:10,
+  mech:"D2 and 5-HT1A partial agonist with 5-HT2A antagonism. D2 partial agonism keeps prolactin and EPS low (it can even lower prolactin) but also drives akathisia. Low H1 and negligible M1 activity mean little sedation or anticholinergic effect.",
+  receptors:[["D2",0.34,"Partial agonist"],["5-HT2B",0.36,"Antagonist"],["D3",0.8,"Partial agonist"],["5-HT1A",1.7,"Partial agonist"],["5-HT2A",3.4,"Antagonist"],["5-HT7",39,"Antagonist"],["α1",57,"Antagonist"],["H1",61,"Antagonist"],["M1",6780,"Antagonist"]],
+  cyp:{sub:"2D6 and 3A4", inh:"None clinically meaningful", note:"Strong 2D6 or 3A4 inhibitor: half dose. Both: quarter dose. Strong 3A4 inducer: double. 2D6 poor metabolizers: half dose."},
+  burden:{sero:0,qtc:0,sed:1,achol:0,metab:1,eps:2},
+  ae:[["common","Akathisia, restlessness"],["common","Insomnia (sedation more common in youth)"],["common","Nausea, headache"],["common","Low weight and metabolic risk vs. other SGAs"],["serious","Impulse-control problems (gambling, shopping), rare"],["serious","Tardive dyskinesia, NMS (class effects)"]],
+  contra:"No absolute contraindications beyond hypersensitivity.",
+  organ:"No adjustment for hepatic or renal impairment.",
+  preg:"Limited data. Can reduce milk supply because it lowers prolactin.",
+  monitor:"Metabolic monitoring on the standard SGA schedule. Akathisia and EPS at each visit. Ask about new compulsive behaviors.",
+  boxed:{peds:SUICIDE, adult:SUICIDE, older:DEMENTIA},
+  agenote:{peds:"Approved for schizophrenia (13–17), bipolar I (10–17), irritability with autism (6–17), and Tourette's (6–18). Sedation is more common than in adults.",
+           adult:"Akathisia is the most common reason for stopping, especially with adjunctive MDD use. Start low and titrate slowly.",
+           older:"Akathisia can look like worsening agitation. No specific geriatric dose adjustment in the label."},
+  dosing:{
+   adult:{
+    "Schizophrenia":{start:"10–15 mg daily",range:"10–15 mg/day",max:"30 mg/day",titr:"Doses above 10–15 mg were not more effective; wait ≥2 weeks between increases."},
+    "Bipolar I mania (monotherapy)":{start:"15 mg daily",range:"15–30 mg/day",max:"30 mg/day",titr:"Increase to 30 mg based on response."},
+    "MDD, adjunctive":{start:"2–5 mg daily",range:"2–15 mg/day",max:"15 mg/day",titr:"Increase by up to 5 mg at intervals of at least 1 week."}},
+   peds:{
+    "Schizophrenia (ages 13–17)":{start:"2 mg daily",range:"10 mg/day",max:"30 mg/day",titr:"5 mg after 2 days, then 10 mg after 2 more days; further increases in 5 mg steps."},
+    "Bipolar I mania (ages 10–17)":{start:"2 mg daily",range:"10 mg/day",max:"30 mg/day",titr:"5 mg after 2 days, then 10 mg after 2 more days."},
+    "Irritability with autism (6–17)":{start:"2 mg daily",range:"5–15 mg/day",max:"15 mg/day",titr:"Increase to 5 mg, then by up to 5 mg at intervals of at least 1 week."},
+    "Tourette's disorder (6–18)":{start:"2 mg daily",range:"5 mg (<50 kg); 10 mg (≥50 kg)",max:"10 mg (<50 kg); 20 mg (≥50 kg)",titr:"Increase after 2 days; further steps at ≥1-week intervals."}},
+   older:{
+    "Schizophrenia":{start:"Lower end of adult range",range:"Lowest effective dose",max:"30 mg/day",titr:"Titrate slowly; monitor for akathisia and falls."},
+    "MDD, adjunctive":{start:"2 mg daily",range:"2–10 mg/day",max:"15 mg/day",titr:"Small steps; akathisia can present as agitation."}}
+  }}
+};
+
+const RULES = [
+ {a:"sertraline",b:"escitalopram",sev:"avoid",t:"Two SSRIs",d:"Duplicate serotonin reuptake inhibition raises serotonin syndrome risk without established benefit. Cross-taper instead of combining."},
+ {a:"bupropion",b:"aripiprazole",sev:"adjust",t:"CYP2D6 inhibition raises aripiprazole",d:"Bupropion is a strong CYP2D6 inhibitor, roughly doubling aripiprazole exposure. Label: halve the aripiprazole dose. In adjunctive MDD use the label allows no adjustment, so start at 2 mg and titrate against akathisia."},
+ {a:"sertraline",b:"aripiprazole",sev:"monitor",t:"Mild CYP2D6 inhibition",d:"Sertraline modestly inhibits CYP2D6, more at ≥150 mg/day. Aripiprazole levels may rise; watch for akathisia."},
+ {a:"escitalopram",b:"quetiapine",sev:"monitor",t:"Additive QTc prolongation",d:"Both prolong QTc in a dose-dependent way. Get an ECG with cardiac disease, low K⁺ or Mg²⁺, or other QT-prolonging drugs."},
+ {a:"sertraline",b:"quetiapine",sev:"monitor",t:"Minor additive QTc",d:"Quetiapine prolongs QTc; sertraline adds little. Reasonable combination; ECG if other risk factors."},
+ {a:"quetiapine",b:"aripiprazole",sev:"monitor",t:"Antipsychotic polypharmacy",d:"Two antipsychotics add sedation, EPS, and metabolic burden. Sometimes deliberate (e.g., low-dose aripiprazole to offset weight or prolactin). Document the rationale and reassess."},
+ {a:"bupropion",b:"escitalopram",sev:"monitor",t:"Common augmentation, small PK effect",d:"Bupropion's CYP2D6 inhibition modestly raises escitalopram levels. Widely used combination; watch for activation, insomnia, and tremor."},
+ {a:"bupropion",b:"sertraline",sev:"monitor",t:"Common augmentation, small PK effect",d:"Bupropion's CYP2D6 inhibition modestly raises sertraline levels. Widely used combination; watch for activation, insomnia, and tremor."},
+ {a:"bupropion",b:"quetiapine",sev:"monitor",t:"Seizure threshold",d:"Bupropion lowers the seizure threshold in a dose-related way, and antipsychotics can add to this. Keep bupropion within labeled limits."}
+];
+const SEV = {avoid:"Avoid",adjust:"Adjust dose",monitor:"Monitor"};
+const ORDER = Object.keys(DRUGS);
+
+const state = { drug:"sertraline", age:"adult", ind:null, view:"dex", regimen:new Set(["escitalopram","bupropion","aripiprazole"]) };
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const col = id => `var(--c-${id})`;
+
+function renderEntries(){
+  const q = $("#q").value.trim().toLowerCase();
+  $("#entries").innerHTML = ORDER.filter(id=>{
+    const d=DRUGS[id]; return !q || (d.name+" "+d.brand+" "+d.cls).toLowerCase().includes(q);
+  }).map(id=>{
+    const d=DRUGS[id];
+    return `<button class="entry" data-id="${id}" aria-current="${id===state.drug}">
+      <span class="dot" style="background:${col(id)}"></span><b>${d.name}</b>
+      <small><span class="num">#${String(d.rank).padStart(3,"0")}</span> · ${d.cls}</small></button>`;
+  }).join("") || `<div class="hint">No match in this prototype.</div>`;
+}
+
+function fpPos(ki){ const p = 9 - Math.log10(ki); return Math.max(0, Math.min(100, (p-5)/5*100)); }
+function fmtKi(ki){ if(ki>=10000) return "&gt;10 µM"; if(ki>=1000) return "~"+(ki/1000).toFixed(1)+" µM"; return "~"+(ki<1?ki:Math.round(ki))+" nM"; }
+
+function renderCard(){
+  const d = DRUGS[state.drug];
+  const ages = d.dosing[state.age];
+  const inds = Object.keys(ages);
+  if(!inds.includes(state.ind)) state.ind = inds[0] || null;
+  const dose = state.ind ? ages[state.ind] : null;
+  const boxed = d.boxed[state.age] || (state.age==="older" ? null : null);
+  const inReg = state.regimen.has(state.drug);
+
+  const doseHTML = dose ? `
+    <div class="dose">
+      <div><span>Start</span><strong>${esc(dose.start)}</strong></div>
+      <div><span>Usual range</span><strong>${esc(dose.range)}</strong></div>
+      <div><span>Maximum</span><strong>${esc(dose.max)}</strong></div>
+    </div>
+    <p class="titr"><b>Titration.</b> ${esc(dose.titr)}</p>`
+    : `<div class="empty">No FDA-approved indication for this age group. Any use is off-label; see the age note below.</div>`;
+
+  const indTags = inds.length ? `<div class="tags">${inds.map(i=>`<span class="tag">${esc(i)}</span>`).join("")}</div>` : `<p class="note">None for this age group.</p>`;
+
+  const meters = DOMAINS.map(([k,label])=>{
+    const v=d.burden[k];
+    return `<div class="meter"><span>${label}</span><span class="pips" aria-label="${label}: ${LV[v]}">${[1,2,3].map(i=>`<span class="pip ${i<=v?"on":""}"></span>`).join("")}</span><span class="lvl">${LV[v]}</span></div>`;
+  }).join("");
+
+  const ae = d.ae.map(([k,t])=>`<div><span class="k ${k}">${k}</span><span>${esc(t)}</span></div>`).join("");
+
+  const fp = d.receptors.map(([n,ki,act,met])=>{
+    const x=fpPos(ki);
+    return `<div class="fp-row"><span class="fp-name">${n}</span>
+      <div class="track" title="${n}: ${fmtKi(ki).replace("&gt;",">")}"><span class="bar" style="width:${x}%"></span><span class="pt ${met?"met":""}" style="left:${x}%"></span></div>
+      <span class="fp-act">${esc(act)} · <code>${fmtKi(ki)}</code></span></div>`;
+  }).join("");
+
+  $("#card").style.setProperty("--drug", col(state.drug));
+  $("#card").innerHTML = `
+    <div class="card-head">
+      <div>
+        <div class="num">#${String(d.rank).padStart(3,"0")}</div>
+        <h1>${d.name}</h1>
+        <div class="brand">${esc(d.brand)}</div>
+      </div>
+      <span class="chip">${d.cls}</span>
+      <button class="add" id="add" aria-pressed="${inReg}">${inReg?"✓ In regimen":"+ Add to regimen"}</button>
+    </div>
+
+    <div class="context">
+      <div><span class="ctx-label" id="age-l">Age group</span>
+        <div class="seg" role="group" aria-labelledby="age-l">${AGES.map(([k,l])=>`<button data-age="${k}" aria-pressed="${k===state.age}">${l}</button>`).join("")}</div></div>
+      <div><label class="ctx-label" for="ind">Indication</label>
+        <select id="ind" ${inds.length?"":"disabled"}>${inds.length?inds.map(i=>`<option ${i===state.ind?"selected":""}>${esc(i)}</option>`).join(""):"<option>No approved indication</option>"}</select></div>
+    </div>
+
+    <div class="panels">
+      <section class="panel overview">
+        <h2>Overview</h2>
+        <h3>Dosing</h3>${doseHTML}
+        ${boxed?`<div class="box"><b>Boxed warning.</b> ${esc(boxed)}</div>`:""}
+        <h3>FDA-approved indications · ${AGES.find(a=>a[0]===state.age)[1].toLowerCase()}</h3>${indTags}
+        <h3>Age-specific considerations</h3><p style="margin:0">${esc(d.agenote[state.age])}</p>
+        <h3>Monitoring</h3><p style="margin:0">${esc(d.monitor)}</p>
+        <h3>Contraindications</h3><p style="margin:0">${esc(d.contra)}</p>
+        <h3>Hepatic / renal</h3><p style="margin:0">${esc(d.organ)}</p>
+        <h3>Pregnancy &amp; lactation</h3><p style="margin:0">${esc(d.preg)}</p>
+      </section>
+
+      <section class="panel">
+        <h2>Side effects</h2>
+        <h3>Burden profile</h3><div class="meters">${meters}</div>
+        <h3>Notable adverse effects</h3><div class="ae">${ae}</div>
+      </section>
+
+      <section class="panel">
+        <h2>Mechanism &amp; receptors</h2>
+        <p style="margin:0 0 12px">${esc(d.mech)}</p>
+        <h3>Binding strength</h3>
+        <p class="note" style="margin:0 0 8px">How tightly the drug binds each target. Further right = tighter binding at lower concentrations (smaller Ki). Each gridline is a 10× step.</p>
+        <div class="fp-scale"><span></span><span class="ticks"><span style="left:0">10 µM</span><span style="left:40%;transform:translateX(-50%)">100 nM</span><span style="left:80%;transform:translateX(-50%)">1 nM</span></span><span></span></div>
+        <div class="fp">${fp}</div>
+        ${d.receptors.some(r=>r[3])?`<p class="note">Hollow marker = active metabolite.</p>`:""}
+        <h3>Metabolism &amp; CYP</h3>
+        <dl class="cyp"><dt>Substrate of</dt><dd>${esc(d.cyp.sub)}</dd><dt>Inhibits</dt><dd>${esc(d.cyp.inh)}</dd></dl>
+        ${d.cyp.note?`<p class="note">${esc(d.cyp.note)}</p>`:""}
+      </section>
+    </div>`;
+}
+
+function level(total,maxOne){ if(total>=4||maxOne===3) return "high"; if(total>=2) return "moderate"; if(total===1) return "low"; return "none"; }
+
+function renderRegimen(){
+  $("#picker").innerHTML = ORDER.map(id=>`<button class="pick" data-id="${id}" style="--drug:${col(id)}" aria-pressed="${state.regimen.has(id)}"><span class="dot"></span>${DRUGS[id].name}</button>`).join("");
+  const sel = ORDER.filter(id=>state.regimen.has(id));
+  const SCALE = 9;
+  if(!sel.length){
+    $("#stack").innerHTML = `<div class="empty">Select one or more medications above to see cumulative burden.</div>`;
+    $("#legend").innerHTML=""; $("#flags").innerHTML = `<div class="empty">No medications selected.</div>`; return;
+  }
+  const levels = {};
+  $("#stack").innerHTML = DOMAINS.map(([k,label])=>{
+    const parts = sel.map(id=>[id,DRUGS[id].burden[k]]).filter(p=>p[1]>0);
+    const total = parts.reduce((s,p)=>s+p[1],0);
+    const lv = level(total, Math.max(0,...parts.map(p=>p[1])));
+    levels[k]={lv,parts,label};
+    const tip = parts.length? parts.map(([id,v])=>`${DRUGS[id].name} ${v}`).join(" + ") : "No contribution";
+    return `<div class="srow"><span class="name">${label}</span>
+      <div class="strack" title="${tip}">${parts.map(([id,v])=>`<span class="seg-fill" style="width:${v/SCALE*100}%;background:${col(id)}"></span>`).join("")}<span class="th" style="left:${4/SCALE*100}%"></span></div>
+      <span class="pill ${lv}">${lv==="none"?"None":lv}</span></div>`;
+  }).join("");
+  $("#legend").innerHTML = sel.map(id=>`<span><i style="background:${col(id)}"></i>${DRUGS[id].name}</span>`).join("") + `<span><i style="border-left:1px dashed var(--muted);width:1px;border-radius:0"></i>Combined score 4</span>`;
+
+  const flags = RULES.filter(r=>state.regimen.has(r.a)&&state.regimen.has(r.b));
+  const rank = {avoid:0,adjust:1,monitor:2};
+  flags.sort((x,y)=>rank[x.sev]-rank[y.sev]);
+  const stacked = Object.values(levels).filter(v=>v.lv==="high" && v.parts.length>1);
+  const html = flags.map(r=>`<div class="flag" style="--sev:var(--sev-${r.sev})"><header><span class="sev">${SEV[r.sev]}</span><b>${esc(r.t)}</b><span class="pair">${DRUGS[r.a].name} + ${DRUGS[r.b].name}</span></header><p>${esc(r.d)}</p></div>`)
+    .concat(stacked.map(v=>`<div class="flag" style="--sev:var(--sev-monitor)"><header><span class="sev">Stacking</span><b>High cumulative ${v.label.toLowerCase()}</b></header><p>${v.parts.map(([id])=>DRUGS[id].name).join(" + ")} each contribute. Consider whether every agent is still needed.</p></div>`));
+  $("#flags").innerHTML = html.length ? html.join("") : `<div class="empty">No flagged interactions among these medications in this prototype's rule set. Always run a full interaction check.</div>`;
+}
+
+function setView(v){
+  state.view=v;
+  $("#dex").hidden = v!=="dex"; $("#reg").hidden = v!=="reg";
+  $("#v-dex").setAttribute("aria-pressed", v==="dex"); $("#v-reg").setAttribute("aria-pressed", v==="reg");
+  if(v==="reg") renderRegimen(); else renderCard();
+}
+
+document.addEventListener("click", e=>{
+  const ent = e.target.closest(".entry"); if(ent){ state.drug=ent.dataset.id; state.ind=null; renderEntries(); renderCard(); return; }
+  const age = e.target.closest("[data-age]"); if(age){ state.age=age.dataset.age; state.ind=null; renderCard(); return; }
+  if(e.target.closest("#add")){ state.regimen.has(state.drug)?state.regimen.delete(state.drug):state.regimen.add(state.drug); renderCard(); return; }
+  const pk = e.target.closest(".pick"); if(pk){ const id=pk.dataset.id; state.regimen.has(id)?state.regimen.delete(id):state.regimen.add(id); renderRegimen(); return; }
+  if(e.target.closest("#v-dex")) setView("dex");
+  if(e.target.closest("#v-reg")) setView("reg");
+});
+document.addEventListener("change", e=>{ if(e.target.id==="ind"){ state.ind=e.target.value; renderCard(); }});
+$("#q").addEventListener("input", renderEntries);
+document.addEventListener("keydown", e=>{ if(e.key==="/" && document.activeElement.tagName!=="INPUT" && document.activeElement.tagName!=="SELECT"){ e.preventDefault(); setView("dex"); $("#q").focus(); }});
+
+const h = location.hash.slice(1);
+if(DRUGS[h]) state.drug=h; else if(h==="regimen") state.view="reg";
+renderEntries(); setView(state.view);
+</script>
+
+</body>
+</html>

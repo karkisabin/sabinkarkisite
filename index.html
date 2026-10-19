@@ -82,6 +82,16 @@
     .nav-tabs button:hover::after { width: 100%; }
     .nav-tabs button.active { color: var(--accent); font-weight: 500; }
     .nav-tabs button.active::after { width: 100%; }
+    .nav-tabs .nav-link {
+      font-family: 'Jost', sans-serif; font-size: 0.82rem; font-weight: 300;
+      color: var(--ink3); position: relative; transition: color 0.2s; text-decoration: none;
+    }
+    .nav-tabs .nav-link::after {
+      content: ''; position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 1px; background: var(--accent); transition: width 0.22s ease;
+    }
+    .nav-tabs .nav-link:hover { color: var(--accent); text-decoration: none; }
+    .nav-tabs .nav-link:hover::after { width: 100%; }
 
     /* PAGE CONTAINER */
     .pages-wrap {
@@ -206,7 +216,7 @@
       .page.active { display: block; }
       nav { padding: 0.75rem 1.1rem; height: var(--nav-h); gap: 0.35rem; }
       .nav-name { font-size: 0.78rem; }
-      .nav-tabs button { font-size: 0.72rem; }
+      .nav-tabs button, .nav-tabs .nav-link { font-size: 0.72rem; }
       .nav-tabs li:not(:last-child)::after { margin: 0 0.35rem; }
       .home-grid { grid-template-columns: 1fr; gap: 1.5rem; }
       .home-imgs { flex-direction: row; gap: 0.5rem; }
@@ -237,6 +247,7 @@
     <li><button data-page="6">writing</button></li>
     <li><button data-page="7">awards</button></li>
     <li><button data-page="8">library</button></li>
+    <li><a class="nav-link" href="/affinity">affinity ↗</a></li>
   </ul>
 </nav>
 
