@@ -133,6 +133,12 @@ ul.plain li{margin:2px 0}
 .namepill small{font-weight:400;opacity:.75;overflow:hidden;text-overflow:ellipsis}
 @media (min-width:821px){ .namepill{display:none!important} }
 @media (max-width:820px){ main{padding-bottom:84px} }
+.rail-top{display:flex;gap:8px;align-items:center}
+.rail-top input{flex:1;min-width:0}
+.railbody{display:flex;flex-direction:column;gap:8px}
+.railtoggle{display:none;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:9px 12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.railtoggle[aria-expanded="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+@media (max-width:820px){ .railtoggle{display:inline-block} .rail:not(.open) .railbody{display:none} }
 .glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:16px}
 .gl{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 12px;min-width:0}
 .gl span{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--lv);font-weight:700}
@@ -253,12 +259,16 @@ ul.plain li{margin:2px 0}
 
 <main class="wrap">
   <section id="dex" class="dex">
-    <aside class="rail">
+    <aside class="rail" id="rail">
       <label for="q" class="ctx-label">Find a medication</label>
-      <input id="q" type="search" placeholder="Name, brand, or class" autocomplete="off">
-      <div class="conds" id="conds" role="group" aria-label="Filter by condition"></div>
-      <div class="entries" id="entries"></div>
-      
+      <div class="rail-top">
+        <input id="q" type="search" placeholder="Name, brand, or class" autocomplete="off">
+        <button id="railtoggle" class="railtoggle" aria-expanded="false" aria-controls="railbody">Browse ▾</button>
+      </div>
+      <div class="railbody" id="railbody">
+        <div class="conds" id="conds" role="group" aria-label="Filter by condition"></div>
+        <div class="entries" id="entries"></div>
+      </div>
     </aside>
     <article id="card" style="min-width:0"></article>
   </section>
@@ -528,7 +538,7 @@ const DRUGS = {
   s:{preg:["data","Limited data","Limited studies; no clear signal."],lact:["ok","Acceptable","Low milk levels at sleep doses."],hep:["caution","Caution","Use with care."],ren:["ok","No change","Use with care."],
    contra:["MAOI within 14 days"],monitor:["Orthostatic BP","Falls","Counsel about priapism","Suicidality"]},
   dosing:{
-   adult:{"Major depressive disorder":D("150 mg/day in divided doses","150–400 mg/day","400 mg/day (outpatient)","Increase by 50 mg/day every 3–4 days.")},
+   adult:{"Major depressive disorder":D("50 mg three times a day (150 mg/day)","150–400 mg/day","400 mg/day (outpatient)","Increase by 50 mg/day every 3–4 days.")},
    peds:{},
    older:{"Major depressive disorder":D("25–50 mg/day","50–300 mg/day","Lower than adult max","Titrate slowly; orthostasis.")}
   }},
@@ -575,13 +585,13 @@ const DRUGS = {
    contra:[],monitor:["Weight / BMI","Glucose or A1c","Lipids","Orthostatic BP","Lens exam"]},
   dosing:{
    adult:{
-    "Schizophrenia":D("25 mg twice daily (day 1)","150–750 mg/day","750 mg/day (IR)","Increase by 25–50 mg 2–3× daily to 300–400 mg/day by day 4."),
-    "Bipolar I mania":D("50 mg twice daily (day 1)","400–800 mg/day","800 mg/day","Increase by 100 mg/day to 400 mg/day by day 4, then by ≤200 mg/day."),
+    "Schizophrenia":D("25 mg twice a day on day 1 (50 mg/day)","150–750 mg/day","750 mg/day (IR)","Increase by 25–50 mg 2–3× daily to 300–400 mg/day by day 4."),
+    "Bipolar I mania":D("50 mg twice a day on day 1 (100 mg/day)","400–800 mg/day","800 mg/day","Increase by 100 mg/day to 400 mg/day by day 4, then by ≤200 mg/day."),
     "Bipolar depression":D("50 mg at bedtime (day 1)","300 mg/day","300 mg/day","100 → 200 → 300 mg on days 2–4. 600 mg showed no added benefit."),
     "MDD, adjunctive (XR)":D("50 mg XR at bedtime","150–300 mg/day","300 mg/day","50 mg on days 1–2, then 150 mg on day 3.")},
    peds:{
-    "Schizophrenia (ages 13–17)":D("25 mg twice daily (day 1)","400–800 mg/day","800 mg/day","Increase to 400 mg/day by day 5, then by ≤100 mg/day."),
-    "Bipolar I mania (ages 10–17)":D("25 mg twice daily (day 1)","400–600 mg/day","600 mg/day","Increase to 400 mg/day by day 5, then by ≤100 mg/day.")},
+    "Schizophrenia (ages 13–17)":D("25 mg twice a day on day 1 (50 mg/day)","400–800 mg/day","800 mg/day","Increase to 400 mg/day by day 5, then by ≤100 mg/day."),
+    "Bipolar I mania (ages 10–17)":D("25 mg twice a day on day 1 (50 mg/day)","400–600 mg/day","600 mg/day","Increase to 400 mg/day by day 5, then by ≤100 mg/day.")},
    older:{
     "Schizophrenia":D("50 mg/day","Lowest effective dose","Adult max; usually lower","Increase by 50 mg/day as tolerated."),
     "Bipolar depression":D("25–50 mg at bedtime","Lowest effective dose","300 mg/day","Titrate more slowly than in younger adults.")}
@@ -607,7 +617,7 @@ const DRUGS = {
     "Schizophrenia (ages 13–17)":D("0.5 mg/day","1–6 mg/day","6 mg/day","Increase by 0.5–1 mg/day to a target of 3 mg/day."),
     "Bipolar I mania (ages 10–17)":D("0.5 mg/day","1–2.5 mg/day","6 mg/day","Increase by 0.5–1 mg/day to 1–2.5 mg/day."),
     "Irritability with autism (5–16)":D("0.25 mg/day (<20 kg); 0.5 mg/day (≥20 kg)","0.5–3 mg/day","3 mg/day","Weight-based titration after at least 4 days.")},
-   older:{"Schizophrenia":D("1 mg/day in 2 doses","1–3 mg/day","Lowest effective dose","Increase by no more than 0.5 mg twice a day.")}
+   older:{"Schizophrenia":D("0.5 mg twice a day (1 mg/day)","1–3 mg/day","Lowest effective dose","Increase by no more than 0.5 mg twice a day.")}
   }},
  olanzapine:{ name:"Olanzapine", brand:"Zyprexa", cls:"Second-gen antipsychotic", grp:"ap", conds:["Schizophrenia","Bipolar","Agitation"],
   mech:"Broad antagonist at 5-HT2A, D2, H1, M1, and 5-HT2C. H1 and 5-HT2C blockade drive appetite and weight gain; M1 blockade adds anticholinergic effects.",
@@ -669,7 +679,7 @@ const DRUGS = {
    contra:["Parkinson's disease","Lewy body dementia (avoid)","Severe CNS depression or coma"],monitor:["EPS / AIMS","ECG if IV or high dose","K⁺ and Mg²⁺"]},
   dosing:{
    adult:{
-    "Schizophrenia (oral)":D("1–6 mg/day in 2–3 doses","2–20 mg/day","~20 mg/day typical ceiling","Label allows higher in severe illness; little added benefit."),
+    "Schizophrenia (oral)":D("0.5–2 mg two or three times a day (1–6 mg/day)","2–20 mg/day","~20 mg/day typical ceiling","Label allows higher in severe illness; little added benefit."),
     "Acute agitation (IM)":D("2–5 mg IM","2–10 mg per dose","~20 mg/day typical","May repeat every 30–60 min; often given with lorazepam.")},
    peds:{"Psychosis or Tourette's (ages 3–12)":D("0.5 mg/day","0.05–0.15 mg/kg/day","0.15 mg/kg/day","Increase by 0.5 mg every 5–7 days.")},
    older:{"Agitation or psychosis":D("0.5–1 mg/day","Lowest effective dose","Much lower than adult","Watch EPS, falls, QTc.")}
@@ -688,8 +698,8 @@ const DRUGS = {
    contra:[],monitor:["ANC per schedule","Troponin / CRP, first 4 weeks","Bowel habits","Weight, glucose, lipids","Clozapine levels"]},
   dosing:{
    adult:{
-    "Treatment-resistant schizophrenia":D("12.5 mg once or twice (day 1)","300–450 mg/day","900 mg/day","Increase by 25–50 mg/day to 300–450 mg by week 2; then ≤100 mg once or twice weekly."),
-    "Suicidal behavior in schizophrenia":D("12.5 mg once or twice (day 1)","300–450 mg/day","900 mg/day","Same titration as treatment-resistant schizophrenia.")},
+    "Treatment-resistant schizophrenia":D("12.5 mg once or twice on day 1 (12.5–25 mg/day)","300–450 mg/day","900 mg/day","Increase by 25–50 mg/day to 300–450 mg by week 2; then ≤100 mg once or twice weekly."),
+    "Suicidal behavior in schizophrenia":D("12.5 mg once or twice on day 1 (12.5–25 mg/day)","300–450 mg/day","900 mg/day","Same titration as treatment-resistant schizophrenia.")},
    peds:{},
    older:{"Treatment-resistant schizophrenia":D("12.5 mg daily","Lowest effective dose","Lower than adult","Slower titration; watch orthostasis.")}
   }},
@@ -708,8 +718,8 @@ const DRUGS = {
   s:{preg:["caution","Caution","Small Ebstein's anomaly risk (lower than once thought). Check levels through pregnancy and delivery."],lact:["caution","Caution","Infant levels can be substantial; check infant level and TSH."],hep:["ok","No change","Not liver-metabolized."],ren:["avoid","Avoid / adjust","Renally cleared; avoid or dose very carefully in CKD."],
    contra:["Significant renal impairment","Severe dehydration or sodium depletion","Brugada syndrome (avoid)"],monitor:["Lithium level","Creatinine / eGFR","TSH","Calcium","ECG if over 40 or cardiac risk"]},
   dosing:{
-   adult:{"Bipolar I (mania and maintenance)":D("600–900 mg/day in 2–3 doses","900–1800 mg/day","~1800 mg/day; dose by level","Target 12-h trough 0.8–1.2 mEq/L acute, 0.6–1.0 maintenance. Recheck 5 days after each change.")},
-   peds:{"Bipolar I (ages 7–17)":D("300 mg twice daily (20–30 kg); 300 mg three times daily (>30 kg)","Dose by level","Dose by level","Titrate by 300 mg weekly to a trough of 0.8–1.2 mEq/L.")},
+   adult:{"Bipolar I (mania and maintenance)":D("300 mg two or three times a day (600–900 mg/day)","900–1800 mg/day","~1800 mg/day; dose by level","Target 12-h trough 0.8–1.2 mEq/L acute, 0.6–1.0 maintenance. Recheck 5 days after each change.")},
+   peds:{"Bipolar I (ages 7–17)":D("20–30 kg: 300 mg twice a day (600 mg/day). Over 30 kg: 300 mg three times a day (900 mg/day)","Dose by level","Dose by level","Titrate by 300 mg weekly to a trough of 0.8–1.2 mEq/L.")},
    older:{"Bipolar I":D("150–300 mg/day","Dose by level","Lower than adult","Target trough often 0.4–0.8 mEq/L.")}
   }},
  lamotrigine:{ name:"Lamotrigine", brand:"Lamictal", cls:"Mood stabilizer", grp:"ms", conds:["Bipolar"],
@@ -743,8 +753,8 @@ const DRUGS = {
    contra:["Hepatic disease","Mitochondrial disorders (POLG)","Urea cycle disorders","Pregnancy (for migraine use)"],monitor:["Valproate level (50–125 µg/mL)","LFTs","CBC / platelets","Weight","Ammonia if confused","Pregnancy test"]},
   dosing:{
    adult:{
-    "Bipolar mania (DR)":D("750 mg/day in divided doses","Titrate to level 50–125 µg/mL","60 mg/kg/day","Increase rapidly to clinical effect and target level."),
-    "Migraine prophylaxis (DR)":D("250 mg twice daily","500–1000 mg/day","1000 mg/day","Some need up to 1000 mg/day.")},
+    "Bipolar mania (DR)":D("250 mg three times a day (750 mg/day)","Titrate to level 50–125 µg/mL","60 mg/kg/day","Increase rapidly to clinical effect and target level."),
+    "Migraine prophylaxis (DR)":D("250 mg twice a day (500 mg/day)","500–1000 mg/day","1000 mg/day","Some need up to 1000 mg/day.")},
    peds:{"Epilepsy (age 10+)":D("10–15 mg/kg/day","Increase by 5–10 mg/kg/week","60 mg/kg/day","Weight-based; hepatotoxicity risk highest under 2.")},
    older:{"Bipolar mania (DR)":D("Lower starting dose","Titrate slowly to level","Lower than adult","Watch sedation, intake, and platelets.")}
   }},
@@ -764,10 +774,10 @@ const DRUGS = {
    contra:["MAOI within 14 days"],monitor:["Blood pressure, heart rate","Height and weight (children)","Sleep, appetite","Misuse / diversion"]},
   dosing:{
    adult:{
-    "ADHD (IR)":D("10 mg/day in 2 doses","20–30 mg/day","60 mg/day","Increase by 5–10 mg weekly."),
+    "ADHD (IR)":D("5 mg twice a day (10 mg/day)","20–30 mg/day","60 mg/day","Increase by 5–10 mg weekly."),
     "ADHD (ER, Concerta)":D("18–36 mg every morning","18–72 mg/day","72 mg/day","Increase by 18 mg at weekly intervals.")},
    peds:{
-    "ADHD (IR, age 6+)":D("10 mg/day (5 mg before breakfast and lunch)","20–30 mg/day","60 mg/day","Increase by 5–10 mg weekly."),
+    "ADHD (IR, age 6+)":D("5 mg before breakfast and lunch (10 mg/day)","20–30 mg/day","60 mg/day","Increase by 5–10 mg weekly."),
     "ADHD (ER, ages 6–12)":D("18 mg every morning","18–54 mg/day","54 mg/day","Increase by 18 mg weekly."),
     "ADHD (ER, ages 13–17)":D("18 mg every morning","18–72 mg/day","72 mg/day","Increase by 18 mg weekly; not above 2 mg/kg/day.")},
    older:{"ADHD (ER)":D("18 mg every morning","Lowest effective dose","Lowest effective dose","Not studied; screen cardiac risk.")}
@@ -870,9 +880,9 @@ const DRUGS = {
   s:{preg:["data","Limited data","Few human studies."],lact:["data","Limited data","Little published information."],hep:["caution","Avoid if severe","Avoid in severe impairment."],ren:["caution","Avoid if severe","Avoid in severe impairment."],
    contra:["MAOI (hypertensive reactions)"],monitor:["Response at 2–4 weeks"]},
   dosing:{
-   adult:{"Generalized anxiety disorder":D("15 mg/day in 2 doses","20–30 mg/day","60 mg/day","Increase by 5 mg/day every 2–3 days.")},
+   adult:{"Generalized anxiety disorder":D("7.5 mg twice a day (15 mg/day)","20–30 mg/day","60 mg/day","Increase by 5 mg/day every 2–3 days.")},
    peds:{},
-   older:{"Generalized anxiety disorder":D("10–15 mg/day in 2 doses","20–30 mg/day","60 mg/day","Same as adults; titrate gradually.")}
+   older:{"Generalized anxiety disorder":D("5–7.5 mg twice a day (10–15 mg/day)","20–30 mg/day","60 mg/day","Same as adults; titrate gradually.")}
   }},
  hydroxyzine:{ name:"Hydroxyzine", brand:"Vistaril / Atarax", cls:"Antihistamine", grp:"anx", conds:["Anxiety"],
   mech:"Potent H1 antagonist with some 5-HT2A blockade. Sedating and anxiolytic without dependence. Its active metabolite is cetirizine.",
@@ -887,7 +897,7 @@ const DRUGS = {
   s:{preg:["avoid","Avoid early","Label contraindicates use in early pregnancy."],lact:["caution","Caution","Infant sedation possible; occasional small doses are reasonable."],hep:["caution","Reduce frequency","Lengthen the dosing interval."],ren:["caution","Reduce 50%","CrCl ≤50: halve the dose."],
    contra:["Early pregnancy","Prolonged QT interval"],monitor:["Sedation","Falls in older adults","ECG if QT risk"]},
   dosing:{
-   adult:{"Anxiety":D("75 mg/day (25 mg 3×)","75–400 mg/day","400 mg/day","Label range 50–100 mg four times a day; most use far less.")},
+   adult:{"Anxiety":D("25 mg three times a day (75 mg/day)","75–400 mg/day","400 mg/day","Label range 50–100 mg four times a day; most use far less.")},
    peds:{
     "Anxiety (age 6+)":D("25 mg/day","50–100 mg/day","100 mg/day","Give in divided doses."),
     "Anxiety (under 6)":D("25 mg/day","50 mg/day","50 mg/day","Give in divided doses.")},
@@ -907,10 +917,10 @@ const DRUGS = {
    contra:["Acute narrow-angle glaucoma"],monitor:["Sedation, breathing","Misuse","Taper to stop"]},
   dosing:{
    adult:{
-    "Anxiety":D("2–3 mg/day in 2–3 doses","2–6 mg/day","10 mg/day","Largest dose at bedtime."),
+    "Anxiety":D("1 mg two or three times a day (2–3 mg/day)","2–6 mg/day","10 mg/day","Largest dose at bedtime."),
     "Acute agitation (IM)":D("1–2 mg IM","1–2 mg per dose","Repeat per protocol","Often given with haloperidol; watch breathing.")},
-   peds:{"Anxiety (age 12+)":D("1–2 mg/day in 2–3 doses","2–6 mg/day","10 mg/day","Under 12: safety not established.")},
-   older:{"Anxiety":D("1–2 mg/day in divided doses","Lowest effective dose","Avoid if possible","Beers list: avoid.")}
+   peds:{"Anxiety (age 12+)":D("0.5–1 mg two or three times a day (1–3 mg/day)","2–6 mg/day","10 mg/day","Under 12: safety not established.")},
+   older:{"Anxiety":D("0.5 mg two to four times a day (1–2 mg/day)","Lowest effective dose","Avoid if possible","Beers list: avoid.")}
   }},
  clonazepam:{ name:"Clonazepam", brand:"Klonopin", cls:"Benzodiazepine", grp:"anx", conds:["Anxiety"], sched:"C-IV", benzo:true,
   mech:"Positive allosteric modulator at the GABA-A benzodiazepine site. Long half-life (30–40 h) gives smoother coverage for panic disorder.",
@@ -926,8 +936,8 @@ const DRUGS = {
    contra:["Significant liver disease","Acute narrow-angle glaucoma"],monitor:["Sedation, breathing","Misuse","Taper to stop"]},
   dosing:{
    adult:{
-    "Panic disorder":D("0.5 mg/day in 2 doses","1–2 mg/day","4 mg/day","Increase to 1 mg/day after 3 days, then by 0.125–0.25 mg every 3 days."),
-    "Seizure disorders":D("1.5 mg/day in 3 doses","1.5–20 mg/day","20 mg/day","Increase by 0.5–1 mg every 3 days.")},
+    "Panic disorder":D("0.25 mg twice a day (0.5 mg/day)","1–2 mg/day","4 mg/day","Increase to 1 mg/day after 3 days, then by 0.125–0.25 mg every 3 days."),
+    "Seizure disorders":D("0.5 mg three times a day (1.5 mg/day)","1.5–20 mg/day","20 mg/day","Increase by 0.5–1 mg every 3 days.")},
    peds:{"Seizure disorders (≤10 yr or ≤30 kg)":D("0.01–0.03 mg/kg/day","0.1–0.2 mg/kg/day","0.2 mg/kg/day","Increase by 0.25–0.5 mg every 3 days.")},
    older:{"Panic disorder":D("0.25 mg/day","Lowest effective dose","Avoid if possible","Beers list: avoid.")}
   }}
@@ -1074,9 +1084,9 @@ function rulerHTML(dose){
   const st=firstNum(dose.start), mx=firstNum(dose.max), rg=firstNum(dose.range);
   const grid=`<div class="dose"><div><span>Start</span><strong>${esc(dose.start)}</strong></div><div><span>Usual range</span><strong>${esc(dose.range)}</strong></div><div><span>Maximum</span><strong>${esc(dose.max)}</strong></div></div>`;
   if(!st||!mx||/kg/.test(txt)) return grid;
-  let start=st[0]; if(/twice daily/.test(dose.start)) start*=2;
+  const tot=String(dose.start).match(/(\d+(?:\.\d+)?)(?:\s*[–-]\s*\d+(?:\.\d+)?)?\s*mg\/day/); let start=tot?+tot[1]:st[0];
   const max=mx[0], step=niceStep(max*1.08), top=Math.ceil(max*1.08/step)*step, x=v=>(v/top*100).toFixed(2)+"%";
-  let ticks=""; for(let v=0;v<=top+1e-9;v+=step){ const cls=v===0?"first":(v+step>top+1e-9?"last":""); ticks+=`<span class="r-tickline" style="left:${x(v)}"></span><span class="r-tick ${cls}" style="left:${x(v)}">${+v.toFixed(2)}${cls==="last"?" mg":""}</span>`; }
+  let ticks=""; for(let v=0;v<=top+1e-9;v+=step){ const cls=v===0?"first":(v+step>top+1e-9?"last":""); ticks+=`<span class="r-tickline" style="left:${x(v)}"></span><span class="r-tick ${cls}" style="left:${x(v)}">${+v.toFixed(2)}${cls==="last"?" mg/day":""}</span>`; }
   const band=rg?`<span class="r-band" style="left:${x(rg[0])};width:calc(${x(rg[1])} - ${x(rg[0])})"></span>`:"";
   return `<div class="ruler" role="img" aria-label="Start ${start} mg, usual ${esc(dose.range)}, max ${max} mg"><span class="r-track"></span>${band}${ticks}<span class="r-max" style="left:${x(max)}"></span><span class="r-start" style="left:${x(start)}"></span></div>
   <div class="r-legend"><span><i class="mk start"></i>Start <b>${esc(dose.start)}</b></span>${rg?`<span><i class="mk band"></i>Usual <b>${esc(dose.range)}</b></span>`:""}<span><i class="mk max"></i>Max <b>${esc(dose.max)}</b></span></div>`;
@@ -1149,12 +1159,14 @@ function setView(v){
 }
 
 document.addEventListener("click", e=>{
-  const ent = e.target.closest(".entry"); if(ent){ state.drug=ent.dataset.id; state.ind=null; renderEntries(); renderCard(); return; }
+  if(e.target.closest("#railtoggle")){ setRail(!$("#rail").classList.contains("open")); return; }
+  const ent = e.target.closest(".entry"); if(ent){ state.drug=ent.dataset.id; state.ind=null; renderEntries(); renderCard();
+    if(window.matchMedia && matchMedia("(max-width: 820px)").matches){ setRail(false); window.scrollTo(0,0); } return; }
   const cd = e.target.closest(".cond"); if(cd){ state.cond=cd.dataset.cond; renderConds(); renderEntries(); return; }
   const age = e.target.closest("[data-age]"); if(age){ state.age=age.dataset.age; state.ind=null; renderCard(); return; }
   if(e.target.closest("#add")){ state.regimen.has(state.drug)?state.regimen.delete(state.drug):state.regimen.add(state.drug); renderCard(); return; }
   const rm = e.target.closest("[data-rm]"); if(rm){ state.regimen.delete(rm.dataset.rm); renderRegimen(); return; }
-  if(e.target.closest("#namepill")){ const r=matchMedia("(prefers-reduced-motion: reduce)").matches; window.scrollTo({top:0,behavior:r?"auto":"smooth"}); return; }
+  if(e.target.closest("#namepill")){ const r=!!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches); window.scrollTo({top:0,behavior:r?"auto":"smooth"}); return; }
   if(e.target.closest("#v-dex")) setView("dex");
   if(e.target.closest("#v-reg")) setView("reg");
 });
@@ -1162,7 +1174,8 @@ document.addEventListener("change", e=>{
   if(e.target.id==="ind"){ state.ind=e.target.value; renderCard(); }
   if(e.target.id==="addsel" && e.target.value){ state.regimen.add(e.target.value); renderRegimen(); }
 });
-$("#q").addEventListener("input", renderEntries);
+function setRail(open){ $("#rail").classList.toggle("open",open); const t=$("#railtoggle"); t.setAttribute("aria-expanded",open); t.textContent=open?"Close ▴":"Browse ▾"; }
+$("#q").addEventListener("input", ()=>{ if($("#q").value.trim()) setRail(true); renderEntries(); });
 document.addEventListener("keydown", e=>{ if(e.key==="/" && !["INPUT","SELECT"].includes(document.activeElement.tagName)){ e.preventDefault(); setView("dex"); $("#q").focus(); }});
 
 const h = location.hash.slice(1);
