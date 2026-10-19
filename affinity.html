@@ -112,11 +112,11 @@ ul.plain{margin:0;padding-left:18px}
 ul.plain li{margin:2px 0}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .tag{font-size:12px;border:1px solid var(--line);padding:2px 9px;border-radius:999px;background:var(--surface-2)}
-:root{--g-ssri:#138a7a;--g-snri:#2a6fc9;--g-otherad:#b0740a;--g-ap:#7552c4;--g-ms:#c0582a;--g-adhd:#bd3b86;--g-anx:#5b7a14;
+:root{--g-ssri:#138a7a;--g-snri:#2a6fc9;--g-otherad:#b0740a;--g-ap:#7552c4;--g-ms:#c0582a;--g-adhd:#bd3b86;--g-anx:#5b7a14;--g-induction:#2a6fc9;--g-opioid:#7552c4;--g-nmb:#c0582a;--g-reversal:#138a7a;--g-pressor:#bd3b86;--g-local:#b0740a;--g-inhaled:#4b6fa8;--g-other:#5b7a14;
   --p0:#2a6fc9;--p1:#d08a12;--p2:#8a4fd1;--p3:#13937f;--p4:#c43f8e;--p5:#6b7a12;--p6:#c4562a;--p7:#5b6676}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--g-ssri:#3cc2ae;--g-snri:#5c9ff0;--g-otherad:#e8a93a;--g-ap:#a184ec;--g-ms:#ef8a5a;--g-adhd:#e46cb0;--g-anx:#9fc04a;
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--g-ssri:#3cc2ae;--g-snri:#5c9ff0;--g-otherad:#e8a93a;--g-ap:#a184ec;--g-ms:#ef8a5a;--g-adhd:#e46cb0;--g-anx:#9fc04a;--g-induction:#5c9ff0;--g-opioid:#a184ec;--g-nmb:#ef8a5a;--g-reversal:#3cc2ae;--g-pressor:#e46cb0;--g-local:#e8a93a;--g-inhaled:#8fb0e6;--g-other:#9fc04a;
   --p0:#5c9ff0;--p1:#e8a93a;--p2:#b48af0;--p3:#3cc2ae;--p4:#e46cb0;--p5:#b5c24a;--p6:#ef8a5a;--p7:#9aa6b4}}
-:root[data-theme="dark"]{--g-ssri:#3cc2ae;--g-snri:#5c9ff0;--g-otherad:#e8a93a;--g-ap:#a184ec;--g-ms:#ef8a5a;--g-adhd:#e46cb0;--g-anx:#9fc04a;
+:root[data-theme="dark"]{--g-ssri:#3cc2ae;--g-snri:#5c9ff0;--g-otherad:#e8a93a;--g-ap:#a184ec;--g-ms:#ef8a5a;--g-adhd:#e46cb0;--g-anx:#9fc04a;--g-induction:#5c9ff0;--g-opioid:#a184ec;--g-nmb:#ef8a5a;--g-reversal:#3cc2ae;--g-pressor:#e46cb0;--g-local:#e8a93a;--g-inhaled:#8fb0e6;--g-other:#9fc04a;
   --p0:#5c9ff0;--p1:#e8a93a;--p2:#b48af0;--p3:#3cc2ae;--p4:#e46cb0;--p5:#b5c24a;--p6:#ef8a5a;--p7:#9aa6b4}
 .rail{max-height:calc(100vh - 96px);overflow-y:auto;padding-bottom:12px}
 .conds{display:flex;flex-wrap:wrap;gap:4px}
@@ -166,6 +166,81 @@ details.mech[open]>summary{margin-bottom:12px}
 .sc[aria-pressed="true"]{background:var(--lv);color:var(--surface);border-color:var(--lv)}
 .sc-detail{margin:-6px 0 14px;font-size:13.5px;line-height:1.45;padding:8px 12px;border-radius:8px;background:color-mix(in srgb,var(--lv) 8%,var(--surface));border:1px solid color-mix(in srgb,var(--lv) 30%,transparent)}
 .sc-detail b{color:var(--lv)}
+button.mark{border:0;background:transparent;color:inherit;cursor:pointer;padding:0}
+.home{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:14px;padding-top:6px}
+.home h1{font-family:var(--f-display);font-size:clamp(26px,5vw,36px);line-height:1.1;margin:0;letter-spacing:-.02em;text-wrap:balance}
+.lede{margin:0;color:var(--muted);font-size:15px}
+#hq{width:100%;padding:13px 16px;font-size:16px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.condgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.hc{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:12px 14px;font-weight:600;font-size:15px;cursor:pointer;text-align:left}
+.hc small{color:var(--muted);font-weight:500}
+.hc[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}.hc[aria-pressed="true"] small{color:inherit;opacity:.75}
+.hresults{display:flex;flex-direction:column;gap:2px}
+.hresults:empty{display:none}
+.hresults .entry{background:var(--surface);border-color:var(--line)}
+.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:6px}
+.tool{display:flex;flex-direction:column;gap:4px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:14px 16px;cursor:pointer}
+.tool b{font-size:15px}.tool span{font-size:13px;color:var(--muted)}
+.tool:hover,.hc:hover{border-color:var(--ink)}
+.cmp-scroll{overflow-x:auto;padding-bottom:6px}
+.cmp{display:grid;gap:0 12px;min-width:min-content}
+.cc{background:var(--surface);border-left:1px solid var(--line);border-right:1px solid var(--line);padding:10px 14px;min-width:0}
+.cc.top{border-top:4px solid var(--drug);border-radius:10px 10px 0 0;padding-top:12px}
+.cc.bottom{border-bottom:1px solid var(--line);border-radius:0 0 10px 10px;padding-bottom:14px}
+.cc h3{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 6px;font-weight:600}
+.cc .cname{font-family:var(--f-display);font-size:20px;font-weight:700;margin:0}
+.cc .ccls{font-size:12.5px;color:var(--muted)}
+.cv{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:2px 0}
+.cv b{color:var(--lv)}.cv b::before{margin-right:4px}
+.cv.lv-ok b::before{content:"✓"}.cv.lv-caution b::before{content:"!"}.cv.lv-avoid b::before{content:"✕"}.cv.lv-data b::before{content:"?"}
+.cc .meters .meter{grid-template-columns:110px auto}
+.cc .meter .lvl{display:none}
+.cc .ruler{margin-top:14px}
+.goto{border:1px solid var(--drug);color:var(--drug);background:transparent;border-radius:8px;padding:7px 12px;font-weight:600;cursor:pointer}
+.pick .goto-n{border:0;background:transparent;font:inherit;color:inherit;cursor:pointer;padding:0;text-decoration:underline;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent);text-underline-offset:3px}
+.srcs{margin:14px 0 0;font-size:12.5px;color:var(--muted)}
+.srcs a,.about a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.about{max-width:760px;margin:36px auto 0;padding-top:18px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+.about h2{font-family:var(--f-display);font-size:16px;color:var(--ink);margin:0 0 8px}
+.about p{margin:0 0 8px;max-width:72ch}.about b{color:var(--ink)}
+.about .fine{margin-top:4px}
+@media (max-width:640px){ .condgrid{grid-template-columns:repeat(2,minmax(0,1fr))} .tools{grid-template-columns:minmax(0,1fr)} }
+.specwrap{position:relative}
+.specbtn{border:1px solid rgba(255,255,255,.55);background:rgba(0,0,0,.14);color:var(--accent-ink);border-radius:999px;padding:6px 12px;font-weight:600;cursor:pointer}
+.specmenu{position:absolute;top:calc(100% + 6px);left:0;min-width:200px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:6px;z-index:30;display:flex;flex-direction:column}
+.specmenu button{border:0;background:transparent;text-align:left;padding:9px 10px;border-radius:6px;cursor:pointer;font-weight:500}
+.specmenu button:hover,.specmenu button[aria-current="true"]{background:var(--surface-2);font-weight:700}
+.speccards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:6px}
+.speccard{display:flex;flex-direction:column;gap:6px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:18px;cursor:pointer}
+.speccard b{font-family:var(--f-display);font-size:20px}.speccard span{color:var(--muted);font-size:14px}.speccard small{font-weight:600;font-size:13px;margin-top:4px}
+.speccard:hover{border-color:var(--ink)}.speccard.soon{cursor:default;border-style:dashed;background:transparent}.speccard.soon:hover{border-color:var(--line)}
+.ptbar{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 54px);z-index:4}
+.pt-row{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end}
+.pt-f{display:block}.pt-in{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--surface);overflow:hidden}
+.pt-in input{width:76px;border:0;padding:7px 8px;font-size:15px;background:transparent}.pt-in input:focus{outline:none}.pt-in:focus-within{outline:2px solid var(--ink)}
+.pt-in i{font-style:normal;color:var(--muted);padding:0 9px 0 2px;font-size:13px}
+.pt-derived{margin:8px 0 0;font-size:13px;color:var(--muted)}
+.ad-main{font-family:var(--f-display);font-size:26px;font-weight:700;margin:10px 0 0;line-height:1.15}
+.ad-main span{font-size:14px;font-weight:600;color:var(--muted)}
+.ad-sub{margin:4px 0 0;font-size:13px;color:var(--muted)}
+#ause{width:100%;margin-top:4px}
+.tl{position:relative;height:48px;margin:6px 8px 0}
+.tl-track{position:absolute;left:0;right:0;top:14px;height:10px;background:var(--surface-2);border:1px solid var(--line);border-radius:5px}
+.tl-on{position:absolute;top:14px;height:10px;background:color-mix(in srgb,var(--drug) 35%,transparent);border-radius:5px 0 0 5px}
+.tl-eff{position:absolute;top:14px;height:10px;background:var(--drug)}
+.tl-tail{position:absolute;top:14px;height:10px;background:repeating-linear-gradient(90deg,var(--drug) 0 4px,transparent 4px 7px);border-radius:0 5px 5px 0}
+ul.pearls{margin:0;padding-left:18px;font-size:13.5px;display:grid;gap:5px}
+ul.srclist{margin:0;padding-left:18px;font-size:12.5px;display:grid;gap:3px;word-break:break-all}
+ul.srclist a{color:inherit}
+.sheet-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table.sheet{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+table.sheet th,table.sheet td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.sheet thead th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+table.sheet tr.sh-g th{background:var(--surface-2);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+table.sheet td.num b{font-size:15px}.muted{color:var(--muted)}
+@media (max-width:640px){ .speccards{grid-template-columns:minmax(0,1fr)} .ptbar{position:static} }
+.ad-main.off{color:var(--sev-adjust);font-size:20px}
+.fb{font-size:11.5px;color:var(--sev-adjust)}
 .glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:16px}
 .gl{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 12px;min-width:0}
 .gl span{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--lv);font-weight:700}
@@ -274,18 +349,44 @@ details.mech[open]>summary{margin-bottom:12px}
 
 <header class="band">
   <div class="wrap">
-    <div class="mark"><span class="lens" aria-hidden="true"></span>Affinity</div>
-    <div class="views" role="group" aria-label="View">
-      <button id="v-dex" aria-pressed="true">Dex</button>
-      <button id="v-reg" aria-pressed="false">Regimen</button>
+    <button class="mark" id="home-link" aria-label="Affinity home"><span class="lens" aria-hidden="true"></span>Affinity</button>
+    <div class="specwrap">
+      <button class="specbtn" id="specbtn" aria-haspopup="menu" aria-expanded="false">Choose a specialty ▾</button>
+      <div class="specmenu" id="specmenu" role="menu" hidden></div>
     </div>
+    <div class="views" id="views" role="group" aria-label="View"></div>
     <span class="badge">Prototype · verify before prescribing</span>
     <a href="/" style="color:var(--accent-ink);font-size:13px;text-decoration:underline">← sabinkarki.com</a>
   </div>
 </header>
 
 <main class="wrap">
-  <section id="dex" class="dex">
+  <section id="root" class="home" hidden>
+    <h1>Affinity</h1>
+    <p class="lede">Fast, color-coded drug references for clinicians and trainees. Pick a specialty.</p>
+    <div class="speccards" id="speccards"></div>
+  </section>
+  <div id="ptbar" class="ptbar" hidden></div>
+  <section id="home" class="home" hidden>
+    <h1>Find a psychiatric medication</h1>
+    <p class="lede">Dosing, safety, side effects, and receptor profiles for commonly used psychiatric drugs.</p>
+    <input id="hq" type="search" placeholder="Search by name, brand, or class" autocomplete="off" aria-label="Search medications">
+    <div class="condgrid" id="condgrid" role="group" aria-label="Browse by condition"></div>
+    <div id="hresults" class="hresults"></div>
+    <div class="tools">
+      <button class="tool" data-view="cmp"><b>Compare side by side →</b><span>Line up two or three drugs: safety, dosing, side effects.</span></button>
+      <button class="tool" data-view="reg"><b>Check a regimen →</b><span>See stacked side-effect burden and interactions.</span></button>
+    </div>
+    <div class="tools atools" hidden>
+      <button class="tool" data-view="sheet"><b>Weight-based dose sheet →</b><span>Enter a weight once and see common induction, paralytic, reversal, and rescue doses.</span></button>
+    </div>
+  </section>
+  <section id="cmp" hidden>
+    <div class="reg-head"><h1>Compare</h1><p>Pick up to three medications. Doses shown are adult doses for the first listed indication.</p></div>
+    <div class="picker" id="cpicker"></div>
+    <div class="cmp-scroll"><div class="cmp" id="cmpgrid"></div></div>
+  </section>
+  <section id="dex" class="dex" hidden>
     <aside class="rail" id="rail">
       <label for="q" class="ctx-label">Find a medication</label>
       <div class="rail-top">
@@ -300,6 +401,10 @@ details.mech[open]>summary{margin-bottom:12px}
     <article id="card" style="min-width:0"></article>
   </section>
 
+  <section id="sheet" hidden>
+    <div class="reg-head"><h1>Dose sheet</h1><p>Doses calculated for the patient above, using each drug's recommended dosing weight. Check every dose against the label and your institution's protocol before giving it.</p></div>
+    <div class="sheet-scroll"><table class="sheet"><thead><tr><th>Drug</th><th>Use</th><th>Dose</th><th>Per kg</th></tr></thead><tbody id="sheetbody"></tbody></table></div>
+  </section>
   <section id="reg" hidden>
     <div class="reg-head">
       <h1>Regimen burden</h1>
@@ -321,7 +426,12 @@ details.mech[open]>summary{margin-bottom:12px}
   </section>
 
   <button id="namepill" class="namepill" hidden></button>
-  <p class="fine">Educational prototype covering commonly used psychiatric medications. Doses reflect FDA labeling for immediate-release adult/pediatric use unless noted and are abridged; check current labeling, formulation, and patient factors. Burden ratings are qualitative estimates informed by labeling, Huhn et al. 2019 (Lancet; antipsychotics) and Cipriani et al. 2018 (Lancet; antidepressants). Binding values are approximate Ki from published studies (e.g., NIMH PDSP Ki database) and vary across assays; affinity does not directly predict clinical effect.</p>
+  <footer class="about" id="about">
+    <h2>About Affinity</h2>
+    <p>Affinity is a quick-reference tool for commonly used medications in psychiatry and anesthesiology, built by Sabin Karki, a fourth-year medical student at Indiana University School of Medicine. It is an educational prototype and not a substitute for the full prescribing information or clinical judgment.</p>
+    <p><b>Sources.</b> Dosing and boxed warnings: FDA prescribing information (<a href="https://dailymed.nlm.nih.gov/dailymed/" target="_blank" rel="noopener">DailyMed</a>). Breastfeeding: <a href="https://www.ncbi.nlm.nih.gov/books/NBK501922/" target="_blank" rel="noopener">LactMed</a>. Older adults: AGS Beers Criteria (2023). Anesthesia doses: FDA labeling plus society guidance (ASRA for local anesthetic toxicity, MHAUS for malignant hyperthermia, SAMBA/ASA consensus for PONV), linked on each drug. Weight formulas: Devine (ideal body weight) and Janmahasatian 2005 (lean body weight). Side-effect ratings: qualitative estimates informed by labeling, Huhn et al. 2019 (Lancet; antipsychotics) and Cipriani et al. 2018 (Lancet; antidepressants). Binding values: approximate Ki from published studies, including the NIMH PDSP Ki database; values vary by assay.</p>
+    <p class="fine">Last updated October 2026. Pregnancy, lactation, and burden ratings are condensed judgments; verify against the sources before prescribing.</p>
+  </footer>
 </main>
 
 <script>
@@ -970,40 +1080,883 @@ const DRUGS = {
   }}
 };
 
+/* Affinity dosing math. Pure functions only; no DOM. Tested in calc.test.js. */
+const CALC = (() => {
+  const INCH = 2.54;
+  // Ideal body weight, Devine (1974): male 50 kg, female 45.5 kg, + 2.3 kg per inch over 60 in.
+  function ibw(cm, sex){
+    if(!(cm>0) || !sex) return null;
+    const inches = cm / INCH;
+    const base = sex === "M" ? 50 : 45.5;
+    return base + 2.3 * (inches - 60);
+  }
+  function bmi(kg, cm){ if(!(kg>0) || !(cm>0)) return null; const m = cm/100; return kg/(m*m); }
+  // Lean body weight, Janmahasatian et al. (2005).
+  function lbw(kg, cm, sex){
+    const b = bmi(kg, cm); if(b===null || !sex) return null;
+    return sex === "M" ? 9270*kg/(6680 + 216*b) : 9270*kg/(8780 + 244*b);
+  }
+  // Adjusted body weight: IBW + 0.4 × (TBW − IBW).
+  function adjbw(kg, cm, sex){ const i = ibw(cm, sex); if(i===null || !(kg>0)) return null; return i + 0.4*(kg - i); }
+
+  // Pick the dosing weight for a basis. If IBW/LBW/AdjBW exceed actual weight, use actual weight (standard practice).
+  function dosingWeight(basis, pt){
+    const kg = pt.kg;
+    if(!(kg>0)) return {w:null, used:null, note:"Enter weight"};
+    if(basis==="TBW" || basis==="n/a" || !basis) return {w:kg, used:"TBW", note:""};
+    // Remifentanil label: use IBW only when actual weight is more than 30% above IBW.
+    if(basis==="IBW30"){ const i=ibw(pt.cm, pt.sex);
+      if(i===null) return {w:kg, used:"TBW", note:"Add height and sex to check whether ideal body weight applies (>30% over IBW)"};
+      return kg > 1.3*i ? {w:i, used:"IBW", note:"Actual weight is >30% above IBW, so IBW is used (label)"} : {w:kg, used:"TBW", note:"Actual weight is within 30% of IBW, so actual weight is used (label)"}; }
+    const fn = {IBW:ibw, LBW:(cm,sex)=>lbw(kg,cm,sex), AdjBW:(cm,sex)=>adjbw(kg,cm,sex)}[basis];
+    const v = fn ? fn(pt.cm, pt.sex) : null;
+    if(v===null) return {w:kg, used:"TBW", note:`Add height and sex to use ${basis}; showing actual weight`};
+    if(v >= kg) return {w:kg, used:"TBW", note:`${basis} ≥ actual weight, so actual weight is used`};
+    return {w:v, used:basis, note:""};
+  }
+
+  // Human-friendly rounding that never hides clinically meaningful precision.
+  function round(x){
+    if(x===null || x===undefined || !isFinite(x)) return null;
+    const a = Math.abs(x);
+    if(a >= 100) return Math.round(x);
+    if(a >= 10)  return Math.round(x*10)/10;
+    if(a >= 1)   return Math.round(x*100)/100;
+    return Math.round(x*1000)/1000;
+  }
+
+  // unit like "mg/kg", "mcg/kg/min", "mL/kg", "mg", "units/min"
+  function isPerKg(unit){ return /\/kg/.test(unit); }
+  function outUnit(unit){ return unit.replace("/kg",""); }
+
+  // Compute a dose range for a patient. dose: {lo, hi, unit, basis, capMg?, capUnit?}
+  function compute(dose, pt){
+    if(!isPerKg(dose.unit)) return {perKg:false, lo:dose.lo, hi:dose.hi, unit:dose.unit, used:null, note:""};
+    const dw = dosingWeight(dose.basis, pt);
+    if(dw.w===null) return {perKg:true, lo:null, hi:null, unit:outUnit(dose.unit), used:null, note:dw.note};
+    let lo = dose.lo!=null ? dose.lo*dw.w : null;
+    let hi = dose.hi!=null ? dose.hi*dw.w : null;
+    let capped = false;
+    if(dose.cap!=null){
+      if(hi!=null && hi>dose.cap){ hi=dose.cap; capped=true; }
+      if(lo!=null && lo>dose.cap){ lo=dose.cap; capped=true; }
+    }
+    return {perKg:true, lo, hi, unit:outUnit(dose.unit), used:dw.used, w:dw.w, note:dw.note, capped};
+  }
+
+  function fmtRange(lo, hi, unit){
+    const r = v => round(v);
+    if(lo==null && hi==null) return "—";
+    if(lo==null) return `up to ${r(hi)} ${unit}`;
+    if(hi==null || r(lo)===r(hi)) return `${r(lo)} ${unit}`;
+    return `${r(lo)}–${r(hi)} ${unit}`;
+  }
+
+  return {ibw, bmi, lbw, adjbw, dosingWeight, round, compute, fmtRange, isPerKg, outUnit};
+})();
+
+
+const ADRUGS = {
+ propofol:{ name:"Propofol", brand:"Diprivan", cls:"Sedative-hypnotic", grp:"induction", mh:false,
+  basisNote:"Induction doses use lean body weight, per Ingrande & Lemmens (BJA 2010) as summarized by WikEM; the label gives per-kg doses without obesity guidance. Infusions use actual weight here. Verify this convention locally.",
+  doses:[
+   {use:"Induction, healthy adult <65 y", pop:"adult", route:"IV", lo:2, hi:2.5, unit:"mg/kg", basis:"LBW", sheet:true, how:"Titrate until induction onset, by clinical response.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d1ae9e26-ffd6-43df-bbd6-869cdede6afe"},
+   {use:"Induction, elderly, debilitated, or ASA III–IV", pop:"elderly", route:"IV", lo:1, hi:1.5, unit:"mg/kg", basis:"LBW", sheet:true, how:"Slower titration.", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
+   {use:"Induction, cardiac anesthesia", pop:"adult", route:"IV", lo:0.5, hi:1.5, unit:"mg/kg", basis:"LBW", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
+   {use:"Induction, neurosurgery", pop:"adult", route:"IV", lo:1, hi:2, unit:"mg/kg", basis:"LBW", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
+   {use:"Induction, healthy child 3–16 y", pop:"peds", route:"IV", lo:2.5, hi:3.5, unit:"mg/kg", basis:"TBW", sheet:true, src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
+   {use:"Maintenance infusion, healthy adult <65 y", pop:"adult", route:"IV", lo:100, hi:200, unit:"mcg/kg/min", basis:"TBW", how:"6–12 mg/kg/h, or intermittent boluses of 20–50 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d1ae9e26-ffd6-43df-bbd6-869cdede6afe"},
+   {use:"Maintenance infusion, elderly or ASA III–IV", pop:"elderly", route:"IV", lo:50, hi:100, unit:"mcg/kg/min", basis:"TBW", how:"3–6 mg/kg/h.", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
+   {use:"Maintenance infusion, child 2 mo–16 y", pop:"peds", route:"IV", lo:125, hi:300, unit:"mcg/kg/min", basis:"TBW", how:"Reduce to 125–150 mcg/kg/min after the first 30 min.", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
+   {use:"MAC sedation, initiation", pop:"adult", route:"IV", lo:100, hi:150, unit:"mcg/kg/min", basis:"TBW", how:"For 3–5 min, or slow injection of 0.5 mg/kg over 3–5 min.", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
+   {use:"MAC sedation, maintenance", pop:"adult", route:"IV", lo:25, hi:75, unit:"mcg/kg/min", basis:"TBW", how:"Or 10–20 mg boluses. Elderly/ASA III–IV: about 80% of the adult dose; avoid rapid boluses.", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
+   {use:"ICU sedation, intubated adult", pop:"adult", route:"IV", lo:5, hi:50, unit:"mcg/kg/min", basis:"TBW", how:"Start 5 mcg/kg/min; titrate by 5–10 mcg/kg/min at least 5 min apart. Avoid >4 mg/kg/h (≈67 mcg/kg/min).", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"}],
+  time:{text:"Onset usually within about 40 seconds of starting the injection (label). The label doesn't state single-bolus duration."},
+  fx:{bp:["avoid","↓ Lowers","Hypotension, sometimes more than 30%, with little change in heart rate; worse with positive-pressure ventilation."], hr:["ok","Little change","Little change at induction; bradycardia reported in children when combined with fentanyl."], resp:["avoid","Apnea","Apnea after induction doses is common (over 60 seconds in 12% of adults)."], ponv:["ok","↓ Lowers","Antiemetic; propofol TIVA cuts PONV risk by about a quarter."]},
+  boxed:null, contra:["Egg or soy anaphylaxis (label)"],
+  warn:["Propofol infusion syndrome, with risk above 5 mg/kg/h for over 48 h","Strict asepsis: discard vial and tubing within 12 h of opening","Not indicated for pediatric ICU sedation","Lipid load about 0.1 g fat per mL"],
+  pearls:["The current label uses an age cutoff of 65, not the older 55.","Reduce doses in elderly and hemodynamically fragile patients."],
+  organ:"Pharmacokinetics unchanged in chronic cirrhosis or chronic kidney disease (label).", preg:"Crosses the placenta; may cause neonatal depression (label).",
+  reversal:null,
+  mech:"Positive modulator of GABA-A receptors; lipid emulsion formulation.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d1ae9e26-ffd6-43df-bbd6-869cdede6afe","https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf","https://wikem.org/wiki/The_Obese_Patient"]},
+ etomidate:{ name:"Etomidate", brand:"Amidate", cls:"Sedative-hypnotic", grp:"induction", mh:false,
+  basisNote:"Lean body weight, per Ingrande & Lemmens (BJA 2010) as summarized by WikEM; the label has no obesity guidance.",
+  doses:[
+   {use:"Induction, usual dose", pop:"adult", route:"IV", lo:0.3, hi:0.3, unit:"mg/kg", basis:"LBW", sheet:true, how:"Inject over 30–60 seconds. Label range 0.2–0.6 mg/kg; applies to adults and children over 10.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b7ed5bf8-ba75-44dc-8f81-96b4ad5766be"},
+   {use:"Induction, label range", pop:"adult", route:"IV", lo:0.2, hi:0.6, unit:"mg/kg", basis:"LBW", how:"Older adults may need reduced doses (no number given in the label).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b7ed5bf8-ba75-44dc-8f81-96b4ad5766be"}],
+  time:{onset:[20,60], dur:[180,300], onsetTxt:"within 1 min", durTxt:"3–5 min (at 0.3 mg/kg)"},
+  fx:{bp:["ok","Stable","Little or no effect on cardiac output even in severe cardiovascular disease; older hypertensive patients may drop."], hr:["ok","Stable","Little change."], resp:["caution","Brief apnea","Apnea of 5–90 seconds with spontaneous recovery."], ponv:["caution","↑ Raises","More PONV than thiopental in label comparisons."]},
+  boxed:null, contra:[],
+  warn:["Adrenal suppression: cortisol stays low about 6–8 h after a single dose","Myoclonus in about a third of patients","Not for prolonged infusion","Children under 10: no labeled dose"],
+  pearls:["The go-to hemodynamically stable induction agent.","Consider the adrenal effect in septic or critically ill patients."],
+  organ:"Hepatic metabolism; half-life roughly doubles in cirrhosis (label).", preg:"Not recommended for obstetric use, including cesarean delivery (label).",
+  reversal:null,
+  mech:"Positive modulator of GABA-A receptors; inhibits 11-β-hydroxylase (adrenal suppression).",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b7ed5bf8-ba75-44dc-8f81-96b4ad5766be","https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/018227s032lbl.pdf","https://wikem.org/wiki/The_Obese_Patient"]},
+ ketamine:{ name:"Ketamine", brand:"Ketalar", cls:"Dissociative anesthetic", grp:"induction", mh:false,
+  basisNote:"Actual body weight used here; neither the label nor the sources reviewed give obesity guidance.",
+  doses:[
+   {use:"Induction", pop:"adult", route:"IV", lo:1, hi:4.5, unit:"mg/kg", basis:"TBW", sheet:true, how:"Give slowly over 60 seconds. An average 2 mg/kg gives 5–10 minutes of surgical anesthesia.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=14e8f864-8b8a-4e7e-8439-e510d3107063"},
+   {use:"Induction", pop:"adult", route:"IM", lo:6.5, hi:13, unit:"mg/kg", basis:"TBW", sheet:true, src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=14e8f864-8b8a-4e7e-8439-e510d3107063"},
+   {use:"Maintenance infusion", pop:"adult", route:"IV", lo:0.1, hi:0.5, unit:"mg/min", how:"Note: mg/min, not mg/kg/min. Or repeat ½ to full induction dose.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=14e8f864-8b8a-4e7e-8439-e510d3107063"},
+   {use:"Sub-dissociative analgesia (off-label)", pop:"adult", route:"IV", lo:0.1, hi:0.4, unit:"mg/kg", basis:"TBW", src:"https://www.ncbi.nlm.nih.gov/books/NBK470357/"}],
+  time:{onset:[10,30], dur:[300,600], onsetTxt:"within 30 s (IV)", durTxt:"5–10 min (IV)", note:"IM: onset 3–4 min, lasts 12–25 min (label)."},
+  fx:{bp:["caution","↑ Raises","Systolic and diastolic BP peak 10–50% above baseline."], hr:["caution","↑ Raises","Heart rate rises."], resp:["ok","Preserved","Airway reflexes largely preserved; bronchodilator. Laryngospasm and depression with rapid or large doses."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:null, contra:["Patients for whom a significant BP rise would be hazardous"],
+  warn:["Emergence reactions in about 12%","Raised ICP reported","Hypersalivation; consider an antisialagogue","Liver injury and urinary tract toxicity with recurrent use"],
+  pearls:["Preferred induction agent in bronchospasm.","Label: pediatric safety under 16 not established."],
+  organ:"No renal adjustment given (label).", preg:"No drug-associated risk identified in available data, mostly from cesarean delivery (label).",
+  reversal:null,
+  mech:"NMDA receptor antagonist producing dissociative anesthesia; sympathomimetic.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=14e8f864-8b8a-4e7e-8439-e510d3107063","https://www.ncbi.nlm.nih.gov/books/NBK470357/"]},
+ midazolam:{ name:"Midazolam", brand:"Generic (formerly Versed)", cls:"Benzodiazepine (C-IV)", grp:"induction", mh:false,
+  basisNote:"First dose on actual body weight; later doses on ideal body weight (WikEM, citing Ingrande & Lemmens). Volume of distribution and half-life rise in obesity (label).",
+  doses:[
+   {use:"Preop sedation, adult <60 y", pop:"adult", route:"IM", lo:0.07, hi:0.08, unit:"mg/kg", basis:"TBW", sheet:true, how:"About 5 mg, up to 1 h before surgery.", src:"https://www.pfizermedical.com/midazolam/dosage-admin"},
+   {use:"Preop sedation, ≥60 y or debilitated", pop:"elderly", route:"IM", lo:0.02, hi:0.05, unit:"mg/kg", basis:"TBW", sheet:true, how:"2–3 mg; some need only 1 mg.", src:"https://www.pfizermedical.com/midazolam/dosage-admin"},
+   {use:"Procedural sedation, adult <60 y", pop:"adult", route:"IV", lo:1, hi:2.5, unit:"mg", sheet:true, how:"Over at least 2 min, then wait 2 min to assess. Total usually ≤5 mg.", src:"https://www.pfizermedical.com/midazolam/dosage-admin"},
+   {use:"Procedural sedation, ≥60 y or debilitated", pop:"elderly", route:"IV", lo:1, hi:1.5, unit:"mg", sheet:true, how:"Then ≤1 mg doses over 2 min. Total usually ≤3.5 mg.", src:"https://www.pfizermedical.com/midazolam/dosage-admin"},
+   {use:"Induction, unpremedicated <55 y", pop:"adult", route:"IV", lo:0.3, hi:0.35, unit:"mg/kg", basis:"TBW", how:"Over 20–30 s; up to 0.6 mg/kg total if resistant.", src:"https://www.pfizermedical.com/midazolam/dosage-admin"},
+   {use:"Induction, >55 y or severe systemic disease", pop:"elderly", route:"IV", lo:0.15, hi:0.3, unit:"mg/kg", basis:"TBW", src:"https://www.pfizermedical.com/midazolam/dosage-admin"},
+   {use:"ICU sedation infusion", pop:"adult", route:"IV", lo:0.02, hi:0.1, unit:"mg/kg/h", basis:"TBW", how:"After a 0.01–0.05 mg/kg load (may repeat every 10–15 min).", src:"https://www.pfizermedical.com/midazolam/dosage-admin"},
+   {use:"Sedation, child", pop:"peds", route:"IM", lo:0.1, hi:0.15, unit:"mg/kg", basis:"TBW", sheet:true, how:"Up to 0.5 mg/kg if very anxious; total usually ≤10 mg.", src:"https://www.pfizermedical.com/midazolam/dosage-admin"},
+   {use:"Sedation, child 6 mo–5 y", pop:"peds", route:"IV", lo:0.05, hi:0.1, unit:"mg/kg", basis:"TBW", how:"Total up to 0.6 mg/kg, usually ≤6 mg. Ages 6–12: 0.025–0.05 mg/kg, total ≤10 mg.", src:"https://www.pfizermedical.com/midazolam/dosage-admin"}],
+  time:{onset:[180,300], dur:[7200,21600], onsetTxt:"3–5 min (IV sedation)", durTxt:"recovery usually ~2 h, up to 6 h", note:"IM onset about 15 min in adults (label)."},
+  fx:{bp:["caution","↓ Mild","Slight to moderate drop in MAP and SVR at induction."], hr:["ok","Variable","Small changes either way."], resp:["avoid","Depression","Boxed warning: respiratory depression and arrest, especially with opioids."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:"Respiratory depression and arrest; monitor with resuscitation equipment available. Opioid co-use can cause profound sedation, coma, and death. Initial IV sedation dose should not exceed 2.5 mg in healthy adults. Avoid rapid injection in neonates.",
+  contra:["Acute narrow-angle glaucoma","Intrathecal or epidural use","Premature infants (benzyl alcohol)"],
+  warn:["Synergistic respiratory depression with opioids","Half-life about doubles in older adults, heart failure, and obesity","Rapid injection in neonates: hypotension and seizures"],
+  pearls:["Wait at least 2 minutes between IV doses to judge effect.","Reverse with flumazenil, watching for re-sedation."],
+  organ:"Alcoholic cirrhosis: half-life 2.5× longer. Acute kidney injury prolongs half-life (label).", preg:"Late-pregnancy benzodiazepines can cause neonatal sedation.",
+  reversal:{text:"Flumazenil", id:"flumazenil"},
+  mech:"Benzodiazepine-site positive modulator of GABA-A receptors.",
+  srcs:["https://www.pfizermedical.com/midazolam/dosage-admin","https://www.pfizermedical.com/midazolam/boxed-warning","https://wikem.org/wiki/The_Obese_Patient"]},
+ dexmedetomidine:{ name:"Dexmedetomidine", brand:"Precedex", cls:"Alpha-2 agonist", grp:"induction", mh:false,
+  basisNote:"Per-kg dosing on actual body weight; no obesity guidance in the label.",
+  doses:[
+   {use:"Loading dose", pop:"adult", route:"IV", lo:1, hi:1, unit:"mcg/kg", basis:"TBW", sheet:true, how:"Over 10 minutes. Use 0.5 mcg/kg for less invasive procedures or patients over 65.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4419162d-81d4-49bd-96de-1729440bdb74"},
+   {use:"Loading dose, >65 y", pop:"elderly", route:"IV", lo:0.5, hi:0.5, unit:"mcg/kg", basis:"TBW", sheet:true, how:"Over 10 minutes; consider reduced maintenance.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4419162d-81d4-49bd-96de-1729440bdb74"},
+   {use:"ICU sedation, intubated", pop:"adult", route:"IV", lo:0.2, hi:0.7, unit:"mcg/kg/h", basis:"TBW", how:"After the load. Continuous infusion not to exceed 24 h per label.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4419162d-81d4-49bd-96de-1729440bdb74"},
+   {use:"Procedural sedation", pop:"adult", route:"IV", lo:0.2, hi:1, unit:"mcg/kg/h", basis:"TBW", how:"Start maintenance at 0.6 mcg/kg/h after the load.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4419162d-81d4-49bd-96de-1729440bdb74"},
+   {use:"Awake fiberoptic intubation", pop:"adult", route:"IV", lo:0.7, hi:0.7, unit:"mcg/kg/h", basis:"TBW", how:"After a 1 mcg/kg load over 10 min; run until the tube is secured.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4419162d-81d4-49bd-96de-1729440bdb74"},
+   {use:"Procedural sedation, 1 mo to <18 y", pop:"peds", route:"IV", lo:0.5, hi:1.5, unit:"mcg/kg/h", basis:"TBW", how:"Load 1.5 mcg/kg (under 2 y) or 2 mcg/kg (2–17 y) over 10 min; usual maintenance 1.5.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4419162d-81d4-49bd-96de-1729440bdb74"}],
+  time:{text:"Onset isn't stated in the label. Distribution half-life about 6 minutes; terminal half-life about 2 hours."},
+  fx:{bp:["caution","↓ Lowers","Hypotension after a transient rise during loading."], hr:["avoid","↓ Bradycardia","Bradycardia and sinus arrest, some fatal; worse with rapid boluses or high vagal tone."], resp:["ok","Minimal","Little respiratory depression at recommended doses."], ponv:["ok","↓ Lowers","Associated with less postoperative nausea and opioid use."]},
+  boxed:null, contra:[],
+  warn:["Hypotension, bradycardia, sinus arrest","Transient hypertension during loading","Withdrawal and tolerance after 24 h"],
+  pearls:["Patients stay arousable, which helps awake procedures and neuro checks.","Useful for awake fiberoptic intubation."],
+  organ:"Hepatic impairment lowers clearance; consider dose reduction (label).", preg:"Crosses the placenta; no identified birth-defect risk (label).",
+  reversal:null,
+  mech:"Selective alpha-2 agonist that reduces sympathetic outflow from the locus coeruleus.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4419162d-81d4-49bd-96de-1729440bdb74","https://www.ncbi.nlm.nih.gov/books/NBK513303/"]},
+ fentanyl:{ name:"Fentanyl", brand:"Sublimaze", cls:"Opioid agonist (C-II)", grp:"opioid", mh:false,
+  basisNote:"The label doses per kg but doesn't say which weight; actual body weight is used here by default.",
+  doses:[
+   {use:"Induction adjunct bolus", pop:"adult", route:"IV", lo:0.5, hi:2, unit:"mcg/kg", basis:"TBW", sheet:true, how:"Per dose (StatPearls).", src:"https://www.ncbi.nlm.nih.gov/books/NBK459275/"},
+   {use:"Adjunct to GA, minor procedures", pop:"adult", route:"IV", lo:2, hi:2, unit:"mcg/kg", basis:"TBW", how:"Additional doses rarely needed.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=bfa8018a-4cbc-434b-e09e-782872b0340a"},
+   {use:"Adjunct to GA, major surgery", pop:"adult", route:"IV", lo:2, hi:20, unit:"mcg/kg", basis:"TBW", how:"Maintenance 25–100 mcg IV as needed.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=bfa8018a-4cbc-434b-e09e-782872b0340a"},
+   {use:"Adjunct to GA, high dose (cardiac, complex cases)", pop:"adult", route:"IV", lo:20, hi:50, unit:"mcg/kg", basis:"TBW", how:"Maintenance 25 mcg up to half the loading dose.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=bfa8018a-4cbc-434b-e09e-782872b0340a"},
+   {use:"Postoperative pain bolus", pop:"adult", route:"IV", lo:50, hi:100, unit:"mcg", sheet:true, how:"Every 1–2 h as needed (StatPearls).", src:"https://www.ncbi.nlm.nih.gov/books/NBK459275/"},
+   {use:"PCA demand dose", pop:"adult", route:"IV", lo:10, hi:20, unit:"mcg", how:"Every 6–20 min as needed (StatPearls).", src:"https://www.ncbi.nlm.nih.gov/books/NBK459275/"},
+   {use:"Postoperative infusion", pop:"adult", route:"IV", lo:0.5, hi:1.5, unit:"mcg/kg/h", basis:"TBW", how:"StatPearls.", src:"https://www.ncbi.nlm.nih.gov/books/NBK459275/"},
+   {use:"Induction and maintenance, age 2–12", pop:"peds", route:"IV", lo:2, hi:3, unit:"mcg/kg", basis:"TBW", sheet:true, how:"Under 2 years: not established (label).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=bfa8018a-4cbc-434b-e09e-782872b0340a"}],
+  time:{onset:[5,60], dur:[1800,3600], onsetTxt:"almost immediate (IV)", peakTxt:"respiratory depression 5–15 min", durTxt:"30–60 min analgesia (IV)", note:"Respiratory depression can outlast analgesia (label)."},
+  fx:{bp:["caution","↓ Lowers","Hypotension, especially with other CNS depressants."], hr:["caution","↓ Bradycardia","Can cause severe bradycardia."], resp:["avoid","Depression","Dose-related respiratory depression and chest wall rigidity."], ponv:["caution","↑ Raises","Postoperative opioids are a PONV risk factor (Apfel)."]},
+  boxed:"Addiction and misuse; life-threatening respiratory depression; risks with benzodiazepines and other CNS depressants; CYP3A4 inhibitors can raise levels to fatal concentrations.",
+  contra:[],
+  warn:["Muscle rigidity, especially of respiratory muscles, with rapid or high doses","Severe bradycardia and hypotension","CYP3A4 inhibitors increase levels","Serotonin syndrome; avoid with MAOIs"],
+  pearls:["Give high doses slowly to limit chest wall rigidity.","Elderly: start at the low end and titrate slowly."],
+  organ:"Use with caution and reduce doses in liver or kidney dysfunction (label).", preg:"Crosses the placenta; neonatal respiratory depression possible (label).",
+  reversal:{text:"Naloxone", id:"naloxone"},
+  mech:"Potent mu-opioid receptor agonist with fast onset because it is highly lipid-soluble.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=bfa8018a-4cbc-434b-e09e-782872b0340a","https://www.ncbi.nlm.nih.gov/books/NBK459275/"]},
+ remifentanil:{ name:"Remifentanil", brand:"Ultiva", cls:"Opioid agonist (C-II)", grp:"opioid", mh:false,
+  basisNote:"Label: base the starting dose on ideal body weight when actual weight is more than 30% above it; otherwise use actual weight. Add height and sex to apply this rule.",
+  doses:[
+   {use:"Induction with a hypnotic or volatile", pop:"adult", route:"IV", lo:0.5, hi:1, unit:"mcg/kg/min", basis:"IBW30", sheet:true, how:"If intubating within 8 min of starting, a 1 mcg/kg bolus over 30–60 s may be given first.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"},
+   {use:"Maintenance with isoflurane or propofol", pop:"adult", route:"IV", lo:0.05, hi:2, unit:"mcg/kg/min", basis:"IBW30", how:"Start 0.25; bolus 1 mcg/kg; titrate every 2–5 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"},
+   {use:"Maintenance with nitrous oxide 66%", pop:"adult", route:"IV", lo:0.1, hi:2, unit:"mcg/kg/min", basis:"IBW30", how:"Start 0.4; bolus 1 mcg/kg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"},
+   {use:"Continuation into PACU or ICU", pop:"adult", route:"IV", lo:0.1, hi:0.2, unit:"mcg/kg/min", basis:"IBW30", how:"Adjust by 0.025 every 5 min; no boluses. Above 0.2 is associated with respiratory rate under 8.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"},
+   {use:"MAC sedation, single dose", pop:"adult", route:"IV", lo:1, hi:1, unit:"mcg/kg", basis:"IBW30", how:"Over 30–60 s, 90 s before the block; 0.5 mcg/kg if given with midazolam 2 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"},
+   {use:"Older adults (>65 y)", pop:"elderly", route:"IV", lo:0.25, hi:0.5, unit:"mcg/kg/min", basis:"IBW30", sheet:true, how:"Label: reduce the starting dose by 50%. Shown here as half the adult induction range.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"},
+   {use:"Maintenance, age 1–12", pop:"peds", route:"IV", lo:0.05, hi:1.3, unit:"mcg/kg/min", basis:"TBW", how:"Start 0.25; bolus 1 mcg/kg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"}],
+  time:{text:"Onset within about a minute. Analgesia fades 5–10 minutes after stopping; respiratory depression can last up to 30 minutes (label)."},
+  fx:{bp:["caution","↓ Lowers","Dose-dependent hypotension."], hr:["caution","↓ Bradycardia","Dose-dependent bradycardia."], resp:["avoid","Depression","Respiratory depression and chest wall rigidity."], ponv:["caution","↑ Raises","Opioid class effect; no drug-specific data found."]},
+  boxed:"Addiction and misuse; life-threatening respiratory depression; risks with benzodiazepines and other CNS depressants.",
+  contra:["Epidural or intrathecal use (contains glycine)"],
+  warn:["Chest wall rigidity with boluses >1 mcg/kg or infusions >0.1 mcg/kg/min","No lasting analgesia: give longer-acting analgesia before stopping","Opioid-induced hyperalgesia","Don't run in the same IV line as blood"],
+  pearls:["Metabolized by blood and tissue esterases, so offset is the same regardless of infusion length.","Unaffected by liver or kidney failure."],
+  organ:"Pharmacokinetics unaffected by renal or hepatic impairment (label).", preg:"Respiratory depression in newborns if given shortly before delivery (label).",
+  reversal:{text:"Stop the infusion (offset 5–10 min); naloxone if needed", id:"naloxone"},
+  mech:"Ultra-short-acting mu-opioid agonist broken down by nonspecific esterases.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"]},
+ hydromorphone:{ name:"Hydromorphone", brand:"Dilaudid", cls:"Opioid agonist (C-II)", grp:"opioid", mh:false,
+  basisNote:"Fixed mg doses, not weight-based (label).",
+  doses:[
+   {use:"Pain, opioid-naive", pop:"adult", route:"IV", lo:0.2, hi:1, unit:"mg", sheet:true, how:"Every 2–3 h, injected slowly over at least 2–3 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9eebd88a-5632-460f-b7b6-26c8a180540d"},
+   {use:"Pain", pop:"adult", route:"IM/SC", lo:1, hi:2, unit:"mg", how:"Every 2–3 h as needed.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9eebd88a-5632-460f-b7b6-26c8a180540d"},
+   {use:"Older or debilitated adults", pop:"elderly", route:"IV", lo:0.2, hi:0.2, unit:"mg", sheet:true, how:"Reduce the initial dose; may start at 0.2 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9eebd88a-5632-460f-b7b6-26c8a180540d"}],
+  time:{onset:[300,900], dur:[7200,14400], onsetTxt:"5–15 min (IV)", peakTxt:"10–20 min", durTxt:"2–4 h", note:"IV timing isn't in the FDA label; these values come from a Nova Scotia EHS monograph and are less reliable."},
+  fx:{bp:["caution","↓ Lowers","Severe hypotension possible, especially with rapid IV injection."], hr:["ok","Not stated","Bradycardia only in the less-frequent adverse-reaction list."], resp:["avoid","Depression","Life-threatening respiratory depression in opioid-naive patients."], ponv:["caution","↑ Raises","Postoperative opioids are a PONV risk factor (Apfel)."]},
+  boxed:"Addiction and misuse; life-threatening respiratory depression; risks with benzodiazepines and other CNS depressants; neonatal opioid withdrawal syndrome.",
+  contra:["Significant respiratory depression","Acute severe asthma without monitoring","GI obstruction or paralytic ileus","Sulfite allergy"],
+  warn:["High-potency formulation is for opioid-tolerant patients only","Inject IV slowly over at least 2–3 minutes","Accumulates in hepatic and renal impairment"],
+  pearls:["Hepatic or renal impairment: start at ¼ to ½ the usual dose (label).","Pediatric safety not established for the injection (label)."],
+  organ:"Moderate hepatic impairment raises exposure 4-fold; CrCl <30 raises it 4-fold. Start at ¼–½ the usual dose (label).", preg:"Not recommended during or right before labor when other analgesia is more appropriate (label).",
+  reversal:{text:"Naloxone", id:"naloxone"},
+  mech:"Mu-opioid receptor agonist about 5–7 times as potent as morphine.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9eebd88a-5632-460f-b7b6-26c8a180540d","https://novascotia.ca/dhw/ehs/documents/medications/EHS-Hydromorphone.pdf"]},
+ morphine:{ name:"Morphine", brand:"Generic", cls:"Opioid agonist (C-II)", grp:"opioid", mh:false,
+  basisNote:"The label doses per kg without naming a weight type; actual body weight is used here.",
+  doses:[
+   {use:"Pain", pop:"adult", route:"IV", lo:0.1, hi:0.2, unit:"mg/kg", basis:"TBW", sheet:true, how:"Every 4 h as needed; inject slowly. Use the lowest effective dose.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=1f53de80-efc8-4930-b3e3-fba0d026af05"},
+   {use:"Pain, typical starting dose", pop:"adult", route:"IV", lo:2, hi:10, unit:"mg", how:"Per 70 kg (StatPearls); titrate.", src:"https://www.ncbi.nlm.nih.gov/books/NBK526115/"},
+   {use:"Intermittent bolus", pop:"peds", route:"IV", lo:0.1, hi:0.2, unit:"mg/kg", basis:"TBW", cap:10, sheet:true, how:"Every 2–4 h, max 10 mg per dose (StatPearls). Label: pediatric safety not established.", src:"https://www.ncbi.nlm.nih.gov/books/NBK526115/"}],
+  time:{text:"IV onset isn't stated in the label. Peak CNS effect is delayed about 30 minutes after IV dosing, so avoid stacking doses. Effect usually lasts 3–4 hours (label)."},
+  fx:{bp:["caution","↓ Lowers","Histamine release and vasodilation; severe hypotension with hypovolemia."], hr:["ok","Variable","Bradycardia and tachycardia both listed."], resp:["avoid","Depression","Life-threatening respiratory depression; delayed peak effect."], ponv:["caution","↑ Raises","Postoperative opioids are a PONV risk factor (Apfel)."]},
+  boxed:"Addiction and misuse; life-threatening respiratory depression; risks with benzodiazepines and other CNS depressants; neonatal opioid withdrawal syndrome.",
+  contra:["Significant respiratory depression","Acute severe asthma without monitoring","MAOI within 14 days","GI obstruction or paralytic ileus"],
+  warn:["Active metabolite (M6G) accumulates in renal failure","Histamine-related hypotension, flushing, itching","Rapid IV injection can cause chest wall rigidity"],
+  pearls:["Peak effect around 30 minutes after IV dosing, so titrate patiently.","Avoid in significant renal impairment."],
+  organ:"Renal failure: metabolites M3G and M6G accumulate. Cirrhosis: lower clearance (label).", preg:"Crosses the placenta; neonatal respiratory depression possible (label).",
+  reversal:{text:"Naloxone", id:"naloxone"},
+  mech:"Prototype mu-opioid receptor agonist.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=1f53de80-efc8-4930-b3e3-fba0d026af05","https://www.ncbi.nlm.nih.gov/books/NBK526115/"]},
+ naloxone:{ name:"Naloxone", brand:"Narcan", cls:"Opioid antagonist", grp:"reversal", mh:false,
+  basisNote:"Adult doses are fixed mg; pediatric overdose doses are per kg (label).",
+  doses:[
+   {use:"Postoperative opioid respiratory depression", pop:"adult", route:"IV", lo:0.1, hi:0.2, unit:"mg", sheet:true, how:"Increments every 2–3 min to restore breathing without losing analgesia. Repeat doses may be needed every 1–2 h.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8535cc84-ad4a-4d67-8480-fb5a2e3406f8"},
+   {use:"Opioid overdose", pop:"adult", route:"IV", lo:0.4, hi:2, unit:"mg", how:"Repeat every 2–3 min. Question the diagnosis if no response after 10 mg. IM or SC if no IV.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8535cc84-ad4a-4d67-8480-fb5a2e3406f8"},
+   {use:"Overdose in an opioid-dependent patient", pop:"adult", route:"IV", lo:0.04, hi:0.1, unit:"mg", how:"Start small to limit withdrawal, then titrate 0.1–0.4 mg (StatPearls).", src:"https://www.ncbi.nlm.nih.gov/books/NBK441910/"},
+   {use:"Postoperative opioid depression", pop:"peds", route:"IV", lo:0.005, hi:0.01, unit:"mg", sheet:true, how:"Increments every 2–3 min, titrated to effect.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8535cc84-ad4a-4d67-8480-fb5a2e3406f8"},
+   {use:"Opioid overdose, initial", pop:"peds", route:"IV", lo:0.01, hi:0.01, unit:"mg/kg", basis:"TBW", sheet:true, how:"If needed, a subsequent dose of 0.1 mg/kg. Monitor children for at least 24 h.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8535cc84-ad4a-4d67-8480-fb5a2e3406f8"}],
+  time:{onset:[60,120], dur:[1800,4860], onsetTxt:"about 2 min (IV)", durTxt:"often shorter than the opioid it reverses", note:"Adult half-life 30–81 minutes; watch for renarcotization (label)."},
+  fx:{bp:["caution","↑ Can spike","Abrupt reversal can cause hypertension, pulmonary edema, and arrhythmias."], hr:["caution","↑ Can spike","Tachycardia and VT/VF with abrupt reversal."], resp:["ok","Restores","Reverses opioid respiratory depression only."], ponv:["caution","↑ Raises","Nausea and vomiting with abrupt reversal."]},
+  boxed:null, contra:[],
+  warn:["Abrupt reversal: pain, hypertension, arrhythmias, pulmonary edema, cardiac arrest","Renarcotization if the opioid outlasts naloxone","Precipitated withdrawal in opioid-dependent patients","Buprenorphine may need large doses"],
+  pearls:["Postop, titrate in small increments to breathing, not wakefulness.","Observe 6–12 h after long-acting opioids."],
+  organ:"Safety not established in hepatic or renal disease; use caution (label).", preg:"Can precipitate maternal and fetal withdrawal in opioid-dependent patients (label).",
+  reversal:null,
+  mech:"Competitive mu-opioid receptor antagonist.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8535cc84-ad4a-4d67-8480-fb5a2e3406f8","https://www.ncbi.nlm.nih.gov/books/NBK441910/"]},
+ flumazenil:{ name:"Flumazenil", brand:"Romazicon", cls:"Benzodiazepine antagonist", grp:"reversal", mh:false,
+  basisNote:"Adult doses are fixed mg; pediatric doses are per kg (label).",
+  doses:[
+   {use:"Reversal of sedation, first dose", pop:"adult", route:"IV", lo:0.2, hi:0.2, unit:"mg", sheet:true, how:"Over 15 s. After 45 s, may give 0.2 mg more, repeating every 60 s up to 4 more times. Max 1 mg total; most respond to 0.6–1 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a72d9fc1-121c-455d-93a9-002378c9968f"},
+   {use:"Suspected benzodiazepine overdose", pop:"adult", route:"IV", lo:0.2, hi:3, unit:"mg", how:"0.2 mg over 30 s, then 0.3 mg, then 0.5 mg every minute to 3 mg. Partial responders up to 5 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a72d9fc1-121c-455d-93a9-002378c9968f"},
+   {use:"Reversal of sedation, age >1 y", pop:"peds", route:"IV", lo:0.01, hi:0.01, unit:"mg/kg", basis:"TBW", cap:0.2, sheet:true, how:"Max 0.2 mg per dose. Repeat after 45 s, then every 60 s up to 4 more. Max total 0.05 mg/kg or 1 mg, whichever is lower.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a72d9fc1-121c-455d-93a9-002378c9968f"}],
+  time:{onset:[60,120], dur:[2400,4800], onsetTxt:"1–2 min", peakTxt:"6–10 min", durTxt:"often shorter than the benzodiazepine", note:"Resedation occurs in up to 15% after general anesthesia; monitor for up to 2 hours (label)."},
+  fx:{bp:["ok","Neutral","No significant cardiovascular effects."], hr:["ok","Neutral","No significant cardiovascular effects."], resp:["caution","Not a fix","Not established as a treatment for hypoventilation; support the airway."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:"Seizures, most often in long-term benzodiazepine users and in serious tricyclic antidepressant overdose.",
+  contra:["Benzodiazepine given for a life-threatening condition (e.g., status epilepticus, raised ICP)","Serious tricyclic antidepressant overdose"],
+  warn:["Seizures and withdrawal in chronic benzodiazepine users","Resedation","Don't use until neuromuscular blockade is fully reversed"],
+  pearls:["Most adults reverse with 0.6–1 mg.","No sedation 2 hours after a 1 mg dose makes serious resedation unlikely."],
+  organ:"Hepatic impairment lowers clearance; reduce repeat doses (label).", preg:"Not recommended for reversing benzodiazepines given during labor (label).",
+  reversal:null,
+  mech:"Competitive antagonist at the benzodiazepine site of GABA-A receptors.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a72d9fc1-121c-455d-93a9-002378c9968f"]},
+ succinylcholine:{ name:"Succinylcholine", brand:"Generic (Anectine, Quelicin)", cls:"Depolarizing NMB", grp:"nmb", mh:true,
+  basisNote:"Actual body weight, including in obesity (StatPearls); the label doesn't specify. Children may need more than weight-based dosing predicts (label).",
+  doses:[
+   {use:"Intubation, average dose", pop:"adult", route:"IV", lo:0.6, hi:0.6, unit:"mg/kg", basis:"TBW", how:"Label range 0.3–1.1 mg/kg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=488e1689-84d4-4f96-ac85-fa0cbc661cb6"},
+   {use:"Rapid sequence intubation", pop:"adult", route:"IV", lo:1.5, hi:1.5, unit:"mg/kg", basis:"TBW", sheet:true, how:"Widely used RSI dose from StatPearls; not stated in the FDA label, which gives 0.3–1.1 mg/kg.", src:"https://www.statpearls.com/point-of-care/20362"},
+   {use:"Intermittent maintenance", pop:"adult", route:"IV", lo:0.04, hi:0.07, unit:"mg/kg", basis:"TBW", how:"After an initial 0.3–1.1 mg/kg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=488e1689-84d4-4f96-ac85-fa0cbc661cb6"},
+   {use:"Continuous infusion, long procedures", pop:"adult", route:"IV", lo:2.5, hi:4.3, unit:"mg/min", how:"Average adult rate (fixed, not weight-based).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=488e1689-84d4-4f96-ac85-fa0cbc661cb6"},
+   {use:"Emergency intubation, infants and small children", pop:"peds", route:"IV", lo:2, hi:2, unit:"mg/kg", basis:"TBW", sheet:true, how:"Reserve pediatric use for emergencies (boxed warning).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=488e1689-84d4-4f96-ac85-fa0cbc661cb6"},
+   {use:"Emergency intubation, older children and adolescents", pop:"peds", route:"IV", lo:1, hi:1, unit:"mg/kg", basis:"TBW", how:"Single dose.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=488e1689-84d4-4f96-ac85-fa0cbc661cb6"},
+   {use:"No IV access", pop:"adult", route:"IM", lo:3, hi:4, unit:"mg/kg", basis:"TBW", cap:150, sheet:true, how:"Total IM dose not to exceed 150 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=488e1689-84d4-4f96-ac85-fa0cbc661cb6"}],
+  time:{onset:[30,60], dur:[240,360], onsetTxt:"under 1 min", durTxt:"4–6 min"},
+  fx:{bp:["ok","Not stated","Not described in the label."], hr:["caution","↓ Bradycardia","Profound bradycardia or rarely asystole, especially after a second dose and in children."], resp:["avoid","Paralysis","Apnea; airway and ventilation support required."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:"Hyperkalemic cardiac arrest in apparently healthy children with undiagnosed myopathy (often Duchenne). Reserve pediatric use for emergency airway management.",
+  contra:["Personal or family history of MH","Skeletal muscle myopathies","After the acute phase of major burns, multiple trauma, denervation, or upper motor neuron injury"],
+  warn:["Hyperkalemia; K⁺ rises about 0.5 mEq/L normally","Malignant hyperthermia trigger","Raised intraocular, intracranial, and intragastric pressure","Prolonged block with plasma cholinesterase deficiency","Phase II block with repeated doses"],
+  pearls:["No reversal agent; sugammadex doesn't work.","Pregnancy lowers plasma cholinesterase about 24%, which can prolong apnea."],
+  organ:"No dose adjustment stated; severe liver or kidney disease can lower cholinesterase.", preg:"Plasma cholinesterase falls in pregnancy; possible prolonged apnea (label).",
+  reversal:{text:"None; recovers spontaneously via plasma cholinesterase"},
+  mech:"Depolarizes the motor end plate by acting at nicotinic acetylcholine receptors, causing fasciculations followed by paralysis.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=488e1689-84d4-4f96-ac85-fa0cbc661cb6","https://www.statpearls.com/point-of-care/20362"]},
+ rocuronium:{ name:"Rocuronium", brand:"Generic (Zemuron)", cls:"Nondepolarizing NMB (aminosteroid)", grp:"nmb", mh:false,
+  basisNote:"The label says to dose obese patients on actual body weight. Ideal-body-weight dosing is common in practice but isn't label-supported.",
+  doses:[
+   {use:"Intubation, standard", pop:"adult", route:"IV", lo:0.6, hi:0.6, unit:"mg/kg", basis:"TBW", sheet:true, how:"0.45 mg/kg may also be used.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c96726ef-f1fa-4ebb-ba33-3479c3902a8e"},
+   {use:"Rapid sequence intubation", pop:"adult", route:"IV", lo:0.6, hi:1.2, unit:"mg/kg", basis:"TBW", sheet:true, how:"Good intubating conditions in under 2 minutes in most patients. Higher doses act faster but last longer.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c96726ef-f1fa-4ebb-ba33-3479c3902a8e"},
+   {use:"Maintenance bolus", pop:"adult", route:"IV", lo:0.1, hi:0.2, unit:"mg/kg", basis:"TBW", how:"At 25% recovery of control T1.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c96726ef-f1fa-4ebb-ba33-3479c3902a8e"},
+   {use:"Continuous infusion", pop:"adult", route:"IV", lo:10, hi:12, unit:"mcg/kg/min", basis:"TBW", how:"Start only after early spontaneous recovery; trial range 4–16 mcg/kg/min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c96726ef-f1fa-4ebb-ba33-3479c3902a8e"},
+   {use:"Intubation", pop:"peds", route:"IV", lo:0.6, hi:0.6, unit:"mg/kg", basis:"TBW", sheet:true, how:"Not recommended for pediatric RSI (label).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c96726ef-f1fa-4ebb-ba33-3479c3902a8e"},
+   {use:"Maintenance bolus", pop:"peds", route:"IV", lo:0.15, hi:0.15, unit:"mg/kg", basis:"TBW", how:"At reappearance of T3.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c96726ef-f1fa-4ebb-ba33-3479c3902a8e"}],
+  time:{onset:[60,108], dur:[1860,4020], onsetTxt:"1–1.8 min to maximum block", durTxt:"31 min (0.6 mg/kg) to 67 min (1.2 mg/kg)", note:"Older adults: 46–94 min. Children at 0.6 mg/kg: about 26 min (label)."},
+  fx:{bp:["ok","Stable","No meaningful BP change."], hr:["ok","Mild ↑","Transient tachycardia during intubation in about a third of adults."], resp:["avoid","Paralysis","Requires ventilation; risk of residual paralysis."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:null, contra:[],
+  warn:["Anaphylaxis, with cross-reactivity among NMBs","Residual paralysis: confirm recovery before extubation","Myopathy with long ICU use plus steroids","Use caution in pulmonary hypertension"],
+  pearls:["Sugammadex 16 mg/kg can reverse immediately after 1.2 mg/kg.","Not recommended for cesarean RSI (label)."],
+  organ:"Hepatic elimination; half-life rises from 1.4 to 4.3 h in liver dysfunction. Renal impairment adds variability (label).", preg:"Use only if benefit justifies risk (label).",
+  reversal:{text:"Sugammadex", id:"sugammadex"},
+  mech:"Competitive antagonist at nicotinic acetylcholine receptors at the motor end plate.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c96726ef-f1fa-4ebb-ba33-3479c3902a8e","https://www.statpearls.com/point-of-care/43329","https://pmc.ncbi.nlm.nih.gov/articles/PMC10777192"]},
+ vecuronium:{ name:"Vecuronium", brand:"Generic", cls:"Nondepolarizing NMB (aminosteroid)", grp:"nmb", mh:false,
+  basisNote:"Label gives per-kg doses without obesity guidance; actual body weight used here.",
+  doses:[
+   {use:"Intubation, standard", pop:"adult", route:"IV", lo:0.08, hi:0.1, unit:"mg/kg", basis:"TBW", sheet:true, how:"Good intubating conditions in 2.5–3 minutes.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=96e69586-e9af-4b07-990f-12d93faa7edd"},
+   {use:"Initial dose after succinylcholine", pop:"adult", route:"IV", lo:0.04, hi:0.06, unit:"mg/kg", basis:"TBW", how:"Reduced dose with inhalation anesthesia.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=96e69586-e9af-4b07-990f-12d93faa7edd"},
+   {use:"Maintenance bolus", pop:"adult", route:"IV", lo:0.01, hi:0.015, unit:"mg/kg", basis:"TBW", how:"First usually at 25–40 min, then every 12–15 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=96e69586-e9af-4b07-990f-12d93faa7edd"},
+   {use:"Continuous infusion", pop:"adult", route:"IV", lo:0.8, hi:1.2, unit:"mcg/kg/min", basis:"TBW", how:"Start at 1 mcg/kg/min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=96e69586-e9af-4b07-990f-12d93faa7edd"}],
+  time:{onset:[150,180], dur:[1500,1800], onsetTxt:"2.5–3 min", peakTxt:"3–5 min", durTxt:"25–30 min"},
+  fx:{bp:["ok","Stable","No clinically significant hemodynamic effect."], hr:["ok","Stable","Won't counteract bradycardia from other drugs."], resp:["avoid","Paralysis","Requires ventilation."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:"Should be given only by adequately trained individuals familiar with its actions and hazards.", contra:[],
+  warn:["Active metabolite can accumulate, causing prolonged ICU weakness","Profound effects in myasthenia gravis","Anaphylaxis"],
+  pearls:["Children 1–10 may need slightly higher doses; infants are more sensitive (label).","Sugammadex 16 mg/kg immediate reversal is studied only for rocuronium."],
+  organ:"Recovery prolonged in cirrhosis or cholestasis. Anephric patients: consider a lower initial dose (label).", preg:"Use only if clearly needed (label).",
+  reversal:{text:"Sugammadex", id:"sugammadex"},
+  mech:"Competitive antagonist at nicotinic acetylcholine receptors at the motor end plate.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=96e69586-e9af-4b07-990f-12d93faa7edd"]},
+ cisatracurium:{ name:"Cisatracurium", brand:"Generic (Nimbex)", cls:"Nondepolarizing NMB (benzylisoquinolinium)", grp:"nmb", mh:false,
+  basisNote:"Label gives per-kg doses without obesity guidance; actual body weight used here.",
+  doses:[
+   {use:"Intubation", pop:"adult", route:"IV", lo:0.15, hi:0.2, unit:"mg/kg", basis:"TBW", sheet:true, how:"Good intubating conditions at 1.5–2 minutes.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67908e20-044d-454d-9c51-bf106e817bd0"},
+   {use:"Maintenance bolus", pop:"adult", route:"IV", lo:0.03, hi:0.03, unit:"mg/kg", basis:"TBW", how:"First dose 40–60 min after intubation.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67908e20-044d-454d-9c51-bf106e817bd0"},
+   {use:"Infusion, OR", pop:"adult", route:"IV", lo:1, hi:3, unit:"mcg/kg/min", basis:"TBW", how:"Start at 3 mcg/kg/min, then reduce to 1–2.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67908e20-044d-454d-9c51-bf106e817bd0"},
+   {use:"Infusion, ICU", pop:"adult", route:"IV", lo:0.5, hi:10.2, unit:"mcg/kg/min", basis:"TBW", how:"Recommended 3 mcg/kg/min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67908e20-044d-454d-9c51-bf106e817bd0"},
+   {use:"Intubation, 1–23 months", pop:"peds", route:"IV", lo:0.15, hi:0.15, unit:"mg/kg", basis:"TBW", sheet:true, how:"Over 5–10 seconds.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67908e20-044d-454d-9c51-bf106e817bd0"},
+   {use:"Intubation, 2–12 years", pop:"peds", route:"IV", lo:0.1, hi:0.15, unit:"mg/kg", basis:"TBW", how:"Over 5–10 seconds.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67908e20-044d-454d-9c51-bf106e817bd0"}],
+  time:{onset:[90,120], dur:[2520,3900], onsetTxt:"1.5–2 min to intubating conditions", peakTxt:"2.9–3.5 min", durTxt:"42–65 min, dose-dependent"},
+  fx:{bp:["ok","Stable","No dose-related BP change, even in cardiovascular disease."], hr:["ok","Stable","No dose-related change."], resp:["avoid","Paralysis","Requires ventilation; risk of residual paralysis."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:null, contra:["Multi-dose vial in infants under 1 month (benzyl alcohol)"],
+  warn:["Laudanosine metabolite caused seizures in animals","Burn patients may need higher doses","Not reversed by sugammadex"],
+  pearls:["Hofmann elimination (about 80% organ-independent) suits liver or kidney failure.","Reverse with neostigmine once there's spontaneous recovery."],
+  organ:"Recovery not clinically altered in end-stage kidney disease or liver transplant (label).", preg:"No human data (label).",
+  reversal:{text:"Neostigmine + glycopyrrolate", id:"neostigmine"},
+  mech:"Competitive antagonist at nicotinic receptors; degraded by Hofmann elimination in plasma.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67908e20-044d-454d-9c51-bf106e817bd0","https://www.apsf.org/in-the-literature/2023-american-society-of-anesthesiologists-practice-guidelines/"]},
+ sugammadex:{ name:"Sugammadex", brand:"Bridion", cls:"Selective relaxant binding agent", grp:"reversal", mh:false,
+  basisNote:"Actual body weight per label; dosing on ideal weight slowed recovery in morbid obesity.",
+  doses:[
+   {use:"Moderate block (T2 has reappeared)", pop:"adult", route:"IV", lo:2, hi:2, unit:"mg/kg", basis:"TBW", sheet:true, how:"After rocuronium or vecuronium. Also labeled from birth.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=5171d883-fe8f-482c-97ab-40b00975b64a"},
+   {use:"Deep block (1–2 post-tetanic counts, no twitches)", pop:"adult", route:"IV", lo:4, hi:4, unit:"mg/kg", basis:"TBW", sheet:true, how:"After rocuronium or vecuronium.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=5171d883-fe8f-482c-97ab-40b00975b64a"},
+   {use:"Immediate reversal after rocuronium 1.2 mg/kg", pop:"adult", route:"IV", lo:16, hi:16, unit:"mg/kg", basis:"TBW", sheet:true, how:"About 3 min after the rocuronium dose. Rocuronium only; not studied in children.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=5171d883-fe8f-482c-97ab-40b00975b64a"},
+   {use:"Moderate block (T2 has reappeared)", pop:"peds", route:"IV", lo:2, hi:2, unit:"mg/kg", basis:"TBW", sheet:true, how:"Labeled from birth.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=5171d883-fe8f-482c-97ab-40b00975b64a"},
+   {use:"Deep block (1–2 post-tetanic counts)", pop:"peds", route:"IV", lo:4, hi:4, unit:"mg/kg", basis:"TBW", sheet:true, how:"Labeled from birth.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=5171d883-fe8f-482c-97ab-40b00975b64a"}],
+  time:{text:"Median time to train-of-four ratio 0.9 is about 1.3–3.6 minutes depending on the blocker and depth (label)."},
+  fx:{bp:["ok","Not stated","Not described in the label."], hr:["caution","↓ Bradycardia","Marked bradycardia, sometimes with cardiac arrest, within minutes; have atropine ready."], resp:["ok","Restores","Reverses paralysis; recurrence possible with underdosing."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:null, contra:[],
+  warn:["Anaphylaxis","Hormonal contraceptives: use a backup method for 7 days","Raises aPTT and INR transiently","Not recommended if CrCl <30","Doesn't reverse succinylcholine or cisatracurium"],
+  pearls:["Underdosing raises the risk of recurrent block.","Re-paralyzing with rocuronium 0.6 mg/kg requires a 4-hour wait after a ≤4 mg/kg dose (label)."],
+  organ:"Renally excreted unchanged; not recommended in severe renal impairment (label).", preg:"No human data (label).",
+  reversal:null,
+  mech:"A modified gamma-cyclodextrin that encapsulates rocuronium or vecuronium, removing it from the receptor.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=5171d883-fe8f-482c-97ab-40b00975b64a","https://www.apsf.org/in-the-literature/2023-american-society-of-anesthesiologists-practice-guidelines/"]},
+ neostigmine:{ name:"Neostigmine", brand:"Bloxiverz", cls:"Cholinesterase inhibitor", grp:"reversal", mh:false,
+  basisNote:"Per-kg dose with a 5 mg absolute cap (label).",
+  doses:[
+   {use:"Reversal: shorter-acting NMB (e.g., rocuronium), good recovery", pop:"adult", route:"IV", lo:0.03, hi:0.03, unit:"mg/kg", basis:"TBW", cap:5, sheet:true, how:"Slow IV over at least 1 min. Requires first twitch ≥10% of baseline. Give glycopyrrolate 0.2 mg per 1 mg neostigmine before or with it.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=761d8917-27da-4a0c-9acc-98688cbc1d46"},
+   {use:"Reversal: longer-acting NMB (e.g., vecuronium) or weak first twitch", pop:"adult", route:"IV", lo:0.07, hi:0.07, unit:"mg/kg", basis:"TBW", cap:5, sheet:true, how:"Max 0.07 mg/kg or 5 mg, whichever is less. Pair with glycopyrrolate.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=761d8917-27da-4a0c-9acc-98688cbc1d46"}],
+  time:{text:"Train-of-four ratio 0.9 is usually reached within 10–20 minutes (label)."},
+  fx:{bp:["ok","Not stated","Not described in the label."], hr:["caution","↓ Bradycardia","Always give with an anticholinergic."], resp:["ok","Restores","Large doses at minimal block can cause weakness."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:null, contra:["Peritonitis","Mechanical bowel or urinary obstruction"],
+  warn:["Bradycardia without an anticholinergic","Caution in coronary disease, arrhythmias, or recent ACS","Paradoxical weakness when given at minimal block"],
+  pearls:["ASA 2023: reasonable when train-of-four ratio is 0.4–0.9; use sugammadex for deeper rocuronium or vecuronium block.","The standard choice after cisatracurium."],
+  organ:"Half-life prolonged in anephric patients (label).", preg:"Use only if clearly needed (label).",
+  reversal:null,
+  mech:"Inhibits acetylcholinesterase, raising acetylcholine at the end plate to outcompete nondepolarizing blockers.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=761d8917-27da-4a0c-9acc-98688cbc1d46","https://www.apsf.org/in-the-literature/2023-american-society-of-anesthesiologists-practice-guidelines/"]},
+ glycopyrrolate:{ name:"Glycopyrrolate", brand:"Generic (Robinul)", cls:"Anticholinergic", grp:"reversal", mh:false,
+  basisNote:"Fixed adult intraoperative dose; per-kg for premedication and children (label).",
+  doses:[
+   {use:"With neostigmine for reversal", pop:"adult", route:"IV", lo:0.2, hi:0.2, unit:"mg", how:"0.2 mg for every 1 mg of neostigmine, given before or with it.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=685aaf64-1a64-42f9-a96f-4764d650c26f"},
+   {use:"Intraoperative bradycardia or vagal reflexes", pop:"adult", route:"IV", lo:0.1, hi:0.1, unit:"mg", sheet:true, how:"Repeat every 2–3 min as needed.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=685aaf64-1a64-42f9-a96f-4764d650c26f"},
+   {use:"Preanesthetic antisialagogue", pop:"adult", route:"IM", lo:0.004, hi:0.004, unit:"mg/kg", basis:"TBW", how:"30–60 minutes before induction.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=685aaf64-1a64-42f9-a96f-4764d650c26f"},
+   {use:"Intraoperative", pop:"peds", route:"IV", lo:0.004, hi:0.004, unit:"mg/kg", basis:"TBW", cap:0.1, sheet:true, how:"Not to exceed 0.1 mg per single dose.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=685aaf64-1a64-42f9-a96f-4764d650c26f"},
+   {use:"Preanesthetic antisialagogue", pop:"peds", route:"IM", lo:0.004, hi:0.009, unit:"mg/kg", basis:"TBW", how:"Children under 2 may need up to 0.009 mg/kg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=685aaf64-1a64-42f9-a96f-4764d650c26f"}],
+  time:{onset:[20,60], dur:[7200,10800], onsetTxt:"within 1 min (IV)", durTxt:"vagal block 2–3 h", note:"Antisialagogue effect lasts up to 7 h (label)."},
+  fx:{bp:["ok","Not stated","Not described in the label."], hr:["caution","↑ Tachycardia","Investigate existing tachycardia before giving."], resp:["ok","Dries secretions","Reduces salivary and airway secretions."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:null, contra:[],
+  warn:["Glaucoma: raises intraocular pressure","Tachycardia","Heat prostration in children and older adults"],
+  pearls:["Doesn't cross the blood–brain barrier much, so fewer CNS effects than atropine."],
+  organ:"Renal elimination may be severely impaired in renal failure (label).", preg:"No teratogenicity in animal studies (label).",
+  reversal:null,
+  mech:"Quaternary antimuscarinic that blocks acetylcholine at muscarinic receptors.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=685aaf64-1a64-42f9-a96f-4764d650c26f"]},
+ phenylephrine:{ name:"Phenylephrine", brand:"Biorphen; generic", cls:"Alpha-1 agonist", grp:"pressor", mh:false,
+  basisNote:"Fixed doses (mcg and mcg/min), not weight-based, per label.",
+  doses:[
+   {use:"Hypotension, initial bolus", pop:"adult", route:"IV", lo:40, hi:100, unit:"mcg", sheet:true, how:"Then boluses up to 200 mcg every 1–2 min to BP goal. The 10 mg/mL vial must be diluted (1 mL in 99 mL = 100 mcg/mL); the 100 mcg/mL ready-to-use product is not diluted.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2f715e4e-b269-b935-d2c9-003cb29770be"},
+   {use:"Hypotension, repeat bolus", pop:"adult", route:"IV", lo:null, hi:200, unit:"mcg", how:"Every 1–2 min as needed.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2f715e4e-b269-b935-d2c9-003cb29770be"},
+   {use:"Hypotension, infusion (starting rate)", pop:"adult", route:"IV", lo:10, hi:35, unit:"mcg/min", how:"Titrate to effect; do not exceed 200 mcg/min. 10 mg in 500 mL = 20 mcg/mL.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2f715e4e-b269-b935-d2c9-003cb29770be"}],
+  time:{onset:[60,180], dur:[300,1200], onsetTxt:"1–3 min", durTxt:"5–20 min", note:"Onset and duration from StatPearls; the label says onset is rapid."},
+  fx:{bp:["ok","↑ Raises","Alpha-1 vasoconstriction raises SBP, DBP, MAP, and SVR."], hr:["caution","↓ Reflex brady","Reflex bradycardia; label warns of severe bradycardia and reduced cardiac output."], resp:["ok","Minimal","Dyspnea listed as an adverse reaction; may raise pulmonary artery pressure."], ponv:["caution","Nausea common","Nausea and vomiting are among the most common adverse reactions."]},
+  boxed:null, contra:[],
+  warn:["Severe bradycardia and decreased cardiac output","Can worsen angina, heart failure, or pulmonary hypertension","Peripheral and visceral ischemia; extravasation necrosis","Exaggerated response with MAOIs, TCAs, oxytocics, or autonomic dysfunction"],
+  pearls:["Preferred for spinal hypotension at cesarean delivery when maternal bradycardia isn't a concern (ASA, per StatPearls).","Dilution errors with the 10 mg/mL vial are common.","Correct hypovolemia and acidosis first."],
+  organ:"ESRD: increased response, start low. Child-Pugh B/C: decreased response, may need more.", preg:"No drug-associated birth defect or adverse neonatal signal in cesarean-delivery trials (label).",
+  reversal:{text:"No antidote. Extravasation: consider subcutaneous phentolamine."},
+  mech:"Direct alpha-1 agonist with minimal beta activity.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2f715e4e-b269-b935-d2c9-003cb29770be","https://www.statpearls.com/point-of-care/27119"]},
+ ephedrine:{ name:"Ephedrine", brand:"Akovaz; generic", cls:"Mixed alpha/beta agonist", grp:"pressor", mh:false,
+  basisNote:"Fixed mg doses, not weight-based, per label.",
+  doses:[
+   {use:"Hypotension during anesthesia, bolus", pop:"adult", route:"IV", lo:5, hi:10, unit:"mg", sheet:true, how:"Repeat as needed. Total not to exceed 50 mg. Dilute 50 mg/mL to 5 mg/mL; prefilled 5 mg/mL syringes are not diluted.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e92f3eda-33eb-4b34-9e8b-db8d32a5dbd9"},
+   {use:"Prolonged pressor effect", pop:"adult", route:"IM", lo:25, hi:50, unit:"mg", how:"Effect lasts about 60–90 min (StatPearls).", src:"https://www.statpearls.com/point-of-care/21194"}],
+  time:{text:"IV onset not stated in the label. IV effects last minutes; IM effect lasts about 60–90 minutes (StatPearls)."},
+  fx:{bp:["ok","↑ Raises","Direct alpha/beta agonism plus norepinephrine release."], hr:["caution","↑ Raises","Beta-1 effects raise heart rate and cardiac output; useful when hypotension comes with bradycardia."], resp:["ok","Bronchodilates","Beta-2 bronchodilation."], ponv:["caution","Nausea possible","Nausea and vomiting listed as adverse reactions."]},
+  boxed:null, contra:[],
+  warn:["Tachyphylaxis with repeated doses; have another pressor ready","Postpartum hypertension or stroke when combined with oxytocics","Effect increased by MAOIs, clonidine, propofol, and atropine"],
+  pearls:["Best when hypotension comes with a low or low-normal heart rate.","May shorten rocuronium onset when given at induction (label)."],
+  organ:"Renally excreted; renal impairment may prolong effect.", preg:"No identified risk of birth defects; possible neonatal acidosis reported (label).",
+  reversal:{text:"No antidote. Severe hypertension: parenteral antihypertensive."},
+  mech:"Direct alpha-1 and beta-1/beta-2 agonist that also releases norepinephrine from nerve terminals.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e92f3eda-33eb-4b34-9e8b-db8d32a5dbd9","https://www.statpearls.com/point-of-care/21194"]},
+ epinephrine:{ name:"Epinephrine", brand:"Adrenalin", cls:"Alpha/beta agonist", grp:"pressor", mh:false,
+  basisNote:"Septic-shock infusion and pediatric doses are weight-based (actual body weight); adult anaphylaxis and arrest doses are fixed.",
+  doses:[
+   {use:"Anaphylaxis (adults and children ≥30 kg)", minKg:30, alsoPeds:true, pop:"adult", route:"IM", lo:0.3, hi:0.5, unit:"mg", sheet:true, how:"Anterolateral thigh, undiluted 1 mg/mL. Max 0.5 mg per injection; repeat every 5–10 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3b7a4364-668d-4eb2-a20c-04adc35aabe4"},
+   {use:"Anaphylaxis (children <30 kg)", maxKg:29.99, pop:"peds", route:"IM", lo:0.01, hi:0.01, unit:"mg/kg", basis:"TBW", cap:0.3, sheet:true, how:"Max 0.3 mg per injection; repeat every 5–10 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3b7a4364-668d-4eb2-a20c-04adc35aabe4"},
+   {use:"Push-dose bolus for hypotension (off-label)", pop:"adult", route:"IV", lo:5, hi:20, unit:"mcg", how:"Typical 5–10 mcg every 2–5 min. 10 mcg/mL: 1 mL of 0.1 mg/mL + 9 mL NS. Source is an emergency-medicine review, not the label.", src:"https://www.emdocs.net/push-dose-vasopressors-an-update-for-2019/"},
+   {use:"Septic shock hypotension, infusion", pop:"adult", route:"IV", lo:0.05, hi:2, unit:"mcg/kg/min", basis:"TBW", how:"Titrate every 10–15 min in steps of 0.05–0.2 mcg/kg/min. Large vein.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3b7a4364-668d-4eb2-a20c-04adc35aabe4"},
+   {use:"Anaphylaxis, infusion (off-label)", pop:"adult", route:"IV", lo:5, hi:15, unit:"mcg/min", how:"Adjust to response (StatPearls).", src:"https://www.statpearls.com/point-of-care/21248"},
+   {use:"Cardiac arrest", pop:"adult", route:"IV/IO", lo:1, hi:1, unit:"mg", how:"Every 3–5 min until ROSC.", src:"https://www.statpearls.com/point-of-care/21248"},
+   {use:"Cardiac arrest", pop:"peds", route:"IV/IO", lo:0.01, hi:0.01, unit:"mg/kg", basis:"TBW", cap:1, how:"0.1 mL/kg of 0.1 mg/mL; max 1 mg per dose, every 3–5 min.", src:"https://www.statpearls.com/point-of-care/21248"}],
+  time:{onset:[60,300], dur:[300,900], onsetTxt:"about 1 min (push dose); BP rises within 5 min", durTxt:"5–15 min", note:"Label: BP response offsets within 15 min after IV dosing."},
+  fx:{bp:["ok","↑ Raises","Alpha-1 vasoconstriction dominates at higher doses; low doses may lower diastolic pressure (beta-2)."], hr:["caution","↑ Raises","Tachycardia, arrhythmias, and myocardial ischemia possible."], resp:["ok","Bronchodilates","Beta-2 bronchodilation; pulmonary edema possible."], ponv:["caution","Nausea possible","Nausea and vomiting are common adverse reactions."]},
+  boxed:null, contra:[],
+  warn:["Arrhythmias and myocardial ischemia","Severe hypertension with MAOIs or TCAs","Extravasation: infiltrate phentolamine 5–10 mg","Raises glucose and lactate"],
+  pearls:["Anaphylaxis: IM into the anterolateral thigh, not the deltoid or buttock.","Lactate rises with epinephrine and can confound sepsis assessment."],
+  organ:"No adjustment stated; renal vasoconstriction can reduce urine output.", preg:"First-line for anaphylaxis in pregnancy (label).",
+  reversal:{text:"Extravasation: phentolamine 5–10 mg in 10–15 mL saline."},
+  mech:"Endogenous catecholamine acting at alpha-1, beta-1, and beta-2 receptors; beta effects predominate at low doses, alpha at high doses.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3b7a4364-668d-4eb2-a20c-04adc35aabe4","https://www.statpearls.com/point-of-care/21248","https://www.emdocs.net/push-dose-vasopressors-an-update-for-2019/"]},
+ norepinephrine:{ name:"Norepinephrine", brand:"Levophed", cls:"Alpha-1/beta-1 agonist", grp:"pressor", mh:false,
+  basisNote:"Adult label doses are fixed mcg/min; pediatric doses are weight-based.",
+  doses:[
+   {use:"Severe hypotension, initial infusion", pop:"adult", route:"IV", lo:8, hi:12, unit:"mcg/min", how:"4 mg in 1000 mL D5W ≈ 4 mcg/mL. Check BP every 2 min until at target. Large vein.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2c7dd2b0-cc10-4db6-bf56-6eb154ebeb10"},
+   {use:"Severe hypotension, maintenance infusion", pop:"adult", route:"IV", lo:2, hi:4, unit:"mcg/min", how:"Titrate to BP; taper rather than stop abruptly.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2c7dd2b0-cc10-4db6-bf56-6eb154ebeb10"},
+   {use:"Hypotension or shock, infusion", pop:"peds", route:"IV", lo:0.05, hi:2, unit:"mcg/kg/min", basis:"TBW", how:"Start 0.05–0.1 mcg/kg/min (StatPearls). Label: pediatric safety not established.", src:"https://www.statpearls.com/point-of-care/25972"}],
+  time:{text:"Steady-state pressor response within about 5 minutes of starting; effect stops 1–2 minutes after the infusion ends (label)."},
+  fx:{bp:["ok","↑ Raises","Alpha vasoconstriction raises SVR and BP."], hr:["caution","↓ Reflex brady","Reflex vagal slowing; bradycardia is a common adverse reaction."], resp:["ok","Minimal","Respiratory difficulty and pulmonary edema listed as adverse reactions."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:null, contra:[],
+  warn:["Tissue ischemia and extravasation necrosis","Hypotension if stopped abruptly","Arrhythmias, worse with hypoxia or hypercarbia","Severe hypertension with MAOIs (including linezolid) or TCAs"],
+  pearls:["First-line vasopressor for fluid-refractory septic shock.","Dilute in dextrose-containing fluid; saline alone isn't recommended (label)."],
+  organ:"No specific adjustment; reduces renal perfusion.", preg:"Limited data show no increased risk; don't withhold life-sustaining therapy (label).",
+  reversal:{text:"Extravasation: phentolamine 5–10 mg in 10–15 mL saline, infiltrated promptly."},
+  mech:"Alpha-1 and beta-1 agonist with minimal beta-2 activity.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2c7dd2b0-cc10-4db6-bf56-6eb154ebeb10","https://www.statpearls.com/point-of-care/25972"]},
+ vasopressin:{ name:"Vasopressin", brand:"Vasostrict", cls:"V1/V2 agonist", grp:"pressor", mh:false,
+  basisNote:"Fixed units/min, not weight-based, per label.",
+  doses:[
+   {use:"Septic (vasodilatory) shock", pop:"adult", route:"IV", lo:0.01, hi:0.07, unit:"units/min", how:"Start 0.01 units/min; increase by 0.005 units/min every 10–15 min. Data are limited above 0.07 units/min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b1147beb-743e-4c62-8927-91192447f8b8"},
+   {use:"Post-cardiotomy vasodilatory shock", pop:"adult", route:"IV", lo:0.03, hi:0.1, unit:"units/min", how:"Start 0.03 units/min; same titration. Data are limited above 0.1 units/min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b1147beb-743e-4c62-8927-91192447f8b8"},
+   {use:"Refractory hypotension under anesthesia, bolus (off-label)", pop:"adult", route:"IV", lo:0.5, hi:1, unit:"units", how:"Or low-dose infusion 0.01–0.04 units/min, e.g., vasoplegia on ACE inhibitors or ARBs (OpenAnesthesia).", src:"https://www.openanesthesia.org/keywords/vasopressin/"}],
+  time:{text:"Pressor effect peaks within 15 minutes; fades within 20 minutes after stopping (label)."},
+  fx:{bp:["ok","↑ Raises","V1-mediated vasoconstriction; non-adrenergic."], hr:["caution","↓ May lower","Tends to lower heart rate and cardiac index."], resp:["ok","Not stated","Not described in the label."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:null, contra:["Chlorobutanol allergy (multi-dose vial)"],
+  warn:["Can worsen cardiac function","Reversible diabetes insipidus after stopping","Hyponatremia","Coronary, mesenteric, skin, and digital ischemia"],
+  pearls:["Keeps working under acidosis and hypoxia, when catecholamines falter.","Watch for polyuria and hypernatremia after weaning."],
+  organ:"No dose adjustment stated.", preg:"No human data; clearance rises late in pregnancy (label).",
+  reversal:{text:"No antidote; effects resolve within minutes of stopping."},
+  mech:"Synthetic vasopressin: V1 receptor vasoconstriction and V2 antidiuresis, independent of adrenergic receptors.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b1147beb-743e-4c62-8927-91192447f8b8","https://www.openanesthesia.org/keywords/vasopressin/"]},
+ lidocaine:{ name:"Lidocaine", brand:"Xylocaine", cls:"Amide local anesthetic", grp:"local", mh:false,
+  basisNote:"Labels give mg/kg limits without naming a weight type; actual body weight is used here, with the label's absolute mg caps applied.",
+  doses:[
+   {use:"Maximum dose, plain", pop:"adult", route:"Local/regional", lo:null, hi:4.5, unit:"mg/kg", basis:"TBW", cap:300, sheet:true, how:"Should not exceed 4.5 mg/kg; total generally ≤300 mg. Reduce in elderly, debilitated, or acutely ill patients.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dd52202-8eef-4136-92dd-ada573b7cf74"},
+   {use:"Maximum dose, with epinephrine", pop:"adult", route:"Local/regional", lo:null, hi:7, unit:"mg/kg", basis:"TBW", cap:500, sheet:true, how:"Should not exceed 7 mg/kg; total generally ≤500 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dd52202-8eef-4136-92dd-ada573b7cf74"},
+   {use:"Maximum dose, child", pop:"peds", route:"Local/regional", lo:3.3, hi:4.4, unit:"mg/kg", basis:"TBW", sheet:true, how:"Label states 1.5–2 mg/lb (converted here to mg/kg); e.g., a 50 lb child should not exceed 75–100 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dd52202-8eef-4136-92dd-ada573b7cf74"},
+   {use:"Ventricular arrhythmia, loading bolus", pop:"adult", route:"IV", lo:1, hi:1, unit:"mg/kg", basis:"TBW", how:"Give half the loading dose in hepatic dysfunction, heart failure, after cardiac surgery, or over age 70.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7dff29d9-522d-40eb-a9d9-42377912d640"},
+   {use:"Ventricular arrhythmia, infusion", pop:"adult", route:"IV", lo:20, hi:50, unit:"mcg/kg/min", basis:"TBW", how:"Rarely needed beyond 24 h.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7dff29d9-522d-40eb-a9d9-42377912d640"}],
+  time:{text:"Onset and duration depend on the volume, concentration, and site (label)."},
+  fx:{bp:["ok","Not stated","Toxicity can cause cardiovascular collapse."], hr:["ok","Not stated","IV use: stop if PR or QRS widen."], resp:["ok","Not stated","Not described in the label."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:null, contra:["Amide local anesthetic allergy","IV use: Stokes-Adams, WPW, or severe heart block without a pacemaker"],
+  warn:["LAST: early signs are perioral numbness, tinnitus, restlessness, then seizures and cardiovascular collapse","Methemoglobinemia, possibly delayed","Don't use epinephrine-containing solutions for IV regional anesthesia"],
+  pearls:["LAST rescue: lipid emulsion 20% (see Lipid emulsion card).","Observe 2 h after a LAST seizure and 4–6 h after cardiovascular instability (ASRA)."],
+  organ:"Half-life doubles or more in liver dysfunction; metabolites accumulate in renal dysfunction (label).", preg:"Pregnancy category B (label).",
+  reversal:{text:"Lipid emulsion 20% for LAST", id:"lipid"},
+  mech:"Blocks voltage-gated sodium channels in nerve membranes; class IB antiarrhythmic.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dd52202-8eef-4136-92dd-ada573b7cf74","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7dff29d9-522d-40eb-a9d9-42377912d640","https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"]},
+ bupivacaine:{ name:"Bupivacaine", brand:"Marcaine", cls:"Amide local anesthetic (long-acting)", grp:"local", mh:false,
+  basisNote:"The label limits doses in mg per block and per 24 h, not mg/kg.",
+  doses:[
+   {use:"Maximum, infiltration (plain, 0.25%)", pop:"adult", route:"Local", lo:null, hi:175, unit:"mg", sheet:true, how:"Up to 70 mL of 0.25% per dose.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67578b56-7540-487e-1fba-481255620e78"},
+   {use:"Maximum, infiltration (with epinephrine, 0.25%)", pop:"adult", route:"Local", lo:null, hi:225, unit:"mg", sheet:true, how:"Up to 90 mL of 0.25% with epinephrine per dose.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67578b56-7540-487e-1fba-481255620e78"},
+   {use:"Peripheral nerve block (0.5%)", pop:"adult", route:"Perineural", lo:25, hi:175, unit:"mg", how:"5–35 mL plain; with epinephrine 25–225 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67578b56-7540-487e-1fba-481255620e78"},
+   {use:"Lumbar epidural (0.5%)", pop:"adult", route:"Epidural", lo:50, hi:100, unit:"mg", how:"10–20 mL. The 0.75% concentration is not for obstetrics.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67578b56-7540-487e-1fba-481255620e78"},
+   {use:"Daily maximum, all routes", pop:"adult", route:"All", lo:null, hi:400, unit:"mg/24 h", how:"Don't exceed 400 mg in 24 hours.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67578b56-7540-487e-1fba-481255620e78"}],
+  time:{text:"Onset 2–10 minutes for dental injection; slower with 0.25%. Long-acting: dental anesthesia up to 7 hours, longer with epinephrine (label)."},
+  fx:{bp:["caution","↓ In toxicity","Cardiotoxic: hypotension and collapse in toxicity."], hr:["avoid","Arrhythmia","VT/VF and cardiac arrest with difficult resuscitation in toxicity."], resp:["ok","Not stated","Not described in the label."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:"Cardiac arrest with difficult resuscitation or death during epidural anesthesia in obstetric patients, mostly with 0.75%. 0.75% is not recommended for obstetric anesthesia.",
+  contra:["Obstetric paracervical block","IV regional anesthesia (Bier block)","Amide local anesthetic allergy"],
+  warn:["Cardiotoxicity: VT/VF and cardiac arrest","Methemoglobinemia","Chondrolysis with intra-articular infusion","Not recommended under age 12"],
+  pearls:["The most cardiotoxic of the common local anesthetics; have lipid emulsion available.","Adult half-life about 2.7 hours."],
+  organ:"Hepatic metabolism: reduce dose in moderate–severe impairment. Renal impairment raises toxicity risk (label).", preg:"Crosses the placenta; see boxed warning about 0.75% (label).",
+  reversal:{text:"Lipid emulsion 20% for LAST", id:"lipid"},
+  mech:"Long-acting sodium channel blocker with high protein binding and slow dissociation from cardiac sodium channels.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67578b56-7540-487e-1fba-481255620e78","https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"]},
+ ropivacaine:{ name:"Ropivacaine", brand:"Naropin", cls:"Amide local anesthetic (long-acting)", grp:"local", mh:false,
+  basisNote:"The label gives mg per technique, not mg/kg.",
+  doses:[
+   {use:"Major nerve block (0.5%)", pop:"adult", route:"Perineural", lo:175, hi:250, unit:"mg", sheet:true, how:"35–50 mL. With 0.75%: 75–300 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=56dfabf7-f7a8-4601-b17a-cb16fb995b0f"},
+   {use:"Surgical lumbar epidural", pop:"adult", route:"Epidural", lo:75, hi:200, unit:"mg", how:"0.5%: 75–150 mg; 0.75%: 113–188 mg; 1%: 150–200 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=56dfabf7-f7a8-4601-b17a-cb16fb995b0f"},
+   {use:"Field block or infiltration (0.5%)", pop:"adult", route:"Local", lo:5, hi:200, unit:"mg", how:"1–40 mL.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=56dfabf7-f7a8-4601-b17a-cb16fb995b0f"},
+   {use:"Epidural infusion (labor or postop)", pop:"adult", route:"Epidural", lo:12, hi:28, unit:"mg/h", how:"0.2% at 6–14 mL/h.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=56dfabf7-f7a8-4601-b17a-cb16fb995b0f"}],
+  time:{text:"Onset 10–30 minutes for epidural or major nerve block, 1–15 minutes for infiltration. Duration 5–10 hours for major nerve block, 2–6 hours for epidural or infiltration (label)."},
+  fx:{bp:["caution","↓ Lowers","Hypotension in 37% of patients in trials."], hr:["caution","↓ Slows","Bradycardia in about 9%."], resp:["ok","Not stated","Not described in the label."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:null, contra:["Amide local anesthetic allergy"],
+  warn:["Unintended IV injection: arrhythmia or cardiac arrest","Methemoglobinemia","Fluvoxamine cuts clearance by 70%"],
+  pearls:["Less cardiotoxic than bupivacaine with similar sensory block.","Up to 770 mg over 24 h was well tolerated postoperatively (label)."],
+  organ:"Hepatic CYP1A2 metabolism; caution in liver disease (label).", preg:"No adequate studies (label).",
+  reversal:{text:"Lipid emulsion 20% for LAST", id:"lipid"},
+  mech:"Long-acting sodium channel blocker; the pure S-enantiomer, with less cardiotoxicity than bupivacaine.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=56dfabf7-f7a8-4601-b17a-cb16fb995b0f","https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"]},
+ sevoflurane:{ name:"Sevoflurane", brand:"Ultane", cls:"Volatile anesthetic", grp:"inhaled", mh:true,
+  basisNote:"Dosed by inspired concentration, not weight.",
+  doses:[{use:"Maintenance", pop:"adult", route:"Inhaled", lo:0.5, hi:3, unit:"%", how:"With or without nitrous oxide.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4c6e76bc-c964-4955-e0a3-511d3386a9cc"}],
+  mac:"In oxygen: 2.6% at 25 y, 2.1% at 40 y, 1.7% at 60 y, 1.4% at 80 y. In 65% nitrous oxide: 1.4%, 1.1%, 0.9%, 0.7%. Children in oxygen: 3.3% (0–1 mo) to 2.5% (3–12 y). Blood:gas coefficient 0.63–0.69.",
+  time:{text:"Mean induction 3.1 min in adults and 2.0 min in children. Mean emergence 7.7 min (label)."},
+  fx:{bp:["caution","↓ Lowers","Dose-dependent cardiac depression."], hr:["ok","Stable","No increase below 2 MAC."], resp:["caution","Depression","Respiratory depression; nonpungent, so smooth mask induction."], ponv:["caution","↑ Raises","Volatile anesthetics increase PONV."]},
+  boxed:null, contra:["Malignant hyperthermia susceptibility"],
+  warn:["Compound A: limit to 2 MAC-hours at 1 to <2 L/min fresh gas flow","Heat with desiccated CO₂ absorbent","QT prolongation","Hyperkalemia in children with neuromuscular disease"],
+  pearls:["The standard choice for pediatric mask induction."],
+  organ:"Caution if creatinine >1.5 mg/dL (label).", preg:"May relax the uterus (label).",
+  reversal:null,
+  mech:"Halogenated ether that enhances GABA-A and glycine receptors and inhibits NMDA and other excitatory channels.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4c6e76bc-c964-4955-e0a3-511d3386a9cc"]},
+ desflurane:{ name:"Desflurane", brand:"Suprane", cls:"Volatile anesthetic", grp:"inhaled", mh:true,
+  basisNote:"Dosed by inspired concentration, not weight.",
+  doses:[],
+  mac:"In oxygen: 7.3% at 25 y, 6.0% at 45 y, 5.2% at 70 y. In 60% nitrous oxide: 4.0%, 2.8%, 1.7%. Children peak 10.0% at 9 months. Blood:gas coefficient 0.42, the lowest of the volatiles.",
+  time:{text:"Fastest emergence of the volatiles: following commands in 6.5 min vs 11.1 min with isoflurane (label)."},
+  fx:{bp:["caution","↓ Lowers","Dose-dependent; rapid increases cause sympathetic surges."], hr:["caution","↑ Above 1 MAC","Rapid concentration increases raise heart rate and BP."], resp:["avoid","Irritant","Airway irritation; not for pediatric induction."], ponv:["caution","↑ Raises","Volatile anesthetics increase PONV."]},
+  boxed:null, contra:["Malignant hyperthermia susceptibility","Pediatric induction","Prior hepatitis after a halogenated anesthetic"],
+  warn:["Airway irritation and laryngospasm","Tachycardia and hypertension with rapid step-ups","Carbon monoxide with desiccated absorbent"],
+  pearls:["Avoid rapid increases in concentration."],
+  organ:"Sensitivity hepatitis in previously sensitized patients (label).", preg:"No adequate studies (label).",
+  reversal:null,
+  mech:"Halogenated ether with very low blood solubility, giving fast onset and offset.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7f977eb6-c7c4-4dc5-ab3b-07414dbe5da5"]},
+ isoflurane:{ name:"Isoflurane", brand:"Forane", cls:"Volatile anesthetic", grp:"inhaled", mh:true,
+  basisNote:"Dosed by inspired concentration, not weight.",
+  doses:[
+   {use:"Induction", pop:"adult", route:"Inhaled", lo:1.5, hi:3, unit:"%", how:"Surgical anesthesia in 7–10 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3d30eb8d-a62e-475f-926b-78ba63bee9c8"},
+   {use:"Maintenance", pop:"adult", route:"Inhaled", lo:1, hi:2.5, unit:"%", how:"With nitrous oxide; add 0.5–1% with oxygen alone.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3d30eb8d-a62e-475f-926b-78ba63bee9c8"}],
+  mac:"In oxygen: 1.28% at 19–30 y, 1.15% at 31–55 y, 1.05% at 55–83 y. In 70% nitrous oxide: 0.56%, 0.50%, 0.37%. Blood:gas coefficient 1.43, the most soluble of the three modern volatiles.",
+  time:{text:"Surgical anesthesia in 7–10 minutes at 1.5–3% (label)."},
+  fx:{bp:["caution","↓ Lowers","Dose-dependent fall in vascular resistance."], hr:["caution","↑ Raises","Compensatory tachycardia maintains cardiac output."], resp:["caution","Depression","Profound respiratory depressant; pungent."], ponv:["caution","↑ Raises","Volatile anesthetics increase PONV."]},
+  boxed:null, contra:["Malignant hyperthermia susceptibility","Prior hepatitis after a halogenated anesthetic"],
+  warn:["Pungent: poor for mask induction","Carbon monoxide with desiccated absorbent","QT prolongation"],
+  pearls:["Slower emergence than sevoflurane or desflurane."],
+  organ:"Contraindicated after prior halogenated-anesthetic hepatitis (label).", preg:"Obstetric use not established (label).",
+  reversal:null,
+  mech:"Halogenated ether volatile anesthetic.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3d30eb8d-a62e-475f-926b-78ba63bee9c8"]},
+ nitrous:{ name:"Nitrous oxide", brand:"N₂O", cls:"Inhaled anesthetic gas", grp:"inhaled", mh:false,
+  basisNote:"Dosed by inspired concentration, not weight.",
+  doses:[],
+  mac:"104% (can't produce anesthesia alone at atmospheric pressure). Blood:gas coefficient 0.47.",
+  time:{text:"Rapid onset and offset because of low blood solubility. Give 100% oxygen at the end to prevent diffusion hypoxia."},
+  fx:{bp:["ok","Maintained","Sympathetic stimulation offsets mild myocardial depression."], hr:["ok","Not stated","Not described in the sources reviewed."], resp:["caution","Potentiates","Adds to opioid and sedative respiratory depression."], ponv:["caution","↑ Raises","Raises PONV when used for maintenance, especially in cases over 2 hours."]},
+  boxed:null, contra:["Pneumothorax","Bowel obstruction","Middle ear surgery","Intraocular gas bubble","Pneumocephalus","B12 deficiency or methionine synthase defects"],
+  warn:["Expands closed gas spaces","Neurologic and hematologic toxicity with B12 deficiency","Diffusion hypoxia at the end of the case"],
+  pearls:["Second-gas effect speeds uptake of a volatile agent.","Use only in the last 30 minutes to avoid the PONV penalty (Fifth PONV Consensus)."],
+  organ:"Not stated.", preg:"Sources disagree: often avoided in the first trimester.",
+  reversal:null,
+  mech:"NMDA receptor antagonist gas with analgesic properties.",
+  srcs:["https://www.ncbi.nlm.nih.gov/books/NBK532922/","https://www.openanesthesia.org/nitrous-oxide/"]},
+ ondansetron:{ name:"Ondansetron", brand:"Zofran", cls:"5-HT3 antagonist", grp:"other", mh:false,
+  basisNote:"Children ≤40 kg are dosed per kg on actual body weight; adults get a fixed dose.",
+  doses:[
+   {use:"PONV prevention", pop:"adult", route:"IV", lo:4, hi:4, unit:"mg", sheet:true, how:"Undiluted over at least 30 s (preferably 2–5 min). The label says immediately before induction.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=70437694-0341-4f3b-824c-06843403443f"},
+   {use:"PONV prevention, 1 mo–12 y (≤40 kg)", maxKg:40, pop:"peds", route:"IV", lo:0.1, hi:0.1, unit:"mg/kg", basis:"TBW", cap:4, sheet:true, how:"Over at least 30 s.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=70437694-0341-4f3b-824c-06843403443f"},
+   {use:"PONV prevention, child >40 kg", pop:"peds", minKg:40, route:"IV", lo:4, hi:4, unit:"mg", sheet:true, how:"Single 4 mg dose over at least 30 s.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=70437694-0341-4f3b-824c-06843403443f"}],
+  time:{text:"Half-life about 3.5–4 hours (label)."},
+  fx:{bp:["ok","Not stated","Not described in the label."], hr:["caution","QT risk","QT prolongation; avoid in congenital long QT."], resp:["ok","Not stated","Bronchospasm only as part of hypersensitivity."], ponv:["ok","↓ Prevents","First-line PONV prophylaxis."]},
+  boxed:null, contra:["Apomorphine (severe hypotension)"],
+  warn:["QT prolongation","Serotonin syndrome","Can mask progressive ileus"],
+  pearls:["Often paired with dexamethasone for patients with 1–2 PONV risk factors."],
+  organ:"Severe hepatic impairment: max 8 mg/day. No renal adjustment (label).", preg:"Inconsistent data on oral clefts and cardiac defects (label).",
+  reversal:null,
+  mech:"Blocks 5-HT3 receptors in the chemoreceptor trigger zone and gut vagal afferents.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=70437694-0341-4f3b-824c-06843403443f","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
+ dexamethasone:{ name:"Dexamethasone", brand:"Generic", cls:"Corticosteroid", grp:"other", mh:false,
+  basisNote:"Fixed mg dose for PONV.",
+  doses:[{use:"PONV prophylaxis (off-label)", pop:"adult", route:"IV", lo:4, hi:8, unit:"mg", sheet:true, how:"Single intraoperative dose; 8 mg had the best antiemetic and analgesic effect (Fifth PONV Consensus, 2025).", src:"https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"}],
+  time:{text:"Timing data not stated in the label."},
+  fx:{bp:["ok","Not stated","Not described."], hr:["ok","Not stated","Not described."], resp:["ok","Not stated","Not described."], ponv:["ok","↓ Prevents","Effective PONV prophylaxis."]},
+  boxed:null, contra:["Systemic fungal infection"],
+  warn:["Transient hyperglycemia, including in diabetics","Immunosuppression with repeated use"],
+  pearls:["A single 8 mg dose didn't raise surgical-site infection risk (PADDI trial)."],
+  organ:"Enhanced effect in cirrhosis (label).", preg:"No adequate human studies (label).",
+  reversal:null,
+  mech:"Glucocorticoid; its antiemetic mechanism isn't fully understood.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ce25183b-cd67-4997-8de9-df59b750883b","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
+ dantrolene:{ name:"Dantrolene", brand:"Ryanodex; Dantrium IV; Revonto", cls:"Ryanodine receptor antagonist", grp:"other", mh:false,
+  basisNote:"mg/kg on actual body weight; neither the labels nor MHAUS specify actual vs ideal.",
+  doses:[
+   {use:"Malignant hyperthermia, initial dose (MHAUS)", pop:"adult", route:"IV", lo:2.5, hi:2.5, unit:"mg/kg", basis:"TBW", sheet:true, how:"Rapidly through a large-bore IV. Repeat until ETCO₂, rigidity, and heart rate improve. Labels cap the cumulative dose at 10 mg/kg; MHAUS notes more may be needed — consider other diagnoses if no response.", src:"https://www.mhaus.org/healthcare-professionals/managing-a-crisis/"},
+   {use:"Malignant hyperthermia, initial dose (MHAUS)", pop:"peds", route:"IV", lo:2.5, hi:2.5, unit:"mg/kg", basis:"TBW", sheet:true, how:"Same weight-based dose as adults.", src:"https://www.mhaus.org/healthcare-professionals/managing-a-crisis/"},
+   {use:"Cumulative label maximum", pop:"adult", route:"IV", lo:null, hi:10, unit:"mg/kg", basis:"TBW", how:"Ryanodex 250 mg vial: reconstitute with 5 mL sterile water. Dantrium/Revonto 20 mg vial: 60 mL sterile water.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8f7b3ac0-604d-4c78-b545-5e0f8ea3d698"}],
+  time:{text:"Half-life 8.5–11.4 hours (Ryanodex) or 4–8 hours (20 mg vial label)."},
+  fx:{bp:["ok","Not stated","Avoid calcium channel blockers."], hr:["ok","Not stated","Not described."], resp:["caution","Weakness","Muscle weakness and dysphagia afterward."], ponv:["ok","Not stated","Not described."]},
+  boxed:null, contra:[],
+  warn:["Muscle weakness and choking risk","Avoid calcium channel blockers","Extravasation necrosis","Hepatotoxicity reported"],
+  pearls:["MH crisis: stop triggers, 100% O₂ at 10 L/min, dantrolene, cool if >39 °C (MHAUS).","MH cart: 36 vials of Dantrium/Revonto or 3 vials of Ryanodex (MHAUS)."],
+  organ:"Hepatotoxicity reported with IV use (labels).", preg:"Don't withhold life-saving treatment (label).",
+  reversal:null,
+  mech:"Blocks ryanodine receptor calcium release in skeletal muscle.",
+  srcs:["https://www.mhaus.org/healthcare-professionals/managing-a-crisis/","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8f7b3ac0-604d-4c78-b545-5e0f8ea3d698","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ab0efc75-0598-4f4e-91ad-6195bb2661fe"]},
+ lipid:{ name:"Lipid emulsion 20%", brand:"Intralipid (for LAST)", cls:"LAST rescue", grp:"other", mh:false,
+  basisNote:"ASRA 2020 doses depend on whether the patient is over or under 70 kg; per-kg doses use actual body weight.",
+  doses:[
+   {use:"LAST bolus, patient ≤70 kg", maxKg:70, alsoPeds:true, pop:"adult", route:"IV", lo:1.5, hi:1.5, unit:"mL/kg", basis:"TBW", sheet:true, how:"Over 2–3 minutes. If still unstable, repeat the bolus. Max 12 mL/kg total.", src:"https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"},
+   {use:"LAST infusion, patient ≤70 kg", maxKg:70, alsoPeds:true, pop:"adult", route:"IV", lo:0.25, hi:0.25, unit:"mL/kg/min", basis:"TBW", how:"Double it if still unstable. Continue at least 15 min after stability returns. Max 12 mL/kg total.", src:"https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"},
+   {use:"LAST bolus, patient >70 kg", minKg:70, pop:"adult", route:"IV", lo:100, hi:100, unit:"mL", sheet:true, how:"Over 2–3 minutes, then about 250 mL over 15–20 minutes. Max 12 mL/kg total.", src:"https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"},
+   {use:"Maximum total dose", pop:"adult", route:"IV", lo:null, hi:12, unit:"mL/kg", basis:"TBW", how:"ASRA upper limit.", src:"https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"}],
+  time:{text:"Give at the first signs of serious LAST, alongside airway management and seizure control."},
+  fx:{bp:["ok","Supports","Restores cardiac function in LAST."], hr:["ok","n/a","—"], resp:["ok","n/a","—"], ponv:["ok","n/a","—"]},
+  boxed:null, contra:[],
+  warn:["In LAST, epinephrine doses should be <1 mcg/kg","Avoid vasopressin, calcium channel blockers, beta-blockers, and more local anesthetic","Benzodiazepines for seizures; avoid propofol if unstable"],
+  pearls:["Observe 2 h after a seizure and 4–6 h after cardiovascular instability (ASRA)."],
+  organ:"—", preg:"Use as indicated in an emergency.",
+  reversal:null,
+  mech:"Thought to act as a lipid sink that pulls local anesthetic away from cardiac tissue, plus direct metabolic effects.",
+  srcs:["https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"]},
+};
+for(const id in ADRUGS){ ADRUGS[id].spec="anes"; }
+
 const QTC = [["ok","Minimal","No meaningful QTc effect."],["caution","Low","Small, dose-dependent prolongation."],["caution","Moderate","ECG if cardiac risk or other QT drugs."],["avoid","High","Avoid with other QT-prolonging drugs."]];
 const tile = (label,[lv,word,detail]) => `<div class="gl lv-${lv}"><span>${label}</span><strong>${esc(word)}</strong>${detail?`<p>${esc(detail)}</p>`:""}</div>`;
 const SEV = {avoid:"Avoid",adjust:"Adjust dose",monitor:"Monitor"};
 const ORDER = GROUPS.flatMap(([g])=>Object.keys(DRUGS).filter(id=>DRUGS[id].grp===g));
-const bv = (d,k) => d.burden[k]||0;
+const bv = (d,k) => (d.burden||{})[k]||0;
 
-const state = { drug:"sertraline", age:"adult", ind:null, view:"dex", cond:"All", mechOpen:true, chip:null, regimen:new Set(["escitalopram","bupropion","aripiprazole"]) };
+/* ---------- Specialty framework ---------- */
+const AGROUPS = [["induction","Induction & sedation"],["opioid","Opioids"],["nmb","Neuromuscular blockers"],["reversal","Reversal agents"],["pressor","Vasopressors"],["local","Local anesthetics"],["inhaled","Inhaled agents"],["other","Antiemetics & rescue"]];
+for(const id in DRUGS) if(!DRUGS[id].spec) DRUGS[id].spec="psych";
+Object.assign(DRUGS, ADRUGS);
+const AORDER = AGROUPS.flatMap(([g])=>Object.keys(ADRUGS).filter(id=>ADRUGS[id].grp===g));
+const SPECS = {
+  psych:{name:"Psychiatry", slug:"psychiatry", blurb:"Antidepressants, antipsychotics, mood stabilizers, ADHD and anxiety medications.", groups:GROUPS, order:ORDER,
+         cats:CONDS, catOf:(d,c)=>d.conds.includes(c), tabs:[["dex","Drugs"],["cmp","Compare"],["reg","Regimen"]],
+         title:"Find a psychiatric medication", lede:"Dosing, safety, side effects, and receptor profiles for commonly used psychiatric drugs."},
+  anes:{name:"Anesthesiology", slug:"anesthesia", blurb:"Induction agents, opioids, paralytics, reversal, pressors, local and inhaled anesthetics.", groups:AGROUPS, order:AORDER,
+         cats:AGROUPS.map(g=>g[1]), catOf:(d,c)=>AGROUPS.find(g=>g[1]===c)?.[0]===d.grp, tabs:[["dex","Drugs"],["sheet","Dose sheet"]],
+         title:"Find an anesthesia drug", lede:"Weight-based doses, onset and duration, hemodynamic effects, and reversal for common perioperative drugs."}
+};
+const SPEC_ORDER = ["psych","anes"];
+const spec = () => SPECS[state.spec||"psych"];
+
+/* ---------- Patient (anesthesia) ---------- */
+const PTPOP = [["adult","Adult"],["peds","Pediatric"],["elderly","Older adult"]];
+function renderPtbar(){
+  const p=state.pt, el=$("#ptbar");
+  const i=CALC.ibw(p.cm,p.sex), l=CALC.lbw(p.kg,p.cm,p.sex), a=CALC.adjbw(p.kg,p.cm,p.sex), b=CALC.bmi(p.kg,p.cm);
+  el.innerHTML = `
+    <div class="pt-row">
+      <div><span class="ctx-label" id="pop-l">Patient</span><div class="seg" role="group" aria-labelledby="pop-l">${PTPOP.map(([k,l])=>`<button data-pop="${k}" aria-pressed="${k===p.pop}">${l}</button>`).join("")}</div></div>
+      <label class="pt-f"><span class="ctx-label">Weight</span><span class="pt-in"><input id="pt-kg" type="number" inputmode="decimal" min="0.5" max="350" step="0.1" value="${p.kg??""}" placeholder="—"><i>kg</i></span></label>
+      <label class="pt-f"><span class="ctx-label">Height</span><span class="pt-in"><input id="pt-cm" type="number" inputmode="decimal" min="40" max="230" step="1" value="${p.cm??""}" placeholder="—"><i>cm</i></span></label>
+      <div><span class="ctx-label" id="sex-l">Sex</span><div class="seg" role="group" aria-labelledby="sex-l">${[["M","Male"],["F","Female"]].map(([k,l])=>`<button data-sex="${k}" aria-pressed="${k===p.sex}">${l}</button>`).join("")}</div></div>
+    </div>
+    <p class="pt-derived" id="pt-derived">${ptDerived(i,l,a,b)}</p>`;
+}
+function ptDerived(i,l,a,b){
+  const p=state.pt;
+  if(!(p.kg>0)) return "Enter weight to calculate doses. Add height and sex for ideal and lean body weight.";
+  if(i===null) return `Actual weight ${CALC.round(p.kg)} kg. Add height and sex for ideal (IBW) and lean (LBW) body weight.`;
+  return `Actual ${CALC.round(p.kg)} kg · IBW ${CALC.round(i)} kg · LBW ${CALC.round(l)} kg · Adjusted ${CALC.round(a)} kg · BMI ${CALC.round(b)}`;
+}
+function updatePtDerived(){ const p=state.pt; const el=$("#pt-derived"); if(el) el.textContent=ptDerived(CALC.ibw(p.cm,p.sex),CALC.lbw(p.kg,p.cm,p.sex),CALC.adjbw(p.kg,p.cm,p.sex),CALC.bmi(p.kg,p.cm)); }
+const BASIS_NAME = {TBW:"actual body weight", IBW:"ideal body weight", LBW:"lean body weight", AdjBW:"adjusted body weight"};
+
+/* ---------- Timeline ---------- */
+const TMIN=10, TMAX=8*3600;
+const tpos = s => Math.max(0,Math.min(100,(Math.log10(Math.max(s,TMIN))-Math.log10(TMIN))/(Math.log10(TMAX)-Math.log10(TMIN))*100));
+function timelineHTML(t){
+  if(!t || !t.onset || !t.dur) return `<p class="note" style="margin:0">${esc(t?.text||"Timing varies with route and dose.")}</p>`;
+  const [o1,o2]=t.onset, [d1,d2]=t.dur;
+  const ticks=[[10,"10 s"],[60,"1 min"],[300,"5 min"],[900,"15 min"],[3600,"1 h"],[14400,"4 h"]];
+  return `<div class="tl" role="img" aria-label="Onset ${esc(t.onsetTxt)}, duration ${esc(t.durTxt)}">
+      <span class="tl-track"></span>
+      <span class="tl-on" style="left:${tpos(o1)}%;width:${Math.max(tpos(o2)-tpos(o1),1)}%"></span>
+      <span class="tl-eff" style="left:${tpos(o2)}%;width:${Math.max(tpos(d1)-tpos(o2),1)}%"></span>
+      <span class="tl-tail" style="left:${tpos(d1)}%;width:${Math.max(tpos(d2)-tpos(d1),0.5)}%"></span>
+      ${ticks.map(([s,l],i)=>`<span class="r-tickline" style="left:${tpos(s)}%;top:26px"></span><span class="r-tick ${i===0?"first":""}" style="left:${tpos(s)}%;top:31px">${l}</span>`).join("")}
+    </div>
+    <p class="r-line">Onset <b>${esc(t.onsetTxt)}</b>${t.peakTxt?` · peak <b>${esc(t.peakTxt)}</b>`:""} · lasts <b>${esc(t.durTxt)}</b></p>${t.note?`<p class="note">${esc(t.note)}</p>`:""}`;
+}
+
+/* ---------- Anesthesia card ---------- */
+function fitsWeight(dz){ const kg=state.pt.kg; if(!(kg>0)) return true; if(dz.maxKg!=null && kg>dz.maxKg) return false; if(dz.minKg!=null && (dz.minKg===30 ? kg<30 : kg<=dz.minKg)) return false; return true; }
+function weightRule(dz){ return dz.maxKg!=null?`patients ≤${Math.round(dz.maxKg)} kg`:dz.minKg!=null?(dz.minKg===30?"patients ≥30 kg":`patients >${dz.minKg} kg`):""; }
+const forPop = (x,pop) => x.pop===pop || (pop==="peds" && x.alsoPeds);
+function doseResult(dz){
+  if(!fitsWeight(dz)) return {main:"Not for this weight", sub:`This dose applies to ${weightRule(dz)}. Choose the dose for this patient's weight.`, perkg:CALC.isPerKg(dz.unit), off:true};
+  const r=CALC.compute(dz, state.pt);
+  const perkg=CALC.isPerKg(dz.unit);
+  const range=CALC.fmtRange(dz.lo,dz.hi,dz.unit);
+  let main, sub="";
+  if(!perkg){ main=range; }
+  else if(r.lo===null && r.hi===null){ main=range; sub=r.note; }
+  else { main=CALC.fmtRange(r.lo,r.hi,r.unit); sub=`${range} × ${CALC.round(r.w)} kg (${BASIS_NAME[r.used]})${r.capped?` · capped at ${dz.cap} ${r.unit}`:""}${r.note?` · ${r.note}`:""}`; }
+  return {main, sub, perkg};
+}
+function renderACard(){
+  const d=DRUGS[state.drug], p=state.pt;
+  const all=d.doses, popD=all.filter(x=>forPop(x,p.pop)), list=popD.length?popD:all;
+  const noDose = !all.length;
+  if(!list.includes(list[state.ause])) state.ause=0;
+  if(state.autoPick && list[0] && !fitsWeight(list[0])){ const k=list.findIndex(fitsWeight); if(k>0) state.ause=k; }
+  state.autoPick=false;
+  const dz=list[state.ause]||list[0];
+  const chips=[["Blood pressure",d.fx.bp],["Heart rate",d.fx.hr],["Breathing",d.fx.resp],["MH trigger",d.mh?["avoid","Triggers MH","Volatile anesthetics and succinylcholine can trigger malignant hyperthermia. Avoid in susceptible patients."]:["ok","Not a trigger","Does not trigger malignant hyperthermia."]],["PONV",d.fx.ponv],
+    ["Boxed warning", d.boxed?["avoid","Yes",d.boxed]:["ok","None","No boxed warning."]]];
+  const open=chips.find(c=>c[0]===state.chip);
+  const chipsHTML=`<div class="chips" role="group" aria-label="Effects at a glance">${chips.map(([l,[lv,w]])=>{ const bx=l==="Boxed warning", mh=l==="MH trigger";
+      const txt=bx?(lv==="ok"?"No boxed warning":"FDA boxed warning"):mh?(lv==="ok"?"Not an MH trigger":"MH trigger"):`${l}: ${w}`;
+      return `<button class="sc lv-${lv}${bx?" bx":""}" data-chip="${l}" aria-pressed="${l===state.chip}" aria-expanded="${l===state.chip}">${esc(txt)}<span class="chev" aria-hidden="true">▾</span></button>`; }).join("")}${open?"":`<span class="sc-hint">Tap for details</span>`}</div>`
+    + (open?`<p class="sc-detail lv-${open[1][0]}"><b>${open[0]}: ${esc(open[1][1])}.</b> ${esc(open[1][2]||"")}</p>`:"");
+  const res=dz?doseResult(dz):null;
+  const rev=d.reversal?(d.reversal.id&&DRUGS[d.reversal.id]?`<button class="goto-n" data-goto="${d.reversal.id}">${esc(d.reversal.text)}</button>`:esc(d.reversal.text)):"None";
+  $("#card").style.setProperty("--drug", `var(--g-${d.grp})`);
+  $("#card").innerHTML = `
+    <div class="card-head">
+      <div><h1>${d.name}</h1><div class="brand">${esc(d.brand||"")}</div></div>
+      <span class="chip">${esc(d.cls)}</span>
+    </div>
+    ${chipsHTML}
+    <div class="panels">
+      <section class="panel overview">
+        <h2>Dosing</h2>
+        <div class="dosebox">
+          ${noDose?`<p style="margin:0">Dosed by inspired concentration. See MAC below.</p>`:""}
+          ${noDose||popD.length?"":`<p class="note" style="margin:0 0 8px">No ${PTPOP.find(x=>x[0]===p.pop)[1].toLowerCase()}-specific dosing listed; showing all doses.</p>`}
+          ${noDose?"":`<label class="ctx-label" for="ause">Use</label>
+          <select id="ause">${list.map((x,i)=>`<option value="${i}" ${i===state.ause?"selected":""}>${esc(x.use)}${x.route?` (${x.route})`:""}</option>`).join("")}</select>
+          ${dz?`<p class="ad-main${res.off?" off":""}">${esc(res.main)}${dz.route?` <span>${esc(dz.route)}</span>`:""}</p>
+          ${res.sub?`<p class="ad-sub">${esc(res.sub)}</p>`:""}
+          ${dz.how?`<p class="titr">${esc(dz.how)}</p>`:""}
+          ${dz.src?`<p class="srcs" style="margin-top:8px"><a href="${dz.src}" target="_blank" rel="noopener">Source for this dose ↗</a></p>`:""}`:""}`}
+        </div>
+        ${d.basisNote?`<p class="note"><b>Dosing weight.</b> ${esc(d.basisNote)}</p>`:""}
+        ${d.mac?`<h3>MAC</h3><p style="margin:0">${esc(d.mac)}</p>`:""}
+        <h3>Onset &amp; duration</h3>${timelineHTML(d.time)}
+        <h3>Reversal</h3><p style="margin:0">${rev}</p>
+        <h3>Contraindications</h3>${d.contra.length?`<div class="tags">${d.contra.map(c=>`<span class="tag red">✕ ${esc(c)}</span>`).join("")}</div>`:`<div class="tags"><span class="tag">None beyond hypersensitivity</span></div>`}
+      </section>
+      <section class="panel">
+        <h2>Warnings</h2>
+        ${d.warn.length?`<ul class="serious">${d.warn.map(w=>`<li>${esc(w)}</li>`).join("")}</ul>`:`<p class="note" style="margin:0">None listed.</p>`}
+        ${d.pearls&&d.pearls.length?`<h3>Pearls</h3><ul class="pearls">${d.pearls.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+      </section>
+      <details class="panel mech" id="mech" ${state.mechOpen?"open":""}>
+        <summary><h2>Pharmacology</h2></summary>
+        <p style="margin:0 0 10px">${esc(d.mech)}</p>
+
+        <h3>Liver &amp; kidney</h3><p style="margin:0">${esc(d.organ||"Not specified.")}</p>
+        ${d.preg?`<h3>Pregnancy</h3><p style="margin:0">${esc(d.preg)}</p>`:""}
+        <h3>Sources</h3><ul class="srclist">${d.srcs.map(u=>`<li><a href="${u}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/,"").slice(0,70))}</a></li>`).join("")}</ul>
+      </details>
+    </div>`;
+  watchHead();
+}
+
+/* ---------- Dose sheet ---------- */
+function renderSheet(){
+  const rows=[];
+  for(const [g,label] of AGROUPS){
+    const items=[];
+    for(const id of AORDER.filter(i=>DRUGS[i].grp===g)){
+      const d=DRUGS[id];
+      const pop=state.pt.pop, sh=d.doses.filter(x=>x.sheet), match=sh.filter(x=>forPop(x,pop));
+      let ds=match.filter(fitsWeight), fb=false;
+      if(!match.length && pop==="elderly"){ ds=sh.filter(x=>x.pop==="adult").filter(fitsWeight); fb=true; }
+      for(const dz of ds){ const r=doseResult(dz);
+        items.push(`<tr><td><button class="goto-n" data-goto="${id}">${d.name}</button></td><td>${esc(dz.use)}${dz.route?` <span class="muted">(${esc(dz.route)})</span>`:""}${fb?`<br><span class="fb">Adult dose; no older-adult dose listed</span>`:""}</td><td class="num"><b>${esc(r.main)}</b>${r.capped?`<br><span class="fb">Capped at ${dz.cap} ${esc(r.unit)}</span>`:""}</td><td class="muted">${r.perkg?esc(CALC.fmtRange(dz.lo,dz.hi,dz.unit)+(dz.basis&&dz.basis!=="TBW"?` · ${dz.basis==="IBW30"?"IBW if >30% over":dz.basis}`:"")):"Fixed dose"}</td></tr>`); }
+      if(!match.length && sh.length && pop==="peds") items.push(`<tr><td><button class="goto-n" data-goto="${id}">${d.name}</button></td><td colspan="3" class="muted">No pediatric dose listed in the sources used</td></tr>`);
+    }
+    if(items.length) rows.push(`<tr class="sh-g"><th colspan="4">${label}</th></tr>`+items.join(""));
+  }
+  $("#sheetbody").innerHTML = rows.join("");
+}
+
+const state = { spec:"psych", pt:{pop:"adult",kg:null,cm:null,sex:null}, ause:0, drug:"sertraline", age:"adult", ind:null, view:"root", hcond:null, cmp:[], cond:"All", mechOpen:true, chip:null, regimen:new Set() };
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const col = id => `var(--g-${DRUGS[id].grp})`;
 const pal = i => `var(--p${i%8})`;
 
 function renderConds(){
-  $("#conds").innerHTML = ["All",...CONDS].map(c=>`<button class="cond" data-cond="${c}" aria-pressed="${c===state.cond}">${c}</button>`).join("");
+  $("#conds").innerHTML = ["All",...spec().cats].map(c=>`<button class="cond" data-cond="${c}" aria-pressed="${c===state.cond}">${c}</button>`).join("");
 }
-function renderEntries(){
-  const q = $("#q").value.trim().toLowerCase();
+function listHTML(q, cond){
+  q=(q||"").trim().toLowerCase();
   const ok = id => { const d=DRUGS[id];
-    return (!q || (d.name+" "+d.brand+" "+d.cls).toLowerCase().includes(q)) && (state.cond==="All" || d.conds.includes(state.cond)); };
-  const html = GROUPS.map(([g,label])=>{
-    const ids = ORDER.filter(id=>DRUGS[id].grp===g && ok(id));
+    return (!q || (d.name+" "+(d.brand||"")+" "+d.cls).toLowerCase().includes(q)) && (!cond || cond==="All" || spec().catOf(d,cond)); };
+  return spec().groups.map(([g,label])=>{
+    const ids = spec().order.filter(id=>DRUGS[id].grp===g && ok(id));
     if(!ids.length) return "";
     return `<div class="grp-h">${label}</div>` + ids.map(id=>{
       const d=DRUGS[id];
-      return `<button class="entry" data-id="${id}" aria-current="${id===state.drug}"><span class="dot" style="background:${col(id)}"></span><b>${d.name}</b><small>${esc(d.brand)}</small></button>`;
+      return `<button class="entry" data-id="${id}" aria-current="${id===state.drug}"><span class="dot" style="background:${col(id)}"></span><b>${d.name}</b><small>${esc(d.brand||"")}</small></button>`;
     }).join("");
   }).join("");
-  $("#entries").innerHTML = html || `<div class="hint">No match.</div>`;
+}
+function renderHome(){
+  const S=spec();
+  $("#home h1").textContent=S.title; $("#home .lede").textContent=S.lede;
+  $("#home .tools").hidden = state.spec!=="psych"; $("#home .atools").hidden = state.spec!=="anes";
+  $("#condgrid").innerHTML = S.cats.map(c=>`<button class="hc" data-hcond="${c}" aria-pressed="${c===state.hcond}">${c}<small>${S.order.filter(id=>S.catOf(DRUGS[id],c)).length}</small></button>`).join("");
+  const q=$("#hq").value;
+  $("#hresults").innerHTML = (q.trim()||state.hcond) ? (listHTML(q, state.hcond) || `<div class="hint">No match.</div>`) : "";
+}
+const DMQ = {amphetamine:"Adderall", guanfacine:"Intuniv", lithium:"lithium carbonate", divalproex:"divalproex sodium"};
+function cmpOpts(exclude){ return GROUPS.map(([g,label])=>{ const ids=ORDER.filter(id=>DRUGS[id].grp===g && !exclude.includes(id));
+  return ids.length?`<optgroup label="${label}">${ids.map(id=>`<option value="${id}">${DRUGS[id].name}</option>`).join("")}</optgroup>`:""; }).join(""); }
+function renderCompare(){
+  const sel=state.cmp;
+  $("#cpicker").innerHTML = sel.map(id=>`<span class="pick" style="--drug:${col(id)}"><span class="dot"></span><button class="goto-n" data-goto="${id}">${DRUGS[id].name}</button><button class="rm" data-crm="${id}" aria-label="Remove ${DRUGS[id].name}">×</button></span>`).join("")
+    + (sel.length<3?`<label class="visually-hidden" for="caddsel">Add a medication to compare</label><select id="caddsel"><option value="">+ Add a medication</option>${cmpOpts(sel)}</select>`:"");
+  const g=$("#cmpgrid");
+  if(!sel.length){ g.style.gridTemplateColumns="1fr"; g.innerHTML=`<div class="empty">Choose a medication from the menu above, then add one or two more to see them side by side.</div>`; return; }
+  g.style.gridTemplateColumns=`repeat(${sel.length}, minmax(240px, 1fr))`;
+  const rows = [
+    ["top", d=>`<p class="cname">${d.name}</p><div class="ccls">${esc(d.brand)} · ${d.cls}${d.sched?` · ${d.sched}`:""}</div>`],
+    ["", d=>{ const b=[...new Set(Object.values(d.boxed))];
+      const items=[["Pregnancy",d.s.preg],["Lactation",d.s.lact],["Hepatic",d.s.hep],["Renal",d.s.ren],["QTc",QTC[bv(d,"qtc")]],["Boxed warning",b.length?["avoid",b.map(x=>BOXLAB.get(x)).join(" · ")]:["ok","None"]]];
+      return `<h3>Safety</h3>`+items.map(([l,[lv,w]])=>`<div class="cv lv-${lv}"><span>${l}</span><b>${esc(w)}</b></div>`).join(""); }],
+    ["", d=>{ const a=d.dosing.adult||{}, k=Object.keys(a)[0];
+      return `<h3>Adult dosing${k?` · ${esc(k)}`:""}</h3>` + (k?rulerHTML(a[k]):`<p class="note" style="margin:0">No adult FDA indication.</p>`); }],
+    ["", d=>`<h3>Burden profile</h3><div class="meters">${DOMAINS.map(([k,label])=>{ const v=bv(d,k); return `<div class="meter"><span>${label}</span><span class="pips">${[1,2,3].map(i=>`<span class="pip ${i<=v?"l"+v:""}"></span>`).join("")}</span></div>`; }).join("")}</div>`],
+    ["", d=>{ const ae=d.ae.filter(([k])=>k==="serious").map(([,t])=>`<li>${esc(t)}</li>`).join(""); return `<h3>Serious adverse effects</h3>${ae?`<ul class="serious">${ae}</ul>`:`<p class="note" style="margin:0">None listed.</p>`}`; }],
+    ["", d=>`<h3>CYP</h3><p style="margin:0;font-size:13px">Inhibits: ${esc(d.cyp.inh)}</p>`],
+    ["bottom", (d,id)=>`<button class="goto" data-goto="${id}">Open full card →</button>`]
+  ];
+  g.innerHTML = rows.map(([cls,f])=>sel.map(id=>`<div class="cc ${cls}" style="--drug:${col(id)}">${f(DRUGS[id],id)}</div>`).join("")).join("");
+}
+function hashFor(){
+  if(state.view==="root") return "";
+  if(state.view==="dex") return state.drug;
+  if(state.view==="cmp") return ["compare",...state.cmp].join(".");
+  if(state.view==="reg") return ["regimen",...state.regimen].join(".");
+  if(state.view==="sheet") return "dosesheet";
+  return spec().slug;
+}
+function syncHash(){ try{ const h=hashFor(); history.replaceState(null,"",h?"#"+h:location.pathname+location.search); }catch(e){} }
+function readHash(){
+  const h=location.hash.slice(1); if(!h){ state.view="root"; return; }
+  const [k,...ids]=h.split("."); const good=ids.filter(id=>DRUGS[id]&&DRUGS[id].spec==="psych");
+  if(DRUGS[k]){ state.drug=k; state.spec=DRUGS[k].spec; state.view="dex"; }
+  else if(k==="compare"){ state.spec="psych"; if(good.length) state.cmp=good.slice(0,3); state.view="cmp"; }
+  else if(k==="regimen"){ state.spec="psych"; if(good.length) state.regimen=new Set(good); state.view="reg"; }
+  else if(k==="dosesheet"){ state.spec="anes"; state.view="sheet"; }
+  else { const sp=Object.keys(SPECS).find(x=>SPECS[x].slug===k); if(sp){ state.spec=sp; state.view="home"; } else state.view="root"; }
+}
+function renderEntries(){
+  $("#entries").innerHTML = listHTML($("#q").value, state.cond) || `<div class="hint">No match.</div>`;
 }
 
 function fpPos(ki){ const p = 9 - Math.log10(ki); return Math.max(0, Math.min(100, (p-5)/5*100)); }
 function fmtKi(ki){ if(ki>=10000) return "&gt;10 µM"; if(ki>=1000) return "~"+(ki/1000).toFixed(1)+" µM"; return "~"+(ki<1?ki:Math.round(ki))+" nM"; }
 
 function renderCard(){
+  if(DRUGS[state.drug].spec==='anes') return renderACard();
   const d = DRUGS[state.drug], S = d.s;
   const ages = d.dosing[state.age] || {};
   const inds = Object.keys(ages);
@@ -1075,6 +2028,7 @@ function renderCard(){
         </div>
         <h3>Contraindications</h3>${S.contra.length?`<div class="tags">${S.contra.map(c=>`<span class="tag red">✕ ${esc(c)}</span>`).join("")}</div>`:`<div class="tags"><span class="tag">None beyond hypersensitivity</span></div>`}
         <h3>Monitoring</h3><div class="tags">${S.monitor.map(m=>`<span class="tag mon">${esc(m)}</span>`).join("")}</div>
+        <p class="srcs">Verify: <a href="https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=${encodeURIComponent(DMQ[state.drug]||d.name)}" target="_blank" rel="noopener">FDA label (DailyMed) ↗</a> · <a href="https://www.ncbi.nlm.nih.gov/books/?term=${encodeURIComponent(d.name.split(" ")[0]+" LactMed")}" target="_blank" rel="noopener">LactMed ↗</a></p>
       </section>
 
       <section class="panel">
@@ -1153,12 +2107,12 @@ function renderRegimen(){
     const ids = ORDER.filter(id=>DRUGS[id].grp===g && !state.regimen.has(id));
     return ids.length?`<optgroup label="${label}">${ids.map(id=>`<option value="${id}">${DRUGS[id].name}</option>`).join("")}</optgroup>`:"";
   }).join("");
-  $("#picker").innerHTML = sel.map((id,i)=>`<span class="pick" style="--drug:${pal(i)}"><span class="dot"></span>${DRUGS[id].name}<button class="rm" data-rm="${id}" aria-label="Remove ${DRUGS[id].name}">×</button></span>`).join("")
+  $("#picker").innerHTML = sel.map((id,i)=>`<span class="pick" style="--drug:${pal(i)}"><span class="dot"></span><button class="goto-n" data-goto="${id}">${DRUGS[id].name}</button><button class="rm" data-rm="${id}" aria-label="Remove ${DRUGS[id].name}">×</button></span>`).join("")
     + `<label class="visually-hidden" for="addsel">Add a medication</label><select id="addsel"><option value="">+ Add a medication</option>${opts}</select>`;
   const SCALE = 9;
   if(!sel.length){
-    $("#stack").innerHTML = `<div class="empty">Add one or more medications to see cumulative burden.</div>`;
-    $("#legend").innerHTML=""; $("#flags").innerHTML = `<div class="empty">No medications selected.</div>`; return;
+    $("#stack").innerHTML = `<div class="empty">Add the patient's medications from the menu above to see stacked side-effect burden.</div>`;
+    $("#legend").innerHTML=""; $("#flags").innerHTML = `<div class="empty">Interactions appear here once two or more medications are added.</div>`; return;
   }
   const levels = {};
   $("#stack").innerHTML = DOMAINS.map(([k,label])=>{
@@ -1182,38 +2136,79 @@ function renderRegimen(){
   $("#flags").innerHTML = html.length ? html.join("") : `<div class="empty">No flagged interactions among these medications in this prototype's rule set. Always run a full interaction check.</div>`;
 }
 
-function setView(v){
-  state.view=v;
-  $("#dex").hidden = v!=="dex"; $("#reg").hidden = v!=="reg";
-  $("#v-dex").setAttribute("aria-pressed", v==="dex"); $("#v-reg").setAttribute("aria-pressed", v==="reg");
-  if(v==="reg"){ $("#namepill").hidden=true; renderRegimen(); } else renderCard();
+function renderTabs(){
+  const v=state.view;
+  $("#views").innerHTML = v==="root" ? "" : spec().tabs.map(([k,l])=>`<button data-tab="${k}" aria-pressed="${k===v||(k==="dex"&&(v==="home"||v==="dex"))}">${l}</button>`).join("");
+  $("#views").hidden = v==="root";
+  $("#specbtn").innerHTML = (v==="root"?"Choose a specialty":esc(spec().name)) + ` <span aria-hidden="true">▾</span>`;
 }
+function renderRoot(){
+  $("#speccards").innerHTML = SPEC_ORDER.map(k=>{ const S=SPECS[k]; return `<button class="speccard" data-spec="${k}"><b>${S.name}</b><span>${S.blurb}</span><small>${S.order.length} medications →</small></button>`; }).join("")
+    + `<div class="speccard soon"><b>More specialties</b><span>Emergency medicine, internal medicine, and pediatrics are planned.</span></div>`;
+}
+function setView(v){
+  if(v==="dex" && !state.drug) v="home";
+  if((v==="cmp"||v==="reg") && state.spec!=="psych") v="home";
+  if(v==="sheet" && state.spec!=="anes") v="home";
+  state.view=v;
+  for(const id of ["root","home","dex","cmp","reg","sheet"]) $("#"+id).hidden = id!==v;
+  const showPt = state.spec==="anes" && (v==="dex"||v==="sheet");
+  $("#ptbar").hidden = !showPt; if(showPt) renderPtbar();
+  if(v!=="dex") $("#namepill").hidden=true;
+  closeSpecMenu(); renderTabs();
+  if(v==="root") renderRoot(); else if(v==="home") renderHome(); else if(v==="dex"){ renderConds(); renderEntries(); renderCard(); } else if(v==="cmp") renderCompare(); else if(v==="reg") renderRegimen(); else renderSheet();
+  syncHash();
+}
+function setSpec(k){ if(state.spec!==k){ state.spec=k; state.hcond=null; state.cond="All"; state.chip=null; $("#hq").value=""; $("#q").value=""; } setView("home"); window.scrollTo(0,0); }
+function closeSpecMenu(){ const m=$("#specmenu"); if(m){ m.hidden=true; $("#specbtn").setAttribute("aria-expanded","false"); } }
 
 document.addEventListener("click", e=>{
   if(e.target.closest("#railtoggle")){ setRail(!$("#rail").classList.contains("open")); return; }
-  const ent = e.target.closest(".entry"); if(ent){ state.drug=ent.dataset.id; state.ind=null; renderEntries(); renderCard();
+  if(e.target.closest("#specbtn")){ const m=$("#specmenu"); m.hidden=!m.hidden; $("#specbtn").setAttribute("aria-expanded", String(!m.hidden));
+    m.innerHTML = SPEC_ORDER.map(k=>`<button role="menuitem" data-spec="${k}" aria-current="${k===state.spec&&state.view!=="root"}">${SPECS[k].name}</button>`).join("") + `<button role="menuitem" data-root="1">All specialties</button>`; return; }
+  if(!e.target.closest("#specmenu")) closeSpecMenu();
+  const sp = e.target.closest("[data-spec]"); if(sp){ setSpec(sp.dataset.spec); return; }
+  if(e.target.closest("[data-root]")){ setView("root"); window.scrollTo(0,0); return; }
+  const tab = e.target.closest("[data-tab]"); if(tab){ setView(tab.dataset.tab==="dex"?"home":tab.dataset.tab); window.scrollTo(0,0); return; }
+  const pop = e.target.closest("[data-pop]"); if(pop){ state.pt.pop=pop.dataset.pop; state.ause=0; renderPtbar(); state.view==="sheet"?renderSheet():renderCard(); return; }
+  const sx = e.target.closest("[data-sex]"); if(sx){ state.pt.sex = state.pt.sex===sx.dataset.sex?null:sx.dataset.sex; renderPtbar(); state.view==="sheet"?renderSheet():renderCard(); return; }
+  const go = e.target.closest("[data-goto]"); if(go){ state.drug=go.dataset.goto; state.spec=DRUGS[state.drug].spec; state.ind=null; state.ause=0; state.autoPick=true; state.chip=null; setView("dex"); window.scrollTo(0,0); return; }
+  const ent = e.target.closest(".entry"); if(ent){ state.drug=ent.dataset.id; state.ind=null; state.ause=0; state.autoPick=true; state.chip=null;
+    if(state.view!=="dex"){ setView("dex"); window.scrollTo(0,0); return; }
+    renderEntries(); renderCard(); syncHash();
     if(window.matchMedia && matchMedia("(max-width: 820px)").matches){ setRail(false); window.scrollTo(0,0); } return; }
+  const hc = e.target.closest("[data-hcond]"); if(hc){ state.hcond = state.hcond===hc.dataset.hcond?null:hc.dataset.hcond; renderHome(); return; }
+  const tl = e.target.closest("[data-view]"); if(tl){ setView(tl.dataset.view); window.scrollTo(0,0); return; }
+  const crm = e.target.closest("[data-crm]"); if(crm){ state.cmp=state.cmp.filter(x=>x!==crm.dataset.crm); renderCompare(); syncHash(); return; }
+  if(e.target.closest("#home-link")){ $("#hq").value=""; state.hcond=null; setView("root"); window.scrollTo(0,0); return; }
   const cd = e.target.closest(".cond"); if(cd){ state.cond=cd.dataset.cond; renderConds(); renderEntries(); return; }
   const ch = e.target.closest("[data-chip]"); if(ch){ state.chip = state.chip===ch.dataset.chip?null:ch.dataset.chip; renderCard(); return; }
   const age = e.target.closest("[data-age]"); if(age){ state.age=age.dataset.age; state.ind=null; renderCard(); return; }
   if(e.target.closest("#add")){ state.regimen.has(state.drug)?state.regimen.delete(state.drug):state.regimen.add(state.drug); renderCard(); return; }
-  const rm = e.target.closest("[data-rm]"); if(rm){ state.regimen.delete(rm.dataset.rm); renderRegimen(); return; }
+  const rm = e.target.closest("[data-rm]"); if(rm){ state.regimen.delete(rm.dataset.rm); renderRegimen(); syncHash(); return; }
   if(e.target.closest("#namepill")){ const r=!!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches); window.scrollTo({top:0,behavior:r?"auto":"smooth"}); return; }
-  if(e.target.closest("#v-dex")) setView("dex");
-  if(e.target.closest("#v-reg")) setView("reg");
+
 });
 document.addEventListener("change", e=>{
   if(e.target.id==="ind"){ state.ind=e.target.value; renderCard(); }
-  if(e.target.id==="addsel" && e.target.value){ state.regimen.add(e.target.value); renderRegimen(); }
+  if(e.target.id==="ause"){ state.ause=+e.target.value; renderCard(); }
+  if(e.target.id==="addsel" && e.target.value){ state.regimen.add(e.target.value); renderRegimen(); syncHash(); }
+  if(e.target.id==="caddsel" && e.target.value){ state.cmp.push(e.target.value); renderCompare(); syncHash(); }
 });
 function setRail(open){ $("#rail").classList.toggle("open",open); const t=$("#railtoggle"); t.setAttribute("aria-expanded",open); t.textContent=open?"Close ▴":"Browse ▾"; }
 document.addEventListener("toggle", e=>{ if(e.target.id==="mech") state.mechOpen=e.target.open; }, true);
+$("#hq").addEventListener("input", renderHome);
+document.addEventListener("input", e=>{
+  if(e.target.id==="pt-kg"||e.target.id==="pt-cm"){ const v=parseFloat(e.target.value); state.pt[e.target.id==="pt-kg"?"kg":"cm"] = (isFinite(v)&&v>0)?v:null;
+    updatePtDerived(); state.view==="sheet"?renderSheet():renderCard(); }
+});
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeSpecMenu(); });
+window.addEventListener("hashchange", ()=>{ if(location.hash.slice(1)!==hashFor()){ readHash(); setView(state.view); } });
 $("#q").addEventListener("input", ()=>{ if($("#q").value.trim()) setRail(true); renderEntries(); });
-document.addEventListener("keydown", e=>{ if(e.key==="/" && !["INPUT","SELECT"].includes(document.activeElement.tagName)){ e.preventDefault(); setView("dex"); $("#q").focus(); }});
+document.addEventListener("keydown", e=>{ if(e.key==="/" && !["INPUT","SELECT"].includes(document.activeElement.tagName)){ e.preventDefault(); if(state.view==="root") return; setView("home"); $("#hq").focus(); }});
 
-const h = location.hash.slice(1);
-if(DRUGS[h]) state.drug=h; else if(h==="regimen") state.view="reg";
-renderConds(); renderEntries(); setView(state.view);
+readHash();
+renderConds(); setView(state.view);
 
 </script>
 
