@@ -241,6 +241,37 @@ table.sheet td.num b{font-size:15px}.muted{color:var(--muted)}
 @media (max-width:640px){ .speccards{grid-template-columns:minmax(0,1fr)} .ptbar{position:static} }
 .ad-main.off{color:var(--sev-adjust);font-size:20px}
 .fb{font-size:11.5px;color:var(--sev-adjust)}
+.pt-pair{display:inline-flex;gap:6px}.pt-pair input{width:56px}
+.panels.one{grid-template-columns:minmax(0,1fr)}
+.ad-row{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:6px 16px;margin-top:10px}
+.ad-row .ad-main{margin:0}
+.ad-vol{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.ad-vol b{font-family:var(--f-display);font-size:22px}
+.concbtn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
+.concbtn.fixed{cursor:default}
+button.concbtn:hover{border-color:var(--ink);color:var(--ink)}
+.quick{display:grid;gap:12px;margin-top:14px}
+.qrow{display:grid;grid-template-columns:90px minmax(0,1fr);gap:10px;align-items:baseline;font-size:14px}
+.qrow>span{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}
+.sheet2{display:grid;gap:14px}
+.ph{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.ph-h{margin:0;padding:8px 14px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;background:var(--surface-2);border-bottom:1px solid var(--line);font-family:var(--f-body)}
+.sr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;padding:10px 14px;border-bottom:1px solid var(--line);align-items:center}
+.sr:last-child{border-bottom:0}
+.sr-l{display:flex;flex-direction:column;gap:2px;min-width:0}
+.sr-n{font-weight:700;font-size:15px;text-align:left;text-decoration:none}
+.sr-u{font-size:12.5px;color:var(--muted)}
+.sr-r{display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right}
+.sr-d{font-size:16px}.sr-v{font-size:13.5px;font-weight:600;display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.sr-k{font-size:11.5px}
+.crises{display:grid;gap:10px}
+.cr{border:1px solid var(--line);border-left:5px solid var(--cr);border-radius:10px;background:var(--surface);overflow:hidden}
+.cr-h{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;text-align:left;border:0;background:transparent;padding:12px 14px;cursor:pointer}
+.cr-h b{font-size:16px;color:var(--cr)}.cr-h span{grid-column:1;font-size:13px;color:var(--muted)}.cr-h i{grid-row:1/3;grid-column:2;align-self:center;font-style:normal;color:var(--muted)}
+.cr-s{margin:0;padding:0 14px 6px 34px;display:grid;gap:10px;font-size:14px}
+.cr-s li{display:flex;flex-direction:column;gap:2px}
+.cr-s .cd{font-size:15px}.cr-s small{color:var(--muted);font-size:12.5px}
+.cr-src{padding:0 14px 12px}
+@media (max-width:520px){ .sr{grid-template-columns:minmax(0,1fr)} .sr-r{align-items:flex-start;text-align:left} .sr-v{justify-content:flex-start} }
 .glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:16px}
 .gl{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 12px;min-width:0}
 .gl span{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--lv);font-weight:700}
@@ -378,7 +409,8 @@ table.sheet td.num b{font-size:15px}.muted{color:var(--muted)}
       <button class="tool" data-view="reg"><b>Check a regimen →</b><span>See stacked side-effect burden and interactions.</span></button>
     </div>
     <div class="tools atools" hidden>
-      <button class="tool" data-view="sheet"><b>Weight-based dose sheet →</b><span>Enter a weight once and see common induction, paralytic, reversal, and rescue doses.</span></button>
+      <button class="tool" data-view="sheet"><b>Case doses →</b><span>Enter a weight once and see every dose and draw-up volume in case order.</span></button>
+      <button class="tool" data-view="crisis"><b>Crises →</b><span>MH, LAST, anaphylaxis, bradycardia, arrest, hyperkalemia.</span></button>
     </div>
   </section>
   <section id="cmp" hidden>
@@ -402,8 +434,13 @@ table.sheet td.num b{font-size:15px}.muted{color:var(--muted)}
   </section>
 
   <section id="sheet" hidden>
-    <div class="reg-head"><h1>Dose sheet</h1><p>Doses calculated for the patient above, using each drug's recommended dosing weight. Check every dose against the label and your institution's protocol before giving it.</p></div>
-    <div class="sheet-scroll"><table class="sheet"><thead><tr><th>Drug</th><th>Use</th><th>Dose</th><th>Per kg</th></tr></thead><tbody id="sheetbody"></tbody></table></div>
+    <div class="reg-head"><h1>Case doses</h1><p>Every common dose for this patient, in case order, with draw-up volumes. Tap a concentration to change it; your choice is remembered on this device. Verify against your institution's stock and protocols.</p></div>
+    <p class="empty" id="sheetnote">Enter the patient's weight above to calculate doses and volumes.</p>
+    <div id="sheetbody" class="sheet2"></div>
+  </section>
+  <section id="crisis" hidden>
+    <div class="reg-head"><h1>Crises</h1><p>Step-by-step protocols with doses calculated for the patient above. Call for help early.</p></div>
+    <div id="crisisbody" class="crises"></div>
   </section>
   <section id="reg" hidden>
     <div class="reg-head">
@@ -1081,6 +1118,8 @@ const DRUGS = {
 };
 
 /* Affinity dosing math. Pure functions only; no DOM. Tested in calc.test.js. */
+/* Affinity dosing math. Pure functions only; no DOM. Tested in calc.test.js. */
+/* Affinity dosing math. Pure functions only; no DOM. Tested in calc.test.js. */
 const CALC = (() => {
   const INCH = 2.54;
   // Ideal body weight, Devine (1974): male 50 kg, female 45.5 kg, + 2.3 kg per inch over 60 in.
@@ -1119,10 +1158,10 @@ const CALC = (() => {
   function round(x){
     if(x===null || x===undefined || !isFinite(x)) return null;
     const a = Math.abs(x);
-    if(a >= 100) return Math.round(x);
-    if(a >= 10)  return Math.round(x*10)/10;
-    if(a >= 1)   return Math.round(x*100)/100;
-    return Math.round(x*1000)/1000;
+    if(a >= 10)  return Math.round(x);            // 13.9 mg → 14 mg
+    if(a >= 1)   return Math.round(x*10)/10;      // 6.99 → 7, 2.49 → 2.5
+    if(a >= 0.1) return Math.round(x*100)/100;    // 0.15 mg stays 0.15
+    return Math.round(x*1000)/1000;               // 0.005 mg stays 0.005
   }
 
   // unit like "mg/kg", "mcg/kg/min", "mL/kg", "mg", "units/min"
@@ -1136,12 +1175,16 @@ const CALC = (() => {
     if(dw.w===null) return {perKg:true, lo:null, hi:null, unit:outUnit(dose.unit), used:null, note:dw.note};
     let lo = dose.lo!=null ? dose.lo*dw.w : null;
     let hi = dose.hi!=null ? dose.hi*dw.w : null;
-    let capped = false;
+    let capped = false, floored = false;
+    if(dose.minDose!=null){
+      if(lo!=null && lo<dose.minDose){ lo=dose.minDose; floored=true; }
+      if(hi!=null && hi<dose.minDose){ hi=dose.minDose; floored=true; }
+    }
     if(dose.cap!=null){
       if(hi!=null && hi>dose.cap){ hi=dose.cap; capped=true; }
       if(lo!=null && lo>dose.cap){ lo=dose.cap; capped=true; }
     }
-    return {perKg:true, lo, hi, unit:outUnit(dose.unit), used:dw.used, w:dw.w, note:dw.note, capped};
+    return {perKg:true, lo, hi, unit:outUnit(dose.unit), used:dw.used, w:dw.w, note:dw.note, capped, floored};
   }
 
   function fmtRange(lo, hi, unit){
@@ -1152,7 +1195,32 @@ const CALC = (() => {
     return `${r(lo)}–${r(hi)} ${unit}`;
   }
 
-  return {ibw, bmi, lbw, adjbw, dosingWeight, round, compute, fmtRange, isPerKg, outUnit};
+  // ---- Unit conversion ----
+  const LB = 0.45359237;               // exact definition
+  const lbToKg = lb => lb*LB, kgToLb = kg => kg/LB;
+  const ftInToCm = (ft, inch) => ((ft||0)*12 + (inch||0)) * INCH;
+  function cmToFtIn(cm){ const t=cm/INCH; let ft=Math.floor(t/12), inch=Math.round((t-ft*12)*10)/10; if(inch>=12){ft+=1;inch-=12;} return {ft, inch}; }
+
+  // ---- Volume ----
+  // doseUnit: "mg" | "mcg" | "units" | "mL", optionally "/min" or "/h" (after per-kg is removed).
+  // conc: {amt:Number, unit:"mg"|"mcg"|"units"} per 1 mL.
+  const MASS = {mcg:1e-3, mg:1, g:1000};
+  function split(u){ const m=String(u).match(/^(mcg|mg|g|units|mEq|mL)(?:\/(min|h))?$/); return m?{base:m[1], per:m[2]||null}:null; }
+  // Returns mL (bolus) or mL/h (rate), or null if not convertible.
+  function volume(value, doseUnit, conc){
+    if(value==null || !conc || !(conc.amt>0)) return null;
+    const u=split(doseUnit); if(!u) return null;
+    if(u.base==="mL") return null;                       // already a volume
+    let amt;                                             // dose expressed in conc.unit
+    if(["units","mEq"].includes(u.base) || ["units","mEq"].includes(conc.unit)){ if(u.base!==conc.unit) return null; amt=value; }
+    else { if(!(u.base in MASS) || !(conc.unit in MASS)) return null; amt=value*MASS[u.base]/MASS[conc.unit]; }
+    const ml = amt/conc.amt;
+    if(u.per==="min") return {value:ml*60, unit:"mL/h"};
+    if(u.per==="h")   return {value:ml,    unit:"mL/h"};
+    return {value:ml, unit:"mL"};
+  }
+
+  return {ibw, bmi, lbw, adjbw, dosingWeight, round, compute, fmtRange, isPerKg, outUnit, lbToKg, kgToLb, ftInToCm, cmToFtIn, volume};
 })();
 
 
@@ -1165,9 +1233,9 @@ const ADRUGS = {
    {use:"Induction, cardiac anesthesia", pop:"adult", route:"IV", lo:0.5, hi:1.5, unit:"mg/kg", basis:"LBW", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
    {use:"Induction, neurosurgery", pop:"adult", route:"IV", lo:1, hi:2, unit:"mg/kg", basis:"LBW", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
    {use:"Induction, healthy child 3–16 y", pop:"peds", route:"IV", lo:2.5, hi:3.5, unit:"mg/kg", basis:"TBW", sheet:true, src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
-   {use:"Maintenance infusion, healthy adult <65 y", pop:"adult", route:"IV", lo:100, hi:200, unit:"mcg/kg/min", basis:"TBW", how:"6–12 mg/kg/h, or intermittent boluses of 20–50 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d1ae9e26-ffd6-43df-bbd6-869cdede6afe"},
-   {use:"Maintenance infusion, elderly or ASA III–IV", pop:"elderly", route:"IV", lo:50, hi:100, unit:"mcg/kg/min", basis:"TBW", how:"3–6 mg/kg/h.", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
-   {use:"Maintenance infusion, child 2 mo–16 y", pop:"peds", route:"IV", lo:125, hi:300, unit:"mcg/kg/min", basis:"TBW", how:"Reduce to 125–150 mcg/kg/min after the first 30 min.", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
+   {use:"Maintenance infusion, healthy adult <65 y", pop:"adult", route:"IV", lo:100, hi:200, unit:"mcg/kg/min", basis:"TBW", sheet:true, how:"6–12 mg/kg/h, or intermittent boluses of 20–50 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d1ae9e26-ffd6-43df-bbd6-869cdede6afe"},
+   {use:"Maintenance infusion, elderly or ASA III–IV", pop:"elderly", route:"IV", lo:50, hi:100, unit:"mcg/kg/min", basis:"TBW", sheet:true, how:"3–6 mg/kg/h.", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
+   {use:"Maintenance infusion, child 2 mo–16 y", pop:"peds", route:"IV", lo:125, hi:300, unit:"mcg/kg/min", basis:"TBW", sheet:true, how:"Reduce to 125–150 mcg/kg/min after the first 30 min.", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
    {use:"MAC sedation, initiation", pop:"adult", route:"IV", lo:100, hi:150, unit:"mcg/kg/min", basis:"TBW", how:"For 3–5 min, or slow injection of 0.5 mg/kg over 3–5 min.", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
    {use:"MAC sedation, maintenance", pop:"adult", route:"IV", lo:25, hi:75, unit:"mcg/kg/min", basis:"TBW", how:"Or 10–20 mg boluses. Elderly/ASA III–IV: about 80% of the adult dose; avoid rapid boluses.", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"},
    {use:"ICU sedation, intubated adult", pop:"adult", route:"IV", lo:5, hi:50, unit:"mcg/kg/min", basis:"TBW", how:"Start 5 mcg/kg/min; titrate by 5–10 mcg/kg/min at least 5 min apart. Avoid >4 mg/kg/h (≈67 mcg/kg/min).", src:"https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf"}],
@@ -1275,7 +1343,7 @@ const ADRUGS = {
   basisNote:"Label: base the starting dose on ideal body weight when actual weight is more than 30% above it; otherwise use actual weight. Add height and sex to apply this rule.",
   doses:[
    {use:"Induction with a hypnotic or volatile", pop:"adult", route:"IV", lo:0.5, hi:1, unit:"mcg/kg/min", basis:"IBW30", sheet:true, how:"If intubating within 8 min of starting, a 1 mcg/kg bolus over 30–60 s may be given first.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"},
-   {use:"Maintenance with isoflurane or propofol", pop:"adult", route:"IV", lo:0.05, hi:2, unit:"mcg/kg/min", basis:"IBW30", how:"Start 0.25; bolus 1 mcg/kg; titrate every 2–5 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"},
+   {use:"Maintenance with isoflurane or propofol", pop:"adult", route:"IV", lo:0.05, hi:2, unit:"mcg/kg/min", basis:"IBW30", sheet:true, how:"Start 0.25; bolus 1 mcg/kg; titrate every 2–5 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"},
    {use:"Maintenance with nitrous oxide 66%", pop:"adult", route:"IV", lo:0.1, hi:2, unit:"mcg/kg/min", basis:"IBW30", how:"Start 0.4; bolus 1 mcg/kg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"},
    {use:"Continuation into PACU or ICU", pop:"adult", route:"IV", lo:0.1, hi:0.2, unit:"mcg/kg/min", basis:"IBW30", how:"Adjust by 0.025 every 5 min; no boluses. Above 0.2 is associated with respiratory rate under 8.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"},
    {use:"MAC sedation, single dose", pop:"adult", route:"IV", lo:1, hi:1, unit:"mcg/kg", basis:"IBW30", how:"Over 30–60 s, 90 s before the block; 0.5 mcg/kg if given with midazolam 2 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"},
@@ -1481,7 +1549,7 @@ const ADRUGS = {
   doses:[
    {use:"Hypotension, initial bolus", pop:"adult", route:"IV", lo:40, hi:100, unit:"mcg", sheet:true, how:"Then boluses up to 200 mcg every 1–2 min to BP goal. The 10 mg/mL vial must be diluted (1 mL in 99 mL = 100 mcg/mL); the 100 mcg/mL ready-to-use product is not diluted.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2f715e4e-b269-b935-d2c9-003cb29770be"},
    {use:"Hypotension, repeat bolus", pop:"adult", route:"IV", lo:null, hi:200, unit:"mcg", how:"Every 1–2 min as needed.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2f715e4e-b269-b935-d2c9-003cb29770be"},
-   {use:"Hypotension, infusion (starting rate)", pop:"adult", route:"IV", lo:10, hi:35, unit:"mcg/min", how:"Titrate to effect; do not exceed 200 mcg/min. 10 mg in 500 mL = 20 mcg/mL.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2f715e4e-b269-b935-d2c9-003cb29770be"}],
+   {use:"Hypotension, infusion (starting rate)", pop:"adult", route:"IV", lo:10, hi:35, unit:"mcg/min", sheet:true, how:"Titrate to effect; do not exceed 200 mcg/min. 10 mg in 500 mL = 20 mcg/mL.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2f715e4e-b269-b935-d2c9-003cb29770be"}],
   time:{onset:[60,180], dur:[300,1200], onsetTxt:"1–3 min", durTxt:"5–20 min", note:"Onset and duration from StatPearls; the label says onset is rapid."},
   fx:{bp:["ok","↑ Raises","Alpha-1 vasoconstriction raises SBP, DBP, MAP, and SVR."], hr:["caution","↓ Reflex brady","Reflex bradycardia; label warns of severe bradycardia and reduced cardiac output."], resp:["ok","Minimal","Dyspnea listed as an adverse reaction; may raise pulmonary artery pressure."], ponv:["caution","Nausea common","Nausea and vomiting are among the most common adverse reactions."]},
   boxed:null, contra:[],
@@ -1508,9 +1576,9 @@ const ADRUGS = {
  epinephrine:{ name:"Epinephrine", brand:"Adrenalin", cls:"Alpha/beta agonist", grp:"pressor", mh:false,
   basisNote:"Septic-shock infusion and pediatric doses are weight-based (actual body weight); adult anaphylaxis and arrest doses are fixed.",
   doses:[
-   {use:"Anaphylaxis (adults and children ≥30 kg)", minKg:30, alsoPeds:true, pop:"adult", route:"IM", lo:0.3, hi:0.5, unit:"mg", sheet:true, how:"Anterolateral thigh, undiluted 1 mg/mL. Max 0.5 mg per injection; repeat every 5–10 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3b7a4364-668d-4eb2-a20c-04adc35aabe4"},
-   {use:"Anaphylaxis (children <30 kg)", maxKg:29.99, pop:"peds", route:"IM", lo:0.01, hi:0.01, unit:"mg/kg", basis:"TBW", cap:0.3, sheet:true, how:"Max 0.3 mg per injection; repeat every 5–10 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3b7a4364-668d-4eb2-a20c-04adc35aabe4"},
-   {use:"Push-dose bolus for hypotension (off-label)", pop:"adult", route:"IV", lo:5, hi:20, unit:"mcg", how:"Typical 5–10 mcg every 2–5 min. 10 mcg/mL: 1 mL of 0.1 mg/mL + 9 mL NS. Source is an emergency-medicine review, not the label.", src:"https://www.emdocs.net/push-dose-vasopressors-an-update-for-2019/"},
+   {use:"Anaphylaxis (adults and children ≥30 kg)", minKg:30, alsoPeds:true, pop:"adult", route:"IM", lo:0.3, hi:0.5, unit:"mg", how:"Anterolateral thigh, undiluted 1 mg/mL. Max 0.5 mg per injection; repeat every 5–10 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3b7a4364-668d-4eb2-a20c-04adc35aabe4"},
+   {use:"Anaphylaxis (children <30 kg)", maxKg:29.99, pop:"peds", route:"IM", lo:0.01, hi:0.01, unit:"mg/kg", basis:"TBW", cap:0.3, how:"Max 0.3 mg per injection; repeat every 5–10 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3b7a4364-668d-4eb2-a20c-04adc35aabe4"},
+   {use:"Push-dose bolus for hypotension (off-label)", pop:"adult", route:"IV", lo:5, hi:20, unit:"mcg", sheet:true, how:"Typical 5–10 mcg every 2–5 min. 10 mcg/mL: 1 mL of 0.1 mg/mL + 9 mL NS. Source is an emergency-medicine review, not the label.", src:"https://www.emdocs.net/push-dose-vasopressors-an-update-for-2019/"},
    {use:"Septic shock hypotension, infusion", pop:"adult", route:"IV", lo:0.05, hi:2, unit:"mcg/kg/min", basis:"TBW", how:"Titrate every 10–15 min in steps of 0.05–0.2 mcg/kg/min. Large vein.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3b7a4364-668d-4eb2-a20c-04adc35aabe4"},
    {use:"Anaphylaxis, infusion (off-label)", pop:"adult", route:"IV", lo:5, hi:15, unit:"mcg/min", how:"Adjust to response (StatPearls).", src:"https://www.statpearls.com/point-of-care/21248"},
    {use:"Cardiac arrest", pop:"adult", route:"IV/IO", lo:1, hi:1, unit:"mg", how:"Every 3–5 min until ROSC.", src:"https://www.statpearls.com/point-of-care/21248"},
@@ -1527,7 +1595,7 @@ const ADRUGS = {
  norepinephrine:{ name:"Norepinephrine", brand:"Levophed", cls:"Alpha-1/beta-1 agonist", grp:"pressor", mh:false,
   basisNote:"Adult label doses are fixed mcg/min; pediatric doses are weight-based.",
   doses:[
-   {use:"Severe hypotension, initial infusion", pop:"adult", route:"IV", lo:8, hi:12, unit:"mcg/min", how:"4 mg in 1000 mL D5W ≈ 4 mcg/mL. Check BP every 2 min until at target. Large vein.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2c7dd2b0-cc10-4db6-bf56-6eb154ebeb10"},
+   {use:"Severe hypotension, initial infusion", pop:"adult", route:"IV", lo:8, hi:12, unit:"mcg/min", sheet:true, how:"4 mg in 1000 mL D5W ≈ 4 mcg/mL. Check BP every 2 min until at target. Large vein.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2c7dd2b0-cc10-4db6-bf56-6eb154ebeb10"},
    {use:"Severe hypotension, maintenance infusion", pop:"adult", route:"IV", lo:2, hi:4, unit:"mcg/min", how:"Titrate to BP; taper rather than stop abruptly.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2c7dd2b0-cc10-4db6-bf56-6eb154ebeb10"},
    {use:"Hypotension or shock, infusion", pop:"peds", route:"IV", lo:0.05, hi:2, unit:"mcg/kg/min", basis:"TBW", how:"Start 0.05–0.1 mcg/kg/min (StatPearls). Label: pediatric safety not established.", src:"https://www.statpearls.com/point-of-care/25972"}],
   time:{text:"Steady-state pressor response within about 5 minutes of starting; effect stops 1–2 minutes after the infusion ends (label)."},
@@ -1544,7 +1612,7 @@ const ADRUGS = {
   doses:[
    {use:"Septic (vasodilatory) shock", pop:"adult", route:"IV", lo:0.01, hi:0.07, unit:"units/min", how:"Start 0.01 units/min; increase by 0.005 units/min every 10–15 min. Data are limited above 0.07 units/min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b1147beb-743e-4c62-8927-91192447f8b8"},
    {use:"Post-cardiotomy vasodilatory shock", pop:"adult", route:"IV", lo:0.03, hi:0.1, unit:"units/min", how:"Start 0.03 units/min; same titration. Data are limited above 0.1 units/min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b1147beb-743e-4c62-8927-91192447f8b8"},
-   {use:"Refractory hypotension under anesthesia, bolus (off-label)", pop:"adult", route:"IV", lo:0.5, hi:1, unit:"units", how:"Or low-dose infusion 0.01–0.04 units/min, e.g., vasoplegia on ACE inhibitors or ARBs (OpenAnesthesia).", src:"https://www.openanesthesia.org/keywords/vasopressin/"}],
+   {use:"Refractory hypotension under anesthesia, bolus (off-label)", pop:"adult", route:"IV", lo:0.5, hi:1, unit:"units", sheet:true, how:"Or low-dose infusion 0.01–0.04 units/min, e.g., vasoplegia on ACE inhibitors or ARBs (OpenAnesthesia).", src:"https://www.openanesthesia.org/keywords/vasopressin/"}],
   time:{text:"Pressor effect peaks within 15 minutes; fades within 20 minutes after stopping (label)."},
   fx:{bp:["ok","↑ Raises","V1-mediated vasoconstriction; non-adrenergic."], hr:["caution","↓ May lower","Tends to lower heart rate and cardiac index."], resp:["ok","Not stated","Not described in the label."], ponv:["ok","Not stated","Not described in the label."]},
   boxed:null, contra:["Chlorobutanol allergy (multi-dose vial)"],
@@ -1689,8 +1757,8 @@ const ADRUGS = {
  dantrolene:{ name:"Dantrolene", brand:"Ryanodex; Dantrium IV; Revonto", cls:"Ryanodine receptor antagonist", grp:"other", mh:false,
   basisNote:"mg/kg on actual body weight; neither the labels nor MHAUS specify actual vs ideal.",
   doses:[
-   {use:"Malignant hyperthermia, initial dose (MHAUS)", pop:"adult", route:"IV", lo:2.5, hi:2.5, unit:"mg/kg", basis:"TBW", sheet:true, how:"Rapidly through a large-bore IV. Repeat until ETCO₂, rigidity, and heart rate improve. Labels cap the cumulative dose at 10 mg/kg; MHAUS notes more may be needed — consider other diagnoses if no response.", src:"https://www.mhaus.org/healthcare-professionals/managing-a-crisis/"},
-   {use:"Malignant hyperthermia, initial dose (MHAUS)", pop:"peds", route:"IV", lo:2.5, hi:2.5, unit:"mg/kg", basis:"TBW", sheet:true, how:"Same weight-based dose as adults.", src:"https://www.mhaus.org/healthcare-professionals/managing-a-crisis/"},
+   {use:"Malignant hyperthermia, initial dose (MHAUS)", pop:"adult", route:"IV", lo:2.5, hi:2.5, unit:"mg/kg", basis:"TBW", how:"Rapidly through a large-bore IV. Repeat until ETCO₂, rigidity, and heart rate improve. Labels cap the cumulative dose at 10 mg/kg; MHAUS notes more may be needed — consider other diagnoses if no response.", src:"https://www.mhaus.org/healthcare-professionals/managing-a-crisis/"},
+   {use:"Malignant hyperthermia, initial dose (MHAUS)", pop:"peds", route:"IV", lo:2.5, hi:2.5, unit:"mg/kg", basis:"TBW", how:"Same weight-based dose as adults.", src:"https://www.mhaus.org/healthcare-professionals/managing-a-crisis/"},
    {use:"Cumulative label maximum", pop:"adult", route:"IV", lo:null, hi:10, unit:"mg/kg", basis:"TBW", how:"Ryanodex 250 mg vial: reconstitute with 5 mL sterile water. Dantrium/Revonto 20 mg vial: 60 mL sterile water.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8f7b3ac0-604d-4c78-b545-5e0f8ea3d698"}],
   time:{text:"Half-life 8.5–11.4 hours (Ryanodex) or 4–8 hours (20 mg vial label)."},
   fx:{bp:["ok","Not stated","Avoid calcium channel blockers."], hr:["ok","Not stated","Not described."], resp:["caution","Weakness","Muscle weakness and dysphagia afterward."], ponv:["ok","Not stated","Not described."]},
@@ -1704,9 +1772,9 @@ const ADRUGS = {
  lipid:{ name:"Lipid emulsion 20%", brand:"Intralipid (for LAST)", cls:"LAST rescue", grp:"other", mh:false,
   basisNote:"ASRA 2020 doses depend on whether the patient is over or under 70 kg; per-kg doses use actual body weight.",
   doses:[
-   {use:"LAST bolus, patient ≤70 kg", maxKg:70, alsoPeds:true, pop:"adult", route:"IV", lo:1.5, hi:1.5, unit:"mL/kg", basis:"TBW", sheet:true, how:"Over 2–3 minutes. If still unstable, repeat the bolus. Max 12 mL/kg total.", src:"https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"},
+   {use:"LAST bolus, patient ≤70 kg", maxKg:70, alsoPeds:true, pop:"adult", route:"IV", lo:1.5, hi:1.5, unit:"mL/kg", basis:"TBW", how:"Over 2–3 minutes. If still unstable, repeat the bolus. Max 12 mL/kg total.", src:"https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"},
    {use:"LAST infusion, patient ≤70 kg", maxKg:70, alsoPeds:true, pop:"adult", route:"IV", lo:0.25, hi:0.25, unit:"mL/kg/min", basis:"TBW", how:"Double it if still unstable. Continue at least 15 min after stability returns. Max 12 mL/kg total.", src:"https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"},
-   {use:"LAST bolus, patient >70 kg", minKg:70, pop:"adult", route:"IV", lo:100, hi:100, unit:"mL", sheet:true, how:"Over 2–3 minutes, then about 250 mL over 15–20 minutes. Max 12 mL/kg total.", src:"https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"},
+   {use:"LAST bolus, patient >70 kg", minKg:70, pop:"adult", route:"IV", lo:100, hi:100, unit:"mL", how:"Over 2–3 minutes, then about 250 mL over 15–20 minutes. Max 12 mL/kg total.", src:"https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"},
    {use:"Maximum total dose", pop:"adult", route:"IV", lo:null, hi:12, unit:"mL/kg", basis:"TBW", how:"ASRA upper limit.", src:"https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"}],
   time:{text:"Give at the first signs of serious LAST, alongside airway management and seizure control."},
   fx:{bp:["ok","Supports","Restores cardiac function in LAST."], hr:["ok","n/a","—"], resp:["ok","n/a","—"], ponv:["ok","n/a","—"]},
@@ -1719,6 +1787,127 @@ const ADRUGS = {
   srcs:["https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"]},
 };
 for(const id in ADRUGS){ ADRUGS[id].spec="anes"; }
+
+/* Concentrations: first entry is the default. Sources: FDA labels on DailyMed (see crisis/drug cards). */
+const C_ = (amt, unit, label) => ({amt, unit, label});
+const CONC = {
+  propofol:[C_(10,"mg","10 mg/mL")],
+  etomidate:[C_(2,"mg","2 mg/mL")],
+  ketamine:[C_(10,"mg","10 mg/mL"),C_(50,"mg","50 mg/mL"),C_(100,"mg","100 mg/mL (dilute for IV)")],
+  midazolam:[C_(1,"mg","1 mg/mL"),C_(5,"mg","5 mg/mL")],
+  dexmedetomidine:[C_(4,"mcg","4 mcg/mL")],
+  fentanyl:[C_(50,"mcg","50 mcg/mL")],
+  remifentanil:[C_(50,"mcg","50 mcg/mL"),C_(25,"mcg","25 mcg/mL"),C_(20,"mcg","20 mcg/mL"),C_(250,"mcg","250 mcg/mL")],
+  hydromorphone:[C_(1,"mg","1 mg/mL"),C_(2,"mg","2 mg/mL"),C_(0.2,"mg","0.2 mg/mL")],
+  morphine:[C_(4,"mg","4 mg/mL"),C_(2,"mg","2 mg/mL"),C_(8,"mg","8 mg/mL"),C_(10,"mg","10 mg/mL")],
+  naloxone:[C_(0.4,"mg","0.4 mg/mL")],
+  flumazenil:[C_(0.1,"mg","0.1 mg/mL")],
+  succinylcholine:[C_(20,"mg","20 mg/mL")],
+  rocuronium:[C_(10,"mg","10 mg/mL")],
+  vecuronium:[C_(1,"mg","1 mg/mL (reconstituted)")],
+  cisatracurium:[C_(2,"mg","2 mg/mL")],
+  sugammadex:[C_(100,"mg","100 mg/mL")],
+  neostigmine:[C_(1,"mg","1 mg/mL"),C_(0.5,"mg","0.5 mg/mL")],
+  glycopyrrolate:[C_(0.2,"mg","0.2 mg/mL")],
+  phenylephrine:[C_(100,"mcg","100 mcg/mL"),C_(20,"mcg","20 mcg/mL")],
+  ephedrine:[C_(5,"mg","5 mg/mL")],
+  epinephrine:[C_(16,"mcg","16 mcg/mL (4 mg/250 mL)"),C_(1,"mcg","1 mcg/mL (1 mg/1000 mL)")],
+  norepinephrine:[C_(16,"mcg","16 mcg/mL (4 mg/250 mL)"),C_(4,"mcg","4 mcg/mL (4 mg/1000 mL)")],
+  vasopressin:[C_(1,"units","1 unit/mL"),C_(0.2,"units","0.2 units/mL"),C_(0.1,"units","0.1 units/mL")],
+  lidocaine:[C_(10,"mg","1% (10 mg/mL)"),C_(20,"mg","2% (20 mg/mL)")],
+  bupivacaine:[C_(2.5,"mg","0.25% (2.5 mg/mL)"),C_(5,"mg","0.5% (5 mg/mL)"),C_(7.5,"mg","0.75% (7.5 mg/mL)")],
+  ropivacaine:[C_(5,"mg","0.5% (5 mg/mL)"),C_(2,"mg","0.2% (2 mg/mL)"),C_(7.5,"mg","0.75% (7.5 mg/mL)"),C_(10,"mg","1% (10 mg/mL)")],
+  ondansetron:[C_(2,"mg","2 mg/mL")],
+  dexamethasone:[C_(4,"mg","4 mg/mL"),C_(10,"mg","10 mg/mL")],
+  dantrolene:[C_(50,"mg","Ryanodex 50 mg/mL"),C_(20/60,"mg","Dantrium/Revonto 0.33 mg/mL")],
+  atropine:[C_(0.4,"mg","0.4 mg/mL"),C_(1,"mg","1 mg/mL"),C_(0.1,"mg","0.1 mg/mL")]
+};
+/* Dose-specific preparations (override the drug's selected concentration). */
+const PREP = {
+  epiPush: C_(10,"mcg","10 mcg/mL (diluted)"),
+  epiIM: C_(1,"mg","1 mg/mL"),
+  epi01: C_(0.1,"mg","0.1 mg/mL"),
+  phenyBolus: C_(100,"mcg","100 mcg/mL"),
+  phenyInf: C_(20,"mcg","20 mcg/mL"),
+  ketIM: C_(100,"mg","100 mg/mL"),
+  cacl: C_(100,"mg","10% (100 mg/mL)"),
+  caglu: C_(100,"mg","10% (100 mg/mL)"),
+  bicarb: C_(1,"mEq","8.4% (1 mEq/mL)")
+};
+(function applyPrep(){
+  const set=(id, match, c)=>{ for(const z of ADRUGS[id].doses) if(z.use.includes(match)) z.c=c; };
+  set("epinephrine","Push-dose",PREP.epiPush); set("epinephrine","Anaphylaxis (",PREP.epiIM); set("epinephrine","Cardiac arrest",PREP.epi01);
+  set("phenylephrine","bolus",PREP.phenyBolus); set("phenylephrine","infusion",PREP.phenyInf);
+  for(const z of ADRUGS.ketamine.doses) if(z.route==="IM") z.c=PREP.ketIM;
+})();
+
+/* Crisis protocols. Doses compute for the patient bar; steps with pop apply only to that population. */
+const AHA_BRADY="https://cpr.heart.org/-/media/CPR-Files/CPR-Guidelines-Files/2025-Algorithms/Algorithm-ACLS-Bradycardia-250514.pdf?sc_lang=en";
+const PALS_BRADY="https://cpr.heart.org/-/media/CPR-Files/CPR-Guidelines-Files/2025-Algorithms/Algorithm-PALS-Bradycardia-250121.pdf?sc_lang=en";
+const AHA_CA="https://cpr.heart.org/-/media/CPR-Files/CPR-Guidelines-Files/2025-Algorithms/Algorithm-ACLS-CA-250527.pdf?sc_lang=en";
+const PALS_CA="https://cpr.heart.org/-/media/CPR-Files/CPR-Guidelines-Files/2025-Algorithms/Algorithm-PALS-CA-250123.pdf?sc_lang=en";
+const MHAUS="https://www.mhaus.org/healthcare-professionals/managing-a-crisis/";
+const ASRA="https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf";
+const ANZ="https://journals.sagepub.com/doi/10.1177/0310057X231215823";
+const RCUK_ANA="https://www.resus.org.uk/sites/default/files/2024-01/2526%20AAP%20RCUK%20periop%20anaphylaxis-8C.pdf";
+const RCUK_HK="https://www.resus.org.uk/library/2025-resuscitation-guidelines/special-circumstances-guidelines";
+const CRISES = [
+ {id:"mh", title:"Malignant hyperthermia", cue:"Rising ETCO₂, rigidity, tachycardia, hyperthermia", srcs:[["MHAUS",MHAUS],["Dantrolene label","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8f7b3ac0-604d-4c78-b545-5e0f8ea3d698"]],
+  steps:[
+   {t:"Call for help and the MH cart. MHAUS hotline: 1-800-644-9737."},
+   {t:"Stop volatile agents and succinylcholine. Hyperventilate with 100% O₂ at 10 L/min; add charcoal filters."},
+   {t:"Dantrolene, rapid IV through a large-bore line. Repeat until ETCO₂, rigidity, and heart rate improve.", dose:{drug:"dantrolene", lo:2.5, hi:2.5, unit:"mg/kg"}, note:"MHAUS dose. Labels say at least 1 mg/kg, up to a cumulative 10 mg/kg; MHAUS notes more than 10 mg/kg may be needed. Tap the concentration to switch formulation."},
+   {t:"Cool if core temperature is above 39 °C; stop cooling below 38 °C."},
+   {t:"Hyperkalemia (K⁺ >5.9): calcium chloride.", dose:{lo:10, hi:10, unit:"mg/kg", cap:2000, c:PREP.cacl}},
+   {t:"Or calcium gluconate (life-threatening hyperkalemia).", dose:{lo:10, hi:50, unit:"mg/kg", cap:3000, c:PREP.caglu}},
+   {t:"Sodium bicarbonate.", dose:{lo:1, hi:2, unit:"mEq/kg", c:PREP.bicarb}},
+   {t:"Insulin 10 units regular IV with 50 mL of D50; check glucose hourly.", pop:"adult"},
+   {t:"Regular insulin IV, with 2 mL/kg of D25.", pop:"peds", dose:{lo:0.1, hi:0.1, unit:"units/kg"}},
+   {t:"Avoid calcium channel blockers. Keep urine output above 1 mL/kg/h. Admit to ICU for at least 24 hours."}]},
+ {id:"last", title:"Local anesthetic toxicity (LAST)", cue:"Perioral numbness, seizures, arrhythmia, or collapse after local anesthetic", srcs:[["ASRA checklist",ASRA]],
+  steps:[
+   {t:"Stop the local anesthetic. Call for help and get lipid emulsion. Manage the airway with 100% O₂."},
+   {t:"Seizures: benzodiazepine preferred. If only propofol is available, use small doses (e.g., 20 mg increments)."},
+   {t:"Lipid emulsion 20% bolus over 2–3 min.", dose:{lo:1.5, hi:1.5, unit:"mL/kg", maxKg:70}},
+   {t:"Then lipid infusion.", dose:{lo:0.25, hi:0.25, unit:"mL/kg/min", maxKg:70}},
+   {t:"Lipid emulsion 20% bolus over 2–3 min, then about 250 mL over 15–20 min.", dose:{lo:100, hi:100, unit:"mL", minKg:70}},
+   {t:"If still unstable, repeat the bolus and double the infusion. Continue at least 15 minutes after stability returns. Maximum total lipid:", dose:{lo:null, hi:12, unit:"mL/kg"}},
+   {t:"Epinephrine: use smaller-than-usual doses, below 1 mcg/kg.", dose:{lo:null, hi:1, unit:"mcg/kg", c:PREP.epiPush}},
+   {t:"Avoid vasopressin, calcium channel blockers, beta-blockers, and more local anesthetic."}]},
+ {id:"ana", title:"Anaphylaxis", cue:"Hypotension, bronchospasm, rash, or rising airway pressures after a trigger", srcs:[["ANZAAG/ANZCA 2022",ANZ],["Resuscitation Council UK",RCUK_ANA],["Epinephrine label","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3b7a4364-668d-4eb2-a20c-04adc35aabe4"]],
+  steps:[
+   {t:"Remove the likely trigger (antibiotic, neuromuscular blocker, chlorhexidine, latex). Call for help, 100% O₂, raise the legs, give rapid IV fluids."},
+   {t:"Moderate (grade 2): epinephrine IV bolus, escalating to 50 mcg if needed.", pop:"adult", dose:{lo:10, hi:20, unit:"mcg", c:PREP.epiPush}},
+   {t:"Life-threatening (grade 3): epinephrine IV bolus, escalating to 200 mcg if needed.", pop:"adult", dose:{lo:50, hi:100, unit:"mcg", c:PREP.epiPush}},
+   {t:"Cardiac arrest (grade 4): epinephrine 1 mg IV every 1–2 min, per ANZAAG; start CPR.", pop:"adult", dose:{lo:1, hi:1, unit:"mg", c:PREP.epi01}},
+   {t:"Epinephrine IV, titrated (children under 12).", pop:"peds", dose:{lo:1, hi:1, unit:"mcg/kg", c:PREP.epiPush}},
+   {t:"No IV access: epinephrine IM, anterolateral thigh. Max 0.5 mg (adults and ≥30 kg).", dose:{lo:0.01, hi:0.01, unit:"mg/kg", cap:0.5, minKg:30, c:PREP.epiIM}},
+   {t:"No IV access: epinephrine IM, anterolateral thigh. Max 0.3 mg under 30 kg.", dose:{lo:0.01, hi:0.01, unit:"mg/kg", cap:0.3, maxKg:29.99, c:PREP.epiIM}},
+   {t:"Poor response to boluses: epinephrine infusion of 0.5 mg in 50 mL (10 mcg/mL).", dose:{lo:0.5, hi:1, unit:"mL/kg/h"}, note:"Resuscitation Council UK."}]},
+ {id:"brady", title:"Bradycardia", cue:"Symptomatic bradycardia with poor perfusion", sev:"adjust", srcs:[["AHA ACLS 2025",AHA_BRADY],["AHA PALS 2025",PALS_BRADY]],
+  steps:[
+   {t:"Remove the cause (vagal stimulation, opioids, dexmedetomidine, high spinal). Support oxygenation."},
+   {t:"Atropine IV, every 3–5 min, maximum 3 mg total.", pop:"adult", dose:{drug:"atropine", lo:1, hi:1, unit:"mg"}},
+   {t:"If atropine fails: epinephrine infusion 2–10 mcg/min (or dopamine 5–20 mcg/kg/min), or transcutaneous pacing.", pop:"adult", dose:{drug:"epinephrine", lo:2, hi:10, unit:"mcg/min"}},
+   {t:"Children: epinephrine first-line for poor perfusion despite oxygenation; repeat every 3–5 min.", pop:"peds", dose:{lo:0.01, hi:0.01, unit:"mg/kg", cap:1, c:PREP.epi01}},
+   {t:"Atropine for increased vagal tone; may repeat once. Minimum 0.1 mg, maximum 0.5 mg per dose.", pop:"peds", dose:{drug:"atropine", lo:0.02, hi:0.02, unit:"mg/kg", minDose:0.1, cap:0.5}}]},
+ {id:"arrest", title:"Cardiac arrest", cue:"Pulseless", srcs:[["AHA ACLS 2025",AHA_CA],["AHA PALS 2025",PALS_CA]],
+  steps:[
+   {t:"Start CPR, call for help, attach the defibrillator. Shock VF or pulseless VT."},
+   {t:"Epinephrine IV/IO every 3–5 min.", pop:"adult", dose:{lo:1, hi:1, unit:"mg", c:PREP.epi01}},
+   {t:"Epinephrine IV/IO every 3–5 min (max 1 mg per dose).", pop:"peds", dose:{lo:0.01, hi:0.01, unit:"mg/kg", cap:1, c:PREP.epi01}},
+   {t:"In the OR, consider anesthetic causes: hypovolemia, anaphylaxis, LAST, high spinal, tension pneumothorax, hyperkalemia, MH."}]},
+ {id:"hyperk", title:"Hyperkalemia", cue:"Peaked T waves, widening QRS, arrhythmia", sev:"adjust", srcs:[["Resuscitation Council UK 2025",RCUK_HK],["MHAUS",MHAUS]],
+  steps:[
+   {t:"Calcium chloride 10%, 10 mL (1 g) IV over 5 min.", pop:"adult", dose:{lo:1000, hi:1000, unit:"mg", c:PREP.cacl}},
+   {t:"Or calcium gluconate 10%, 30 mL (3 g) IV over 10 min.", pop:"adult", dose:{lo:3000, hi:3000, unit:"mg", c:PREP.caglu}},
+   {t:"Calcium chloride (max 2 g).", pop:"peds", dose:{lo:10, hi:10, unit:"mg/kg", cap:2000, c:PREP.cacl}},
+   {t:"Or calcium gluconate (max 3 g).", pop:"peds", dose:{lo:10, hi:50, unit:"mg/kg", cap:3000, c:PREP.caglu}},
+   {t:"Insulin 10 units regular IV with 50 mL of D50; check glucose hourly.", pop:"adult"},
+   {t:"Regular insulin IV, with 2 mL/kg of D25.", pop:"peds", dose:{lo:0.1, hi:0.1, unit:"units/kg"}},
+   {t:"Sodium bicarbonate, especially with acidosis.", dose:{lo:1, hi:2, unit:"mEq/kg", c:PREP.bicarb}},
+   {t:"Refractory: albuterol, dialysis. Stop potassium-containing fluids and succinylcholine."}]}
+];
 
 const QTC = [["ok","Minimal","No meaningful QTc effect."],["caution","Low","Small, dose-dependent prolongation."],["caution","Moderate","ECG if cardiac risk or other QT drugs."],["avoid","High","Avoid with other QT-prolonging drugs."]];
 const tile = (label,[lv,word,detail]) => `<div class="gl lv-${lv}"><span>${label}</span><strong>${esc(word)}</strong>${detail?`<p>${esc(detail)}</p>`:""}</div>`;
@@ -1733,37 +1922,99 @@ Object.assign(DRUGS, ADRUGS);
 const AORDER = AGROUPS.flatMap(([g])=>Object.keys(ADRUGS).filter(id=>ADRUGS[id].grp===g));
 const SPECS = {
   psych:{name:"Psychiatry", slug:"psychiatry", blurb:"Antidepressants, antipsychotics, mood stabilizers, ADHD and anxiety medications.", groups:GROUPS, order:ORDER,
-         cats:CONDS, catOf:(d,c)=>d.conds.includes(c), tabs:[["dex","Drugs"],["cmp","Compare"],["reg","Regimen"]],
+         cats:CONDS, catOf:(d,c)=>d.conds.includes(c), tabs:[["dex","Drugs"],["cmp","Compare"],["reg","Regimen"]], start:"home",
          title:"Find a psychiatric medication", lede:"Dosing, safety, side effects, and receptor profiles for commonly used psychiatric drugs."},
-  anes:{name:"Anesthesiology", slug:"anesthesia", blurb:"Induction agents, opioids, paralytics, reversal, pressors, local and inhaled anesthetics.", groups:AGROUPS, order:AORDER,
-         cats:AGROUPS.map(g=>g[1]), catOf:(d,c)=>AGROUPS.find(g=>g[1]===c)?.[0]===d.grp, tabs:[["dex","Drugs"],["sheet","Dose sheet"]],
+  anes:{name:"Anesthesiology", slug:"anesthesia", blurb:"Every dose for your patient on one screen: induction, paralysis, pressors, reversal, plus crisis protocols.", groups:AGROUPS, order:AORDER,
+         cats:AGROUPS.map(g=>g[1]), catOf:(d,c)=>AGROUPS.find(g=>g[1]===c)?.[0]===d.grp, tabs:[["sheet","Case doses"],["crisis","Crises"],["dex","Drugs"]], start:"sheet",
          title:"Find an anesthesia drug", lede:"Weight-based doses, onset and duration, hemodynamic effects, and reversal for common perioperative drugs."}
 };
 const SPEC_ORDER = ["psych","anes"];
 const spec = () => SPECS[state.spec||"psych"];
 
-/* ---------- Patient (anesthesia) ---------- */
+/* ---------- Concentrations (user-selectable, remembered on this device) ---------- */
+let CONC_SEL = {};
+try{ CONC_SEL = JSON.parse(localStorage.getItem("affinity.conc")||"{}")||{}; }catch(e){ CONC_SEL={}; }
+function saveConc(){ try{ localStorage.setItem("affinity.conc", JSON.stringify(CONC_SEL)); }catch(e){} }
+function concList(id){ return CONC[id]||[]; }
+function concFor(id, dz){
+  if(dz && dz.c) return dz.c;                              // dose-specific preparation (e.g., push-dose syringe)
+  const L=concList(id); if(!L.length) return null;
+  const i=Math.min(CONC_SEL[id]||0, L.length-1); return L[i];
+}
+const fmtConc = c => c ? `${c.label || (CALC.round(c.amt)+" "+c.unit+"/mL")}` : "";
+
+/* ---------- Patient ---------- */
 const PTPOP = [["adult","Adult"],["peds","Pediatric"],["elderly","Older adult"]];
 function renderPtbar(){
-  const p=state.pt, el=$("#ptbar");
-  const i=CALC.ibw(p.cm,p.sex), l=CALC.lbw(p.kg,p.cm,p.sex), a=CALC.adjbw(p.kg,p.cm,p.sex), b=CALC.bmi(p.kg,p.cm);
+  const p=state.pt, el=$("#ptbar"), us=p.units==="us";
+  const lb = p.kg>0 ? CALC.round(CALC.kgToLb(p.kg)) : "";
+  const fi = p.cm>0 ? CALC.cmToFtIn(p.cm) : {ft:"",inch:""};
   el.innerHTML = `
     <div class="pt-row">
       <div><span class="ctx-label" id="pop-l">Patient</span><div class="seg" role="group" aria-labelledby="pop-l">${PTPOP.map(([k,l])=>`<button data-pop="${k}" aria-pressed="${k===p.pop}">${l}</button>`).join("")}</div></div>
-      <label class="pt-f"><span class="ctx-label">Weight</span><span class="pt-in"><input id="pt-kg" type="number" inputmode="decimal" min="0.5" max="350" step="0.1" value="${p.kg??""}" placeholder="—"><i>kg</i></span></label>
-      <label class="pt-f"><span class="ctx-label">Height</span><span class="pt-in"><input id="pt-cm" type="number" inputmode="decimal" min="40" max="230" step="1" value="${p.cm??""}" placeholder="—"><i>cm</i></span></label>
+      ${us
+        ? `<label class="pt-f"><span class="ctx-label">Weight</span><span class="pt-in"><input id="pt-lb" type="number" inputmode="decimal" min="1" max="770" step="0.1" value="${lb}" placeholder="—"><i>lb</i></span></label>
+           <div class="pt-f"><span class="ctx-label">Height</span><span class="pt-pair"><span class="pt-in"><input id="pt-ft" type="number" inputmode="numeric" min="1" max="8" step="1" value="${fi.ft}" placeholder="—" aria-label="Feet"><i>ft</i></span><span class="pt-in"><input id="pt-inch" type="number" inputmode="decimal" min="0" max="11.9" step="0.5" value="${fi.inch}" placeholder="—" aria-label="Inches"><i>in</i></span></span></div>`
+        : `<label class="pt-f"><span class="ctx-label">Weight</span><span class="pt-in"><input id="pt-kg" type="number" inputmode="decimal" min="0.5" max="350" step="0.1" value="${p.kg>0?CALC.round(p.kg):""}" placeholder="—"><i>kg</i></span></label>
+           <label class="pt-f"><span class="ctx-label">Height</span><span class="pt-in"><input id="pt-cm" type="number" inputmode="decimal" min="40" max="230" step="1" value="${p.cm>0?CALC.round(p.cm):""}" placeholder="—"><i>cm</i></span></label>`}
       <div><span class="ctx-label" id="sex-l">Sex</span><div class="seg" role="group" aria-labelledby="sex-l">${[["M","Male"],["F","Female"]].map(([k,l])=>`<button data-sex="${k}" aria-pressed="${k===p.sex}">${l}</button>`).join("")}</div></div>
+      <div><span class="ctx-label" id="units-l">Units</span><div class="seg" role="group" aria-labelledby="units-l">${[["metric","kg · cm"],["us","lb · ft"]].map(([k,l])=>`<button data-units="${k}" aria-pressed="${k===(p.units||"metric")}">${l}</button>`).join("")}</div></div>
     </div>
-    <p class="pt-derived" id="pt-derived">${ptDerived(i,l,a,b)}</p>`;
+    <p class="pt-derived" id="pt-derived">${ptDerived()}</p>`;
 }
-function ptDerived(i,l,a,b){
-  const p=state.pt;
+function ptDerived(){
+  const p=state.pt, us=p.units==="us";
+  const w = kg => us ? `${CALC.round(CALC.kgToLb(kg))} lb (${CALC.round(kg)} kg)` : `${CALC.round(kg)} kg`;
   if(!(p.kg>0)) return "Enter weight to calculate doses. Add height and sex for ideal and lean body weight.";
-  if(i===null) return `Actual weight ${CALC.round(p.kg)} kg. Add height and sex for ideal (IBW) and lean (LBW) body weight.`;
-  return `Actual ${CALC.round(p.kg)} kg · IBW ${CALC.round(i)} kg · LBW ${CALC.round(l)} kg · Adjusted ${CALC.round(a)} kg · BMI ${CALC.round(b)}`;
+  const i=CALC.ibw(p.cm,p.sex), l=CALC.lbw(p.kg,p.cm,p.sex), a=CALC.adjbw(p.kg,p.cm,p.sex), b=CALC.bmi(p.kg,p.cm);
+  if(i===null) return `Actual weight ${w(p.kg)}. Add height and sex for ideal (IBW) and lean (LBW) body weight.`;
+  return `Actual ${w(p.kg)} · IBW ${CALC.round(i)} kg · LBW ${CALC.round(l)} kg · Adjusted ${CALC.round(a)} kg · BMI ${CALC.round(b)}`;
 }
-function updatePtDerived(){ const p=state.pt; const el=$("#pt-derived"); if(el) el.textContent=ptDerived(CALC.ibw(p.cm,p.sex),CALC.lbw(p.kg,p.cm,p.sex),CALC.adjbw(p.kg,p.cm,p.sex),CALC.bmi(p.kg,p.cm)); }
+function updatePtDerived(){ const el=$("#pt-derived"); if(el) el.textContent=ptDerived(); }
+function readPtInputs(){
+  const p=state.pt, num=id=>{ const el=$("#"+id); if(!el) return null; const v=parseFloat(el.value); return isFinite(v)&&v>=0?v:null; };
+  if(p.units==="us"){
+    const lb=num("pt-lb"); p.kg = lb>0 ? CALC.lbToKg(lb) : null;
+    const ft=num("pt-ft"), inch=num("pt-inch"); p.cm = (ft>0||inch>0) ? CALC.ftInToCm(ft||0, inch||0) : null;
+  } else {
+    const kg=num("pt-kg"), cm=num("pt-cm"); p.kg = kg>0?kg:null; p.cm = cm>0?cm:null;
+  }
+}
 const BASIS_NAME = {TBW:"actual body weight", IBW:"ideal body weight", LBW:"lean body weight", AdjBW:"adjusted body weight"};
+
+/* ---------- Dose computation ---------- */
+function fitsWeight(dz){ const kg=state.pt.kg; if(!(kg>0)) return true; if(dz.maxKg!=null && kg>dz.maxKg) return false; if(dz.minKg!=null && (dz.minKg===30 ? kg<30 : kg<=dz.minKg)) return false; return true; }
+function weightRule(dz){ return dz.maxKg!=null?`patients ≤${Math.round(dz.maxKg)} kg`:dz.minKg!=null?(dz.minKg===30?"patients ≥30 kg":`patients >${dz.minKg} kg`):""; }
+const forPop = (x,pop) => x.pop===pop || (pop==="peds" && x.alsoPeds);
+function volText(r, unit, conc){
+  if(!conc) return "";
+  const a=CALC.volume(r.lo,unit,conc), b=CALC.volume(r.hi,unit,conc);
+  if(!a && !b) return "";
+  const u=(a||b).unit;
+  // Volumes: 0.1 mL resolution (0.01 below 1 mL), so 10.45 mL shows as 10.5, not 10.
+  const rv=v=>v==null?null:(v<1?Math.round(v*100)/100:Math.round(v*10)/10);
+  const lo=rv(a?a.value:null), hi=rv(b?b.value:null);
+  if(lo==null && hi==null) return "";
+  if(lo==null) return `up to ${hi} ${u}`;
+  if(hi==null || lo===hi) return `${lo} ${u}`;
+  return `${lo}–${hi} ${u}`;
+}
+function doseResult(dz, id){
+  if(!fitsWeight(dz)) return {main:"Not for this weight", sub:`This dose applies to ${weightRule(dz)}. Choose the dose for this patient's weight.`, perkg:CALC.isPerKg(dz.unit), off:true, vol:""};
+  const r=CALC.compute(dz, state.pt);
+  const perkg=CALC.isPerKg(dz.unit);
+  const range=CALC.fmtRange(dz.lo,dz.hi,dz.unit);
+  const conc=concFor(id, dz);
+  let main, sub="", vol="";
+  if(!perkg){ main=range; vol=volText({lo:dz.lo,hi:dz.hi}, dz.unit, conc); }
+  else if(r.lo===null && r.hi===null){ main=range; sub=r.note; }
+  else { vol=volText(r, r.unit, conc);
+         let lo=r.lo, hi=r.hi, unit=r.unit;
+         if(unit==="mcg/min" && (hi||lo)>=1000){ lo=lo!=null?lo*60/1000:null; hi=hi!=null?hi*60/1000:null; unit="mg/h"; }  // e.g., propofol infusions
+         main=CALC.fmtRange(lo,hi,unit);
+         sub=`${range} × ${CALC.round(r.w)} kg (${BASIS_NAME[r.used]})${r.capped?` · capped at ${dz.cap} ${r.unit}`:""}${r.note?` · ${r.note}`:""}`; }
+  return {main, sub, perkg, vol, conc, capped:r.capped, r};
+}
 
 /* ---------- Timeline ---------- */
 const TMIN=10, TMAX=8*3600;
@@ -1782,37 +2033,30 @@ function timelineHTML(t){
     <p class="r-line">Onset <b>${esc(t.onsetTxt)}</b>${t.peakTxt?` · peak <b>${esc(t.peakTxt)}</b>`:""} · lasts <b>${esc(t.durTxt)}</b></p>${t.note?`<p class="note">${esc(t.note)}</p>`:""}`;
 }
 
-/* ---------- Anesthesia card ---------- */
-function fitsWeight(dz){ const kg=state.pt.kg; if(!(kg>0)) return true; if(dz.maxKg!=null && kg>dz.maxKg) return false; if(dz.minKg!=null && (dz.minKg===30 ? kg<30 : kg<=dz.minKg)) return false; return true; }
-function weightRule(dz){ return dz.maxKg!=null?`patients ≤${Math.round(dz.maxKg)} kg`:dz.minKg!=null?(dz.minKg===30?"patients ≥30 kg":`patients >${dz.minKg} kg`):""; }
-const forPop = (x,pop) => x.pop===pop || (pop==="peds" && x.alsoPeds);
-function doseResult(dz){
-  if(!fitsWeight(dz)) return {main:"Not for this weight", sub:`This dose applies to ${weightRule(dz)}. Choose the dose for this patient's weight.`, perkg:CALC.isPerKg(dz.unit), off:true};
-  const r=CALC.compute(dz, state.pt);
-  const perkg=CALC.isPerKg(dz.unit);
-  const range=CALC.fmtRange(dz.lo,dz.hi,dz.unit);
-  let main, sub="";
-  if(!perkg){ main=range; }
-  else if(r.lo===null && r.hi===null){ main=range; sub=r.note; }
-  else { main=CALC.fmtRange(r.lo,r.hi,r.unit); sub=`${range} × ${CALC.round(r.w)} kg (${BASIS_NAME[r.used]})${r.capped?` · capped at ${dz.cap} ${r.unit}`:""}${r.note?` · ${r.note}`:""}`; }
-  return {main, sub, perkg};
+/* ---------- Anesthesia drug card (slim) ---------- */
+function concButton(id, dz){
+  const L=concList(id); const c=concFor(id,dz);
+  if(!c) return "";
+  if(dz && dz.c) return `<span class="concbtn fixed">${esc(fmtConc(c))}</span>`;
+  return L.length>1 ? `<button class="concbtn" data-conc="${id}" title="Tap to change concentration">${esc(fmtConc(c))} ⇄</button>` : `<span class="concbtn fixed">${esc(fmtConc(c))}</span>`;
 }
 function renderACard(){
-  const d=DRUGS[state.drug], p=state.pt;
+  const d=DRUGS[state.drug], p=state.pt, id=state.drug;
   const all=d.doses, popD=all.filter(x=>forPop(x,p.pop)), list=popD.length?popD:all;
   const noDose = !all.length;
   if(!list.includes(list[state.ause])) state.ause=0;
   if(state.autoPick && list[0] && !fitsWeight(list[0])){ const k=list.findIndex(fitsWeight); if(k>0) state.ause=k; }
   state.autoPick=false;
   const dz=list[state.ause]||list[0];
-  const chips=[["Blood pressure",d.fx.bp],["Heart rate",d.fx.hr],["Breathing",d.fx.resp],["MH trigger",d.mh?["avoid","Triggers MH","Volatile anesthetics and succinylcholine can trigger malignant hyperthermia. Avoid in susceptible patients."]:["ok","Not a trigger","Does not trigger malignant hyperthermia."]],["PONV",d.fx.ponv],
-    ["Boxed warning", d.boxed?["avoid","Yes",d.boxed]:["ok","None","No boxed warning."]]];
+  const chips=[["Blood pressure",d.fx.bp],["Heart rate",d.fx.hr],["Breathing",d.fx.resp]];
+  if(d.mh) chips.push(["MH trigger",["avoid","Triggers MH","Volatile anesthetics and succinylcholine can trigger malignant hyperthermia. Avoid in susceptible patients."]]);
+  if(d.boxed) chips.push(["Boxed warning",["avoid","Yes",d.boxed]]);
   const open=chips.find(c=>c[0]===state.chip);
   const chipsHTML=`<div class="chips" role="group" aria-label="Effects at a glance">${chips.map(([l,[lv,w]])=>{ const bx=l==="Boxed warning", mh=l==="MH trigger";
-      const txt=bx?(lv==="ok"?"No boxed warning":"FDA boxed warning"):mh?(lv==="ok"?"Not an MH trigger":"MH trigger"):`${l}: ${w}`;
-      return `<button class="sc lv-${lv}${bx?" bx":""}" data-chip="${l}" aria-pressed="${l===state.chip}" aria-expanded="${l===state.chip}">${esc(txt)}<span class="chev" aria-hidden="true">▾</span></button>`; }).join("")}${open?"":`<span class="sc-hint">Tap for details</span>`}</div>`
+      const txt=bx?"FDA boxed warning":mh?"MH trigger":`${l==="Blood pressure"?"BP":l==="Heart rate"?"HR":l}: ${w}`;
+      return `<button class="sc lv-${lv}${bx?" bx":""}" data-chip="${l}" aria-pressed="${l===state.chip}" aria-expanded="${l===state.chip}">${esc(txt)}<span class="chev" aria-hidden="true">▾</span></button>`; }).join("")}</div>`
     + (open?`<p class="sc-detail lv-${open[1][0]}"><b>${open[0]}: ${esc(open[1][1])}.</b> ${esc(open[1][2]||"")}</p>`:"");
-  const res=dz?doseResult(dz):null;
+  const res=dz?doseResult(dz,id):null;
   const rev=d.reversal?(d.reversal.id&&DRUGS[d.reversal.id]?`<button class="goto-n" data-goto="${d.reversal.id}">${esc(d.reversal.text)}</button>`:esc(d.reversal.text)):"None";
   $("#card").style.setProperty("--drug", `var(--g-${d.grp})`);
   $("#card").innerHTML = `
@@ -1821,34 +2065,34 @@ function renderACard(){
       <span class="chip">${esc(d.cls)}</span>
     </div>
     ${chipsHTML}
-    <div class="panels">
-      <section class="panel overview">
-        <h2>Dosing</h2>
+    <div class="panels one">
+      <section class="panel">
         <div class="dosebox">
-          ${noDose?`<p style="margin:0">Dosed by inspired concentration. See MAC below.</p>`:""}
-          ${noDose||popD.length?"":`<p class="note" style="margin:0 0 8px">No ${PTPOP.find(x=>x[0]===p.pop)[1].toLowerCase()}-specific dosing listed; showing all doses.</p>`}
-          ${noDose?"":`<label class="ctx-label" for="ause">Use</label>
+          ${noDose?`<p style="margin:0">Dosed by inspired concentration.</p>${d.mac?`<p class="titr"><b>MAC.</b> ${esc(d.mac)}</p>`:""}`:`
+          ${popD.length?"":`<p class="note" style="margin:0 0 8px">No ${PTPOP.find(x=>x[0]===p.pop)[1].toLowerCase()}-specific dosing listed; showing all doses.</p>`}
+          <label class="ctx-label" for="ause">Use</label>
           <select id="ause">${list.map((x,i)=>`<option value="${i}" ${i===state.ause?"selected":""}>${esc(x.use)}${x.route?` (${x.route})`:""}</option>`).join("")}</select>
-          ${dz?`<p class="ad-main${res.off?" off":""}">${esc(res.main)}${dz.route?` <span>${esc(dz.route)}</span>`:""}</p>
+          <div class="ad-row">
+            <div><p class="ad-main${res.off?" off":""}">${esc(res.main)}${dz.route&&!res.off?` <span>${esc(dz.route)}</span>`:""}</p></div>
+            ${res.vol?`<div class="ad-vol"><b>${esc(res.vol)}</b>${concButton(id,dz)}</div>`:(res.conc&&!res.off&&!/mL/.test(dz.unit)?`<div class="ad-vol">${concButton(id,dz)}</div>`:"")}
+          </div>
           ${res.sub?`<p class="ad-sub">${esc(res.sub)}</p>`:""}
           ${dz.how?`<p class="titr">${esc(dz.how)}</p>`:""}
-          ${dz.src?`<p class="srcs" style="margin-top:8px"><a href="${dz.src}" target="_blank" rel="noopener">Source for this dose ↗</a></p>`:""}`:""}`}
+          ${dz.src?`<p class="srcs" style="margin-top:6px"><a href="${dz.src}" target="_blank" rel="noopener">Source ↗</a></p>`:""}`}
         </div>
-        ${d.basisNote?`<p class="note"><b>Dosing weight.</b> ${esc(d.basisNote)}</p>`:""}
-        ${d.mac?`<h3>MAC</h3><p style="margin:0">${esc(d.mac)}</p>`:""}
-        <h3>Onset &amp; duration</h3>${timelineHTML(d.time)}
-        <h3>Reversal</h3><p style="margin:0">${rev}</p>
-        <h3>Contraindications</h3>${d.contra.length?`<div class="tags">${d.contra.map(c=>`<span class="tag red">✕ ${esc(c)}</span>`).join("")}</div>`:`<div class="tags"><span class="tag">None beyond hypersensitivity</span></div>`}
+        <div class="quick">
+          <div><h3>Onset &amp; duration</h3>${timelineHTML(d.time)}</div>
+          <div class="qrow"><span>Reversal</span><b>${rev}</b></div>
+          ${d.contra.length?`<div class="qrow"><span>Avoid in</span><div class="tags">${d.contra.map(c=>`<span class="tag red">✕ ${esc(c)}</span>`).join("")}</div></div>`:""}
+        </div>
       </section>
-      <section class="panel">
-        <h2>Warnings</h2>
-        ${d.warn.length?`<ul class="serious">${d.warn.map(w=>`<li>${esc(w)}</li>`).join("")}</ul>`:`<p class="note" style="margin:0">None listed.</p>`}
+      <details class="panel mech" id="mech" ${state.moreOpen?"open":""}>
+        <summary><h2>More: warnings, pearls, pharmacology</h2></summary>
+        ${d.basisNote?`<p class="note" style="margin-top:0"><b>Dosing weight.</b> ${esc(d.basisNote)}</p>`:""}
+        ${d.warn.length?`<h3>Warnings</h3><ul class="serious">${d.warn.map(w=>`<li>${esc(w)}</li>`).join("")}</ul>`:""}
         ${d.pearls&&d.pearls.length?`<h3>Pearls</h3><ul class="pearls">${d.pearls.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
-      </section>
-      <details class="panel mech" id="mech" ${state.mechOpen?"open":""}>
-        <summary><h2>Pharmacology</h2></summary>
-        <p style="margin:0 0 10px">${esc(d.mech)}</p>
-
+        ${d.mac&&!noDose?`<h3>MAC</h3><p style="margin:0">${esc(d.mac)}</p>`:""}
+        <h3>Mechanism</h3><p style="margin:0">${esc(d.mech)}</p>
         <h3>Liver &amp; kidney</h3><p style="margin:0">${esc(d.organ||"Not specified.")}</p>
         ${d.preg?`<h3>Pregnancy</h3><p style="margin:0">${esc(d.preg)}</p>`:""}
         <h3>Sources</h3><ul class="srclist">${d.srcs.map(u=>`<li><a href="${u}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/,"").slice(0,70))}</a></li>`).join("")}</ul>
@@ -1857,26 +2101,71 @@ function renderACard(){
   watchHead();
 }
 
-/* ---------- Dose sheet ---------- */
-function renderSheet(){
-  const rows=[];
-  for(const [g,label] of AGROUPS){
-    const items=[];
-    for(const id of AORDER.filter(i=>DRUGS[i].grp===g)){
-      const d=DRUGS[id];
-      const pop=state.pt.pop, sh=d.doses.filter(x=>x.sheet), match=sh.filter(x=>forPop(x,pop));
-      let ds=match.filter(fitsWeight), fb=false;
-      if(!match.length && pop==="elderly"){ ds=sh.filter(x=>x.pop==="adult").filter(fitsWeight); fb=true; }
-      for(const dz of ds){ const r=doseResult(dz);
-        items.push(`<tr><td><button class="goto-n" data-goto="${id}">${d.name}</button></td><td>${esc(dz.use)}${dz.route?` <span class="muted">(${esc(dz.route)})</span>`:""}${fb?`<br><span class="fb">Adult dose; no older-adult dose listed</span>`:""}</td><td class="num"><b>${esc(r.main)}</b>${r.capped?`<br><span class="fb">Capped at ${dz.cap} ${esc(r.unit)}</span>`:""}</td><td class="muted">${r.perkg?esc(CALC.fmtRange(dz.lo,dz.hi,dz.unit)+(dz.basis&&dz.basis!=="TBW"?` · ${dz.basis==="IBW30"?"IBW if >30% over":dz.basis}`:"")):"Fixed dose"}</td></tr>`); }
-      if(!match.length && sh.length && pop==="peds") items.push(`<tr><td><button class="goto-n" data-goto="${id}">${d.name}</button></td><td colspan="3" class="muted">No pediatric dose listed in the sources used</td></tr>`);
-    }
-    if(items.length) rows.push(`<tr class="sh-g"><th colspan="4">${label}</th></tr>`+items.join(""));
+/* ---------- Case dose sheet ---------- */
+const PHASES = [["induction","Induction"],["paralysis","Paralysis"],["maint","Maintenance infusions"],["analgesia","Analgesia"],["pressor","Pressors"],["reversal","Reversal"],["ponv","PONV prophylaxis"],["local","Local anesthetic maximums"]];
+const isRate = u => /\/(min|h)$/.test(CALC.outUnit(u));
+function phaseOf(id, dz){
+  const d=DRUGS[id];
+  if(dz.ph) return dz.ph;
+  switch(d.grp){
+    case "induction": return isRate(dz.unit) ? "maint" : "induction";
+    case "opioid": return isRate(dz.unit) ? "maint" : (/induction/i.test(dz.use) ? "induction" : "analgesia");
+    case "nmb": return "paralysis";
+    case "pressor": return "pressor";
+    case "reversal": return "reversal";
+    case "local": return "local";
+    default: return "ponv";
   }
-  $("#sheetbody").innerHTML = rows.join("");
+}
+function sheetRows(){
+  const pop=state.pt.pop, out={}; PHASES.forEach(([k])=>out[k]=[]);
+  for(const id of AORDER){
+    const d=DRUGS[id], sh=d.doses.filter(x=>x.sheet);
+    if(!sh.length) continue;
+    let ds=sh.filter(x=>forPop(x,pop)), fb=false;
+    if(!ds.length && pop==="elderly"){ ds=sh.filter(x=>x.pop==="adult"); fb=true; }
+    if(!ds.length && pop==="peds"){ out[phaseOf(id,sh[0])].push({id, none:true}); continue; }
+    for(const dz of ds.filter(fitsWeight)) out[phaseOf(id,dz)].push({id, dz, fb});
+  }
+  return out;
+}
+function renderSheet(){
+  const rows=sheetRows(), noWt=!(state.pt.kg>0);
+  $("#sheetnote").hidden = !noWt;
+  $("#sheetbody").innerHTML = PHASES.map(([k,label])=>{
+    const r=rows[k]; if(!r.length) return "";
+    return `<section class="ph"><h2 class="ph-h">${label}</h2>${r.map(({id,dz,fb,none})=>{
+      const d=DRUGS[id];
+      if(none) return `<div class="sr"><div class="sr-l"><button class="goto-n sr-n" data-goto="${id}">${d.name}</button><span class="sr-u muted">No pediatric dose listed in the sources used</span></div></div>`;
+      const res=doseResult(dz,id);
+      return `<div class="sr"><div class="sr-l"><button class="goto-n sr-n" data-goto="${id}">${d.name}</button><span class="sr-u">${esc(dz.use)}${dz.route?` · ${esc(dz.route)}`:""}</span>${fb?`<span class="fb">Adult dose; no older-adult dose listed</span>`:""}</div>
+        <div class="sr-r"><b class="sr-d">${esc(res.main)}</b>${res.vol?`<span class="sr-v">${esc(res.vol)} ${concButton(id,dz)}</span>`:""}${res.capped?`<span class="fb">Capped at ${dz.cap} ${esc(res.r.unit)}</span>`:""}<span class="sr-k muted">${res.perkg?esc(CALC.fmtRange(dz.lo,dz.hi,dz.unit)+(dz.basis&&dz.basis!=="TBW"?` · ${dz.basis==="IBW30"?"IBW if >30% over":dz.basis}`:"")):"Fixed dose"}</span></div></div>`;
+    }).join("")}</section>`;
+  }).join("");
 }
 
-const state = { spec:"psych", pt:{pop:"adult",kg:null,cm:null,sex:null}, ause:0, drug:"sertraline", age:"adult", ind:null, view:"root", hcond:null, cmp:[], cond:"All", mechOpen:true, chip:null, regimen:new Set() };
+/* ---------- Crises ---------- */
+function crisisDose(x){
+  // x: {drug?, lo, hi, unit, basis, cap, c, maxKg, minKg, label}
+  const dz=Object.assign({basis:"TBW"}, x);
+  const res=doseResult(dz, x.drug||"_");
+  const cbtn = x.drug && !x.c ? concButton(x.drug, dz) : (res.conc?`<span class="concbtn fixed">${esc(fmtConc(res.conc))}</span>`:"");
+  return `<span class="cd"><b>${esc(res.main)}</b>${res.vol?` <span class="sr-v">${esc(res.vol)} ${cbtn}</span>`:""}${res.capped?` <span class="fb">capped</span>`:""}${res.r&&res.r.floored?` <span class="fb">minimum dose applied</span>`:""}</span>`;
+}
+function renderCrisis(){
+  const pop=state.pt.pop;
+  $("#crisisbody").innerHTML = CRISES.map(cr=>{
+    const open = state.crisis===cr.id;
+    const steps = cr.steps.filter(s=>(!s.pop || s.pop===pop || (s.pop==="adult" && pop==="elderly")) && !(s.dose && !fitsWeight(s.dose)));
+    return `<section class="cr ${open?"open":""}" style="--cr:var(--sev-${cr.sev||"avoid"})">
+      <button class="cr-h" data-crisis="${cr.id}" aria-expanded="${open}"><b>${cr.title}</b><span>${esc(cr.cue)}</span><i aria-hidden="true">${open?"▴":"▾"}</i></button>
+      ${open?`<ol class="cr-s">${steps.map(s=>`<li><span>${esc(s.t)}</span>${s.dose?crisisDose(s.dose):""}${s.note?`<small>${esc(s.note)}</small>`:""}</li>`).join("")}</ol>
+      <p class="srcs cr-src">${cr.srcs.map(([l,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(l)} ↗</a>`).join(" · ")}</p>`:""}
+    </section>`;
+  }).join("");
+}
+
+const state = { spec:"psych", pt:{pop:"adult",kg:null,cm:null,sex:null,units:"metric"}, ause:0, crisis:null, moreOpen:false, drug:"sertraline", age:"adult", ind:null, view:"root", hcond:null, cmp:[], cond:"All", mechOpen:true, chip:null, regimen:new Set() };
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const col = id => `var(--g-${DRUGS[id].grp})`;
@@ -1936,6 +2225,7 @@ function hashFor(){
   if(state.view==="cmp") return ["compare",...state.cmp].join(".");
   if(state.view==="reg") return ["regimen",...state.regimen].join(".");
   if(state.view==="sheet") return "dosesheet";
+  if(state.view==="crisis") return "crises";
   return spec().slug;
 }
 function syncHash(){ try{ const h=hashFor(); history.replaceState(null,"",h?"#"+h:location.pathname+location.search); }catch(e){} }
@@ -1946,7 +2236,8 @@ function readHash(){
   else if(k==="compare"){ state.spec="psych"; if(good.length) state.cmp=good.slice(0,3); state.view="cmp"; }
   else if(k==="regimen"){ state.spec="psych"; if(good.length) state.regimen=new Set(good); state.view="reg"; }
   else if(k==="dosesheet"){ state.spec="anes"; state.view="sheet"; }
-  else { const sp=Object.keys(SPECS).find(x=>SPECS[x].slug===k); if(sp){ state.spec=sp; state.view="home"; } else state.view="root"; }
+  else if(k==="crises"){ state.spec="anes"; state.view="crisis"; }
+  else { const sp=Object.keys(SPECS).find(x=>SPECS[x].slug===k); if(sp){ state.spec=sp; state.view=SPECS[sp].start; } else state.view="root"; }
 }
 function renderEntries(){
   $("#entries").innerHTML = listHTML($("#q").value, state.cond) || `<div class="hint">No match.</div>`;
@@ -2149,17 +2440,18 @@ function renderRoot(){
 function setView(v){
   if(v==="dex" && !state.drug) v="home";
   if((v==="cmp"||v==="reg") && state.spec!=="psych") v="home";
-  if(v==="sheet" && state.spec!=="anes") v="home";
+  if((v==="sheet"||v==="crisis") && state.spec!=="anes") v="home";
   state.view=v;
-  for(const id of ["root","home","dex","cmp","reg","sheet"]) $("#"+id).hidden = id!==v;
-  const showPt = state.spec==="anes" && (v==="dex"||v==="sheet");
+  for(const id of ["root","home","dex","cmp","reg","sheet","crisis"]) $("#"+id).hidden = id!==v;
+  const showPt = state.spec==="anes" && (v==="dex"||v==="sheet"||v==="crisis");
   $("#ptbar").hidden = !showPt; if(showPt) renderPtbar();
   if(v!=="dex") $("#namepill").hidden=true;
   closeSpecMenu(); renderTabs();
-  if(v==="root") renderRoot(); else if(v==="home") renderHome(); else if(v==="dex"){ renderConds(); renderEntries(); renderCard(); } else if(v==="cmp") renderCompare(); else if(v==="reg") renderRegimen(); else renderSheet();
+  if(v==="root") renderRoot(); else if(v==="home") renderHome(); else if(v==="dex"){ renderConds(); renderEntries(); renderCard(); } else if(v==="cmp") renderCompare(); else if(v==="reg") renderRegimen(); else if(v==="crisis") renderCrisis(); else renderSheet();
   syncHash();
 }
-function setSpec(k){ if(state.spec!==k){ state.spec=k; state.hcond=null; state.cond="All"; state.chip=null; $("#hq").value=""; $("#q").value=""; } setView("home"); window.scrollTo(0,0); }
+function rerenderAnes(){ if(state.view==='sheet') renderSheet(); else if(state.view==='crisis') renderCrisis(); else if(state.view==='dex') renderCard(); }
+function setSpec(k){ if(state.spec!==k){ state.spec=k; state.hcond=null; state.cond="All"; state.chip=null; $("#hq").value=""; $("#q").value=""; } setView(SPECS[k].start); window.scrollTo(0,0); }
 function closeSpecMenu(){ const m=$("#specmenu"); if(m){ m.hidden=true; $("#specbtn").setAttribute("aria-expanded","false"); } }
 
 document.addEventListener("click", e=>{
@@ -2170,8 +2462,11 @@ document.addEventListener("click", e=>{
   const sp = e.target.closest("[data-spec]"); if(sp){ setSpec(sp.dataset.spec); return; }
   if(e.target.closest("[data-root]")){ setView("root"); window.scrollTo(0,0); return; }
   const tab = e.target.closest("[data-tab]"); if(tab){ setView(tab.dataset.tab==="dex"?"home":tab.dataset.tab); window.scrollTo(0,0); return; }
-  const pop = e.target.closest("[data-pop]"); if(pop){ state.pt.pop=pop.dataset.pop; state.ause=0; renderPtbar(); state.view==="sheet"?renderSheet():renderCard(); return; }
-  const sx = e.target.closest("[data-sex]"); if(sx){ state.pt.sex = state.pt.sex===sx.dataset.sex?null:sx.dataset.sex; renderPtbar(); state.view==="sheet"?renderSheet():renderCard(); return; }
+  const pop = e.target.closest("[data-pop]"); if(pop){ state.pt.pop=pop.dataset.pop; state.ause=0; state.autoPick=true; renderPtbar(); rerenderAnes(); return; }
+  const sx = e.target.closest("[data-sex]"); if(sx){ state.pt.sex = state.pt.sex===sx.dataset.sex?null:sx.dataset.sex; renderPtbar(); rerenderAnes(); return; }
+  const un = e.target.closest("[data-units]"); if(un){ state.pt.units=un.dataset.units; try{localStorage.setItem("affinity.units",state.pt.units);}catch(_){} renderPtbar(); updatePtDerived(); return; }
+  const cb = e.target.closest("[data-conc]"); if(cb){ const id=cb.dataset.conc, L=concList(id); CONC_SEL[id]=((CONC_SEL[id]||0)+1)%L.length; saveConc(); rerenderAnes(); return; }
+  const cr = e.target.closest("[data-crisis]"); if(cr){ state.crisis = state.crisis===cr.dataset.crisis?null:cr.dataset.crisis; renderCrisis(); return; }
   const go = e.target.closest("[data-goto]"); if(go){ state.drug=go.dataset.goto; state.spec=DRUGS[state.drug].spec; state.ind=null; state.ause=0; state.autoPick=true; state.chip=null; setView("dex"); window.scrollTo(0,0); return; }
   const ent = e.target.closest(".entry"); if(ent){ state.drug=ent.dataset.id; state.ind=null; state.ause=0; state.autoPick=true; state.chip=null;
     if(state.view!=="dex"){ setView("dex"); window.scrollTo(0,0); return; }
@@ -2196,17 +2491,17 @@ document.addEventListener("change", e=>{
   if(e.target.id==="caddsel" && e.target.value){ state.cmp.push(e.target.value); renderCompare(); syncHash(); }
 });
 function setRail(open){ $("#rail").classList.toggle("open",open); const t=$("#railtoggle"); t.setAttribute("aria-expanded",open); t.textContent=open?"Close ▴":"Browse ▾"; }
-document.addEventListener("toggle", e=>{ if(e.target.id==="mech") state.mechOpen=e.target.open; }, true);
+document.addEventListener("toggle", e=>{ if(e.target.id==="mech"){ if(state.spec==="anes") state.moreOpen=e.target.open; else state.mechOpen=e.target.open; } }, true);
 $("#hq").addEventListener("input", renderHome);
 document.addEventListener("input", e=>{
-  if(e.target.id==="pt-kg"||e.target.id==="pt-cm"){ const v=parseFloat(e.target.value); state.pt[e.target.id==="pt-kg"?"kg":"cm"] = (isFinite(v)&&v>0)?v:null;
-    updatePtDerived(); state.view==="sheet"?renderSheet():renderCard(); }
+  if(/^pt-(kg|cm|lb|ft|inch)$/.test(e.target.id)){ readPtInputs(); updatePtDerived(); rerenderAnes(); }
 });
 document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeSpecMenu(); });
 window.addEventListener("hashchange", ()=>{ if(location.hash.slice(1)!==hashFor()){ readHash(); setView(state.view); } });
 $("#q").addEventListener("input", ()=>{ if($("#q").value.trim()) setRail(true); renderEntries(); });
 document.addEventListener("keydown", e=>{ if(e.key==="/" && !["INPUT","SELECT"].includes(document.activeElement.tagName)){ e.preventDefault(); if(state.view==="root") return; setView("home"); $("#hq").focus(); }});
 
+try{ const u=localStorage.getItem("affinity.units"); if(u) state.pt.units=u; }catch(_){}
 readHash();
 renderConds(); setView(state.view);
 
