@@ -232,6 +232,15 @@ button.mark{border:0;background:transparent;color:inherit;cursor:pointer;padding
 .sp-foot b{font-family:var(--f-display);font-size:22px;color:var(--sp)}
 .sp-foot span{grid-column:1;font-size:13px;color:var(--muted)}
 .sp-foot i{grid-row:1/3;grid-column:2;font-style:normal;font-size:22px;color:var(--sp)}
+.pt-start{display:none;margin:0 0 8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
+.ptbar.needs{border:2px solid var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 12%,transparent)}
+.ptbar.needs .pt-start{display:block}
+.ptbar.needs #pt-kg,.ptbar.needs #pt-lb{background:color-mix(in srgb,var(--accent) 8%,var(--surface))}
+.ptbar.needs .pt-f:first-of-type .pt-in{border-color:var(--accent)}
+.startcard{display:flex;flex-direction:column;gap:6px;border:2px dashed color-mix(in srgb,var(--accent) 45%,var(--line));border-radius:12px;padding:22px 18px;text-align:center;max-width:760px}
+.startcard b{font-size:17px;color:var(--accent)}.startcard span{color:var(--muted);font-size:14px;max-width:56ch;margin:0 auto}
+.startcard.small{padding:12px 14px;margin-bottom:12px}.startcard.small b{font-size:15px}
+.startcard[hidden]{display:none}
 .ptbar{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 54px);z-index:4}
 .pt-row{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end}
 .pt-f{display:block}.pt-in{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--surface);overflow:hidden}
@@ -277,6 +286,7 @@ button.concbtn:hover{border-color:var(--ink);color:var(--ink)}
 .sr:hover{background:var(--surface)}
 .sr[aria-expanded="true"]{border-bottom-color:transparent;background:var(--surface)}
 .sr-n{font-weight:600;font-size:15px;min-width:0}
+.httag{display:inline-block;font-size:11px;font-weight:700;color:var(--sev-adjust);background:color-mix(in srgb,var(--sev-adjust) 14%,transparent);border-radius:999px;padding:1px 7px;vertical-align:1px;white-space:nowrap}
 .sr-u{font-weight:400;font-size:13px;color:var(--muted)}
 .sr-d{font-weight:700;font-size:15px;text-align:right;white-space:nowrap}
 .sr-v{font-size:14px;font-weight:600;color:var(--g-reversal);text-align:right;white-space:nowrap}
@@ -453,11 +463,12 @@ button.concbtn:hover{border-color:var(--ink);color:var(--ink)}
 
   <section id="sheet" hidden>
     <div class="reg-head"><h1>Case doses</h1><p>Tap any row for details and to change the concentration.</p></div>
-    <p class="empty" id="sheetnote">Enter the patient's weight above to calculate doses and volumes.</p>
+    <div class="startcard" id="sheetnote"><b>↑ Enter the patient's weight to see doses</b><span>Add height and sex too: some drugs are dosed on ideal or lean body weight. Choose Adult, Pediatric, or Older adult for age-appropriate doses.</span></div>
     <div id="sheetbody" class="sheet2"></div>
   </section>
   <section id="crisis" hidden>
     <div class="reg-head"><h1>Crises</h1><p>Step-by-step protocols with doses calculated for the patient above. Call for help early.</p></div>
+    <div class="startcard small" id="crisisnote"><b>↑ Enter the patient's weight for calculated doses</b><span>Protocol steps are shown below; doses fill in once you add a weight.</span></div>
     <div id="crisisbody" class="crises"></div>
   </section>
   <section id="reg" hidden>
@@ -2002,7 +2013,9 @@ function renderPtbar(){
   const p=state.pt, el=$("#ptbar"), us=p.units==="us";
   const lb = p.kg>0 ? CALC.round(CALC.kgToLb(p.kg)) : "";
   const fi = p.cm>0 ? CALC.cmToFtIn(p.cm) : {ft:"",inch:""};
+  el.classList.toggle("needs", !(p.kg>0));
   el.innerHTML = `
+    <p class="pt-start">Step 1 · Enter the patient's weight</p>
     <div class="pt-row">
       <div><span class="ctx-label" id="pop-l">Patient</span><div class="seg" role="group" aria-labelledby="pop-l">${PTPOP.map(([k,l])=>`<button data-pop="${k}" aria-pressed="${k===p.pop}">${l}</button>`).join("")}</div></div>
       ${us
@@ -2023,7 +2036,7 @@ function ptDerived(){
   if(i===null) return `Actual weight ${w(p.kg)}. Add height and sex for ideal (IBW) and lean (LBW) body weight.`;
   return `Actual ${w(p.kg)} · IBW ${CALC.round(i)} kg · LBW ${CALC.round(l)} kg · Adjusted ${CALC.round(a)} kg · BMI ${CALC.round(b)}`;
 }
-function updatePtDerived(){ const el=$("#pt-derived"); if(el) el.textContent=ptDerived(); }
+function updatePtDerived(){ const el=$("#pt-derived"); if(el) el.textContent=ptDerived(); $("#ptbar").classList.toggle("needs", !(state.pt.kg>0)); }
 function readPtInputs(){
   const p=state.pt, num=id=>{ const el=$("#"+id); if(!el) return null; const v=parseFloat(el.value); return isFinite(v)&&v>=0?v:null; };
   if(p.units==="us"){
@@ -2185,6 +2198,7 @@ function sheetRows(){
 function renderSheet(){
   const rows=sheetRows(), noWt=!(state.pt.kg>0);
   $("#sheetnote").hidden = !noWt;
+  if(noWt){ $("#sheetbody").innerHTML=""; return; }
   $("#sheetbody").innerHTML = PHASES.map(([k,label])=>{
     const r=rows[k]; if(!r.length) return "";
     return `<section class="ph"><h2 class="ph-h">${label}</h2>${r.map(({id,dz,fb,none},n)=>{
@@ -2192,7 +2206,9 @@ function renderSheet(){
       if(none) return `<div class="sr none"><span class="sr-n">${d.name}</span><span class="sr-u">no pediatric dose listed</span></div>`;
       const key=id+"|"+d.doses.indexOf(dz), open=state.openRow===key;
       const res=doseResult(dz,id);
-      const line=`<button class="sr" data-row="${key}" aria-expanded="${open}"><span class="sr-n">${d.name}${dz.sl?` <span class="sr-u">${esc(dz.sl)}</span>`:""}</span><span class="sr-d">${esc(res.main)}</span><span class="sr-v">${esc(res.vol||"")}</span></button>`;
+      const needsHt = ["LBW","IBW","IBW30","AdjBW"].includes(dz.basis) && (!(state.pt.cm>0) || !state.pt.sex);
+      const htTag = needsHt ? ` <span class="httag">add ${!(state.pt.cm>0)&&!state.pt.sex?"height & sex":!(state.pt.cm>0)?"height":"sex"}</span>` : "";
+      const line=`<button class="sr" data-row="${key}" aria-expanded="${open}"><span class="sr-n">${d.name}${dz.sl?` <span class="sr-u">${esc(dz.sl)}</span>`:""}${htTag}</span><span class="sr-d">${esc(res.main)}</span><span class="sr-v">${esc(res.vol||"")}</span></button>`;
       if(!open) return line;
       return line + `<div class="sr-x">
         <p><b>${esc(dz.use)}</b>${dz.route?` · ${esc(dz.route)}`:""}</p>
@@ -2217,6 +2233,7 @@ function crisisDose(x){
 }
 function renderCrisis(){
   const pop=state.pt.pop;
+  $("#crisisnote").hidden = state.pt.kg>0;
   $("#crisisbody").innerHTML = CRISES.map(cr=>{
     const open = state.crisis===cr.id;
     const steps = cr.steps.filter(s=>(!s.pop || s.pop===pop || (s.pop==="adult" && pop==="elderly")) && !(s.dose && !fitsWeight(s.dose)));
