@@ -279,9 +279,10 @@ button.concbtn:hover{border-color:var(--ink);color:var(--ink)}
 .quick{display:grid;gap:12px;margin-top:14px}
 .qrow{display:grid;grid-template-columns:90px minmax(0,1fr);gap:10px;align-items:baseline;font-size:14px}
 .qrow>span{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}
-.sheet2{display:grid;gap:18px;max-width:760px}
-.ph{display:grid}
-.ph-h{margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-family:var(--f-body);font-weight:700}
+.sheet2{display:grid;gap:0;max-width:820px}
+.ph{display:grid;grid-template-columns:128px minmax(0,1fr);column-gap:14px;padding:6px 0}
+.ph>:not(.ph-h){grid-column:2}
+.ph-h{grid-column:1;grid-row:1 / span 60;margin:0;padding:10px 12px 10px 0;border-right:3px solid var(--ph);color:var(--ph);font-family:var(--f-body);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;line-height:1.25;text-wrap:balance}
 .sr{display:grid;grid-template-columns:minmax(0,1fr) auto 84px;gap:12px;align-items:baseline;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;padding:9px 2px;cursor:pointer;font:inherit;color:inherit}
 .sr:hover{background:var(--surface)}
 .sr[aria-expanded="true"]{border-bottom-color:transparent;background:var(--surface)}
@@ -301,7 +302,12 @@ button.concbtn:hover{border-color:var(--ink);color:var(--ink)}
 .cr-s li{display:flex;flex-direction:column;gap:2px}
 .cr-s .cd{font-size:15px}.cr-s small{color:var(--muted);font-size:12.5px}
 .cr-src{padding:0 14px 12px}
-@media (max-width:520px){ .sr{grid-template-columns:minmax(0,1fr) auto;row-gap:0} .sr-v{grid-column:2;font-size:13px} .sr-n{grid-row:span 2} }
+@media (max-width:640px){
+  .ph{grid-template-columns:minmax(0,1fr);border-left:3px solid var(--ph);padding:2px 0 8px 10px;margin-bottom:10px}
+  .ph>:not(.ph-h){grid-column:1}
+  .ph-h{grid-row:auto;border-right:0;padding:6px 0 2px}
+}
+@media (max-width:520px){ .sr{grid-template-columns:minmax(0,1fr) auto;row-gap:0} .sr-d{grid-column:2;grid-row:1} .sr-v{grid-column:2;grid-row:2;font-size:13px} .sr-n{grid-column:1;grid-row:1 / span 2;align-self:center} }
 .glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:16px}
 .gl{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 12px;min-width:0}
 .gl span{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--lv);font-weight:700}
@@ -2168,6 +2174,8 @@ function renderACard(){
 }
 
 /* ---------- Case dose sheet ---------- */
+const PHASE_TONE = {induction:"--g-induction", paralysis:"--g-nmb", maint:"--g-opioid", analgesia:"--g-inhaled", pressor:"--g-pressor", reversal:"--g-reversal", ponv:"--g-other", local:"--g-local"};
+const REDUNDANT = {induction:["induction"], maint:["infusion"], paralysis:["intubation"]};
 const PHASES = [["induction","Induction"],["paralysis","Paralysis"],["maint","Maintenance infusions"],["analgesia","Analgesia"],["pressor","Pressors"],["reversal","Reversal"],["ponv","PONV prophylaxis"],["local","Local anesthetic maximums"]];
 const isRate = u => /\/(min|h)$/.test(CALC.outUnit(u));
 function phaseOf(id, dz){
@@ -2201,14 +2209,15 @@ function renderSheet(){
   if(noWt){ $("#sheetbody").innerHTML=""; return; }
   $("#sheetbody").innerHTML = PHASES.map(([k,label])=>{
     const r=rows[k]; if(!r.length) return "";
-    return `<section class="ph"><h2 class="ph-h">${label}</h2>${r.map(({id,dz,fb,none},n)=>{
+    const perDrug={}; r.forEach(x=>{ if(x.id) perDrug[x.id]=(perDrug[x.id]||0)+1; });
+    return `<section class="ph" style="--ph:var(${PHASE_TONE[k]})"><h2 class="ph-h">${label}</h2>${r.map(({id,dz,fb,none},n)=>{
       const d=DRUGS[id];
       if(none) return `<div class="sr none"><span class="sr-n">${d.name}</span><span class="sr-u">no pediatric dose listed</span></div>`;
       const key=id+"|"+d.doses.indexOf(dz), open=state.openRow===key;
       const res=doseResult(dz,id);
       const needsHt = ["LBW","IBW","IBW30","AdjBW"].includes(dz.basis) && (!(state.pt.cm>0) || !state.pt.sex);
       const htTag = needsHt ? ` <span class="httag">add ${!(state.pt.cm>0)&&!state.pt.sex?"height & sex":!(state.pt.cm>0)?"height":"sex"}</span>` : "";
-      const line=`<button class="sr" data-row="${key}" aria-expanded="${open}"><span class="sr-n">${d.name}${dz.sl?` <span class="sr-u">${esc(dz.sl)}</span>`:""}${htTag}</span><span class="sr-d">${esc(res.main)}</span><span class="sr-v">${esc(res.vol||"")}</span></button>`;
+      const line=`<button class="sr" data-row="${key}" aria-expanded="${open}"><span class="sr-n">${d.name}${dz.sl && !(perDrug[id]===1 && (REDUNDANT[k]||[]).includes(dz.sl))?` <span class="sr-u">${esc(dz.sl)}</span>`:""}${htTag}</span><span class="sr-d">${esc(res.main)}</span><span class="sr-v">${esc(res.vol||"")}</span></button>`;
       if(!open) return line;
       return line + `<div class="sr-x">
         <p><b>${esc(dz.use)}</b>${dz.route?` · ${esc(dz.route)}`:""}</p>
