@@ -2254,7 +2254,7 @@ function renderCrisis(){
   }).join("");
 }
 
-const state = { spec:"psych", pt:{pop:"adult",kg:null,cm:null,sex:null,units:"metric"}, ause:0, crisis:null, moreOpen:false, openRow:null, drug:"sertraline", age:"adult", ind:null, view:"root", hcond:null, cmp:[], cond:"All", mechOpen:true, chip:null, regimen:new Set() };
+const state = { spec:"psych", pt:{pop:"adult",kg:null,cm:null,sex:null,units:"metric"}, ause:0, crisis:null, moreOpen:true, openRow:null, drug:"sertraline", age:"adult", ind:null, view:"root", hcond:null, cmp:[], cond:"All", mechOpen:true, chip:null, regimen:new Set() };
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const col = id => `var(--g-${DRUGS[id].grp})`;
