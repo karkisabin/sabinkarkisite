@@ -112,11 +112,11 @@ ul.plain{margin:0;padding-left:18px}
 ul.plain li{margin:2px 0}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .tag{font-size:12px;border:1px solid var(--line);padding:2px 9px;border-radius:999px;background:var(--surface-2)}
-:root{--g-ssri:#138a7a;--g-snri:#2a6fc9;--g-otherad:#b0740a;--g-ap:#7552c4;--g-ms:#c0582a;--g-adhd:#bd3b86;--g-anx:#5b7a14;--g-induction:#2a6fc9;--g-opioid:#7552c4;--g-nmb:#c0582a;--g-reversal:#138a7a;--g-pressor:#bd3b86;--g-local:#b0740a;--g-inhaled:#4b6fa8;--g-other:#5b7a14;
+:root{--g-ssri:#138a7a;--g-snri:#2a6fc9;--g-otherad:#b0740a;--g-ap:#7552c4;--g-ms:#c0582a;--g-adhd:#bd3b86;--g-anx:#5b7a14;--g-tca:#8a5a2b;--g-sleep:#3d4fa8;--g-sud:#a8323e;--g-eps:#4f7f86;--g-induction:#2a6fc9;--g-opioid:#7552c4;--g-nmb:#c0582a;--g-reversal:#138a7a;--g-pressor:#bd3b86;--g-local:#b0740a;--g-inhaled:#4b6fa8;--g-other:#5b7a14;
   --p0:#2a6fc9;--p1:#d08a12;--p2:#8a4fd1;--p3:#13937f;--p4:#c43f8e;--p5:#6b7a12;--p6:#c4562a;--p7:#5b6676}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--g-ssri:#3cc2ae;--g-snri:#5c9ff0;--g-otherad:#e8a93a;--g-ap:#a184ec;--g-ms:#ef8a5a;--g-adhd:#e46cb0;--g-anx:#9fc04a;--g-induction:#5c9ff0;--g-opioid:#a184ec;--g-nmb:#ef8a5a;--g-reversal:#3cc2ae;--g-pressor:#e46cb0;--g-local:#e8a93a;--g-inhaled:#8fb0e6;--g-other:#9fc04a;
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--g-ssri:#3cc2ae;--g-snri:#5c9ff0;--g-otherad:#e8a93a;--g-ap:#a184ec;--g-ms:#ef8a5a;--g-adhd:#e46cb0;--g-anx:#9fc04a;--g-tca:#d29a62;--g-sleep:#8e9cf0;--g-sud:#ee7a85;--g-eps:#7fc1c9;--g-induction:#5c9ff0;--g-opioid:#a184ec;--g-nmb:#ef8a5a;--g-reversal:#3cc2ae;--g-pressor:#e46cb0;--g-local:#e8a93a;--g-inhaled:#8fb0e6;--g-other:#9fc04a;
   --p0:#5c9ff0;--p1:#e8a93a;--p2:#b48af0;--p3:#3cc2ae;--p4:#e46cb0;--p5:#b5c24a;--p6:#ef8a5a;--p7:#9aa6b4}}
-:root[data-theme="dark"]{--g-ssri:#3cc2ae;--g-snri:#5c9ff0;--g-otherad:#e8a93a;--g-ap:#a184ec;--g-ms:#ef8a5a;--g-adhd:#e46cb0;--g-anx:#9fc04a;--g-induction:#5c9ff0;--g-opioid:#a184ec;--g-nmb:#ef8a5a;--g-reversal:#3cc2ae;--g-pressor:#e46cb0;--g-local:#e8a93a;--g-inhaled:#8fb0e6;--g-other:#9fc04a;
+:root[data-theme="dark"]{--g-ssri:#3cc2ae;--g-snri:#5c9ff0;--g-otherad:#e8a93a;--g-ap:#a184ec;--g-ms:#ef8a5a;--g-adhd:#e46cb0;--g-anx:#9fc04a;--g-tca:#d29a62;--g-sleep:#8e9cf0;--g-sud:#ee7a85;--g-eps:#7fc1c9;--g-induction:#5c9ff0;--g-opioid:#a184ec;--g-nmb:#ef8a5a;--g-reversal:#3cc2ae;--g-pressor:#e46cb0;--g-local:#e8a93a;--g-inhaled:#8fb0e6;--g-other:#9fc04a;
   --p0:#5c9ff0;--p1:#e8a93a;--p2:#b48af0;--p3:#3cc2ae;--p4:#e46cb0;--p5:#b5c24a;--p6:#ef8a5a;--p7:#9aa6b4}
 .rail{max-height:calc(100vh - 96px);overflow-y:auto;padding-bottom:12px}
 .conds{display:flex;flex-wrap:wrap;gap:4px}
@@ -312,6 +312,110 @@ button.concbtn:hover{border-color:var(--ink);color:var(--ink)}
 .offnote a{color:inherit;text-decoration:underline}
 .offbadge.nr{color:var(--sev-avoid);background:color-mix(in srgb,var(--sev-avoid) 13%,transparent)}
 .offbadge{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--sev-monitor);background:color-mix(in srgb,var(--sev-monitor) 13%,transparent);border-radius:4px;padding:1px 6px;margin-right:2px}
+.tool-wide{grid-column:1/-1;border-left:4px solid var(--accent)}
+.pathpick{margin-bottom:14px}
+.pfbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:6px 0 16px}
+.pfbox h3{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:2px 0 8px;font-weight:700}
+.pfbox h3 span{text-transform:none;letter-spacing:0;font-weight:500;margin-left:6px}
+.pfbox h3+.pf{margin-bottom:12px}
+.pf{display:flex;flex-wrap:wrap;gap:6px}
+.pfc{border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:5px 11px;font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}
+.pfc[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.pmeds{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pmeds .pick{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:999px;padding:3px 4px 3px 10px;font-size:13px;font-weight:600}
+.pmeds select{font:inherit;font-size:13px;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);max-width:100%}
+.pcall{border-left:4px solid var(--sev-monitor);background:color-mix(in srgb,var(--sev-monitor) 8%,var(--surface));padding:10px 12px;border-radius:8px;font-size:14px;margin:0 0 10px}
+.pcall a{color:inherit}
+.psteps{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.pst{position:relative;padding-left:42px;padding-bottom:14px}
+.pst::before{content:"";position:absolute;left:15px;top:34px;bottom:0;width:2px;background:var(--line)}
+.pst:last-child::before{display:none}
+.pst-h{display:flex;gap:10px;align-items:flex-start;margin-left:-42px}
+.pst-n{flex:0 0 32px;height:32px;border-radius:50%;background:var(--ink);color:var(--surface);display:grid;place-items:center;font-weight:700}
+.pst-h h2{margin:4px 0 0;font-size:18px;font-family:var(--f-display)}
+.pst-w{margin:2px 0 0;font-size:13.5px;color:var(--muted)}
+.pst-b{display:grid;gap:10px;margin-top:10px}
+.pst-a{margin:0;font-size:13.5px;color:var(--muted)}
+.pg{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.pg-h{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;justify-content:space-between;padding:8px 12px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.pg-h b{font-size:14px}.pg-h span{font-size:12px;color:var(--muted)}
+.pg-note,.pg-other{margin:0;padding:8px 12px;font-size:13px;color:var(--muted)}
+.pg-other{border-top:1px solid var(--line)}
+.pd{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;justify-content:space-between;width:100%;text-align:left;border:0;border-top:1px solid var(--line);border-left:4px solid var(--drug);background:transparent;padding:9px 12px;font:inherit;color:var(--ink);cursor:pointer}
+.pg-h+.pd,.pg-note+.pd{border-top:0}
+.pd:hover{background:var(--surface-2)}
+.pd.dim{opacity:.6}
+.pd-n{display:flex;align-items:baseline;gap:6px;min-width:0}.pd-n b{font-size:15px}.pd-n small{color:var(--muted);font-size:12px}
+.pd-r{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end}
+.pd-r i{font-style:normal;font-size:12px;font-weight:600;border-radius:999px;padding:2px 8px;white-space:nowrap}
+.pd-tag{color:var(--muted);border:1px solid var(--line)}
+.rp.good{color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.rp.warn{color:var(--sev-adjust);background:color-mix(in srgb,var(--sev-adjust) 12%,transparent)}
+.rp.bad{color:var(--sev-avoid);background:color-mix(in srgb,var(--sev-avoid) 12%,transparent)}
+.pex{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:10px}
+.pex summary{cursor:pointer;font-weight:700}
+.pex ul{margin:8px 0 0;padding-left:18px;display:grid;gap:6px;font-size:14px}
+.pex a{color:inherit}
+.psrc{margin-top:14px}.psrc a{color:inherit}
+@media (max-width:520px){ .views button{padding:6px 10px} .pd-r{justify-content:flex-start} }
+.flow{display:flex;flex-direction:column;align-items:center;margin:4px 0 18px}
+.fn{width:100%;max-width:560px;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.fn p{margin:4px 0 0;font-size:13.5px;line-height:1.4;color:var(--muted)}
+.fn-h{display:flex;flex-wrap:wrap;gap:2px 8px;align-items:baseline;justify-content:space-between}
+.fn-h b{font-size:15.5px}.fn-h span{font-size:11.5px;color:var(--muted);font-weight:600}
+.fn.start{border-color:var(--ink)}
+.fn.check{border-style:dashed}
+.fn.drug{border-color:color-mix(in srgb,var(--accent) 55%,var(--line));border-width:2px}
+.fn.end{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 6%,var(--surface))}
+.fn-end{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ok)}
+.fn-f{font-size:12.5px!important;border-top:1px solid var(--line);padding-top:6px;margin-top:8px!important}
+.fn-g{margin-top:8px}
+.fn-g>span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;margin-bottom:4px}
+.dps{display:flex;flex-wrap:wrap;gap:5px}
+.dp{max-width:100%;text-align:left;overflow-wrap:anywhere;display:inline-flex;align-items:center;gap:4px;border:1.5px solid color-mix(in srgb,var(--drug) 55%,var(--line));border-left:4px solid var(--drug);background:var(--surface);border-radius:8px;padding:4px 9px;font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;line-height:1.2}
+.dp:hover{background:var(--surface-2)}
+.dp i{font-style:normal;font-weight:800;font-size:12px}
+.dp.good{border-color:var(--ok);border-left-color:var(--ok)} .dp.good i{color:var(--ok)}
+.dp.warn{border-color:var(--sev-adjust);border-left-color:var(--sev-adjust)} .dp.warn i{color:var(--sev-adjust)}
+.dp.bad{border-color:var(--sev-avoid);border-left-color:var(--sev-avoid);opacity:.6;text-decoration:line-through} .dp.bad i{color:var(--sev-avoid)}
+.dp-key{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12.5px;color:var(--muted);margin:0 0 8px}
+.dp-key .dp{cursor:default;text-decoration:none;opacity:1;padding:2px 7px;font-size:12px}
+.fl-v{width:2px;height:18px;background:var(--muted);opacity:.55}
+.fl-q{border:2px solid var(--ink);background:var(--surface);border-radius:999px;padding:6px 16px;font-weight:700;font-size:14px;text-align:center;max-width:90%}
+.fl-s{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:640px;padding-top:16px;margin-top:10px}
+.fl-s::before{content:"";position:absolute;top:0;left:25%;right:25%;height:2px;background:var(--muted);opacity:.55}
+.fl-s::after{content:"";position:absolute;top:-10px;left:calc(50% - 1px);width:2px;height:10px;background:var(--muted);opacity:.55}
+.fl-c{position:relative;display:flex;flex-direction:column;align-items:center;min-width:0}
+.fl-c::before{content:"";position:absolute;top:-16px;left:calc(50% - 1px);width:2px;height:16px;background:var(--muted);opacity:.55}
+.fl-l{position:relative;z-index:1;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:var(--ink);color:var(--surface);border-radius:999px;padding:2px 9px;margin:-4px 0 6px;text-align:center}
+.fl-c.stop .fl-l{background:var(--ok)}
+.fl-t{flex:1;width:2px;min-height:12px;background:var(--muted);opacity:.55}
+.fl-m{position:relative;width:100%;max-width:640px;height:2px}
+.fl-m::before{content:"";position:absolute;top:0;height:2px;background:var(--muted);opacity:.55}
+.fl-m.both::before{left:25%;right:25%}.fl-m.left::before{left:25%;right:50%}.fl-m.right::before{left:50%;right:25%}
+.fl-s+.fl-v,.fl-m+.fl-v{height:16px}
+.mini{position:fixed;inset:0;z-index:60;background:rgba(10,14,20,.45);display:flex;align-items:flex-end;justify-content:center}
+.mini[hidden]{display:none}
+.mini-card{width:100%;max-width:460px;max-height:80vh;overflow:auto;background:var(--surface);color:var(--ink);border-radius:16px 16px 0 0;border-top:5px solid var(--drug);padding:14px 16px 18px;box-shadow:0 -8px 30px rgba(0,0,0,.25)}
+@media (min-width:700px){ .mini{align-items:center} .mini-card{border-radius:14px} }
+.mini-h{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.mini-h h2{margin:0;font-family:var(--f-display);font-size:22px}
+.mini-h span{font-size:13px;color:var(--muted)}
+.mini-x{border:0;background:var(--surface-2);color:var(--ink);width:32px;height:32px;border-radius:50%;font-size:20px;cursor:pointer;flex:0 0 auto}
+.mini-fl{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.mini-fl i{font-style:normal;font-size:12px;font-weight:600;border-radius:999px;padding:2px 8px}
+.mini-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.mini-sc{cursor:default;font-size:12px;padding:3px 9px}
+.mini-dose{margin-top:10px;padding:8px 10px;border-radius:8px;background:var(--surface-2);font-size:14px}
+.mini-dose span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;margin-bottom:2px}
+.mini-dose.path{background:color-mix(in srgb,var(--accent) 8%,var(--surface))}
+.mini-ae{margin:10px 0 0;padding-left:18px;font-size:13px;color:var(--sev-avoid)}
+.mini-ae li{color:var(--ink)}
+.mini-go{margin-top:14px;width:100%;border:0;border-radius:10px;background:var(--ink);color:var(--surface);font:inherit;font-weight:700;padding:11px;cursor:pointer}
+body.mini-open{overflow:hidden}
+.pathpick{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.pathsub{margin-bottom:12px}
+.fl-gap{width:100%;max-width:560px;border-top:2px dashed var(--line);margin:22px 0 14px}
 .glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:16px}
 .gl{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 12px;min-width:0}
 .gl span{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--lv);font-weight:700}
@@ -443,6 +547,7 @@ button.concbtn:hover{border-color:var(--ink);color:var(--ink)}
     <div class="condgrid" id="condgrid" role="group" aria-label="Browse by condition"></div>
     <div id="hresults" class="hresults"></div>
     <div class="tools">
+      <button class="tool tool-wide" data-view="path"><b>Treatment pathways →</b><span>Guideline decision trees for depression, schizophrenia, bipolar, and anxiety, flagged for your patient: pregnancy, age, weight, heart, current meds.</span></button>
       <button class="tool" data-view="cmp"><b>Compare side by side →</b><span>Line up two or three drugs: safety, dosing, side effects.</span></button>
       <button class="tool" data-view="reg"><b>Check a regimen →</b><span>See stacked side-effect burden and interactions.</span></button>
     </div>
@@ -451,6 +556,8 @@ button.concbtn:hover{border-color:var(--ink);color:var(--ink)}
       <button class="tool" data-view="crisis"><b>Crises →</b><span>MH, LAST, anaphylaxis, bradycardia, arrest, hyperkalemia.</span></button>
     </div>
   </section>
+  <section id="path" hidden><div id="pathbody"></div></section>
+  <div id="mini" class="mini" hidden></div>
   <section id="cmp" hidden>
     <div class="reg-head"><h1>Compare</h1><p>Pick up to three medications. Doses shown are adult doses for the first listed indication.</p></div>
     <div class="picker" id="cpicker"></div>
@@ -910,7 +1017,7 @@ const DRUGS = {
   ae:[["common","Sedation, hypersalivation"],["common","Constipation (can progress to ileus)"],["common","Weight gain, tachycardia, orthostasis"],["serious","Severe neutropenia"],["serious","Myocarditis, cardiomyopathy"],["serious","Dose-related seizures"]],
   boxed:{peds:CLOZ, adult:CLOZ, older:DEMENTIA},
   agenote:{peds:"Not FDA-approved under 18; used in specialized settings.",
-           adult:"The only drug proven for treatment-resistant schizophrenia; also reduces suicidal behavior. Restart titration if more than 2 days are missed.",
+           adult:"The only drug proven for treatment-resistant schizophrenia; also reduces suicidal behavior. Restart titration if more than 2 days are missed. FDA ended the clozapine REMS in June 2025; ANC monitoring per the label is still advised.",
            older:"Orthostasis, sedation, anticholinergic effects, and ileus are more dangerous."},
   s:{preg:["caution","Caution","Limited data; gestational diabetes, newborn sedation."],lact:["avoid","Avoid","Risk of infant agranulocytosis and sedation."],hep:["caution","Caution","Monitor LFTs; reduce in significant impairment."],ren:["caution","Caution","Reduce in significant impairment."],
    contra:[],monitor:["ANC per schedule","Troponin / CRP, first 4 weeks","Bowel habits","Weight, glucose, lipids","Clozapine levels"]},
@@ -3028,7 +3135,7 @@ Object.assign(DRUGS, ADRUGS);
 const AORDER = AGROUPS.flatMap(([g])=>Object.keys(ADRUGS).filter(id=>ADRUGS[id].grp===g));
 const SPECS = {
   psych:{name:"Psychiatry", slug:"psychiatry", blurb:"Antidepressants, antipsychotics, mood stabilizers, ADHD, anxiety, sleep, and addiction medications.", groups:GROUPS, order:ORDER,
-         cats:CONDS, catOf:(d,c)=>d.conds.includes(c), tabs:[["dex","Drugs"],["cmp","Compare"],["reg","Regimen"]], start:"home",
+         cats:CONDS, catOf:(d,c)=>d.conds.includes(c), tabs:[["dex","Drugs"],["path","Pathways"],["cmp","Compare"],["reg","Regimen"]], start:"home",
          title:"Find a psychiatric medication", lede:"Dosing, safety, side effects, and receptor profiles for commonly used psychiatric drugs."},
   anes:{name:"Anesthesiology", slug:"anesthesia", blurb:"Every dose for your patient on one screen: induction, paralysis, pressors, reversal, plus crisis protocols.", groups:AGROUPS, order:AORDER,
          cats:AGROUPS.map(g=>g[1]), catOf:(d,c)=>AGROUPS.find(g=>g[1]===c)?.[0]===d.grp, tabs:[["dex","Drugs"],["sheet","Case doses"],["crisis","Crises"]], start:"home",
@@ -3290,7 +3397,413 @@ function renderCrisis(){
   }).join("");
 }
 
-const state = { spec:"psych", pt:{pop:"adult",kg:null,cm:null,sex:null,units:"metric"}, ause:0, crisis:null, moreOpen:true, openRow:null, drug:"sertraline", age:"adult", ind:null, view:"root", hcond:null, cmp:[], cond:"All", mechOpen:true, chip:null, regimen:new Set() };
+/* Pathway content. Every node cites the guideline it comes from. */
+const SRC = {
+ canmat:"https://journals.sagepub.com/doi/pdf/10.1177/07067437241245384",
+ va:"https://www.healthquality.va.gov/guidelines/MH/mdd/VADoDMDDCPG_ProviderSummary_Final_508_updated.pdf",
+ nice:"https://www.nice.org.uk/guidance/ng222/resources/depression-in-adults-treatment-and-management-pdf-66143832307909",
+ aacap:"https://www.hscsnhealthplan.org/sites/default/files/Mood%20-%20AACAP%202023%20CPG%20for%20the%20Assessment%20%26%20Tx%20of%20Ch%20%26%20Adol%20with%20Major%20and%20Persistent%20Depressive%20Disorders.pdf",
+ acog:"https://www.ccjm.org/content/93/4/201"
+};
+/* Tree rows: {n:node} or {q:question, split:[branchA, branchB]}. A branch with end:true stops; others merge into the next row. */
+const PATHS = {
+ mdd:{ name:"Depression", title:"Depression (MDD)",
+  lede:"Follow the tree from the top. Tap patient factors to flag and re-sort the drugs; tap a drug for a quick look.",
+  factors:["preg","lact","teen","older","weight","sex","insom","fatigue","anx","pain","cardiac","seiz","sub","hep","ren"],
+  pedsRe:/MDD|depress/i, doseRe:/depress|MDD/i, lowSex:["bupropion","vortioxetine"],
+  tags:{aripiprazole:["Adjunct dose (CANMAT)","2–10 mg/day"],brexpiprazole:["Adjunct dose (CANMAT)","0.5–2 mg/day"],lithium:["Augmentation level (CANMAT)","0.5–0.8 mmol/L (NICE: 0.4–0.6 if 65+)"],esketamine:["Adjunct dose (CANMAT)","56–84 mg per session"],zuranolone:["Use","Postpartum depression only"]},
+  special:{
+   preg:["Pregnancy: ACOG 2023 makes SSRIs first-line, sertraline or escitalopram if no prior medication; SNRIs are reasonable. VA/DoD puts psychotherapy first for mild–moderate depression. Postpartum depression: zuranolone 14-day course is FDA-approved.",SRC.acog],
+   lact:["Breastfeeding: don't stop an effective antidepressant just to breastfeed (ACOG 2023). Sertraline has the lowest infant levels.",SRC.acog],
+   teen:["Age 12–17 (AACAP 2023): CBT or IPT, and/or an SSRI, preferably fluoxetine; avoid paroxetine. Escitalopram is FDA-approved from 12. Not enough evidence for SNRIs, TCAs, or MAOIs. Watch for suicidality and activation.",SRC.aacap],
+   older:["65+: VA/DoD offers psychotherapy first for mild–moderate depression. CANMAT: SSRIs may work less well over 65 and SNRIs such as duloxetine better; watch falls, fractures, and sodium.",SRC.canmat],
+   pain:["Pain: CANMAT 2023 notes duloxetine and other SNRIs help comorbid pain more than SSRIs.",SRC.canmat],
+   sex:["Sexual side effects: CANMAT 2023 notes lower rates with bupropion and vortioxetine.",SRC.canmat],
+   weight:["Weight: CANMAT 2023 flags mirtazapine for appetite, weight gain, and long-term metabolic risk.",SRC.canmat],
+   anx:["Anxious distress: CANMAT 2023 finds no evidence that any one antidepressant works better.",SRC.canmat],
+   insom:["Insomnia: CANMAT 2023 calls CBT-I promising alongside medication.",SRC.canmat]
+  },
+  rows:[
+   {n:{k:"start", t:"Before starting", b:"Screen for past mania or hypomania (NICE). PHQ-9 baseline. Rule out medical and substance causes (VA/DoD)."}},
+   {q:"How severe?", split:[
+     {lab:"Mild", t:"Therapy first", b:"Psychotherapy, guided self-help, or exercise (NICE, CANMAT). Medication if the patient prefers it."},
+     {lab:"Moderate–severe", t:"Medication ± therapy", b:"Psychosis, catatonia, or high suicide risk: ECT, or antidepressant + antipsychotic (VA/DoD, CANMAT)."}]},
+   {n:{k:"drug", t:"First-line antidepressant", tag:"CANMAT · VA/DoD · NICE", b:"None is clearly better on average. Choose by side effects, history, and preference.",
+     groups:[["SSRIs",["sertraline","escitalopram","fluoxetine","citalopram","paroxetine","fluvoxamine"]],["SNRIs",["venlafaxine","duloxetine","desvenlafaxine"]],["Other",["bupropion","mirtazapine","vortioxetine","vilazodone"]],["Postpartum",["zuranolone"]]]}},
+   {n:{k:"check", t:"Reassess at 4–6 weeks", b:"At a therapeutic dose, with PHQ-9 (VA/DoD). Under 20% better by week 4 predicts non-response (CANMAT)."}},
+   {q:"Remission? (PHQ-9 ≤4)", split:[
+     {lab:"Yes", end:true, t:"Stay on it", b:"Same dose ≥6 months (VA/DoD, NICE); 6–24 months, longer if recurrent (CANMAT). Taper slowly."},
+     {lab:"No", t:"Optimize", b:"Check adherence. Raise the dose within range if tolerated."}]},
+   {q:"Any response?", split:[
+     {lab:"Partial", k:"drug", t:"Add", tag:"CANMAT · NICE", b:"Or add psychotherapy.",
+      groups:[["First-line adjuncts",["aripiprazole","brexpiprazole"]],["Other adjuncts",["quetiapine","lithium","cariprazine","bupropion","mirtazapine","esketamine","olanzapine","risperidone"]]],
+      foot:"Sources disagree on how bupropion, mirtazapine, and cariprazine rank."},
+     {lab:"None / not tolerated", k:"drug", t:"Switch", tag:"CANMAT", b:"Another first-line drug, or second-line:",
+      groups:[["Second-line",["dmbupropion","trazodone","nortriptyline","amitriptyline","clomipramine"]]]}]},
+   {n:{k:"drug", t:"2+ adequate trials failed", tag:"Difficult-to-treat", b:"Re-check the diagnosis (bipolar, substance use, medical) and adherence. Aim for function, not only remission (CANMAT).",
+     groups:[["Specialist",["esketamine","phenelzine"]]], foot:"ECT: strongest option when severe, psychotic, or highly suicidal (VA/DoD). rTMS after 2+ failed trials."}}
+  ],
+  extras:[
+   ["Response and remission",[["Response: PHQ-9 down 50% or more. Remission: PHQ-9 ≤4 for at least a month (VA/DoD).",SRC.va],["Review within 2 weeks of starting; within 1 week if age 18–25 or at higher suicide risk (NICE).",SRC.nice],["Suicide risk is highest in the first 4 weeks and the month after stopping (CANMAT).",SRC.canmat]]],
+   ["Where guidelines differ",[["First line: CANMAT lists 17 specific drugs; VA/DoD lists classes; NICE prefers an SSRI.",null],["Mild depression: NICE says no routine antidepressant; VA/DoD allows medication or therapy by preference.",null],["Augmentation: CANMAT ranks aripiprazole and brexpiprazole first; VA/DoD names only antipsychotic augmentation; NICE lists antipsychotics, lithium, and mirtazapine or trazodone together.",null],["Esketamine: VA/DoD reserves it for after several failed trials; CANMAT ranks it as a second-line adjunct.",null],["Pregnancy: VA/DoD puts psychotherapy first for mild–moderate; ACOG makes SSRIs first-line medication.",null]]],
+   ["Non-drug treatments",[["CBT, IPT, and behavioral activation are first-line psychotherapies (CANMAT); medication plus therapy for severe, chronic, or recurrent depression (VA/DoD).",SRC.canmat],["Exercise: first-line alone for mild depression (CANMAT). Light therapy: first-line for seasonal depression.",SRC.canmat],["Not recommended outside research: psilocybin, MDMA, cannabis (VA/DoD).",SRC.va]]]
+  ],
+  sources:[["CANMAT 2023",SRC.canmat],["VA/DoD 2022",SRC.va],["NICE NG222",SRC.nice],["AACAP 2023",SRC.aacap],["ACOG 2023 (via CCJM review)",SRC.acog]]
+ }
+};
+
+/* Schizophrenia pathway. */
+const ZSRC = {
+ apa:"https://psychiatryonline.org/doi/10.1176/appi.focus.18402",
+ apat2:"https://www.med.unc.edu/psych/epi-nc/wp-content/uploads/sites/720/2024/01/APA-2020-guidelines-1.pdf",
+ nice:"https://rightdecisions.scot.nhs.uk/media/1846/nice-guidance-psychosis-and-schizophrenia-in-adults-prevention-and-management.pdf",
+ nice155:"https://lampardinquiry.org.uk/wp-content/uploads/2025/04/20130107-CG155-NICE-Guideline-WATERMARKED.pdf",
+ bap:"https://discovery.ucl.ac.uk/id/eprint/10090694/1/Joyce_BAP_schizophrenia_guideline_17.10.2019_FINAL_DRAFT.pdf",
+ va:"https://www.healthquality.va.gov/guidelines/MH/scz/VA-DOD-CPG-Schizophrenia-Quick-Reference-Guide_final_508v232024.pdf",
+ rems:"https://www.fda.gov/drugs/drug-safety-communications/fda-removes-risk-evaluation-and-mitigation-strategy-rems-program-antipsychotic-drug-clozapine",
+ acog:"https://starlegacyfoundation.org/wp-content/uploads/ACOG-2023-Treatment-and-management-of-mental-health-conditions-during-pregnancy.pdf",
+ cob:"https://www.psychiatrist.com/jcp/real-world-implementation-xanomeline-trospium-schizophrenia-consensus-report/",
+ carlat:"https://www.thecarlatreport.com/blog/new-schizophrenia-guidelines-60-sec-psych",
+ trrip:"https://smiadviser.org/wp-content/uploads/2023/08/August-VF-Slides.pdf",
+ corr:"https://link.springer.com/10.1038/s41537-021-00192-x"
+};
+Object.assign(PATHS, {
+ scz:{ grp:"Schizophrenia", name:"Schizophrenia", title:"Schizophrenia",
+  lede:"Follow the tree from the top. Tap patient factors to flag and re-sort the drugs; tap a drug for a quick look.",
+  factors:["preg","lact","teen","older","weight","eps","prl","sex","cardiac","sub","hep","ren"],
+  pedsRe:/schizophrenia/i, doseRe:/schizophrenia/i,
+  tags:{clozapine:["Adequate trial","Level ≥350 ng/mL for 3+ months (expert consensus)"],cobenfy:["Guideline status","No guideline position yet"]},
+  special:{
+   preg:["Pregnancy (ACOG 2023): don't stop or withhold antipsychotics; if stable, keep the same regimen rather than switch. Screen for gestational diabetes. Quetiapine has the lowest placental passage.",ZSRC.acog],
+   lact:["Breastfeeding (ACOG 2023): generally compatible when the relative infant dose is under 10%.",ZSRC.acog],
+   teen:["Under 18: FDA-approved for schizophrenia from 13 (12 for paliperidone) include aripiprazole, risperidone, olanzapine, quetiapine, lurasidone, brexpiprazole, cariprazine. NICE: add family intervention and individual CBT; clozapine after 2 trials of 6–8 weeks each.",ZSRC.nice155],
+   older:["Over 55: high tardive dyskinesia risk; check AIMS every 6 months (APA). Antipsychotics carry a boxed warning for mortality in dementia-related psychosis.",ZSRC.apat2],
+   sub:["Substance use: assess at every visit and discuss its effect on treatment (NICE); urine drug screen when indicated (APA).",ZSRC.nice]
+  },
+  rows:[
+   {n:{k:"start", t:"Before starting", b:"Rule out substances and medical causes. Baseline weight, waist, BP, glucose or A1c, lipids, prolactin, AIMS; ECG if cardiac risk or a QT-prone drug; pregnancy test (APA, NICE)."}},
+   {q:"Episode?", split:[
+     {lab:"First episode", t:"Start low", b:"Oral antipsychotic at the low end of the range (NICE, BAP), plus coordinated specialty care (APA 1B)."},
+     {lab:"Relapse", t:"Check adherence", b:"Reuse what worked if tolerated. Offer a long-acting injectable if preferred or adherence is uncertain (APA 2B)."}]},
+   {n:{k:"drug", t:"Choose an antipsychotic (not clozapine)", tag:"APA 1A · VA/DoD · NICE", b:"No drug or class is preferred; choose with the patient by side effects (APA, NICE). Don't combine antipsychotics routinely.",
+     groups:[["Second-generation",["aripiprazole","risperidone","paliperidone","olanzapine","quetiapine","lurasidone","ziprasidone","brexpiprazole","cariprazine","lumateperone","lybalvi"]],["First-generation",["haloperidol"]],["New mechanism",["cobenfy"]]],
+     foot:"Cobenfy (no D2 blockade) has no guideline position yet; an industry-funded panel suggests considering it early."}},
+   {n:{k:"check", t:"Reassess after 4–6 weeks", b:"At an adequate dose (NICE 4–6 weeks; BAP 6 weeks). Rule out non-adherence (a level helps), substances, and a wrong diagnosis. Intolerance isn't a failed trial."}},
+   {q:"Responding?", split:[
+     {lab:"Yes", end:true, t:"Stay on it", b:"Same drug long term (APA 1A, 2B). Stopping within 1–2 years of a first episode carries high relapse risk; taper slowly if stopping (NICE)."},
+     {lab:"No", t:"Switch", b:"A different antipsychotic (VA/DoD). Consider a long-acting injectable if adherence is uncertain."}]},
+   {n:{k:"drug", t:"2 adequate trials failed: clozapine", tag:"APA 1B · NICE · VA/DoD strong", b:"Treatment-resistant after 2 adequate trials (NICE: at least one second-generation). Also for persistent suicide risk (APA 1B) or aggression (APA 2C).",
+     groups:[["Treatment-resistant",["clozapine"]]],
+     foot:"ANC before starting (≥1500/µL; ≥1000 with benign ethnic neutropenia), weekly for 6 months, every 2 weeks to 12 months, then monthly. FDA ended the REMS in June 2025; monitoring is still advised."}},
+   {n:{k:"drug", t:"Partial response on clozapine", tag:"NICE · VA/DoD · expert consensus", b:"Confirm a level of 350 ng/mL or more for 3+ months. Then add a second antipsychotic that doesn't stack clozapine's side effects; allow 8–10 weeks (NICE). ECT is a last resort.",
+     groups:[["Add-on",["aripiprazole"]]]}},
+   {detached:true, n:{k:"drug", t:"Side-effect fixes (any step)", tag:"APA 2020", b:"Dystonia: anticholinergic (1C). Parkinsonism: lower dose, switch, or anticholinergic (2C). Akathisia: lower dose, switch, benzodiazepine, or β-blocker (2C). Tardive dyskinesia: VMAT2 inhibitor (1B). Weight: metformin (VA/DoD).",
+     groups:[["Dystonia / parkinsonism",["benztropine"]],["Akathisia",["propranolol","clonazepam","lorazepam"]],["Tardive dyskinesia",["valbenazine","deutetrabenazine"]]]}}
+  ],
+  extras:[
+   ["Monitoring (APA Table 2)",[["Weight/BMI every visit for 6 months, then at least quarterly. Glucose or A1c and lipids at 4 months, then yearly.",ZSRC.apat2],["AIMS every 6 months if high TD risk (e.g., over 55), otherwise yearly. Prolactin symptoms each visit until stable.",ZSRC.apat2],["ECG before ziprasidone, chlorpromazine, iloperidone, pimozide, or thioridazine, or with cardiac risk.",ZSRC.apat2]]],
+   ["Where guidelines differ",[["Defining treatment resistance: NICE requires one of the two failed drugs to be second-generation; BAP asks 6 weeks oral or 3 months depot per trial; APA gives no formal definition.",ZSRC.corr],["Maintenance after a first episode: NICE 1–2 years; BAP and RANZCP at least 2 years; APA no fixed duration.",ZSRC.corr],["Long-acting injectables in first episode: some guidelines support them; NICE and BAP say evidence is insufficient.",ZSRC.corr]]],
+   ["Non-drug treatments",[["Coordinated specialty care for first episode (APA 1B); CBT for psychosis (APA 1B; NICE 16+ sessions); psychoeducation (APA 1B).",ZSRC.apa],["Supported employment and assertive community treatment (APA 1B); family intervention (APA 2B; NICE 10+ sessions).",ZSRC.apa]]]
+  ],
+  sources:[["APA 2020",ZSRC.apa],["NICE CG178",ZSRC.nice],["VA/DoD 2023",ZSRC.va],["BAP 2020",ZSRC.bap],["FDA clozapine REMS removal",ZSRC.rems],["ACOG 2023",ZSRC.acog]]
+ }
+});
+
+/* Bipolar pathways: mania, depression, maintenance. */
+const BSRC = {
+ canmat:"https://deepblue.lib.umich.edu/bitstream/handle/2027.42/142934/bdi12609_am.pdf?sequence=2",
+ focus:"https://psychiatryonline.org/doi/full/10.1176/appi.focus.20230009",
+ mixed:"https://deepblue.lib.umich.edu/handle/2027.42/171126?show=full",
+ va:"https://www.healthquality.va.gov/guidelines/MH/bd/VA-DoD-CPG-BD-Quick-Reference-GuideFinal508.pdf",
+ bap:"https://nottingham-repository.worktribe.com/file/780273/1/BAP%20GUIDELINE%202016.pdf",
+ nice:"https://eput.nhs.uk/media/00ldd4c1/section-3-management-of-bipolar-affective-disorder-jun-24.pdf",
+ mhra:"https://gov.uk/government/news/new-valproate-safety-measures-apply-from-31-january",
+ isbd:"https://pure.amsterdamumc.nl/en/publications/what-is-the-optimal-serum-level-for-lithium-in-the-maintenance-tr/",
+ li:"https://www.accessdata.fda.gov/drugsatfda_docs/label/2018/017812s033,018421s032,018558s027lbl.pdf"
+};
+const BIPF = ["cbp","preg","lact","teen","older","weight","eps","prl","cardiac","sub","hep","ren"];
+const BIPSPECIAL = {
+ cbp:["Could become pregnant: VA/DoD strongly advises against valproate, carbamazepine, and topiramate. FDA: valproate only if other drugs have failed. UK (MHRA 2024): no new valproate starts under 55 without two specialists' sign-off.",BSRC.va],
+ preg:["Pregnancy: VA/DoD suggests continuing lithium at the lowest effective dose with shared decision-making; the Ebstein anomaly risk now looks small. Check levels often; reduce or hold 2–3 days before delivery (label).",BSRC.li],
+ teen:["Under 18 (CANMAT): mania first-line lithium, risperidone, aripiprazole, asenapine, quetiapine; depression first-line lurasidone; maintenance aripiprazole, lithium, divalproex. FDA ages: lithium 7+, aripiprazole, risperidone, quetiapine, lurasidone, cariprazine 10+.",BSRC.focus],
+ older:["Older adults (CANMAT): mania, lithium or divalproex; depression, quetiapine or lurasidone; maintenance, lithium, lamotrigine, divalproex. Lithium target 0.4–0.8 mmol/L (60–79) and 0.4–0.7 (80+) (ISBD).",BSRC.focus],
+ sub:["Substance use: CANMAT prefers divalproex over lithium when substance use is present. Avoid benzodiazepines long term.",BSRC.canmat]
+};
+const BIPEXTRA = ["Lab monitoring",[["Baseline: CBC, fasting glucose and lipids, electrolytes, calcium; pregnancy test if relevant (CANMAT).",BSRC.focus],["Lithium: 12-hour trough at least 5 days after a dose change (CANMAT). Acute 0.8–1.2 mEq/L; maintenance 0.6–1.0 (CANMAT) or 0.6–0.8 (ISBD, BAP). Kidney, thyroid, calcium at baseline, 6 months, then yearly.",BSRC.focus],["Valproate: LFTs and CBC before starting and periodically; trough 50–125 mcg/mL for mania (label).",BSRC.focus],["Antipsychotics: weight monthly for 3 months; BP, glucose, lipids at 3 months, then yearly (CANMAT).",BSRC.focus]]];
+Object.assign(PATHS, {
+ mania:{ grp:"Bipolar", sub:"Mania", name:"Mania", title:"Bipolar: acute mania",
+  lede:"Follow the tree from the top. Tap patient factors to flag and re-sort the drugs; tap a drug for a quick look.",
+  factors:BIPF, pedsRe:/mania|Bipolar I \(ages/i, doseRe:/mania/i, special:BIPSPECIAL,
+  rows:[
+   {n:{k:"start", t:"Before starting", b:"Stop antidepressants and stimulants (including caffeine and alcohol). Rule out substance, medication, and medical causes; rule out akathisia before calling agitation mania (CANMAT)."}},
+   {q:"Agitated now?", split:[
+     {lab:"Yes", k:"drug", t:"Calm first", tag:"CANMAT", b:"First-line: IM aripiprazole, IM lorazepam, inhaled loxapine, IM olanzapine. Second-line: IM haloperidol, IM ziprasidone.", groups:[["First-line (IM)",["aripiprazole","lorazepam","olanzapine"]]]},
+     {lab:"No", t:"Start an antimanic", b:"Oral treatment, below."}]},
+   {n:{k:"drug", t:"First-line", tag:"CANMAT 2018 · VA/DoD", b:"Lithium first unless mixed features, substance use, or prior non-response (CANMAT). VA/DoD's first choices: lithium or quetiapine.",
+     groups:[["Mood stabilizers",["lithium","divalproex"]],["Antipsychotics",["quetiapine","aripiprazole","risperidone","paliperidone","cariprazine"]]],
+     foot:"An antipsychotic added to lithium or divalproex works better than monotherapy and is first-line (CANMAT 2023). Asenapine (not in this tool) is also first-line."}},
+   {n:{k:"check", t:"Check levels and adherence", b:"Lithium 0.8–1.2 mEq/L acutely; valproate trough 50–125 mcg/mL."}},
+   {q:"Controlled?", split:[
+     {lab:"Yes", end:true, t:"Into maintenance", b:"Keep what worked acutely, except antidepressants (CANMAT). See the maintenance tree."},
+     {lab:"No", t:"Combine or switch", b:"Add an antipsychotic to lithium or divalproex, or switch to another first-line option (CANMAT, VA/DoD)."}]},
+   {n:{k:"drug", t:"Second- and third-line", tag:"CANMAT 2018", b:"Second-line also includes lithium + divalproex and ECT (VA/DoD: ECT when rapid control is needed).",
+     groups:[["Second-line",["olanzapine","carbamazepine","ziprasidone","haloperidol"]],["Third-line",["clozapine","clonazepam"]]],
+     foot:"Not recommended for mania: lamotrigine, gabapentin, topiramate (CANMAT)."}}
+  ],
+  extras:[BIPEXTRA,["Where guidelines differ",[["Aripiprazole and paliperidone: first-line in CANMAT; lower tiers in VA/DoD.",null],["NICE starts with an antipsychotic (haloperidol, olanzapine, quetiapine, or risperidone), then adds lithium.",BSRC.nice],["Valproate: first-line in CANMAT; restricted in the UK and avoided by VA/DoD if pregnancy is possible.",null]]]],
+  sources:[["CANMAT/ISBD 2018",BSRC.canmat],["CANMAT 2023 update",BSRC.focus],["VA/DoD 2023",BSRC.va],["BAP 2016",BSRC.bap],["NICE CG185 (trust summary)",BSRC.nice]]
+ },
+ bipdep:{ grp:"Bipolar", sub:"Depression", name:"Bipolar depression", title:"Bipolar depression",
+  lede:"Follow the tree from the top. Tap patient factors to flag and re-sort the drugs; tap a drug for a quick look.",
+  factors:BIPF, pedsRe:/bipolar.*depress/i, doseRe:/bipolar.*depress/i, special:BIPSPECIAL,
+  rows:[
+   {n:{k:"start", t:"Before starting", b:"No antidepressant on its own. Avoid antidepressants entirely with mixed features, rapid cycling, or past antidepressant-induced mania (CANMAT)."}},
+   {q:"Which type?", split:[
+     {lab:"Bipolar I", k:"drug", t:"First-line", tag:"CANMAT 2018 + 2023", b:"VA/DoD: quetiapine is the only strong recommendation.",
+      groups:[["First-line",["quetiapine","lurasidone","lithium","lamotrigine","cariprazine"]],["Also FDA-approved",["lumateperone"]]]},
+     {lab:"Bipolar II", k:"drug", t:"Quetiapine first", tag:"CANMAT", b:"Antidepressants only for pure (non-mixed) depression.",
+      groups:[["First-line",["quetiapine"]],["Second-line",["lithium","lamotrigine","lumateperone","sertraline","venlafaxine"]]]}]},
+   {n:{k:"check", t:"Reassess", b:"Check lithium levels and adherence. Lamotrigine needs a slow titration to 200 mg over 6 weeks (rash risk), so it acts slowly."}},
+   {q:"Better?", split:[
+     {lab:"Yes", end:true, t:"Into maintenance", b:"Continue what worked (CANMAT). See the maintenance tree."},
+     {lab:"No", t:"Second-line", b:"Bipolar I options below."}]},
+   {n:{k:"drug", t:"Second-line (bipolar I)", tag:"CANMAT 2018", b:"Also olanzapine-fluoxetine (first-line in NICE) and ECT.",
+     groups:[["Second-line",["divalproex"]],["Add-on SSRI or bupropion (with a mood stabilizer)",["sertraline","escitalopram","fluoxetine","bupropion"]]],
+     foot:"Lithium for acute bipolar depression: first-line in CANMAT, but VA/DoD finds the evidence insufficient."}}
+  ],
+  extras:[BIPEXTRA,["Where guidelines differ",[["Lamotrigine alone for acute depression: first-line in CANMAT; VA/DoD finds evidence insufficient but suggests adding it to lithium or quetiapine.",null],["Cariprazine: first-line in CANMAT 2023; weaker in VA/DoD.",null],["NICE puts olanzapine-fluoxetine or quetiapine first; CANMAT puts olanzapine-fluoxetine second-line.",BSRC.nice]]]],
+  sources:[["CANMAT/ISBD 2018",BSRC.canmat],["CANMAT 2023 update",BSRC.focus],["VA/DoD 2023",BSRC.va],["BAP 2016",BSRC.bap]]
+ },
+ bipmaint:{ grp:"Bipolar", sub:"Maintenance", name:"Bipolar maintenance", title:"Bipolar: maintenance",
+  lede:"Follow the tree from the top. Tap patient factors to flag and re-sort the drugs; tap a drug for a quick look.",
+  factors:BIPF, pedsRe:/maintenance|Bipolar I \(ages/i, doseRe:/maintenance|Bipolar I \(mania and/i, special:BIPSPECIAL,
+  tags:{lithium:["Maintenance level","0.6–1.0 mEq/L (CANMAT); 0.6–0.8 standard (ISBD)"]},
+  rows:[
+   {n:{k:"start", t:"Start from what worked", b:"Continue the drug that controlled the acute episode, except antidepressants (CANMAT). Psychoeducation is a first-line add-on."}},
+   {q:"Which type?", split:[
+     {lab:"Bipolar II", end:true, k:"drug", t:"Bipolar II", tag:"CANMAT", groups:[["First-line",["quetiapine","lithium","lamotrigine"]],["Second-line",["venlafaxine","fluoxetine"]]]},
+     {lab:"Bipolar I", t:"Match the pole", b:"Pick by which episodes have dominated."}]},
+   {q:"Mostly which episodes?", split:[
+     {lab:"Manic", k:"drug", t:"Prevent mania", tag:"CANMAT · VA/DoD", b:"VA/DoD strong: lithium or quetiapine. Aripiprazole prevents mania but has no depression data.",
+      groups:[["First-line",["lithium","quetiapine","divalproex","aripiprazole"]]]},
+     {lab:"Depressive", k:"drug", t:"Prevent depression", tag:"CANMAT · VA/DoD", b:"VA/DoD strong: lamotrigine. Lamotrigine protects against depression more than mania.",
+      groups:[["First-line",["lamotrigine","lithium","quetiapine"]]]}]},
+   {n:{k:"drug", t:"If more is needed", tag:"CANMAT 2018", b:"First-line combinations: quetiapine or aripiprazole + lithium or divalproex. Monthly aripiprazole injection is first-line; risperidone injection second-line.",
+     groups:[["Second-line",["olanzapine","risperidone","carbamazepine","paliperidone","lurasidone","ziprasidone"]]]}},
+   {n:{k:"check", t:"Lithium: the reference standard", b:"First-line in CANMAT, NICE, and BAP. May add protection against suicide (VA/DoD; observational evidence). Check levels, kidney, and thyroid regularly."}}
+  ],
+  extras:[BIPEXTRA,["Where guidelines differ",[["Lithium maintenance range: FDA 0.8–1.0; CANMAT 0.6–1.0; ISBD and BAP 0.6–0.8 (higher linked to kidney harm).",BSRC.isbd],["Valproate maintenance: first-line in CANMAT; not favored by VA/DoD.",null]]],["Non-drug treatments",[["Psychoeducation: first-line add-on. CBT and family-focused therapy: second-line (CANMAT).",BSRC.canmat]]]],
+  sources:[["CANMAT/ISBD 2018",BSRC.canmat],["CANMAT 2023 update",BSRC.focus],["VA/DoD 2023",BSRC.va],["BAP 2016",BSRC.bap],["ISBD lithium levels",BSRC.isbd]]
+ }
+});
+
+/* Anxiety pathways: GAD, panic, social anxiety. */
+const ASRC = {
+ can:"https://bmcpsychiatry.biomedcentral.com/articles/10.1186/1471-244X-14-S1-S1",
+ cangad:"https://biomedcentral-bmcpsychiatry.publicaciones.saludcastillayleon.es/articles/10.1186/1471-244X-14-S1-S1/tables/24",
+ nice113:"https://www.nice.org.uk/guidance/cg113/chapter/1-Guidance",
+ nice159:"https://www.nice.org.uk/guidance/cg159/chapter/Recommendations",
+ wfsbp:"https://uhra.herts.ac.uk/id/eprint/9910/1/WFSBP_3_PART_I.pdf",
+ aafp:"https://www.aafp.org/pubs/afp/issues/2022/0800/generalized-anxiety-disorder-panic-disorder.html",
+ aacap:"https://uab.edu/achia/images/7_Guidelines_for_Children_w_Anxiety_JAACAP_May_2020.pdf",
+ apa:"https://www.carelonbehavioralhealth.com/content/dam/digital/carelon/cbh-assets/documents/historical/apa-panic-disorders-quick-reference-guide.pdf",
+ focus:"https://psychiatryonline.org/doi/10.1176/appi.focus.20200048",
+ wf12:"https://wfsbp.org/wp-content/uploads/2023/01/Bandelow_et_al_01.pdf"
+};
+const ANXF = ["preg","lact","teen","older","weight","sex","insom","fatigue","cardiac","sub","hep","ren"];
+const ANXSPECIAL = {
+ teen:["Age 6–18 (AACAP 2020): CBT and SSRIs recommended, combined could be preferred; SNRIs an option. Raise the dose every 1–2 weeks (3–4 for fluoxetine). Continue about 12 months after remission. FDA: duloxetine and escitalopram approved for GAD from age 7.",ASRC.aacap],
+ older:["Older adults: start at half the dose or less and expect a slower response (WFSBP). SSRIs raise bleeding risk with NSAIDs or aspirin (NICE). Benzodiazepines: high fall and fracture risk over 65 (Canadian).",ASRC.wfsbp],
+ preg:["Pregnancy: SSRIs and TCAs show no increased malformation risk; avoid paroxetine when pregnant or planning pregnancy (WFSBP 2012, older guideline).",ASRC.wf12],
+ sub:["Substance use: avoid benzodiazepines (Canadian, WFSBP). Pregabalin also has misuse potential (NICE, WFSBP).",ASRC.can]
+};
+const ANXEXTRA = ["Benzodiazepines",[["Short-term bridge while an SSRI starts working, or in a crisis; scheduled rather than as needed (Canadian).",ASRC.can],["NICE: GAD only short-term in a crisis; panic, should not be prescribed; social anxiety, not routinely.",ASRC.nice113],["Taper slowly when stopping: about 10% per week or slower (APA panic guide).",ASRC.apa]]];
+Object.assign(PATHS, {
+ gad:{ grp:"Anxiety", sub:"GAD", name:"GAD", title:"Generalized anxiety disorder",
+  lede:"Follow the tree from the top. Tap patient factors to flag and re-sort the drugs; tap a drug for a quick look.",
+  factors:ANXF, pedsRe:/GAD|anxiety/i, doseRe:/generalized anxiety|GAD|^anxiety/i, special:ANXSPECIAL,
+  tags:{pregabalin:["Note","Not FDA-approved for anxiety"]},
+  rows:[
+   {n:{k:"start", t:"Before starting", b:"Screen for depression, substance and caffeine use, thyroid disease, and bipolar history. CBT is about as effective as medication (AAFP)."}},
+   {q:"Patient preference?", split:[
+     {lab:"Therapy", t:"CBT or applied relaxation", b:"Low-intensity self-help first, then individual CBT (NICE stepped care). Move to medication if not enough."},
+     {lab:"Medication", t:"SSRI or SNRI", b:"Equal option to high-intensity therapy at this step (NICE)."}]},
+   {n:{k:"drug", t:"First-line", tag:"Canadian · NICE · WFSBP", b:"Start low; raise every 1–2 weeks. Warn about early jitteriness. NICE starts with sertraline (cost).",
+     groups:[["SSRIs",["sertraline","escitalopram","paroxetine"]],["SNRIs",["venlafaxine","duloxetine"]]],
+     foot:"FDA-approved for GAD: escitalopram, paroxetine, venlafaxine XR, duloxetine, buspirone. Pregabalin is first-line in Canada but not FDA-approved for anxiety."}},
+   {n:{k:"check", t:"Reassess at 4–6 weeks", b:"Onset 2–8 weeks; full effect can take 12+ weeks (Canadian). Review every 2–4 weeks for 3 months (NICE)."}},
+   {q:"Better?", split:[
+     {lab:"Yes", end:true, t:"Stay on it", b:"At least 1 year (NICE); 12–24 months (Canadian). Then taper. Stopping before a year: up to 50% relapse (AAFP)."},
+     {lab:"No", t:"Switch first", b:"Try another first-line SSRI or SNRI before going to second-line (Canadian, WFSBP)."}]},
+   {n:{k:"drug", t:"Second-line and add-ons", tag:"Canadian · WFSBP",
+     groups:[["Second-line",["buspirone","hydroxyzine","quetiapine","vortioxetine"]],["Short-term benzodiazepine",["lorazepam","diazepam","alprazolam"]],["Add-on (third-line)",["quetiapine","aripiprazole","risperidone","olanzapine"]]],
+     foot:"Guidelines split: WFSBP rates buspirone weakly and doesn't support vortioxetine; NICE avoids antipsychotics in primary care. Not recommended: propranolol for GAD."}}
+  ],
+  extras:[ANXEXTRA,["Where guidelines differ",[["Pregabalin: first-line in Canada; second-line in NICE and WFSBP (misuse); AAFP says try antidepressants first.",null],["Buspirone: second-line in Canada and FDA-approved; weak evidence per WFSBP.",null],["How long to treat: at least 1 year (NICE), 6–12 months (WFSBP, AAFP), 12–24 months (Canadian).",null]]]],
+  sources:[["Canadian 2014",ASRC.cangad],["NICE CG113",ASRC.nice113],["WFSBP v3",ASRC.wfsbp],["AAFP 2022",ASRC.aafp],["AACAP 2020",ASRC.aacap]]
+ },
+ panic:{ grp:"Anxiety", sub:"Panic", name:"Panic", title:"Panic disorder",
+  lede:"Follow the tree from the top. Tap patient factors to flag and re-sort the drugs; tap a drug for a quick look.",
+  factors:ANXF, pedsRe:/panic/i, doseRe:/panic/i, special:ANXSPECIAL,
+  rows:[
+   {n:{k:"start", t:"Before starting", b:"Rule out thyroid, cardiac, and substance causes (stimulants, caffeine, withdrawal). Panic-focused CBT is first-line with the strongest evidence (AAFP, NICE)."}},
+   {n:{k:"drug", t:"First-line", tag:"Canadian · NICE · WFSBP", b:"Start at about half the depression dose and go slowly; panic patients feel early jitteriness (APA).",
+     groups:[["SSRIs",["sertraline","paroxetine","fluoxetine","escitalopram","citalopram","fluvoxamine"]],["SNRI",["venlafaxine"]]],
+     foot:"FDA-approved for panic: sertraline, paroxetine, fluoxetine, venlafaxine XR, clonazepam, alprazolam."}},
+   {n:{k:"check", t:"Reassess at 4–12 weeks", b:"SSRIs need at least 4 weeks; full response 8–12 weeks (APA). NICE judges at 12 weeks."}},
+   {q:"Better?", split:[
+     {lab:"Yes", end:true, t:"Stay on it", b:"At least 6 months after reaching the best dose (NICE); 12–24 months (Canadian). Taper slowly."},
+     {lab:"No", t:"Switch first", b:"Another first-line SSRI or venlafaxine before second-line (Canadian)."}]},
+   {n:{k:"drug", t:"Second- and third-line", tag:"Canadian · NICE · WFSBP",
+     groups:[["Second-line",["clomipramine","mirtazapine"]],["Benzodiazepines",["clonazepam","alprazolam","lorazepam","diazepam"]],["Third-line",["phenelzine","quetiapine","olanzapine","risperidone"]]],
+     foot:"Benzodiazepines: second-line (Canadian, WFSBP) and usable short-term at any stage; NICE says don't prescribe for panic. Not effective: buspirone, propranolol, trazodone."}}
+  ],
+  extras:[ANXEXTRA,["Where guidelines differ",[["Benzodiazepines: second-line in Canada and WFSBP; NICE advises against them for panic.",null],["Imipramine (not in this tool) and clomipramine are NICE's next step after 12 weeks without SSRI response.",null]]]],
+  sources:[["Canadian 2014",ASRC.can],["NICE CG113",ASRC.nice113],["WFSBP v3",ASRC.wfsbp],["APA panic guide",ASRC.apa],["AAFP 2022",ASRC.aafp]]
+ },
+ sad:{ grp:"Anxiety", sub:"Social anxiety", name:"Social anxiety", title:"Social anxiety disorder",
+  lede:"Follow the tree from the top. Tap patient factors to flag and re-sort the drugs; tap a drug for a quick look.",
+  factors:ANXF, pedsRe:/social/i, doseRe:/social/i, special:Object.assign({},ANXSPECIAL,{teen:["Children with social anxiety: CBT, not routine medication (NICE CG159). AACAP 2020: CBT and SSRIs for ages 6–18.",ASRC.nice159]}),
+  rows:[
+   {q:"What kind?", split:[
+     {lab:"Performance only", end:true, k:"drug", t:"As-needed β-blocker", b:"Propranolol 10–40 mg about an hour before; do a test dose first (review, not guideline). Evidence is unclear. CBT.", groups:[["As needed",["propranolol"]]]},
+     {lab:"Generalized", t:"Individual CBT first", b:"Individual CBT (NICE). Medication if preferred or CBT isn't enough."}]},
+   {n:{k:"drug", t:"First-line", tag:"Canadian · NICE", b:"NICE: escitalopram or sertraline first.",
+     groups:[["SSRIs",["escitalopram","sertraline","fluvoxamine","paroxetine"]],["SNRI",["venlafaxine"]]],
+     foot:"FDA-approved for social anxiety: sertraline, paroxetine, venlafaxine XR."}},
+   {n:{k:"check", t:"Reassess at 10–12 weeks", b:"NICE judges partial response at 10–12 weeks."}},
+   {q:"Better?", split:[
+     {lab:"Yes", end:true, t:"Stay on it", b:"At least 6 more months, then taper gradually (NICE); 12–24 months (Canadian)."},
+     {lab:"No", t:"Add or switch", b:"Partial response: add individual CBT. None: switch to fluvoxamine, paroxetine, or venlafaxine (NICE)."}]},
+   {n:{k:"drug", t:"Next line", tag:"Canadian · NICE",
+     groups:[["Second-line",["clonazepam","alprazolam","gabapentin","citalopram"]],["MAOI (NICE after SSRIs and SNRIs)",["phenelzine"]]],
+     foot:"Not recommended for generalized social anxiety: propranolol, atenolol, quetiapine, buspirone alone (Canadian)."}}
+  ],
+  extras:[ANXEXTRA],
+  sources:[["Canadian 2014",ASRC.can],["NICE CG159",ASRC.nice159],["Focus 2020 review",ASRC.focus]]
+ }
+});
+
+const PATH_ORDER = Object.keys(PATHS);
+for(const [id,t] of [["dmbupropion","Auvelity (DXM-bupropion)"],["lybalvi","Lybalvi"],["cobenfy","Cobenfy"]]) if(DRUGS[id]) DRUGS[id].short=t;
+
+/* ---------- Pathways: guideline steps + patient-factor sorting ---------- */
+/* Factor judgments use only data already on each drug card (safety ratings, burden, labels). */
+const FACTORS = [
+ ["preg","Pregnant"],["cbp","Could become pregnant"],["lact","Breastfeeding"],["teen","Age 12–17"],["older","Age 65+"],
+ ["weight","Weight concern"],["sex","Sexual side effects"],["insom","Insomnia"],["fatigue","Fatigue"],
+ ["anx","Anxiety"],["pain","Chronic pain"],["eps","EPS / akathisia history"],["prl","Prolactin concern"],["sub","Substance use"],["cardiac","Cardiac / QTc"],["seiz","Seizures or eating disorder"],
+ ["hep","Liver disease"],["ren","Kidney disease"]];
+const LVK = {ok:"good", caution:"warn", data:"warn", avoid:"bad"};
+const aeText = d => (d.ae||[]).map(a=>a[1]).join(" ");
+function judge(id, f, P){
+  const d=DRUGS[id], S=d.s||{};
+  switch(f){
+    case "preg": return [LVK[S.preg[0]], "Pregnancy: "+S.preg[1]];
+    case "cbp": return S.preg[0]==="avoid"?["bad","Fetal harm: avoid"]:S.preg[0]==="caution"?["warn","Pregnancy: "+S.preg[1]]:null;
+    case "eps": { const e=bv(d,"eps"); return e>=2?["bad","EPS / akathisia"]:e===1?["warn","Some EPS"]:d.grp==="ap"?["good","Low EPS"]:null; }
+    case "prl": { const r=bv(d,"prl"); return r>=3?["bad","Raises prolactin"]:r===2?["warn","Some prolactin rise"]:d.grp==="ap"?["good","Prolactin-sparing"]:null; }
+    case "sub": return d.benzo?["bad","Misuse risk"]:d.stim?["warn","Misuse risk"]:d.conds.includes("Substance use")?["good","Also treats substance use"]:null;
+    case "lact": return [LVK[S.lact[0]], "Breastfeeding: "+S.lact[1]];
+    case "hep": return S.hep[0]==="ok"?null:[LVK[S.hep[0]], "Liver: "+S.hep[1]];
+    case "ren": return S.ren[0]==="ok"?null:[LVK[S.ren[0]], "Kidney: "+S.ren[1]];
+    case "teen": { const P2=d.dosing.peds||{}; const on=Object.keys(P2).some(k=>!P2[k].off && P.pedsRe.test(k));
+      return on?["good","FDA-approved age 12–17"]:["warn","Not FDA-approved under 18 for this"]; }
+    case "older": if(/Beers/.test(d.agenote.older||"")) return ["bad","Beers: avoid"];
+      if(bv(d,"achol")>=2) return ["warn","Anticholinergic"]; if(bv(d,"sed")>=3) return ["warn","Sedation, falls"]; return null;
+    case "weight": { const m=bv(d,"metab"); return m>=2?["bad","Weight gain"]:m===1?["warn","Some weight gain"]:["good","Weight-neutral"]; }
+    case "sex": return P.lowSex&&P.lowSex.includes(id)?["good","Less sexual dysfunction"]:(d.sri||bv(d,"sero")>=3)?["warn","Sexual dysfunction common"]:bv(d,"prl")>=2?["warn","Prolactin: sexual side effects"]:null;
+    case "insom": return bv(d,"sed")>=2?["good","Sedating"]:/insomnia|activation/i.test(aeText(d))?["warn","Can worsen insomnia"]:null;
+    case "fatigue": return bv(d,"sed")>=2?["warn","Sedating"]:/activation|dose in the morning/i.test(aeText(d))?["good","Activating"]:null;
+    case "anx": return d.conds.includes("Anxiety")?["good","Also treats anxiety"]:null;
+    case "pain": return Object.keys(d.dosing.adult||{}).some(k=>/pain|neuropath|fibromyalgia|migraine/i.test(k))?["good","Also treats pain"]:null;
+    case "cardiac": { if((S.contra||[]).some(c=>/after MI|QT/i.test(c))) return ["bad","Cardiac contraindication"];
+      const q=bv(d,"qtc"); if(q>=2) return ["bad","QTc prolongation"]; if(q===1) return ["warn","Small QTc effect"]; if(bv(d,"cv")>=2) return ["warn","BP / heart rate"]; return null; }
+    case "seiz": if((S.contra||[]).some(c=>/seizure|bulimia|anorexia/i.test(c))) return ["bad","Contraindicated"];
+      return /seizure/i.test(aeText(d))?["warn","Lowers seizure threshold"]:null;
+  }
+  return null;
+}
+function assess(id, P){
+  const out=[];
+  for(const f of state.pf){ if(P.factors&&!P.factors.includes(f)) continue; const j=judge(id,f,P); if(j&&j[0]) out.push(j); }
+  for(const m of state.pmeds){ if(m===id) continue; const fl=pairFlags(id,m); if(!fl.length) continue;
+    const w=fl.some(x=>x.sev==="avoid")?"bad":"warn"; out.push([w, fl[0].t]); }
+  const rank={bad:0,warn:1,good:2}; out.sort((a,b)=>rank[a[0]]-rank[b[0]]);
+  const score=out.reduce((s,[k])=>s+(k==="good"?1:k==="warn"?-0.6:-4),0);
+  return {out,score,bad:out.some(o=>o[0]==="bad")};
+}
+const PK = {good:"✓",warn:"!",bad:"✕"};
+function verdict(a){ if(a.bad) return "bad"; const g=a.out.filter(o=>o[0]==="good").length, w=a.out.filter(o=>o[0]==="warn").length; return !a.out.length?"":(w&&w>=g)?"warn":"good"; }
+function pillsHTML(ids, P){
+  let L = ids.filter(id=>DRUGS[id]).map(id=>{ const a=assess(id,P); return {id,a,v:verdict(a)}; });
+  if(state.pf.size||state.pmeds.size) L.sort((x,y)=>y.a.score-x.a.score);
+  return L.map(({id,a,v})=>`<button class="dp ${v}" data-mini="${id}" style="--drug:${col(id)}" title="${esc(a.out.map(o=>o[1]).join(" · "))}">${v?`<i>${PK[v]}</i>`:""}${esc(DRUGS[id].name.replace(/ \(.*\)$/,""))}</button>`).join("");
+}
+function nodeHTML(n, P){
+  const body = n.groups ? n.groups.map(([lab,ids])=>`<div class="fn-g"><span>${esc(lab)}</span><div class="dps">${pillsHTML(ids,P)}</div></div>`).join("") : "";
+  return `<div class="fn ${n.k||""}${n.end?" end":""}">
+    <div class="fn-h"><b>${esc(n.t)}</b>${n.tag?`<span>${esc(n.tag)}</span>`:""}</div>
+    ${n.b?`<p>${esc(n.b)}</p>`:""}${body}${n.foot?`<p class="fn-f">${esc(n.foot)}</p>`:""}${n.end?`<span class="fn-end">End of pathway</span>`:""}</div>`;
+}
+function flowHTML(P){
+  return P.rows.map((r,i)=>{
+    const top = !i?"":r.detached?`<div class="fl-gap"></div>`:`<div class="fl-v"></div>`;
+    if(r.n) return top + nodeHTML(r.n,P);
+    const [a,b]=r.split, ca=!a.end, cb=!b.end, more=i<P.rows.length-1;
+    const merge = more && (ca||cb) ? `<div class="fl-m ${ca&&cb?"both":ca?"left":"right"}"></div>` : "";
+    return `${top}<div class="fl-q">${esc(r.q)}</div><div class="fl-s">${[a,b].map(x=>`<div class="fl-c${x.end?" stop":""}"><span class="fl-l">${esc(x.lab)}</span>${nodeHTML(x,P)}${!x.end&&more?`<div class="fl-t"></div>`:""}</div>`).join("")}</div>${merge}`;
+  }).join("");
+}
+function renderPath(){
+  const P = PATHS[state.path] || PATHS[PATH_ORDER[0]];
+  const grps=[...new Set(PATH_ORDER.map(k=>PATHS[k].grp||PATHS[k].name))], cur=P.grp||P.name;
+  const subs=PATH_ORDER.filter(k=>(PATHS[k].grp||PATHS[k].name)===cur);
+  const pick = `<div class="pathpick" role="group" aria-label="Condition">${grps.map(g=>{ const k=PATH_ORDER.find(x=>(PATHS[x].grp||PATHS[x].name)===g); return `<button class="pfc" data-path="${k}" aria-pressed="${g===cur}">${esc(g)}</button>`; }).join("")}</div>`
+    + (subs.length>1?`<div class="seg pathsub" role="group" aria-label="Phase">${subs.map(k=>`<button data-path="${k}" aria-pressed="${k===state.path}">${esc(PATHS[k].sub)}</button>`).join("")}</div>`:"");
+  const facts = `<div class="pf" role="group" aria-label="Patient factors">${FACTORS.filter(([k])=>!P.factors||P.factors.includes(k)).map(([k,l])=>`<button class="pfc" data-pf="${k}" aria-pressed="${state.pf.has(k)}">${l}</button>`).join("")}</div>`;
+  const medOpts = GROUPS.map(([g,label])=>{ const ids=ORDER.filter(id=>DRUGS[id].grp===g&&!state.pmeds.has(id)); return ids.length?`<optgroup label="${label}">${ids.map(id=>`<option value="${id}">${DRUGS[id].name}</option>`).join("")}</optgroup>`:""; }).join("");
+  const meds = `<div class="pmeds">${[...state.pmeds].map(id=>`<span class="pick"><span>${esc(DRUGS[id].name)}</span><button class="rm" data-prm="${id}" aria-label="Remove ${esc(DRUGS[id].name)}">×</button></span>`).join("")}<label class="visually-hidden" for="pmadd">Add a current medication</label><select id="pmadd"><option value="">+ Current medication</option>${medOpts}</select></div>`;
+  const callouts = [...state.pf].filter(f=>!P.factors||P.factors.includes(f)).map(f=>P.special&&P.special[f]).filter(Boolean)
+    .map(([t,src])=>`<div class="pcall">${esc(t)}${src?` <a href="${src}" target="_blank" rel="noopener">Source ↗</a>`:""}</div>`).join("");
+  const legend = `<p class="dp-key"><span class="dp good"><i>✓</i>fits</span><span class="dp warn"><i>!</i>caution</span><span class="dp bad"><i>✕</i>avoid</span> for the factors you picked</p>`;
+  const extras = (P.extras||[]).map(([h,items])=>`<details class="pex"><summary>${esc(h)}</summary><ul>${items.map(([t,src])=>`<li>${esc(t)}${src?` <a href="${src}" target="_blank" rel="noopener">↗</a>`:""}</li>`).join("")}</ul></details>`).join("");
+  $("#pathbody").innerHTML = `${pick}
+    <div class="reg-head"><h1>${esc(P.title)}</h1><p>${esc(P.lede)}</p></div>
+    <div class="pfbox"><h3>Patient factors</h3>${facts}<h3>Current medications <span>checks interactions</span></h3>${meds}</div>
+    ${callouts}${state.pf.size||state.pmeds.size?legend:""}
+    <div class="flow">${flowHTML(P)}</div>
+    ${extras}
+    <p class="note psrc">Based on ${P.sources.map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join(", ")}. A teaching summary of guideline steps, not a prescription; guidelines differ and patient history matters most.</p>`;
+}
+/* Mini card: quick look without leaving the pathway */
+function miniDose(d, P){
+  const A=d.dosing.adult||{}, keys=Object.keys(A);
+  const k = keys.find(x=>!A[x].off && P.doseRe && P.doseRe.test(x)) || keys.find(x=>!A[x].off) || keys[0];
+  return k?[k,A[k]]:null;
+}
+function openMini(id){
+  const d=DRUGS[id], P=PATHS[state.path]||PATHS[PATH_ORDER[0]], a=assess(id,P), S=d.s;
+  const boxes=[...new Set(Object.values(d.boxed||{}))];
+  const chips=[["Pregnancy",S.preg],["Lactation",S.lact],["Hepatic",S.hep],["Renal",S.ren],["QTc",QTC[bv(d,"qtc")]]]
+    .map(([l,[lv,w]])=>`<span class="sc lv-${lv} mini-sc" title="${esc(w)}">${l}</span>`).join("")
+    + (boxes.length?`<span class="sc lv-avoid bx mini-sc" title="${esc(boxes.map(b=>BOXLAB.get(b)).join(" · "))}">Boxed</span>`:"");
+  const md=miniDose(d,P), tg=P.tags&&P.tags[id];
+  const dose = md?`<div class="mini-dose"><span>${esc(md[0])}</span><b>${esc(md[1].start)}</b> → ${esc(md[1].range)} · max ${esc(md[1].max)}</div>`:"";
+  const ae=d.ae.filter(([k])=>k==="serious").slice(0,2).map(([,t])=>`<li>${esc(t)}</li>`).join("");
+  $("#mini").innerHTML = `<div class="mini-card" role="dialog" aria-modal="true" aria-label="${esc(d.name)}" style="--drug:${col(id)}">
+    <div class="mini-h"><div><h2>${esc(d.name)}</h2><span>${esc(d.brand)} · ${esc(d.cls)}${d.sched?` · ${esc(d.sched)}`:""}</span></div><button class="mini-x" data-mclose aria-label="Close">×</button></div>
+    ${a.out.length?`<div class="mini-fl">${a.out.map(([k,t])=>`<i class="rp ${k}">${PK[k]} ${esc(t)}</i>`).join("")}</div>`:""}
+    <div class="mini-chips">${chips}</div>
+    ${tg?`<div class="mini-dose path"><span>${esc(tg[0])}</span><b>${esc(tg[1])}</b></div>`:""}${dose}
+    ${ae?`<ul class="mini-ae">${ae}</ul>`:""}
+    <button class="mini-go" data-goto="${id}">Open full card →</button></div>`;
+  $("#mini").hidden=false; document.body.classList.add("mini-open");
+  const x=$("#mini .mini-x"); if(x) x.focus();
+}
+function closeMini(){ const m=$("#mini"); if(m&&!m.hidden){ m.hidden=true; m.innerHTML=""; document.body.classList.remove("mini-open"); } }
+
+const state = { spec:"psych", pt:{pop:"adult",kg:null,cm:null,sex:null,units:"metric"}, ause:0, crisis:null, moreOpen:true, openRow:null, drug:"sertraline", age:"adult", ind:null, view:"root", hcond:null, cmp:[], cond:"All", mechOpen:true, chip:null, regimen:new Set(), path:"mdd", pf:new Set(), pmeds:new Set() };
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const col = id => `var(--g-${DRUGS[id].grp})`;
@@ -3349,6 +3862,7 @@ function hashFor(){
   if(state.view==="dex") return state.drug;
   if(state.view==="cmp") return ["compare",...state.cmp].join(".");
   if(state.view==="reg") return ["regimen",...state.regimen].join(".");
+  if(state.view==="path") return "pathway."+state.path;
   if(state.view==="sheet") return "dosesheet";
   if(state.view==="crisis") return "crises";
   return spec().slug;
@@ -3359,6 +3873,7 @@ function readHash(){
   const [k,...ids]=h.split("."); const good=ids.filter(id=>DRUGS[id]&&DRUGS[id].spec==="psych");
   if(DRUGS[k]){ state.drug=k; state.spec=DRUGS[k].spec; state.view="dex"; }
   else if(k==="compare"){ state.spec="psych"; if(good.length) state.cmp=good.slice(0,3); state.view="cmp"; }
+  else if(k==="pathway"){ state.spec="psych"; if(PATHS[ids[0]]) state.path=ids[0]; state.view="path"; }
   else if(k==="regimen"){ state.spec="psych"; if(good.length) state.regimen=new Set(good); state.view="reg"; }
   else if(k==="dosesheet"){ state.spec="anes"; state.view="sheet"; }
   else if(k==="crises"){ state.spec="anes"; state.view="crisis"; }
@@ -3601,15 +4116,16 @@ function renderRoot(){
 }
 function setView(v){
   if(v==="dex" && !state.drug) v="home";
-  if((v==="cmp"||v==="reg") && state.spec!=="psych") v="home";
+  if((v==="cmp"||v==="reg"||v==="path") && state.spec!=="psych") v="home";
   if((v==="sheet"||v==="crisis") && state.spec!=="anes") v="home";
   state.view=v;
-  for(const id of ["root","home","dex","cmp","reg","sheet","crisis"]) $("#"+id).hidden = id!==v;
+  for(const id of ["root","home","dex","cmp","reg","sheet","crisis","path"]) $("#"+id).hidden = id!==v;
   const showPt = state.spec==="anes" && (v==="dex"||v==="sheet"||v==="crisis");
   $("#ptbar").hidden = !showPt; if(showPt) renderPtbar();
   if(v!=="dex") $("#namepill").hidden=true;
+  closeMini();
   closeSpecMenu(); renderTabs();
-  if(v==="root") renderRoot(); else if(v==="home") renderHome(); else if(v==="dex"){ renderConds(); renderEntries(); renderCard(); } else if(v==="cmp") renderCompare(); else if(v==="reg") renderRegimen(); else if(v==="crisis") renderCrisis(); else renderSheet();
+  if(v==="root") renderRoot(); else if(v==="home") renderHome(); else if(v==="dex"){ renderConds(); renderEntries(); renderCard(); } else if(v==="cmp") renderCompare(); else if(v==="reg") renderRegimen(); else if(v==="path") renderPath(); else if(v==="crisis") renderCrisis(); else renderSheet();
   syncHash();
 }
 function rerenderAnes(){ if(state.view==='sheet') renderSheet(); else if(state.view==='crisis') renderCrisis(); else if(state.view==='dex') renderCard(); }
@@ -3630,12 +4146,18 @@ document.addEventListener("click", e=>{
   const cb = e.target.closest("[data-conc]"); if(cb){ const id=cb.dataset.conc, L=concList(id); CONC_SEL[id]=((CONC_SEL[id]||0)+1)%L.length; saveConc(); rerenderAnes(); return; }
   const rw = e.target.closest("[data-row]"); if(rw){ state.openRow = state.openRow===rw.dataset.row?null:rw.dataset.row; renderSheet(); return; }
   const cr = e.target.closest("[data-crisis]"); if(cr){ state.crisis = state.crisis===cr.dataset.crisis?null:cr.dataset.crisis; renderCrisis(); return; }
+  const mn = e.target.closest("[data-mini]"); if(mn){ openMini(mn.dataset.mini); return; }
+  if(e.target.closest("[data-mclose]") || e.target.id==="mini"){ closeMini(); return; }
+  if(e.target.closest("#mini [data-goto]")) closeMini();
   const go = e.target.closest("[data-goto]"); if(go){ state.drug=go.dataset.goto; state.spec=DRUGS[state.drug].spec; state.ind=null; state.ause=0; state.autoPick=true; state.chip=null; setView("dex"); window.scrollTo(0,0); return; }
   const ent = e.target.closest(".entry"); if(ent){ state.drug=ent.dataset.id; state.ind=null; state.ause=0; state.autoPick=true; state.chip=null;
     if(state.view!=="dex"){ setView("dex"); window.scrollTo(0,0); return; }
     renderEntries(); renderCard(); syncHash();
     if(window.matchMedia && matchMedia("(max-width: 820px)").matches){ setRail(false); window.scrollTo(0,0); } return; }
   const hc = e.target.closest("[data-hcond]"); if(hc){ state.hcond = state.hcond===hc.dataset.hcond?null:hc.dataset.hcond; renderHome(); return; }
+  const pfb = e.target.closest("[data-pf]"); if(pfb){ const f=pfb.dataset.pf; state.pf.has(f)?state.pf.delete(f):state.pf.add(f); renderPath(); return; }
+  const pth = e.target.closest("[data-path]"); if(pth){ state.path=pth.dataset.path; renderPath(); syncHash(); return; }
+  const prm = e.target.closest("[data-prm]"); if(prm){ state.pmeds.delete(prm.dataset.prm); renderPath(); return; }
   const tl = e.target.closest("[data-view]"); if(tl){ setView(tl.dataset.view); window.scrollTo(0,0); return; }
   const crm = e.target.closest("[data-crm]"); if(crm){ state.cmp=state.cmp.filter(x=>x!==crm.dataset.crm); renderCompare(); syncHash(); return; }
   if(e.target.closest("#home-link")){ $("#hq").value=""; state.hcond=null; setView("root"); window.scrollTo(0,0); return; }
@@ -3647,10 +4169,12 @@ document.addEventListener("click", e=>{
   if(e.target.closest("#namepill")){ const r=!!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches); window.scrollTo({top:0,behavior:r?"auto":"smooth"}); return; }
 
 });
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeMini(); });
 document.addEventListener("change", e=>{
   if(e.target.id==="ind"){ state.ind=e.target.value; renderCard(); }
   if(e.target.id==="ause"){ state.ause=+e.target.value; renderCard(); }
   if(e.target.id==="addsel" && e.target.value){ state.regimen.add(e.target.value); renderRegimen(); syncHash(); }
+  if(e.target.id==="pmadd" && e.target.value){ state.pmeds.add(e.target.value); renderPath(); }
   if(e.target.id==="caddsel" && e.target.value){ state.cmp.push(e.target.value); renderCompare(); syncHash(); }
 });
 function setRail(open){ $("#rail").classList.toggle("open",open); const t=$("#railtoggle"); t.setAttribute("aria-expanded",open); t.textContent=open?"Close ▴":"Browse ▾"; }
