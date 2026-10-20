@@ -518,8 +518,8 @@ const DOMAINS = [
 ];
 const LV = ["None","Low","Moderate","High"];
 const AGES = [["peds","Child / adolescent"],["adult","Adult"],["older","Older adult"]];
-const GROUPS = [["ssri","SSRIs"],["snri","SNRIs"],["otherad","Other antidepressants"],["ap","Antipsychotics"],["ms","Mood stabilizers"],["adhd","ADHD"],["anx","Anxiolytics & sedatives"]];
-const CONDS = ["Depression","Anxiety","ADHD","Schizophrenia","Bipolar","Agitation"];
+const GROUPS = [["ssri","SSRIs"],["snri","SNRIs"],["otherad","Other antidepressants"],["tca","TCAs & MAOIs"],["ap","Antipsychotics"],["ms","Mood stabilizers"],["adhd","ADHD"],["anx","Anxiolytics & sedatives"],["sleep","Sleep"],["sud","Substance use"],["eps","Side-effect treatment"]];
+const CONDS = ["Depression","Anxiety","ADHD","Schizophrenia","Bipolar","Agitation","Insomnia","Substance use","EPS / TD"];
 
 const SUICIDE = "Suicidal thoughts and behaviors in children, adolescents, and young adults (<25) on antidepressants. Monitor closely early in treatment and after dose changes.";
 const DEMENTIA = "Increased mortality in elderly patients with dementia-related psychosis. Not approved for that use.";
@@ -1696,6 +1696,497 @@ Object.assign(OFF, {
    "Tics with ADHD (IR)":O("0.5 mg daily","1.5–3 mg/day","Not stated","Not stated in source.","RCT: tics −31%, ADHD −37%. AAN Level B for α2 agonists.",UVATIC,"Taper to stop (rebound hypertension).")}}
 });
 
+/* Batch 2: sleep + side-effect treatment. Sources: DailyMed / FDA labels (see srcs). */
+const ZDRUG = "Complex sleep behaviors (sleep-walking, sleep-driving, other activities while not fully awake), sometimes causing serious injury or death. Stop immediately if one occurs.";
+const VMAT = "Depression and suicidality in patients with Huntington's disease. Weigh against the need to treat chorea; monitor closely.";
+BOXLAB.set(ZDRUG,"Complex sleep behaviors").set(VMAT,"Depression/suicidality in Huntington's");
+const AASM = "https://aasm.org/wp-content/uploads/2018/01/PharmInsomnia-Guideline-at-a-Glance.pdf";
+Object.assign(DRUGS, {
+ zolpidem:{ name:"Zolpidem", brand:"Ambien / Ambien CR", cls:"Z-drug hypnotic", grp:"sleep", conds:["Insomnia"], sched:"C-IV", cnsdep:true,
+  mech:"Positive modulator of GABA-A receptors, preferring α1-containing subtypes (sedative more than anxiolytic). Short half-life (~2.5 h).",
+  receptors:[], rnote:"GABA-A positive modulator (α1-preferring). The label gives no binding constants.",
+  cyp:{sub:"CYP3A4", inh:"None", note:"Ketoconazole raises exposure (consider lower dose). Don't use with rifampin; avoid St. John's wort."},
+  burden:{sed:3},
+  ae:[["common","Headache, dizziness"],["common","Next-day drowsiness (women more affected)"],["common","Diarrhea"],["serious","Complex sleep behaviors"],["serious","Falls, confusion; respiratory depression with opioids"]],
+  boxed:{adult:ZDRUG, older:ZDRUG},
+  agenote:{peds:"Not recommended; hallucinations in 7% in a pediatric trial.",
+           adult:"Take right before bed with 7–8 hours available. Women clear it more slowly, so the label starts them at 5 mg (IR).",
+           older:"Beers list: avoid (falls, fractures, delirium). If used: IR 5 mg or ER 6.25 mg only."},
+  s:{preg:["caution","Caution","Late use: newborn sedation and breathing problems. No clear malformation signal."],lact:["caution","Caution","In milk; infant sedation possible."],hep:["caution","Reduce dose","Mild–moderate: IR 5 mg, ER 6.25 mg. Severe: avoid (encephalopathy)."],ren:["data","Not stated","Label gives no renal dose."],
+   contra:["Prior complex sleep behavior on zolpidem"],monitor:["Complex sleep behaviors","Next-day impairment (driving)","Falls in older adults"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c36cadf4-65a4-4466-b409-c82020b42452","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2d934da3-bd77-4470-e063-6294a90a64f5"],
+  dosing:{
+   adult:{
+    "Insomnia, sleep onset (IR)":D("Women 5 mg; men 5–10 mg at bedtime","5–10 mg","10 mg nightly","Use the lowest effective dose.",{grid:true}),
+    "Insomnia, onset or maintenance (ER)":D("Women 6.25 mg; men 6.25–12.5 mg","6.25–12.5 mg","12.5 mg nightly","Swallow whole.",{grid:true})},
+   peds:{},
+   older:{
+    "Insomnia (IR)":D("5 mg at bedtime","5 mg","5 mg nightly","Label dose for older or debilitated patients.",{grid:true}),
+    "Insomnia (ER)":D("6.25 mg at bedtime","6.25 mg","6.25 mg nightly","Label dose for older or debilitated patients.",{grid:true})}
+  }},
+ suvorexant:{ name:"Suvorexant", brand:"Belsomra", cls:"Orexin receptor antagonist", grp:"sleep", conds:["Insomnia"], sched:"C-IV", cnsdep:true,
+  mech:"Blocks orexin OX1 and OX2 receptors, turning down the wake signal instead of boosting GABA. Less rebound and falls signal than Z-drugs, but next-day impairment still occurs.",
+  receptors:[["OX2R",0.35,"Antagonist"],["OX1R",0.55,"Antagonist"]],
+  cyp:{sub:"CYP3A", inh:"None", note:"Moderate 3A inhibitors: 5 mg (max 10 mg). Strong 3A inhibitors: not recommended. Strong inducers reduce effect."},
+  burden:{sed:2},
+  ae:[["common","Somnolence (dose-related)"],["common","Headache, dizziness"],["common","Abnormal dreams"],["serious","Sleep paralysis, hallucinations, cataplexy-like symptoms"],["serious","Complex sleep behaviors; worsening depression"]],
+  boxed:{},
+  agenote:{peds:"Not established.",
+           adult:"Take within 30 min of bed with at least 7 hours available. Slower onset if taken with a meal.",
+           older:"No dose change in the label; watch for falls."},
+  s:{preg:["data","Limited data","Too little human data to judge."],lact:["ok","Low transfer","Relative infant dose under 1%."],hep:["caution","Avoid if severe","Mild–moderate: no change."],ren:["data","Not stated","Label gives no renal dose."],
+   contra:["Narcolepsy"],monitor:["Next-day impairment","Depression","Sleep paralysis or cataplexy-like episodes"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e5b72731-1acb-45b7-9c13-290ad12d3951"],
+  dosing:{
+   adult:{"Insomnia, onset or maintenance":D("10 mg at bedtime","10–20 mg","20 mg nightly","Increase to 20 mg if 10 mg is tolerated but not working.",{grid:true})},
+   peds:{},
+   older:{"Insomnia, onset or maintenance":D("10 mg at bedtime","10–20 mg","20 mg nightly","Same as adults.",{grid:true})}
+  }},
+ lemborexant:{ name:"Lemborexant", brand:"Dayvigo", cls:"Orexin receptor antagonist", grp:"sleep", conds:["Insomnia"], sched:"C-IV", cnsdep:true,
+  mech:"Competitive antagonist at orexin OX1 and OX2 receptors; its active metabolite has similar potency. Reduces the wake drive.",
+  receptors:[], rnote:"Orexin OX1/OX2 antagonist. The label gives IC50 values (2.6–6.1 nM), not Ki.",
+  cyp:{sub:"CYP3A4 (major)", inh:"Lowers CYP2B6 substrates", note:"Avoid strong or moderate 3A inhibitors and inducers. Weak 3A inhibitors: max 5 mg."},
+  burden:{sed:2},
+  ae:[["common","Somnolence (7–10%)"],["common","Headache"],["common","Nightmares, abnormal dreams"],["serious","Sleep paralysis, hallucinations, cataplexy-like symptoms"],["serious","Complex sleep behaviors; worsening depression"]],
+  boxed:{},
+  agenote:{peds:"Not established.",
+           adult:"Take right before bed with at least 7 hours available. Alcohol raises levels.",
+           older:"Use caution above 5 mg over age 65."},
+  s:{preg:["data","Limited data","No human data on birth defects."],lact:["caution","Caution","In milk; watch infant for sedation."],hep:["caution","Reduce dose","Moderate: max 5 mg. Severe: not recommended."],ren:["ok","No change","Mild to severe impairment."],
+   contra:["Narcolepsy"],monitor:["Daytime impairment","Depression","Sleep paralysis or cataplexy-like episodes"]},
+  srcs:["https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/212028s011lbl.pdf"],
+  dosing:{
+   adult:{"Insomnia, onset or maintenance":D("5 mg at bedtime","5–10 mg","10 mg nightly","Increase to 10 mg based on response.",{grid:true})},
+   peds:{},
+   older:{"Insomnia, onset or maintenance":D("5 mg at bedtime","5–10 mg","10 mg nightly (caution above 5 mg)","Use caution above 5 mg.",{grid:true})}
+  }},
+ doxepinld:{ name:"Doxepin (low-dose)", brand:"Silenor", cls:"H1 antagonist hypnotic", grp:"sleep", conds:["Insomnia"],
+  mech:"At 3–6 mg, doxepin acts almost purely as a very potent H1 antagonist. The serotonergic, noradrenergic, and anticholinergic effects of antidepressant doses (75–300 mg) don't appear at this dose.",
+  receptors:[], rnote:"Very potent H1 antagonist (label: Ki under 1 nM). Exact values not given in the label.",
+  cyp:{sub:"2C19, 2D6 (major)", inh:"None at these doses", note:"Cimetidine doubles exposure: max 3 mg."},
+  burden:{sed:2},
+  ae:[["common","Somnolence (6–9%)"],["common","Upper respiratory symptoms"],["common","Nausea"],["serious","Worsening depression or suicidality"],["serious","Abnormal thinking or behavior"]],
+  boxed:{},
+  agenote:{peds:"Not evaluated.",
+           adult:"For staying asleep, not falling asleep. Not controlled. Don't take within 3 h of a meal.",
+           older:"Start 3 mg. Beers flags doxepin only above 6 mg/day."},
+  s:{preg:["caution","Caution","Late exposure: poor neonatal adaptation possible."],lact:["avoid","Not recommended","Label: breastfeeding not recommended."],hep:["caution","Start 3 mg","Monitor daytime effects."],ren:["data","Not studied","Not studied."],
+   contra:["MAOI within 14 days","Untreated narrow-angle glaucoma","Severe urinary retention"],monitor:["Daytime sedation","Depression"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=1bec1223-5239-4eb6-a9e8-62444106d2c0"],
+  dosing:{
+   adult:{"Insomnia, sleep maintenance":D("6 mg at bedtime (3 mg may suffice)","3–6 mg","6 mg nightly","Within 30 min of bedtime.",{grid:true})},
+   peds:{},
+   older:{"Insomnia, sleep maintenance":D("3 mg at bedtime","3–6 mg","6 mg nightly","Increase to 6 mg if needed.",{grid:true})}
+  }},
+ benztropine:{ name:"Benztropine", brand:"Cogentin", cls:"Anticholinergic", grp:"eps", conds:["EPS / TD"],
+  mech:"Centrally acting muscarinic antagonist (with some antihistamine effect). Rebalances the dopamine–acetylcholine ratio in the striatum when D2 is blocked.",
+  receptors:[], rnote:"Muscarinic antagonist. The label gives no binding constants.",
+  cyp:{sub:"Not stated", inh:"None", note:"Additive anticholinergic effects with TCAs, low-potency antipsychotics, antihistamines."},
+  burden:{sed:1,achol:3},
+  ae:[["common","Dry mouth, constipation"],["common","Blurred vision, urinary retention"],["common","Tachycardia"],["serious","Heat stroke (anhidrosis); paralytic ileus"],["serious","Confusion, delirium; may worsen tardive dyskinesia"]],
+  boxed:{},
+  agenote:{peds:"Contraindicated under 3; caution in older children.",
+           adult:"For dystonia and parkinsonism. Not for TD (can worsen it) and not first-line for akathisia.",
+           older:"Beers list: avoid (strongly anticholinergic). Not recommended for antipsychotic EPS."},
+  s:{preg:["data","Limited data","Safety not established."],lact:["data","Limited data","Not well studied; may reduce milk supply."],hep:["data","Not stated","Label gives no hepatic dose."],ren:["data","Not stated","Label gives no renal dose."],
+   contra:["Age under 3"],monitor:["Heat exposure","Bowel and bladder function","Cognition, delirium","TD emergence"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3d2732f9-b8a9-4e83-91e7-da616ddcb786","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=accd7e33-ca6e-46e6-a2ae-20b9bcd8fb89"],
+  dosing:{
+   adult:{
+    "Acute dystonia (IM/IV)":D("1–2 mg IM or IV","1–2 mg; repeat if it returns","6 mg/day","Often works within minutes.",{grid:true}),
+    "Drug-induced parkinsonism (PO)":D("1–2 mg two or three times a day","1–4 mg once or twice daily","6 mg/day","Reassess after 1–2 weeks; stop if no longer needed."),
+    "Parkinsonism (PO)":D("0.5–1 mg at bedtime","1–2 mg/day","6 mg/day","Increase by 0.5 mg every 5–6 days.")},
+   peds:{},
+   older:{"Drug-induced parkinsonism (PO)":D("0.5 mg daily","Lowest effective dose","6 mg/day","Start at the low end; Beers: avoid if possible.")}
+  }},
+ propranolol:{ name:"Propranolol", brand:"Inderal", cls:"β-blocker", grp:"eps", conds:["EPS / TD","Anxiety"],
+  mech:"Nonselective β-adrenergic antagonist. Blunts peripheral adrenergic symptoms (tremor, tachycardia); lipophilic, so it also acts centrally, which may explain its effect on akathisia.",
+  receptors:[], rnote:"Nonselective β1/β2 antagonist. The label gives no binding constants.",
+  cyp:{sub:"2D6, 1A2 (major)", inh:"Raises thioridazine and lidocaine", note:"Fluoxetine, paroxetine (2D6) and fluvoxamine (1A2) can raise levels."},
+  burden:{sed:1,cv:2},
+  ae:[["common","Fatigue, light-headedness"],["common","Bradycardia, low BP"],["common","Insomnia, vivid dreams"],["serious","Bronchospasm in asthma"],["serious","Masks hypoglycemia; rebound angina if stopped abruptly"]],
+  boxed:{},
+  agenote:{peds:"Safety not established for psychiatric uses.",
+           adult:"All psychiatric uses are off-label. Check HR and BP; avoid in asthma.",
+           older:"Start at the low end; watch bradycardia and orthostasis."},
+  s:{preg:["caution","Caution","Use only if benefit justifies risk; possible fetal growth effects."],lact:["ok","Acceptable","Small amounts in milk."],hep:["caution","Caution","Hepatically cleared; use care."],ren:["caution","Caution","Use care."],
+   contra:["Asthma","Sinus bradycardia or heart block above 1st degree","Cardiogenic shock"],monitor:["Heart rate, BP","Glucose in diabetes","Wheezing"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=14d0c95d-418f-40a8-bad3-e20c82424960"],
+  dosing:{
+   adult:{
+    "Antipsychotic akathisia":O("10 mg twice a day (20 mg/day)","30–90 mg/day","90 mg/day","Split into 2–3 doses; titrate to response, HR, and BP.","APA 2020 endorses a β-blocker (no dose given). RCT: 30% responded vs 7% placebo. Doses from a Carlat fact sheet.","https://thecarlatreport.com/ext/resources/factsheets/MFB7e/PROPRANOLOL-(Inderal)-Fact-Sheet-[G].pdf","Weak dose source; trial dose reported inconsistently (40 vs 80 mg/day)."),
+    "Performance anxiety":O("10 mg ~60 min before","10–40 mg","Not stated","Single dose as needed. Do a test dose before the real event.","Expert reference only.","https://thecarlatreport.com/ext/resources/factsheets/MFB7e/PROPRANOLOL-(Inderal)-Fact-Sheet-[G].pdf",null,{grid:true}),
+    "Lithium or drug-induced tremor":O("10 mg twice a day (20 mg/day)","30–120 mg/day","120 mg/day","Increase by 10–20 mg/day weekly.","Expert reference (Carlat); first-line for drug tremor, no trial cited.","https://www.thecarlatreport.com/ext/resources/factsheets/MFB7e/Tremor.pdf"),
+    "Hypertension":D("40 mg twice a day (80 mg/day)","120–240 mg/day","640 mg/day","Label range.")},
+   peds:{},
+   older:{}
+  }},
+ valbenazine:{ name:"Valbenazine", brand:"Ingrezza", cls:"VMAT2 inhibitor", grp:"eps", conds:["EPS / TD"],
+  d6sub:"Label: 40 mg with strong CYP2D6 inhibitors (QT risk rises).",
+  mech:"Reversibly inhibits VMAT2, so less dopamine is packaged for release. Its active metabolite (α-HTBZ) does most of the work.",
+  receptors:[["VMAT2 (metabolite)",3,"Inhibitor",true],["VMAT2",150,"Inhibitor"]],
+  cyp:{sub:"3A4; metabolite via 2D6", inh:"P-gp (raises digoxin)", note:"40 mg: 2D6 poor metabolizer, strong 2D6 or strong 3A4 inhibitor. Avoid strong 3A4 inducers."},
+  burden:{qtc:1,sed:2,eps:1},
+  ae:[["common","Somnolence, fatigue"],["common","Akathisia (small)"],["common","Urticaria, rash (Huntington's)"],["serious","QT prolongation"],["serious","Parkinsonism; NMS; angioedema"]],
+  boxed:{adult:VMAT, older:VMAT},
+  agenote:{peds:"Not established.",
+           adult:"Once daily, no taper needed. Antipsychotic can usually be continued. Capsule can be sprinkled.",
+           older:"No dose change in the label."},
+  s:{preg:["data","Limited data","Too little human data."],lact:["avoid","Avoid","Not advised during use and 5 days after."],hep:["caution","Reduce dose","Moderate–severe: 40 mg."],ren:["ok","No change","No adjustment."],
+   contra:["Hypersensitivity to valbenazine"],monitor:["QTc if at risk or 2D6 poor metabolizer","Parkinsonism","Somnolence"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4c970164-cafb-421f-9eb5-c226ef0a3417"],
+  dosing:{
+   adult:{
+    "Tardive dyskinesia":D("40 mg daily","40–80 mg/day","80 mg/day","Increase to 80 mg after 1 week; 60 mg is an option."),
+    "Huntington's chorea":D("40 mg daily","40–80 mg/day","80 mg/day","Increase by 20 mg every 2 weeks.")},
+   peds:{},
+   older:{"Tardive dyskinesia":D("40 mg daily","40–80 mg/day","80 mg/day","Same as adults.")}
+  }},
+ deutetrabenazine:{ name:"Deutetrabenazine", brand:"Austedo / Austedo XR", cls:"VMAT2 inhibitor", grp:"eps", conds:["EPS / TD"],
+  d6sub:"Label: max 36 mg/day with strong CYP2D6 inhibitors (metabolite exposure ~3×).",
+  mech:"Deuterated tetrabenazine. Its metabolites reversibly inhibit VMAT2; deuterium slows their breakdown, allowing lower doses and fewer peaks than tetrabenazine.",
+  receptors:[], rnote:"VMAT2 inhibitor via active metabolites. The label gives no binding constants.",
+  cyp:{sub:"2D6 (active metabolites)", inh:"None", note:"Strong 2D6 inhibitors (paroxetine, fluoxetine, bupropion) or 2D6 poor metabolizers: max 36 mg/day."},
+  burden:{qtc:1,sed:1,eps:1},
+  ae:[["common","Somnolence, fatigue"],["common","Diarrhea, dry mouth"],["common","Insomnia"],["serious","Depression, suicidality"],["serious","QTc; akathisia, parkinsonism; NMS"]],
+  boxed:{adult:VMAT, older:VMAT},
+  agenote:{peds:"Not established; Tourette trials failed.",
+           adult:"Titrate weekly. IR tablets with food, split twice daily at 12 mg/day and above.",
+           older:"Few older patients studied; start at the low end."},
+  s:{preg:["data","Limited data","No adequate human data."],lact:["data","Limited data","No data."],hep:["avoid","Contraindicated","Contraindicated in hepatic impairment."],ren:["data","Not studied","Not studied."],
+   contra:["Hepatic impairment","Huntington's with untreated depression or suicidality","MAOI within 14 days","Reserpine (wait 20 days)","Tetrabenazine or valbenazine"],monitor:["Depression, suicidality","QTc if at risk","Akathisia, parkinsonism"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7ea3c60a-45c7-44cc-afc2-d87fa53993c0"],
+  dosing:{
+   adult:{
+    "Tardive dyskinesia":D("12 mg/day (XR daily or IR 6 mg twice a day)","12–48 mg/day","48 mg/day","Increase by 6 mg/day weekly."),
+    "Huntington's chorea":D("12 mg/day (XR daily or IR 6 mg twice a day)","12–48 mg/day","48 mg/day","Increase by 6 mg/day weekly.")},
+   peds:{},
+   older:{"Tardive dyskinesia":D("12 mg/day","12–48 mg/day","48 mg/day","Start at the low end.")}
+  }}
+});
+/* Batch 2: substance use. Sources: DailyMed labels, 42 CFR 8.12 (see srcs). */
+const METH = "Life-threatening respiratory depression (especially at start and conversion), QT prolongation and torsades, fatal accidental ingestion, misuse and diversion, CYP450 interactions, and risk with benzodiazepines or alcohol. For OUD, dispensed only by certified opioid treatment programs.";
+const DISUL = "Never give to a patient who is intoxicated with alcohol, or without the patient's full knowledge.";
+BOXLAB.set(METH,"Respiratory depression, QT, misuse").set(DISUL,"Never give when intoxicated or without consent");
+Object.assign(DRUGS, {
+ buprenorphine:{ name:"Buprenorphine-naloxone", brand:"Suboxone / Zubsolv", cls:"Partial opioid agonist", grp:"sud", conds:["Substance use"], sched:"C-III", opioid:true, serox:true,
+  mech:"High-affinity μ-opioid partial agonist (and κ antagonist): a ceiling on respiratory depression, and it displaces full agonists, which precipitates withdrawal if given too early. Naloxone is barely absorbed under the tongue and is there to deter injection.",
+  receptors:[], rnote:"μ-opioid partial agonist, κ antagonist. The label gives no binding constants.",
+  cyp:{sub:"CYP3A4; glucuronidation", inh:"None", note:"3A4 inhibitors raise levels; inducers (rifampin, carbamazepine, phenytoin) can cause withdrawal."},
+  burden:{qtc:1,sed:2},
+  ae:[["common","Headache"],["common","Constipation, nausea, sweating"],["common","Insomnia; mouth numbness (film)"],["serious","Respiratory depression with benzos or alcohol"],["serious","Precipitated withdrawal; hepatitis; dental problems"]],
+  boxed:{},
+  agenote:{peds:"Not established.",
+           adult:"Start at moderate withdrawal (COWS ~8–12), at least 6 h after a short-acting opioid. Coming off methadone or fentanyl, consider buprenorphine alone first or a low-dose start. Don't withhold for benzo use; prescribe naloxone.",
+           older:"Little data over 65; watch sedation."},
+  s:{preg:["ok","Treat OUD","No clear malformation risk; neonatal withdrawal expected and treatable."],lact:["ok","Acceptable","LactMed: acceptable; watch infant for drowsiness."],hep:["caution","Avoid if severe","Moderate: not for starting. Check LFTs."],ren:["ok","No change","No adjustment stated."],
+   contra:["Hypersensitivity"],monitor:["LFTs at baseline and periodically","Sedation, breathing","Urine drug screens","Dental care"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8a5edcf9-828c-4f97-b671-268ab13a8ecd","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=57583c1d-9c44-4503-917d-68dba7377bd1"],
+  dosing:{
+   adult:{
+    "OUD induction (Suboxone)":D("2/0.5 or 4/1 mg at moderate withdrawal","Day 1 up to 8/2 mg; day 2 up to 16/4 mg","Day 1: 8/2 mg","Repeat 2–4 mg about every 2 h on day 1. Wait ≥6 h after a short-acting opioid.",{grid:true}),
+    "OUD maintenance (Suboxone)":D("From day 3","4/1–24/6 mg/day","No hard ceiling (above 24/6 not studied)","Adjust by 2/0.5 or 4/1 mg.",{grid:true}),
+    "Low-dose (micro) induction":O("0.5 mg once on day 1","Day 2 0.5 mg twice; day 3 1 mg twice; day 4 2 mg twice; day 5 2 mg three times; day 6 2 mg four times","Day 7: 4 mg three times, stop full agonist","Full agonist continues until total buprenorphine reaches about 8–12 mg/day.","Sample protocol only; no standard exists. Expert fact sheet, no trials cited.","https://www.thecarlatreport.com/ext/resources/factsheets/OUDFB1e/Buprenorphine-Microinduction.pdf","Buprenorphine-only product doses.",{grid:true}),
+    "High-dose ED induction":O("More than 12 mg SL","Up to 28 mg+","Not stated","Single high first dose in the ED.","Retrospective, 579 encounters: precipitated withdrawal 0.8%, no respiratory events (Herring 2021).","https://rebelem.com/rebel-cast-ep102-high-dose-buprenorphine-induction-in-the-emergency-department-for-treatment-of-opioid-use-disorder/",null,{grid:true})},
+   peds:{},
+   older:{}
+  }},
+ methadone:{ name:"Methadone (OUD)", brand:"Methadose", cls:"Full opioid agonist", grp:"sud", conds:["Substance use"], sched:"C-II", opioid:true, serox:true,
+  mech:"Full μ-opioid agonist with a long, highly variable half-life (8–59 h). Suppresses withdrawal and craving once at steady state, but accumulates during the first week, when most overdose deaths happen.",
+  receptors:[], rnote:"Full μ-opioid agonist. The label gives no binding constants.",
+  cyp:{sub:"3A4, 2B6, 2C19, 2C9, 2D6", inh:"None", note:"Inhibitors (fluvoxamine, sertraline, fluconazole, ritonavir) can raise levels to overdose. Inducers (carbamazepine, rifampin, phenytoin) cause withdrawal. Stopping either flips the effect."},
+  burden:{qtc:3,sed:2,cv:1},
+  ae:[["common","Sedation, dizziness"],["common","Nausea, sweating, constipation"],["common","Hypotension"],["serious","Respiratory depression (accumulates over days 1–5)"],["serious","QT prolongation, torsades"]],
+  boxed:{adult:METH, older:METH},
+  agenote:{peds:"Not established under 18.",
+           adult:"For OUD only through a certified opioid treatment program (or ≤3 days in an emergency, or inpatient for another condition). Steady state takes 3–5 days, so dose by peak effect 2–4 h after the dose, not by day-1 craving.",
+           older:"Start at the low end; watch breathing and sedation."},
+  s:{preg:["ok","Treat OUD","No clear malformation risk; neonatal withdrawal expected. Clearance rises, may need split doses."],lact:["ok","Encouraged","LactMed: breastfeeding encouraged when stable; may lessen neonatal withdrawal."],hep:["caution","Start low","Not well studied."],ren:["caution","Start low","Longer intervals; titrate slowly."],
+   contra:["Significant respiratory depression","Acute severe asthma (unmonitored)","GI obstruction or ileus"],monitor:["ECG at baseline and with dose increases if at risk","Sedation, breathing during titration","Interacting drugs started or stopped"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=808a9d0b-720b-4034-a862-5122ff514608","https://www.ecfr.gov/current/title-42/chapter-I/subchapter-A/part-8/subpart-C/section-8.12"],
+  dosing:{
+   adult:{
+    "OUD induction and maintenance":D("20–30 mg once (first dose ≤30 mg)","80–120 mg/day (most patients)","Day 1: label ≤40 mg total; federal rule ≤50 mg","Day 1: extra 5–10 mg after 2–4 h if withdrawal persists. Then adjust over days by peak effect.",{grid:true}),
+    "Short-term detox":D("Titrate to about 40 mg/day","~40 mg/day, split","Not stated","After 2–3 stable days, taper gradually.",{grid:true}),
+    "Taper off maintenance":D("Current dose","Cut by under 10% every 10–14 days","—","Slow taper.",{grid:true})},
+   peds:{},
+   older:{}
+  }},
+ naltrexone:{ name:"Naltrexone", brand:"Revia / Vivitrol", cls:"Opioid antagonist", grp:"sud", conds:["Substance use"], antag:true,
+  mech:"Competitive opioid antagonist, strongest at μ. Blocks the reward from alcohol (via endogenous opioids) and blocks opioids completely.",
+  receptors:[], rnote:"μ-opioid antagonist (also κ, δ). The label gives no binding constants.",
+  cyp:{sub:"Not CYP (dihydrodiol dehydrogenase)", inh:"None", note:"Oral half-life ~4 h (metabolite ~13 h); Vivitrol 5–10 days."},
+  burden:{},
+  ae:[["common","Nausea"],["common","Headache, dizziness"],["common","Injection-site reactions (Vivitrol)"],["serious","Overdose after stopping (lost tolerance) or trying to override the block"],["serious","Precipitated withdrawal; hepatotoxicity"]],
+  boxed:{},
+  agenote:{peds:"Not established.",
+           adult:"For OUD, must be opioid-free 7–10 days first (up to 2 weeks after buprenorphine or methadone). Plan for pain care: opioids won't work.",
+           older:"Little data over 65."},
+  s:{preg:["data","Limited data","Too little human data."],lact:["ok","Acceptable","LactMed: minimal transfer."],hep:["caution","Caution","Levels 5–10× higher in cirrhosis. Stop if hepatitis."],ren:["caution","Caution","Oral: renally excreted. Vivitrol: moderate–severe not studied."],
+   contra:["Current opioid use or dependence (incl. buprenorphine, methadone)","Acute opioid withdrawal","Failed naloxone challenge"],monitor:["Opioid-free status before starting","Hepatitis signs","Mood","Injection sites"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=49aa3d6d-2270-4615-aafa-b440859ab870","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=cd11c435-b0f0-4bb9-ae78-60f101f3703f"],
+  dosing:{
+   adult:{
+    "Alcohol use disorder (oral)":D("50 mg daily","50 mg/day","50 mg/day","No titration."),
+    "Alcohol use disorder (Vivitrol)":D("380 mg IM gluteal","380 mg every 4 weeks","380 mg every 4 weeks","Alternate buttocks. Patient shouldn't be drinking at the first dose.",{grid:true}),
+    "OUD relapse prevention (oral)":D("25 mg on day 1","50 mg/day","Not stated","After 7–10 opioid-free days and a negative naloxone challenge.",{grid:true}),
+    "OUD relapse prevention (Vivitrol)":D("380 mg IM gluteal","380 mg every 4 weeks","380 mg every 4 weeks","After 7–10 opioid-free days.",{grid:true}),
+    "Gambling disorder":O("25 mg daily","25–250 mg/day (mean ~188 mg)","250 mg/day","Increase to best response.","RCT, n=45: 75% much improved vs 24% placebo (Kim 2001).","https://experts.umn.edu/en/publications/double-blind-naltrexone-and-placebo-comparison-study-in-the-treat/","LFTs rose in some patients also on analgesics; check LFTs at high doses."),
+    "Kleptomania":O("Not stated","Mean 117 mg/day","Not stated","Not stated in source.","Small RCT, n=25: fewer urges and thefts vs placebo (Grant 2009).","https://www.sciencedaily.com/releases/2009/04/090401101900.htm","Secondary source.")},
+   peds:{},
+   older:{}
+  }},
+ acamprosate:{ name:"Acamprosate", brand:"Campral", cls:"Glutamate modulator", grp:"sud", conds:["Substance use"],
+  mech:"Thought to rebalance glutamate (excitatory) and GABA (inhibitory) signaling disrupted by chronic drinking. Not metabolized; cleared unchanged by the kidneys.",
+  receptors:[], rnote:"Glutamate/GABA modulator. The label gives no binding constants.",
+  cyp:{sub:"None (renal, unchanged)", inh:"None", note:"No CYP interactions. Safe to combine with naltrexone or disulfiram."},
+  burden:{},
+  ae:[["common","Diarrhea (16%)"],["common","Insomnia, anxiety"],["common","Nausea, itching"],["serious","Suicidal events (1–2%, above placebo)"]],
+  boxed:{},
+  agenote:{peds:"Not established.",
+           adult:"Start once the patient has stopped drinking. Three times a day dosing hurts adherence. Liver-safe, so useful in liver disease.",
+           older:"Dose by kidney function."},
+  s:{preg:["data","Limited data","Animal teratogenicity at high doses."],lact:["data","Limited data","No human data; poor oral absorption."],hep:["ok","No change","Child-Pugh A–B."],ren:["caution","Reduce dose","CrCl 30–50: 333 mg three times a day. ≤30: contraindicated."],
+   contra:["CrCl ≤30"],monitor:["Creatinine clearance","Mood, suicidality"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=75ddfd10-55b2-426e-bc74-3413cd0d7c94"],
+  dosing:{
+   adult:{"Alcohol use disorder (abstinence)":D("666 mg three times a day (1998 mg/day)","1998 mg/day","1998 mg/day","No titration. CrCl 30–50: 333 mg three times a day.")},
+   peds:{},
+   older:{"Alcohol use disorder (abstinence)":D("666 mg three times a day (1998 mg/day)","1998 mg/day","1998 mg/day","Check CrCl first; 333 mg three times a day if 30–50.")}
+  }},
+ disulfiram:{ name:"Disulfiram", brand:"Antabuse", cls:"Aldehyde dehydrogenase inhibitor", grp:"sud", conds:["Substance use"],
+  mech:"Blocks aldehyde dehydrogenase, so acetaldehyde builds up after any alcohol: flushing, vomiting, palpitations, hypotension. Works only with supervised, consistent dosing; a reaction is possible up to 2 weeks after the last dose.",
+  receptors:[], rnote:"Irreversible aldehyde dehydrogenase inhibitor; no receptor targets.",
+  cyp:{sub:"Not stated", inh:"Raises phenytoin; prolongs warfarin PT", note:"Hidden alcohol counts: mouthwash, cough syrups, some sauces, hand sanitizer."},
+  burden:{sed:1},
+  ae:[["common","Drowsiness"],["common","Headache"],["common","Metallic taste, rash"],["serious","Severe or fatal hepatitis"],["serious","Disulfiram-alcohol reaction (arrhythmia, collapse); neuropathy, optic neuritis, psychosis"]],
+  boxed:{adult:DISUL, older:DISUL},
+  agenote:{peds:"Not established.",
+           adult:"Best with a supervised dosing partner. Start at least 12 h after the last drink.",
+           older:"Start at the low end."},
+  s:{preg:["caution","Caution","Safety not established."],lact:["avoid","Avoid","Label: not for nursing mothers."],hep:["caution","Caution","Hepatitis risk; check LFTs."],ren:["data","Not stated","Label gives no renal dose."],
+   contra:["Alcohol, metronidazole, or paraldehyde","Severe heart disease","Psychosis"],monitor:["LFTs at baseline and 10–14 days","Hidden alcohol exposure"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b90f8ff4-4fb3-46ab-8149-cb55f24a4044"],
+  dosing:{
+   adult:{
+    "Alcohol use disorder":D("Up to 500 mg daily × 1–2 weeks","125–500 mg/day (average 250 mg)","500 mg/day","Then maintenance; continue for months to years."),
+    "Cocaine use disorder":O("250 mg daily","250 mg/day","Not stated","Not stated in source.","RCT (Carroll 2004, n=121): less cocaine use. In methadone patients, doses below 250 mg did worse than placebo (Oliveto 2010).","https://www.aafp.org/afp/2005/0101/p163.html")},
+   peds:{},
+   older:{"Alcohol use disorder":D("125–250 mg daily","125–250 mg/day","500 mg/day","Start at the low end.")}
+  }},
+ varenicline:{ name:"Varenicline", brand:"Chantix", cls:"Nicotinic partial agonist", grp:"sud", conds:["Substance use"],
+  mech:"Partial agonist at α4β2 nicotinic receptors: eases craving and withdrawal while blocking the reward from a cigarette. Cleared unchanged by the kidneys.",
+  receptors:[], rnote:"α4β2 nicotinic partial agonist (>500× selective over other subtypes). The label gives no Ki.",
+  cyp:{sub:"None (renal, unchanged)", inh:"None", note:"No meaningful drug interactions. Quitting smoking itself can raise clozapine, olanzapine, and theophylline levels (CYP1A2 induction ends)."},
+  burden:{},
+  ae:[["common","Nausea (30%)"],["common","Insomnia, abnormal dreams"],["common","Headache"],["serious","Neuropsychiatric events (no increase in EAGLES overall)"],["serious","Seizures; CV events in established CVD"]],
+  boxed:{},
+  agenote:{peds:"Not recommended age 16 and under.",
+           adult:"Boxed warning removed in 2016. Safe in stable psychiatric illness; still monitor mood.",
+           older:"Dose by kidney function."},
+  s:{preg:["data","Limited data","No clear birth-defect signal."],lact:["caution","Caution","No data; LactMed prefers another option."],hep:["ok","No change","No adjustment."],ren:["caution","Reduce dose","CrCl <30: 0.5 mg daily, max 0.5 mg twice a day. Dialysis: 0.5 mg daily."],
+   contra:["Prior serious reaction to varenicline"],monitor:["Mood, behavior","Renal function","Clozapine or olanzapine levels after quitting"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=f0ff4f27-5185-4881-a749-c6b7a0ca5696"],
+  dosing:{
+   adult:{
+    "Smoking cessation":D("0.5 mg daily × 3 days","2 mg/day","2 mg/day","Days 4–7: 0.5 mg twice a day. Day 8 on: 1 mg twice a day. Treat 12 weeks; 12 more if quit."),
+    "Alcohol use disorder":O("0.5 mg daily × 3 days","2 mg/day","2 mg/day","Same titration as for smoking; 13 weeks.","RCT, n=200: heavy-drinking days 38% vs 48% placebo (Litten 2013).","https://pmc.ncbi.nlm.nih.gov/articles/PMC3914416")},
+   peds:{},
+   older:{"Smoking cessation":D("0.5 mg daily × 3 days","2 mg/day","2 mg/day","Same as adults; adjust for CrCl <30.")}
+  }}
+});
+/* Batch 2: diazepam, chlordiazepoxide, gabapentin. Sources: DailyMed, ASAM 2020, trials (see srcs). */
+const ASAM = "https://www.asam.org/docs/default-source/quality-science/the_asam_clinical_practice_guideline_on_alcohol-1.pdf";
+Object.assign(DRUGS, {
+ diazepam:{ name:"Diazepam", brand:"Valium", cls:"Benzodiazepine", grp:"anx", conds:["Anxiety","Substance use"], sched:"C-IV", benzo:true,
+  mech:"Positive allosteric modulator at the GABA-A benzodiazepine site. Fast onset but very long effective half-life: diazepam up to 48 h, its active metabolite nordiazepam up to 100 h, so it tapers itself.",
+  receptors:[], rnote:"Benzodiazepine-site positive modulator of GABA-A receptors. The label gives no binding constants.",
+  cyp:{sub:"3A4, 2C19 (active metabolites)", inh:"None", note:"Fluvoxamine, fluoxetine, omeprazole, cimetidine, ketoconazole prolong sedation. Inducers lower levels."},
+  burden:{sed:3},
+  ae:[["common","Drowsiness, fatigue"],["common","Ataxia, muscle weakness"],["common","Impaired memory"],["serious","Respiratory depression with opioids or alcohol"],["serious","Dependence; withdrawal seizures; accumulation in older adults and liver disease"]],
+  boxed:{peds:BENZO, adult:BENZO, older:BENZO},
+  agenote:{peds:"Not under 6 months. Oral 1–2.5 mg three or four times a day.",
+           adult:"Long half-life makes it a good choice for alcohol withdrawal and for tapering off shorter benzos, unless there's significant liver disease.",
+           older:"Beers list: avoid. Half-life lengthens about 1 h per year of age. If used: 2–2.5 mg once or twice a day."},
+  s:{preg:["caution","Caution","Late use: floppy infant, poor feeding, withdrawal."],lact:["caution","Caution","Accumulates in infants with repeated doses; another agent preferred."],hep:["avoid","Avoid if severe","Half-life 2–5× longer in cirrhosis; contraindicated if severe. Use lorazepam instead."],ren:["caution","Caution","Metabolites renally cleared."],
+   contra:["Severe hepatic insufficiency","Severe respiratory insufficiency or sleep apnea","Myasthenia gravis","Acute narrow-angle glaucoma"],monitor:["Sedation, breathing","Misuse","Taper to stop"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=554baee5-b171-4452-a50a-41a0946f956c","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7e7dd743-a87b-4ab3-b6ae-f116cd0c8b0f"],
+  dosing:{
+   adult:{
+    "Anxiety":D("2–10 mg two to four times a day","4–40 mg/day","40 mg/day (top of label range)","Dose by severity; reassess need periodically."),
+    "Alcohol withdrawal (PO)":D("10 mg three or four times in the first 24 h","Then 5 mg three or four times a day as needed","Not stated","Reduce after the first 24 h.",{grid:true}),
+    "Alcohol withdrawal (IM/IV)":D("10 mg IM or IV","5–10 mg in 3–4 h if needed","Not stated","IV slowly: at least 1 min per 5 mg.",{grid:true}),
+    "Alcohol withdrawal, front-loading":O("20 mg PO every hour","Until CIWA-Ar under 10 or sedated","Not stated","Symptom-driven: stop when CIWA-Ar <10. Fixed: 1–2 h or until sedated.","ASAM 2020: diazepam or chlordiazepoxide preferred for front-loading in severe withdrawal.",ASAM,"In primary care, send to ED if not settled after an adequate dose (e.g., 80 mg).",{grid:true}),
+    "Status epilepticus (IV)":D("5–10 mg IV","Repeat every 10–15 min","30 mg","IV preferred.",{grid:true})},
+   peds:{"Anxiety (6 months+)":D("1–2.5 mg three or four times a day","Increase gradually","Not stated","Start at the lowest dose.",{grid:true})},
+   older:{"Anxiety":D("2–2.5 mg once or twice a day","Increase gradually","Avoid if possible","Beers list: avoid.",{grid:true})}
+  }},
+ chlordiazepoxide:{ name:"Chlordiazepoxide", brand:"Librium", cls:"Benzodiazepine", grp:"anx", conds:["Anxiety","Substance use"], sched:"C-IV", benzo:true,
+  mech:"Benzodiazepine-site positive modulator of GABA-A receptors. Long half-life (24–48 h) plus long-acting metabolites give a smooth, self-tapering effect in alcohol withdrawal.",
+  receptors:[], rnote:"Benzodiazepine-site positive modulator of GABA-A receptors. The label gives no binding constants.",
+  cyp:{sub:"Hepatic (oxidation; enzymes not named in label)", inh:"None", note:"Accumulates in liver disease; lorazepam is safer there."},
+  burden:{sed:3},
+  ae:[["common","Drowsiness"],["common","Ataxia"],["common","Confusion (older adults)"],["serious","Respiratory depression with opioids or alcohol"],["serious","Dependence; withdrawal seizures; rare agranulocytosis or jaundice"]],
+  boxed:{peds:BENZO, adult:BENZO, older:BENZO},
+  agenote:{peds:"Not under 6 years.",
+           adult:"Classic alcohol-withdrawal drug. Long-acting, so it tapers itself; avoid in significant liver disease.",
+           older:"Beers list: avoid. If used: 5 mg two to four times a day."},
+  s:{preg:["caution","Caution","Late use: newborn sedation and withdrawal."],lact:["caution","Caution","No data; may accumulate; another agent preferred."],hep:["caution","Caution","Accumulates; prefer lorazepam in liver disease."],ren:["caution","Caution","Usual precautions."],
+   contra:["Hypersensitivity"],monitor:["Sedation, breathing","CBC and LFTs if prolonged","Taper to stop"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=dd5f82b0-5a56-4728-941a-c8c2a0d51cc4"],
+  dosing:{
+   adult:{
+    "Alcohol withdrawal":D("50–100 mg","Repeat as needed until agitation controlled","300 mg/day","Then reduce to maintenance and taper.",{grid:true}),
+    "Alcohol withdrawal, symptom-triggered":O("25–100 mg when CIWA-Ar ≥10","Repeat with each reassessment","Not stated","Dose only when CIWA-Ar is 10 or more.","ASAM 2020 example of symptom-triggered dosing.",ASAM,null,{grid:true}),
+    "Anxiety, mild–moderate":D("5–10 mg three or four times a day","15–40 mg/day","Not stated","Reassess periodically."),
+    "Anxiety, severe":D("20–25 mg three or four times a day","60–100 mg/day","Not stated","Reassess periodically.")},
+   peds:{"Anxiety (age 6+)":D("5 mg two to four times a day","Up to 10 mg two or three times a day","Not stated","Start at the lowest dose.",{grid:true})},
+   older:{"Anxiety":D("5 mg two to four times a day","10 mg/day or less to start","Avoid if possible","Beers list: avoid.",{grid:true})}
+  }},
+ gabapentin:{ name:"Gabapentin", brand:"Neurontin", cls:"Gabapentinoid", grp:"anx", conds:["Anxiety","Substance use"], cnsdep:true,
+  mech:"Binds the α2δ subunit of voltage-gated calcium channels, reducing excitatory neurotransmitter release. Despite the name it doesn't act on GABA receptors.",
+  receptors:[], rnote:"Binds the α2δ subunit of voltage-gated calcium channels. The label gives no binding constants.",
+  cyp:{sub:"None (renal, unchanged)", inh:"None", note:"Give at least 2 h after aluminum/magnesium antacids. Opioids: additive respiratory depression (FDA warning)."},
+  burden:{sed:2},
+  ae:[["common","Dizziness (17–28%)"],["common","Somnolence (19–21%)"],["common","Ataxia, peripheral edema"],["serious","Respiratory depression with opioids or in lung disease"],["serious","Misuse (polysubstance use); withdrawal seizures; DRESS"]],
+  boxed:{},
+  agenote:{peds:"Approved for seizures from age 3; mood and behavior effects in ages 3–12.",
+           adult:"Not controlled federally, but misused, especially with opioids. Dose by kidney function. Taper to stop.",
+           older:"Dose by CrCl. Beers: avoid combining with opioids."},
+  s:{preg:["data","Limited data","No clear malformation signal in cohorts."],lact:["ok","Acceptable","Infant dose 1–4% of maternal; watch for drowsiness."],hep:["ok","No change","Not metabolized."],ren:["caution","Reduce dose","CrCl 30–59: 400–1400 mg/day. 15–29: 200–700 mg/day. Under 15: lower still; supplement after dialysis."],
+   contra:["Hypersensitivity"],monitor:["CrCl","Sedation, breathing (opioids, lung disease)","Misuse","Mood, suicidality"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=97935fd9-1d4a-43b6-a5d9-de994591187b"],
+  dosing:{
+   adult:{
+    "Postherpetic neuralgia":D("300 mg on day 1","900–1800 mg/day","1800 mg/day","Day 2: 300 mg twice; day 3: 300 mg three times; then titrate."),
+    "Partial seizures (add-on, 12+)":D("300 mg three times a day (900 mg/day)","900–1800 mg/day","3600 mg/day","No more than 12 h between doses."),
+    "Alcohol use disorder":O("Not stated","900–1800 mg/day","1800 mg/day","Split three times a day.","RCT (Mason 2014, n=150): abstinence 17% at 1800 mg vs 4% placebo. APA 2018: option if naltrexone or acamprosate fail.","https://pubmed.ncbi.nlm.nih.gov/24190578/"),
+    "Alcohol withdrawal, mild–moderate":O("900–1200 mg/day","Taper to 600–800 mg/day over 4 days","1200 mg/day","4-day taper.","RCT vs lorazepam (Myrick 2009, n=100): similar CIWA control, less drinking and sedation. ASAM 2020 lists it for mild–moderate withdrawal.","https://facesandvoicesofrecovery.org/wp-content/uploads/Documents/A-double-blind-trial-of-gabapentin-versus-lorazepam-in-the-treatment-of-alcohol-withdrawal.pdf","Outpatient, low seizure risk only."),
+    "Social anxiety disorder":O("Not stated","900–3600 mg/day","3600 mg/day","Flexible, three times a day.","RCT (Pande 1999, n=69): better than placebo.","https://mayoclinic.elsevierpure.com/en/publications/treatment-of-social-phobia-with-gabapentin-a-placebo-controlled-s")},
+   peds:{"Partial seizures (ages 3–11)":D("10–15 mg/kg/day in 3 doses","25–40 mg/kg/day","50 mg/kg/day","Titrate over about 3 days.")},
+   older:{"Postherpetic neuralgia":D("300 mg on day 1","900–1800 mg/day (by CrCl)","1800 mg/day","Dose by CrCl.")}
+  }}
+});
+/* Batch 2: fluvoxamine, TCAs, phenelzine. Sources: DailyMed, UK SmPC, ACNP binding table (see srcs). */
+const ACNP = "https://acnp.org/g4/GN401000029/29_1.html";
+const TCAD6 = "TCA levels can rise several-fold (fluoxetine, paroxetine, bupropion). Lower the TCA dose and check a level or ECG; wait 5 weeks after fluoxetine.";
+Object.assign(DRUGS, {
+ fluvoxamine:{ name:"Fluvoxamine", brand:"Luvox", cls:"SSRI", grp:"ssri", conds:["Anxiety","Depression"], sri:true, d6inh:1, a12inh:true,
+  mech:"Selective serotonin reuptake inhibitor with little affinity for other receptors. Its clinical signature is enzyme inhibition: strong CYP1A2 and 2C19, moderate 3A4.",
+  receptors:[], rnote:"Selective SERT inhibitor; the label reports no significant affinity for H1, α, β, muscarinic, or D2 receptors (no Ki given).",
+  cyp:{sub:"2D6 (partly)", inh:"CYP1A2 strong; 2C19 strong; 3A4, 2C9 moderate", note:"Contraindicated with tizanidine, thioridazine, pimozide, alosetron. Avoid ramelteon. Theophylline: one-third the dose. Raises clozapine, olanzapine, methadone, warfarin; avoid diazepam."},
+  burden:{sero:3,sed:2,metab:1},
+  ae:[["common","Nausea (40%)"],["common","Somnolence, insomnia"],["common","Sexual dysfunction, sweating"],["serious","Serotonin syndrome"],["serious","Dangerous rises in co-prescribed drugs; hyponatremia"]],
+  boxed:{peds:SUICIDE, adult:SUICIDE, older:SUICIDE},
+  agenote:{peds:"Approved for OCD from age 8.",
+           adult:"US approval is OCD only. Check every co-prescribed drug for CYP1A2/2C19 interactions before starting.",
+           older:"Clearance about 50% lower: start low, go slow. Watch sodium."},
+  s:{preg:["ok","Acceptable","SSRI class: late-pregnancy PPHN and neonatal adaptation risk."],lact:["ok","Acceptable","In milk; most infants unaffected (label)."],hep:["caution","Reduce dose","Clearance ~30% lower; start low."],ren:["ok","No change","No accumulation at CrCl 5–45."],
+   contra:["MAOI within 14 days","Tizanidine, thioridazine, pimozide, alosetron","Linezolid or IV methylene blue"],monitor:["Suicidality, weeks 1–2","Levels or INR of interacting drugs","Na⁺ in older adults"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7ecd83ec-88f5-4f85-9cc2-9068375d8820","https://www.medicines.org.uk/emc/product/1169/smpc"],
+  dosing:{
+   adult:{
+    "OCD":D("50 mg at bedtime","Titrate to response","300 mg/day","Increase by 50 mg every 4–7 days; split doses above 100 mg/day."),
+    "Social anxiety disorder":O("Not stated","Mean ~200 mg/day in trial","Not stated","Not stated in source.","RCT (Stein 1999, n=92): 43% vs 23% responders. CR form RCT (n=300) also positive.","https://www.qxmd.com/r/10327910"),
+    "Major depressive disorder":O("50–100 mg in the evening","100 mg/day","300 mg/day","Increase gradually; split doses above 150 mg/day.","Licensed for depression in the UK (SmPC).","https://www.medicines.org.uk/emc/product/1169/smpc")},
+   peds:{"OCD (ages 8–17)":D("25 mg at bedtime","Titrate to response","200 mg/day to age 11; 300 mg/day teens","Increase by 25 mg every 4–7 days; split doses above 50 mg/day.")},
+   older:{"OCD":D("Lower than adult start","Titrate slowly","300 mg/day","Clearance halved; slow titration.")}
+  }},
+ nortriptyline:{ name:"Nortriptyline", brand:"Pamelor", cls:"TCA (secondary amine)", grp:"tca", conds:["Depression"], serox:true,
+  d6sub:TCAD6,
+  mech:"Secondary-amine TCA that favors norepinephrine over serotonin reuptake. Less anticholinergic and orthostatic than amitriptyline, with a defined therapeutic window (50–150 ng/mL).",
+  receptors:[["NET",16.5,"Inhibitor"],["SERT",130,"Inhibitor"]],
+  cyp:{sub:"CYP2D6", inh:"None", note:"2D6 inhibitors and poor metabolizers raise levels. Use plasma levels above 100 mg/day."},
+  burden:{sero:1,qtc:2,sed:2,achol:2,metab:1,cv:2},
+  ae:[["common","Dry mouth, constipation, blurred vision"],["common","Orthostasis, tachycardia"],["common","Sedation, weight change"],["serious","Conduction delay, arrhythmia"],["serious","Lethal in overdose (QRS widening)"]],
+  boxed:AD,
+  agenote:{peds:"Not approved.",
+           adult:"Check a level above 100 mg/day (target 50–150 ng/mL). Prescribe small quantities if suicide risk; a 1–2 week supply can be fatal.",
+           older:"The TCA of choice for older adults when one is needed (less anticholinergic). Label range 30–50 mg/day; check ECG."},
+  s:{preg:["data","Limited data","Safe use not established."],lact:["data","Limited data","Label: safety not established."],hep:["caution","Caution","No label adjustment; use care."],ren:["data","Not stated","Label gives no renal dose."],
+   contra:["MAOI within 14 days","Acute recovery after MI","Linezolid or IV methylene blue"],monitor:["Level 50–150 ng/mL above 100 mg/day","ECG in heart disease and older adults","Suicidality; limit quantity"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b58d473a-b19f-4d2a-b1ae-dd398d7a29e1",ACNP],
+  dosing:{
+   adult:{
+    "Depression":D("Begin low","75–100 mg/day (25 mg three or four times a day)","150 mg/day","Increase as needed; check levels above 100 mg/day."),
+    "Neuropathic pain":O("Not stated","25–150 mg/day","Not stated","Once daily or split twice daily.","NeuPSIG 2015: TCAs first-line (NNT 3.6). Sudden cardiac death risk above 100 mg/day.","https://wikimsk.org/w/img_auth.php/3/33/Neuropathic_Pain_Pharmacotherapy_-_Lancet_Finnerup_2015.pdf"),
+    "Smoking cessation":O("25 mg daily","75–100 mg/day","Not stated","Increase gradually; start 10–28 days before quit date. About 12 weeks.","US PHS 2008 tobacco guideline: second-line.","https://www.ahrq.gov/prevention/guidelines/tobacco/clinicians/presentations/2008update-full/slide154.html")},
+   peds:{},
+   older:{"Depression":D("Begin low","30–50 mg/day","Not stated","Label range for older adults; check ECG.")}
+  }},
+ amitriptyline:{ name:"Amitriptyline", brand:"Elavil", cls:"TCA (tertiary amine)", grp:"tca", conds:["Depression"], serox:true,
+  d6sub:TCAD6,
+  mech:"Tertiary-amine TCA: serotonin and norepinephrine reuptake inhibitor that also strongly blocks H1, muscarinic, and α1 receptors and sodium channels. That blockade explains its sedation, anticholinergic effects, pain relief, and overdose lethality.",
+  receptors:[["SERT",15,"Inhibitor"],["NET",100,"Inhibitor"]],
+  cyp:{sub:"CYP2D6 (also 2C19 to nortriptyline)", inh:"None", note:"2D6 inhibitors can cause abrupt toxicity. Contraindicated with cisapride."},
+  burden:{sero:2,qtc:2,sed:3,achol:3,metab:2,cv:2},
+  ae:[["common","Sedation"],["common","Dry mouth, constipation, urinary retention"],["common","Orthostasis, weight gain"],["serious","Arrhythmia, conduction delay; seizures"],["serious","Lethal in overdose (QRS ≥100 ms: give bicarbonate)"]],
+  boxed:AD,
+  agenote:{peds:"Not recommended under 12.",
+           adult:"Mostly used at low doses for pain, migraine, and sleep. Antidepressant doses are poorly tolerated and dangerous in overdose.",
+           older:"Beers list: avoid (strongly anticholinergic, sedating, orthostatic). If used for pain, start 10 mg."},
+  s:{preg:["data","Limited data","Crosses placenta; no adequate studies."],lact:["ok","Acceptable","~1% of maternal dose in milk."],hep:["caution","Caution","Use care; avoid in severe liver disease."],ren:["ok","No change","UK: usual doses."],
+   contra:["MAOI within 14 days","Acute recovery after MI","Cisapride"],monitor:["ECG if heart disease or older","Na⁺","Suicidality; limit quantity"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=705a2bae-031d-4218-82fe-4346542c0baa","https://www.medicines.org.uk/emc/product/100842/smpc",ACNP],
+  dosing:{
+   adult:{
+    "Depression (outpatient)":D("75 mg/day split, or 50–100 mg at bedtime","50–100 mg/day","150 mg/day (300 mg inpatient)","Add increments in late afternoon or at bedtime."),
+    "Neuropathic pain":O("10–25 mg in the evening","25–75 mg in the evening","Caution above 75–100 mg","Increase by 10–25 mg every 3–7 days.","NeuPSIG 2015: TCAs first-line (NNT 3.6). Licensed in the UK.","https://www.medicines.org.uk/emc/product/100842/smpc"),
+    "Migraine prevention":O("10–25 mg in the evening","25–75 mg in the evening","Caution above 75–100 mg","Increase by 10–25 mg every 3–7 days.","AAN/AHS 2012: probably effective (Level B).","https://www.aafp.org/pubs/afp/issues/2013/0415/p584.html"),
+    "Tension-type headache prevention":O("10–25 mg in the evening","25–75 mg in the evening","Caution above 75–100 mg","Increase by 10–25 mg every 3–7 days.","Licensed in the UK (SmPC).","https://www.medicines.org.uk/emc/product/100842/smpc")},
+   peds:{},
+   older:{
+    "Depression":D("10 mg three times a day + 20 mg at bedtime (50 mg/day)","Lowest effective dose","Not stated","Label dose for older adults and adolescents."),
+    "Neuropathic pain":O("10 mg in the evening","10–75 mg in the evening","75 mg/day","Increase by 10–25 mg every 3–7 days.","NeuPSIG: avoid tertiary TCAs above 75 mg/day over 65.","https://wikimsk.org/w/img_auth.php/3/33/Neuropathic_Pain_Pharmacotherapy_-_Lancet_Finnerup_2015.pdf")}
+  }},
+ clomipramine:{ name:"Clomipramine", brand:"Anafranil", cls:"TCA (serotonergic)", grp:"tca", conds:["Anxiety","Depression"], serox:true,
+  d6sub:TCAD6,
+  mech:"The most serotonergic TCA (SERT Ki ~0.3 nM), which is why it works for OCD. Its active metabolite adds norepinephrine reuptake inhibition, and it carries full TCA anticholinergic and cardiac effects.",
+  receptors:[["SERT",0.3,"Inhibitor"]],
+  cyp:{sub:"2D6, 1A2, 3A4", inh:"None", note:"Fluvoxamine (1A2) and SSRIs (2D6) raise levels; haloperidol too. Half-life 32 h (metabolite 69 h)."},
+  burden:{sero:3,qtc:2,sed:3,achol:3,metab:2,cv:2},
+  ae:[["common","Dry mouth (84%)"],["common","Somnolence, tremor, dizziness (~54%)"],["common","Ejaculation failure (42%), weight gain"],["serious","Seizures (dose-related, ~1.5% at 1 yr)"],["serious","Serotonin syndrome; lethal in overdose"]],
+  boxed:{peds:SUICIDE, adult:SUICIDE, older:SUICIDE},
+  agenote:{peds:"Approved for OCD age 10–17: max the lesser of 3 mg/kg or 200 mg/day.",
+           adult:"Usually after two SSRI trials for OCD. Seizure risk climbs above 250 mg/day.",
+           older:"Start 10 mg. Beers list: avoid tertiary TCAs."},
+  s:{preg:["caution","Caution","Neonatal withdrawal (jitteriness, seizures) reported."],lact:["data","Limited data","In milk; label: weigh nursing vs drug."],hep:["caution","Caution","Not studied."],ren:["caution","Caution","Not studied."],
+   contra:["MAOI within 14 days","Acute recovery after MI","Linezolid or IV methylene blue"],monitor:["ECG in heart disease","Seizure risk","Weight","Na⁺ in older adults"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d7cee3fa-d05c-4702-8f75-f446627bdb49","https://www.medicines.org.uk/emc/product/2550/smpc/print",ACNP],
+  dosing:{
+   adult:{
+    "OCD":D("25 mg daily","100–250 mg/day","250 mg/day","~100 mg/day by week 2 (divided, with meals); then once at bedtime, changes every 2–3 weeks."),
+    "Depression":O("10 mg daily","30–150 mg/day","250 mg/day","Increase gradually.","Licensed for depression in the UK (SmPC).","https://www.medicines.org.uk/emc/product/2550/smpc/print"),
+    "Cataplexy (with narcolepsy)":O("10 mg daily","10–75 mg/day","75 mg/day","Not stated in source.","Licensed in the UK (SmPC).","https://www.medicines.org.uk/emc/product/2550/smpc/print")},
+   peds:{"OCD (ages 10–17)":D("25 mg daily","Up to 3 mg/kg or 100 mg in weeks 1–2","Lesser of 3 mg/kg or 200 mg/day","Increase gradually, with meals.")},
+   older:{"Depression":O("10 mg daily","30–75 mg/day","Not stated","Reach target over about 10 days.","UK SmPC.","https://www.medicines.org.uk/emc/product/2550/smpc/print")}
+  }},
+ phenelzine:{ name:"Phenelzine", brand:"Nardil", cls:"MAOI", grp:"tca", conds:["Depression","Anxiety"], maoi:true,
+  mech:"Irreversible inhibitor of monoamine oxidase A and B, raising serotonin, norepinephrine, and dopamine. Blocking gut MAO lets dietary tyramine through, which causes hypertensive crisis; the effect outlasts the drug by about 2 weeks.",
+  receptors:[], rnote:"Irreversible MAO-A/B inhibitor (enzyme, not receptor).",
+  cyp:{sub:"MAO oxidation (not CYP)", inh:"MAO-A and B (irreversible)", note:"14-day washout before any serotonergic drug, bupropion, buspirone, or stimulant; 5 weeks after fluoxetine. Stop 10 days before elective surgery."},
+  burden:{sed:1,achol:1,metab:2,cv:3},
+  ae:[["common","Orthostatic hypotension"],["common","Dizziness, insomnia or sleepiness"],["common","Weight gain, edema, sexual dysfunction"],["serious","Hypertensive crisis (tyramine, sympathomimetics)"],["serious","Serotonin syndrome; hepatotoxicity"]],
+  boxed:AD,
+  agenote:{peds:"Not established.",
+           adult:"For treatment-resistant or atypical depression. Patient needs a tyramine diet sheet and a list of banned drugs (decongestants, dextromethorphan, meperidine, stimulants). Hypertensive crisis: phentolamine 5 mg IV.",
+           older:"Start at the low end; orthostasis and falls."},
+  s:{preg:["data","Limited data","Safe use not established."],lact:["data","Limited data","Safe use not established."],hep:["avoid","Contraindicated","Liver disease or abnormal LFTs."],ren:["avoid","Avoid if severe","Contraindicated in severe renal disease."],
+   contra:["Serotonergic drugs, bupropion, buspirone, stimulants, other MAOIs","Tyramine-rich foods","Meperidine, dextromethorphan","Pheochromocytoma, heart failure, liver disease"],monitor:["BP: orthostatic and hypertensive","LFTs","Diet adherence"]},
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=513a41d0-37d4-4355-8a6d-a2c643bce6fa"],
+  dosing:{
+   adult:{
+    "Depression":D("15 mg three times a day (45 mg/day)","60–90 mg/day","90 mg/day","Raise quickly to 60 mg/day; many need 4 weeks there. Then taper slowly to maintenance (as low as 15 mg daily)."),
+    "Social anxiety disorder":O("Not stated","~60–70 mg/day (trial means)","Not stated","Not stated in source.","Two RCTs (Heimberg 1998, n=133; Blanco 2010, n=128): better than placebo.","https://clinician.nejm.org/JP201004050000001")},
+   peds:{},
+   older:{"Depression":D("15 mg daily","Lowest effective dose","90 mg/day","Start at the low end.")}
+  }}
+});
+
+for(const [id,t] of [["clozapine","Clozapine levels can rise several-fold; the label advises one-third the dose with strong CYP1A2 inhibitors."],["olanzapine","Olanzapine levels rise; consider a lower dose."],["lybalvi","Olanzapine levels rise; the label advises considering a lower dose with fluvoxamine."],["duloxetine","The label says to avoid duloxetine with potent CYP1A2 inhibitors."],["propranolol","Propranolol levels may rise."]]) if(DRUGS[id]) DRUGS[id].a12sub=t;
+DRUGS.viloxazine.a12inh=true;
+for(const [id,c] of [["trazodone","Insomnia"],["mirtazapine","Insomnia"],["bupropion","Substance use"],["lorazepam","Substance use"],["carbamazepine","Substance use"],["mirtazapine","EPS / TD"],["clonazepam","EPS / TD"]]) if(!DRUGS[id].conds.includes(c)) DRUGS[id].conds.push(c);
+
 for(const id in OFF) for(const age in OFF[id]){
   const tgt = DRUGS[id].dosing[age] || (DRUGS[id].dosing[age] = {});
   for(const k in OFF[id][age]){ if(tgt[k]) throw new Error("off-label key clash: "+id+"/"+k); tgt[k]=OFF[id][age][k]; }
@@ -2536,7 +3027,7 @@ for(const id in DRUGS) if(!DRUGS[id].spec) DRUGS[id].spec="psych";
 Object.assign(DRUGS, ADRUGS);
 const AORDER = AGROUPS.flatMap(([g])=>Object.keys(ADRUGS).filter(id=>ADRUGS[id].grp===g));
 const SPECS = {
-  psych:{name:"Psychiatry", slug:"psychiatry", blurb:"Antidepressants, antipsychotics, mood stabilizers, ADHD and anxiety medications.", groups:GROUPS, order:ORDER,
+  psych:{name:"Psychiatry", slug:"psychiatry", blurb:"Antidepressants, antipsychotics, mood stabilizers, ADHD, anxiety, sleep, and addiction medications.", groups:GROUPS, order:ORDER,
          cats:CONDS, catOf:(d,c)=>d.conds.includes(c), tabs:[["dex","Drugs"],["cmp","Compare"],["reg","Regimen"]], start:"home",
          title:"Find a psychiatric medication", lede:"Dosing, safety, side effects, and receptor profiles for commonly used psychiatric drugs."},
   anes:{name:"Anesthesiology", slug:"anesthesia", blurb:"Every dose for your patient on one screen: induction, paralysis, pressors, reversal, plus crisis protocols.", groups:AGROUPS, order:AORDER,
@@ -3028,7 +3519,17 @@ function pairFlags(a,b){
   if(either("stim")&&has("Bupropion")) add("monitor","Stimulant + bupropion","Both raise BP, and bupropion lowers the seizure threshold. Common combination; check BP and keep bupropion within limits.");
   if(either("stim")&&has("Atomoxetine")) add("monitor","Stimulant + atomoxetine","Additive BP and heart-rate effects. Sometimes combined deliberately; monitor vitals.");
   if(has("Bupropion")&&has("Dextromethorphan-bupropion")) add("avoid","Duplicate bupropion","Auvelity already contains bupropion 105 mg per tablet. Stacking adds seizure risk.");
-  if(either("cnsdep")&&(either("benzo")||both("cnsdep"))) add("monitor","Additive CNS depression","Both cause sedation; the label warns about combining with other CNS depressants.");
+  const op=either("opioid");
+  if(both("opioid")) add("avoid","Two opioid agonists","Buprenorphine displaces full agonists and can precipitate withdrawal; combining also adds respiratory risk. Switch with a planned induction instead.");
+  if(either("antag")&&op) add("avoid","Naltrexone blocks opioids","Naltrexone precipitates withdrawal in anyone physically dependent on opioids and blocks their effect. Needs 7–10 opioid-free days first.");
+  if(op&&either("benzo")) add("monitor","Opioid + benzodiazepine","FDA boxed warning: profound sedation, respiratory depression, death. For OUD treatment, don't withhold buprenorphine or methadone; taper the benzo if possible and prescribe naloxone.");
+  if(op&&!either("benzo")&&either("cnsdep")) add("monitor","Opioid + sedative","Additive sedation and respiratory depression. Use the lowest doses and prescribe naloxone.");
+  if(!op&&either("cnsdep")&&(either("benzo")||both("cnsdep"))) add("monitor","Additive CNS depression","Both cause sedation; the labels warn about combining with other CNS depressants.");
+  for(const [x,y] of [[A,B],[B,A]]) if(x.maoi && y!==x && (y.sri||y.serox||y.stim||y.maoi||(y.s.contra||[]).some(c=>/MAOI/.test(c))))
+    add("avoid",`MAOI + ${y.name}`,`Contraindicated: risk of serotonin syndrome or hypertensive crisis. Allow 14 days after stopping the MAOI (5 weeks after fluoxetine before starting one).`);
+  for(const [x,y] of [[A,B],[B,A]]) if(x.a12inh && y.a12sub) add(x.name==="Viloxazine ER"&&y.name==="Duloxetine"?"avoid":"adjust",`CYP1A2 inhibition raises ${y.name.toLowerCase()}`,`${x.name} is a strong CYP1A2 inhibitor. ${y.a12sub}`);
+  if(has("Fluvoxamine")&&has("Methadone (OUD)")) add("adjust","Fluvoxamine raises methadone","Methadone label lists fluvoxamine among inhibitors that can raise levels to overdose. Watch sedation and QTc; adjust when starting or stopping.");
+  if(has("Fluvoxamine")&&has("Diazepam")) add("monitor","Fluvoxamine prolongs diazepam","Diazepam label: fluvoxamine prolongs sedation (CYP2C19/3A4).");
   for(const [x,y] of [[A,B],[B,A]]) if(x.name==="Carbamazepine" && y.name!=="Carbamazepine" && /3A4|UGT|glucuron/i.test(y.cyp.sub))
     add("adjust",`Carbamazepine lowers ${y.name.toLowerCase()}`,`Carbamazepine is a strong enzyme inducer (CYP3A4 and others). ${y.name} levels may fall; reassess dose over 3–5 weeks and when carbamazepine stops.`);
   if(has("Carbamazepine")&&has("Lithium")) add("monitor","Carbamazepine + lithium","Neurotoxicity has been reported with the combination (label).");
