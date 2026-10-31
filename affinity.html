@@ -112,16 +112,17 @@ ul.plain{margin:0;padding-left:18px}
 ul.plain li{margin:2px 0}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .tag{font-size:12px;border:1px solid var(--line);padding:2px 9px;border-radius:999px;background:var(--surface-2)}
-:root{--g-ssri:#138a7a;--g-snri:#2a6fc9;--g-otherad:#b0740a;--g-ap:#7552c4;--g-ms:#c0582a;--g-adhd:#bd3b86;--g-anx:#5b7a14;--g-tca:#8a5a2b;--g-sleep:#3d4fa8;--g-sud:#a8323e;--g-eps:#4f7f86;--g-induction:#2a6fc9;--g-opioid:#7552c4;--g-nmb:#c0582a;--g-reversal:#138a7a;--g-pressor:#bd3b86;--g-local:#b0740a;--g-inhaled:#4b6fa8;--g-other:#5b7a14;
+:root{--g-ssri:#138a7a;--g-snri:#2a6fc9;--g-otherad:#b0740a;--g-ap:#7552c4;--g-ms:#c0582a;--g-adhd:#bd3b86;--g-anx:#5b7a14;--g-analgesic:#7552c4;--g-antiemetic:#138a7a;--g-rescue:#b9262a;--g-tca:#8a5a2b;--g-sleep:#3d4fa8;--g-sud:#a8323e;--g-eps:#4f7f86;--g-induction:#2a6fc9;--g-opioid:#7552c4;--g-nmb:#c0582a;--g-reversal:#138a7a;--g-pressor:#bd3b86;--g-local:#b0740a;--g-inhaled:#4b6fa8;--g-other:#5b7a14;
   --p0:#2a6fc9;--p1:#d08a12;--p2:#8a4fd1;--p3:#13937f;--p4:#c43f8e;--p5:#6b7a12;--p6:#c4562a;--p7:#5b6676}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--g-ssri:#3cc2ae;--g-snri:#5c9ff0;--g-otherad:#e8a93a;--g-ap:#a184ec;--g-ms:#ef8a5a;--g-adhd:#e46cb0;--g-anx:#9fc04a;--g-tca:#d29a62;--g-sleep:#8e9cf0;--g-sud:#ee7a85;--g-eps:#7fc1c9;--g-induction:#5c9ff0;--g-opioid:#a184ec;--g-nmb:#ef8a5a;--g-reversal:#3cc2ae;--g-pressor:#e46cb0;--g-local:#e8a93a;--g-inhaled:#8fb0e6;--g-other:#9fc04a;
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--g-ssri:#3cc2ae;--g-snri:#5c9ff0;--g-otherad:#e8a93a;--g-ap:#a184ec;--g-ms:#ef8a5a;--g-adhd:#e46cb0;--g-anx:#9fc04a;--g-analgesic:#a184ec;--g-antiemetic:#3cc2ae;--g-rescue:#f0676a;--g-tca:#d29a62;--g-sleep:#8e9cf0;--g-sud:#ee7a85;--g-eps:#7fc1c9;--g-induction:#5c9ff0;--g-opioid:#a184ec;--g-nmb:#ef8a5a;--g-reversal:#3cc2ae;--g-pressor:#e46cb0;--g-local:#e8a93a;--g-inhaled:#8fb0e6;--g-other:#9fc04a;
   --p0:#5c9ff0;--p1:#e8a93a;--p2:#b48af0;--p3:#3cc2ae;--p4:#e46cb0;--p5:#b5c24a;--p6:#ef8a5a;--p7:#9aa6b4}}
-:root[data-theme="dark"]{--g-ssri:#3cc2ae;--g-snri:#5c9ff0;--g-otherad:#e8a93a;--g-ap:#a184ec;--g-ms:#ef8a5a;--g-adhd:#e46cb0;--g-anx:#9fc04a;--g-tca:#d29a62;--g-sleep:#8e9cf0;--g-sud:#ee7a85;--g-eps:#7fc1c9;--g-induction:#5c9ff0;--g-opioid:#a184ec;--g-nmb:#ef8a5a;--g-reversal:#3cc2ae;--g-pressor:#e46cb0;--g-local:#e8a93a;--g-inhaled:#8fb0e6;--g-other:#9fc04a;
+:root[data-theme="dark"]{--g-ssri:#3cc2ae;--g-snri:#5c9ff0;--g-otherad:#e8a93a;--g-ap:#a184ec;--g-ms:#ef8a5a;--g-adhd:#e46cb0;--g-anx:#9fc04a;--g-analgesic:#a184ec;--g-antiemetic:#3cc2ae;--g-rescue:#f0676a;--g-tca:#d29a62;--g-sleep:#8e9cf0;--g-sud:#ee7a85;--g-eps:#7fc1c9;--g-induction:#5c9ff0;--g-opioid:#a184ec;--g-nmb:#ef8a5a;--g-reversal:#3cc2ae;--g-pressor:#e46cb0;--g-local:#e8a93a;--g-inhaled:#8fb0e6;--g-other:#9fc04a;
   --p0:#5c9ff0;--p1:#e8a93a;--p2:#b48af0;--p3:#3cc2ae;--p4:#e46cb0;--p5:#b5c24a;--p6:#ef8a5a;--p7:#9aa6b4}
 .rail{max-height:calc(100vh - 96px);overflow-y:auto;padding-bottom:12px}
 .conds{display:flex;flex-wrap:wrap;gap:4px}
 .cond{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px;font-size:12px;cursor:pointer}
 .cond[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink);font-weight:600}
+.grp-s{font-size:11px;color:var(--muted);font-weight:600;padding:6px 10px 2px 18px;flex-basis:100%;font-style:italic}
 .grp-h{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;padding:10px 10px 2px;flex-basis:100%}
 .chip.ctrl{background:color-mix(in srgb,var(--sev-adjust) 14%,transparent);color:var(--sev-adjust)}
 .pick .rm{border:0;background:transparent;cursor:pointer;font-size:16px;line-height:1;padding:0 0 0 4px;color:var(--muted)}
@@ -287,6 +288,9 @@ button.concbtn:hover{border-color:var(--ink);color:var(--ink)}
 .sr:hover{background:var(--surface)}
 .sr[aria-expanded="true"]{border-bottom-color:transparent;background:var(--surface)}
 .sr-n{font-weight:600;font-size:15px;min-width:0}
+.qtrow{font-size:13.5px}.qtrow b.lv-avoid{color:var(--sev-avoid)}.qtrow b.lv-caution{color:var(--sev-adjust)}.qtrow a{color:inherit}
+.qtalso{margin-top:4px;color:var(--muted);font-size:12.5px}.qtalso .goto-n{font-size:12.5px}
+.httag.qt{color:var(--sev-avoid);background:color-mix(in srgb,var(--sev-avoid) 12%,transparent)}
 .httag{display:inline-block;font-size:11px;font-weight:700;color:var(--sev-adjust);background:color-mix(in srgb,var(--sev-adjust) 14%,transparent);border-radius:999px;padding:1px 7px;vertical-align:1px;white-space:nowrap}
 .sr-u{font-weight:400;font-size:13px;color:var(--muted)}
 .sr-d{font-weight:700;font-size:15px;text-align:right;white-space:nowrap}
@@ -2405,7 +2409,7 @@ const CALC = (() => {
 
 
 const ADRUGS = {
- propofol:{ name:"Propofol", brand:"Diprivan", cls:"Sedative-hypnotic", grp:"induction", mh:false,
+ propofol:{ name:"Propofol", brand:"Diprivan", cls:"Sedative-hypnotic", grp:"induction", sub:"IV", mh:false,
   basisNote:"Induction doses use lean body weight, per Ingrande & Lemmens (BJA 2010) as summarized by WikEM; the label gives per-kg doses without obesity guidance. Infusions use actual weight here. Verify this convention locally.",
   doses:[
    {use:"Induction, healthy adult <65 y", pop:"adult", route:"IV", lo:2, hi:2.5, unit:"mg/kg", basis:"LBW", sheet:true, how:"Titrate until induction onset, by clinical response.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d1ae9e26-ffd6-43df-bbd6-869cdede6afe"},
@@ -2428,7 +2432,7 @@ const ADRUGS = {
   reversal:null,
   mech:"Positive modulator of GABA-A receptors; lipid emulsion formulation.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d1ae9e26-ffd6-43df-bbd6-869cdede6afe","https://www.accessdata.fda.gov/drugsatfda_docs/Label/2022/019627s069lbl.pdf","https://wikem.org/wiki/The_Obese_Patient"]},
- etomidate:{ name:"Etomidate", brand:"Amidate", cls:"Sedative-hypnotic", grp:"induction", mh:false,
+ etomidate:{ name:"Etomidate", brand:"Amidate", cls:"Sedative-hypnotic", grp:"induction", sub:"IV", mh:false,
   basisNote:"Lean body weight, per Ingrande & Lemmens (BJA 2010) as summarized by WikEM; the label has no obesity guidance.",
   doses:[
    {use:"Induction, usual dose", pop:"adult", route:"IV", lo:0.3, hi:0.3, unit:"mg/kg", basis:"LBW", sheet:true, how:"Inject over 30–60 seconds. Label range 0.2–0.6 mg/kg; applies to adults and children over 10.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b7ed5bf8-ba75-44dc-8f81-96b4ad5766be"},
@@ -2442,7 +2446,7 @@ const ADRUGS = {
   reversal:null,
   mech:"Positive modulator of GABA-A receptors; inhibits 11-β-hydroxylase (adrenal suppression).",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b7ed5bf8-ba75-44dc-8f81-96b4ad5766be","https://www.accessdata.fda.gov/drugsatfda_docs/label/2017/018227s032lbl.pdf","https://wikem.org/wiki/The_Obese_Patient"]},
- ketamine:{ name:"Ketamine", brand:"Ketalar", cls:"Dissociative anesthetic", grp:"induction", mh:false,
+ ketamine:{ name:"Ketamine", brand:"Ketalar", cls:"Dissociative anesthetic", grp:"induction", sub:"IV", also:["analgesic:Adjuncts"], mh:false,
   basisNote:"Actual body weight used here; neither the label nor the sources reviewed give obesity guidance.",
   doses:[
    {use:"Induction", pop:"adult", route:"IV", lo:1, hi:4.5, unit:"mg/kg", basis:"TBW", sheet:true, how:"Give slowly over 60 seconds. An average 2 mg/kg gives 5–10 minutes of surgical anesthesia.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=14e8f864-8b8a-4e7e-8439-e510d3107063"},
@@ -2458,7 +2462,7 @@ const ADRUGS = {
   reversal:null,
   mech:"NMDA receptor antagonist producing dissociative anesthesia; sympathomimetic.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=14e8f864-8b8a-4e7e-8439-e510d3107063","https://www.ncbi.nlm.nih.gov/books/NBK470357/"]},
- midazolam:{ name:"Midazolam", brand:"Generic (formerly Versed)", cls:"Benzodiazepine (C-IV)", grp:"induction", mh:false,
+ midazolam:{ name:"Midazolam", brand:"Generic (formerly Versed)", cls:"Benzodiazepine (C-IV)", grp:"induction", sub:"IV", mh:false,
   basisNote:"First dose on actual body weight; later doses on ideal body weight (WikEM, citing Ingrande & Lemmens). Volume of distribution and half-life rise in obesity (label).",
   doses:[
    {use:"Preop sedation, adult <60 y", pop:"adult", route:"IM", lo:0.07, hi:0.08, unit:"mg/kg", basis:"TBW", sheet:true, how:"About 5 mg, up to 1 h before surgery.", src:"https://www.pfizermedical.com/midazolam/dosage-admin"},
@@ -2480,7 +2484,7 @@ const ADRUGS = {
   reversal:{text:"Flumazenil", id:"flumazenil"},
   mech:"Benzodiazepine-site positive modulator of GABA-A receptors.",
   srcs:["https://www.pfizermedical.com/midazolam/dosage-admin","https://www.pfizermedical.com/midazolam/boxed-warning","https://wikem.org/wiki/The_Obese_Patient"]},
- dexmedetomidine:{ name:"Dexmedetomidine", brand:"Precedex", cls:"Alpha-2 agonist", grp:"induction", mh:false,
+ dexmedetomidine:{ name:"Dexmedetomidine", brand:"Precedex", cls:"Alpha-2 agonist", grp:"induction", sub:"IV", also:["analgesic:Adjuncts"], mh:false,
   basisNote:"Per-kg dosing on actual body weight; no obesity guidance in the label.",
   doses:[
    {use:"Loading dose", pop:"adult", route:"IV", lo:1, hi:1, unit:"mcg/kg", basis:"TBW", sheet:true, how:"Over 10 minutes. Use 0.5 mcg/kg for less invasive procedures or patients over 65.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4419162d-81d4-49bd-96de-1729440bdb74"},
@@ -2498,7 +2502,7 @@ const ADRUGS = {
   reversal:null,
   mech:"Selective alpha-2 agonist that reduces sympathetic outflow from the locus coeruleus.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4419162d-81d4-49bd-96de-1729440bdb74","https://www.ncbi.nlm.nih.gov/books/NBK513303/"]},
- fentanyl:{ name:"Fentanyl", brand:"Sublimaze", cls:"Opioid agonist (C-II)", grp:"opioid", mh:false,
+ fentanyl:{ name:"Fentanyl", brand:"Sublimaze", cls:"Opioid agonist (C-II)", grp:"analgesic", sub:"Opioids", mh:false,
   basisNote:"The label doses per kg but doesn't say which weight; actual body weight is used here by default.",
   doses:[
    {use:"Induction adjunct bolus", pop:"adult", route:"IV", lo:0.5, hi:2, unit:"mcg/kg", basis:"TBW", sheet:true, how:"Per dose (StatPearls).", src:"https://www.ncbi.nlm.nih.gov/books/NBK459275/"},
@@ -2519,7 +2523,7 @@ const ADRUGS = {
   reversal:{text:"Naloxone", id:"naloxone"},
   mech:"Potent mu-opioid receptor agonist with fast onset because it is highly lipid-soluble.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=bfa8018a-4cbc-434b-e09e-782872b0340a","https://www.ncbi.nlm.nih.gov/books/NBK459275/"]},
- remifentanil:{ name:"Remifentanil", brand:"Ultiva", cls:"Opioid agonist (C-II)", grp:"opioid", mh:false,
+ remifentanil:{ name:"Remifentanil", brand:"Ultiva", cls:"Opioid agonist (C-II)", grp:"analgesic", sub:"Opioids", mh:false,
   basisNote:"Label: base the starting dose on ideal body weight when actual weight is more than 30% above it; otherwise use actual weight. Add height and sex to apply this rule.",
   doses:[
    {use:"Induction with a hypnotic or volatile", pop:"adult", route:"IV", lo:0.5, hi:1, unit:"mcg/kg/min", basis:"IBW30", sheet:true, how:"If intubating within 8 min of starting, a 1 mcg/kg bolus over 30–60 s may be given first.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"},
@@ -2539,7 +2543,7 @@ const ADRUGS = {
   reversal:{text:"Stop the infusion (offset 5–10 min); naloxone if needed", id:"naloxone"},
   mech:"Ultra-short-acting mu-opioid agonist broken down by nonspecific esterases.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"]},
- hydromorphone:{ name:"Hydromorphone", brand:"Dilaudid", cls:"Opioid agonist (C-II)", grp:"opioid", mh:false,
+ hydromorphone:{ name:"Hydromorphone", brand:"Dilaudid", cls:"Opioid agonist (C-II)", grp:"analgesic", sub:"Opioids", mh:false,
   basisNote:"Fixed mg doses, not weight-based (label).",
   doses:[
    {use:"Pain, opioid-naive", pop:"adult", route:"IV", lo:0.2, hi:1, unit:"mg", sheet:true, how:"Every 2–3 h, injected slowly over at least 2–3 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9eebd88a-5632-460f-b7b6-26c8a180540d"},
@@ -2555,7 +2559,7 @@ const ADRUGS = {
   reversal:{text:"Naloxone", id:"naloxone"},
   mech:"Mu-opioid receptor agonist about 5–7 times as potent as morphine.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9eebd88a-5632-460f-b7b6-26c8a180540d","https://novascotia.ca/dhw/ehs/documents/medications/EHS-Hydromorphone.pdf"]},
- morphine:{ name:"Morphine", brand:"Generic", cls:"Opioid agonist (C-II)", grp:"opioid", mh:false,
+ morphine:{ name:"Morphine", brand:"Generic", cls:"Opioid agonist (C-II)", grp:"analgesic", sub:"Opioids", mh:false,
   basisNote:"The label doses per kg without naming a weight type; actual body weight is used here.",
   doses:[
    {use:"Pain", pop:"adult", route:"IV", lo:0.1, hi:0.2, unit:"mg/kg", basis:"TBW", sheet:true, how:"Every 4 h as needed; inject slowly. Use the lowest effective dose.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=1f53de80-efc8-4930-b3e3-fba0d026af05"},
@@ -2571,7 +2575,7 @@ const ADRUGS = {
   reversal:{text:"Naloxone", id:"naloxone"},
   mech:"Prototype mu-opioid receptor agonist.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=1f53de80-efc8-4930-b3e3-fba0d026af05","https://www.ncbi.nlm.nih.gov/books/NBK526115/"]},
- naloxone:{ name:"Naloxone", brand:"Narcan", cls:"Opioid antagonist", grp:"reversal", mh:false,
+ naloxone:{ name:"Naloxone", brand:"Narcan", cls:"Opioid antagonist", grp:"reversal", sub:"Opioid & benzodiazepine", mh:false,
   basisNote:"Adult doses are fixed mg; pediatric overdose doses are per kg (label).",
   doses:[
    {use:"Postoperative opioid respiratory depression", pop:"adult", route:"IV", lo:0.1, hi:0.2, unit:"mg", sheet:true, how:"Increments every 2–3 min to restore breathing without losing analgesia. Repeat doses may be needed every 1–2 h.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8535cc84-ad4a-4d67-8480-fb5a2e3406f8"},
@@ -2588,7 +2592,7 @@ const ADRUGS = {
   reversal:null,
   mech:"Competitive mu-opioid receptor antagonist.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8535cc84-ad4a-4d67-8480-fb5a2e3406f8","https://www.ncbi.nlm.nih.gov/books/NBK441910/"]},
- flumazenil:{ name:"Flumazenil", brand:"Romazicon", cls:"Benzodiazepine antagonist", grp:"reversal", mh:false,
+ flumazenil:{ name:"Flumazenil", brand:"Romazicon", cls:"Benzodiazepine antagonist", grp:"reversal", sub:"Opioid & benzodiazepine", mh:false,
   basisNote:"Adult doses are fixed mg; pediatric doses are per kg (label).",
   doses:[
    {use:"Reversal of sedation, first dose", pop:"adult", route:"IV", lo:0.2, hi:0.2, unit:"mg", sheet:true, how:"Over 15 s. After 45 s, may give 0.2 mg more, repeating every 60 s up to 4 more times. Max 1 mg total; most respond to 0.6–1 mg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a72d9fc1-121c-455d-93a9-002378c9968f"},
@@ -2604,7 +2608,7 @@ const ADRUGS = {
   reversal:null,
   mech:"Competitive antagonist at the benzodiazepine site of GABA-A receptors.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a72d9fc1-121c-455d-93a9-002378c9968f"]},
- succinylcholine:{ name:"Succinylcholine", brand:"Generic (Anectine, Quelicin)", cls:"Depolarizing NMB", grp:"nmb", mh:true,
+ succinylcholine:{ name:"Succinylcholine", brand:"Generic (Anectine, Quelicin)", cls:"Depolarizing NMB", grp:"nmb", sub:"Depolarizing", mh:true,
   basisNote:"Actual body weight, including in obesity (StatPearls); the label doesn't specify. Children may need more than weight-based dosing predicts (label).",
   doses:[
    {use:"Intubation, average dose", pop:"adult", route:"IV", lo:0.6, hi:0.6, unit:"mg/kg", basis:"TBW", how:"Label range 0.3–1.1 mg/kg.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=488e1689-84d4-4f96-ac85-fa0cbc661cb6"},
@@ -2624,7 +2628,7 @@ const ADRUGS = {
   reversal:{text:"None; recovers spontaneously via plasma cholinesterase"},
   mech:"Depolarizes the motor end plate by acting at nicotinic acetylcholine receptors, causing fasciculations followed by paralysis.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=488e1689-84d4-4f96-ac85-fa0cbc661cb6","https://www.statpearls.com/point-of-care/20362"]},
- rocuronium:{ name:"Rocuronium", brand:"Generic (Zemuron)", cls:"Nondepolarizing NMB (aminosteroid)", grp:"nmb", mh:false,
+ rocuronium:{ name:"Rocuronium", brand:"Generic (Zemuron)", cls:"Nondepolarizing NMB (aminosteroid)", grp:"nmb", sub:"Nondepolarizing", mh:false,
   basisNote:"The label says to dose obese patients on actual body weight. Ideal-body-weight dosing is common in practice but isn't label-supported.",
   doses:[
    {use:"Intubation, standard", pop:"adult", route:"IV", lo:0.6, hi:0.6, unit:"mg/kg", basis:"TBW", sheet:true, how:"0.45 mg/kg may also be used.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c96726ef-f1fa-4ebb-ba33-3479c3902a8e"},
@@ -2642,7 +2646,7 @@ const ADRUGS = {
   reversal:{text:"Sugammadex", id:"sugammadex"},
   mech:"Competitive antagonist at nicotinic acetylcholine receptors at the motor end plate.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c96726ef-f1fa-4ebb-ba33-3479c3902a8e","https://www.statpearls.com/point-of-care/43329","https://pmc.ncbi.nlm.nih.gov/articles/PMC10777192"]},
- vecuronium:{ name:"Vecuronium", brand:"Generic", cls:"Nondepolarizing NMB (aminosteroid)", grp:"nmb", mh:false,
+ vecuronium:{ name:"Vecuronium", brand:"Generic", cls:"Nondepolarizing NMB (aminosteroid)", grp:"nmb", sub:"Nondepolarizing", mh:false,
   basisNote:"Label gives per-kg doses without obesity guidance; actual body weight used here.",
   doses:[
    {use:"Intubation, standard", pop:"adult", route:"IV", lo:0.08, hi:0.1, unit:"mg/kg", basis:"TBW", sheet:true, how:"Good intubating conditions in 2.5–3 minutes.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=96e69586-e9af-4b07-990f-12d93faa7edd"},
@@ -2658,7 +2662,7 @@ const ADRUGS = {
   reversal:{text:"Sugammadex", id:"sugammadex"},
   mech:"Competitive antagonist at nicotinic acetylcholine receptors at the motor end plate.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=96e69586-e9af-4b07-990f-12d93faa7edd"]},
- cisatracurium:{ name:"Cisatracurium", brand:"Generic (Nimbex)", cls:"Nondepolarizing NMB (benzylisoquinolinium)", grp:"nmb", mh:false,
+ cisatracurium:{ name:"Cisatracurium", brand:"Generic (Nimbex)", cls:"Nondepolarizing NMB (benzylisoquinolinium)", grp:"nmb", sub:"Nondepolarizing", mh:false,
   basisNote:"Label gives per-kg doses without obesity guidance; actual body weight used here.",
   doses:[
    {use:"Intubation", pop:"adult", route:"IV", lo:0.15, hi:0.2, unit:"mg/kg", basis:"TBW", sheet:true, how:"Good intubating conditions at 1.5–2 minutes.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67908e20-044d-454d-9c51-bf106e817bd0"},
@@ -2676,7 +2680,7 @@ const ADRUGS = {
   reversal:{text:"Neostigmine + glycopyrrolate", id:"neostigmine"},
   mech:"Competitive antagonist at nicotinic receptors; degraded by Hofmann elimination in plasma.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=67908e20-044d-454d-9c51-bf106e817bd0","https://www.apsf.org/in-the-literature/2023-american-society-of-anesthesiologists-practice-guidelines/"]},
- sugammadex:{ name:"Sugammadex", brand:"Bridion", cls:"Selective relaxant binding agent", grp:"reversal", mh:false,
+ sugammadex:{ name:"Sugammadex", brand:"Bridion", cls:"Selective relaxant binding agent", grp:"reversal", sub:"Neuromuscular blockade", mh:false,
   basisNote:"Actual body weight per label; dosing on ideal weight slowed recovery in morbid obesity.",
   doses:[
    {use:"Moderate block (T2 has reappeared)", pop:"adult", route:"IV", lo:2, hi:2, unit:"mg/kg", basis:"TBW", sheet:true, how:"After rocuronium or vecuronium. Also labeled from birth.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=5171d883-fe8f-482c-97ab-40b00975b64a"},
@@ -2693,7 +2697,7 @@ const ADRUGS = {
   reversal:null,
   mech:"A modified gamma-cyclodextrin that encapsulates rocuronium or vecuronium, removing it from the receptor.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=5171d883-fe8f-482c-97ab-40b00975b64a","https://www.apsf.org/in-the-literature/2023-american-society-of-anesthesiologists-practice-guidelines/"]},
- neostigmine:{ name:"Neostigmine", brand:"Bloxiverz", cls:"Cholinesterase inhibitor", grp:"reversal", mh:false,
+ neostigmine:{ name:"Neostigmine", brand:"Bloxiverz", cls:"Cholinesterase inhibitor", grp:"reversal", sub:"Neuromuscular blockade", mh:false,
   basisNote:"Per-kg dose with a 5 mg absolute cap (label).",
   doses:[
    {use:"Reversal: shorter-acting NMB (e.g., rocuronium), good recovery", pop:"adult", route:"IV", lo:0.03, hi:0.03, unit:"mg/kg", basis:"TBW", cap:5, sheet:true, how:"Slow IV over at least 1 min. Requires first twitch ≥10% of baseline. Give glycopyrrolate 0.2 mg per 1 mg neostigmine before or with it.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=761d8917-27da-4a0c-9acc-98688cbc1d46"},
@@ -2707,7 +2711,7 @@ const ADRUGS = {
   reversal:null,
   mech:"Inhibits acetylcholinesterase, raising acetylcholine at the end plate to outcompete nondepolarizing blockers.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=761d8917-27da-4a0c-9acc-98688cbc1d46","https://www.apsf.org/in-the-literature/2023-american-society-of-anesthesiologists-practice-guidelines/"]},
- glycopyrrolate:{ name:"Glycopyrrolate", brand:"Generic (Robinul)", cls:"Anticholinergic", grp:"reversal", mh:false,
+ glycopyrrolate:{ name:"Glycopyrrolate", brand:"Generic (Robinul)", cls:"Anticholinergic", grp:"reversal", sub:"Neuromuscular blockade", mh:false,
   basisNote:"Fixed adult intraoperative dose; per-kg for premedication and children (label).",
   doses:[
    {use:"With neostigmine for reversal", pop:"adult", route:"IV", lo:0.2, hi:0.2, unit:"mg", how:"0.2 mg for every 1 mg of neostigmine, given before or with it.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=685aaf64-1a64-42f9-a96f-4764d650c26f"},
@@ -2853,7 +2857,7 @@ const ADRUGS = {
   reversal:{text:"Lipid emulsion 20% for LAST", id:"lipid"},
   mech:"Long-acting sodium channel blocker; the pure S-enantiomer, with less cardiotoxicity than bupivacaine.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=56dfabf7-f7a8-4601-b17a-cb16fb995b0f","https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"]},
- sevoflurane:{ name:"Sevoflurane", brand:"Ultane", cls:"Volatile anesthetic", grp:"inhaled", mh:true,
+ sevoflurane:{ name:"Sevoflurane", brand:"Ultane", cls:"Volatile anesthetic", grp:"induction", sub:"Inhaled", mh:true,
   basisNote:"Dosed by inspired concentration, not weight.",
   doses:[{use:"Maintenance", pop:"adult", route:"Inhaled", lo:0.5, hi:3, unit:"%", how:"With or without nitrous oxide.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4c6e76bc-c964-4955-e0a3-511d3386a9cc"}],
   mac:"In oxygen: 2.6% at 25 y, 2.1% at 40 y, 1.7% at 60 y, 1.4% at 80 y. In 65% nitrous oxide: 1.4%, 1.1%, 0.9%, 0.7%. Children in oxygen: 3.3% (0–1 mo) to 2.5% (3–12 y). Blood:gas coefficient 0.63–0.69.",
@@ -2866,7 +2870,7 @@ const ADRUGS = {
   reversal:null,
   mech:"Halogenated ether that enhances GABA-A and glycine receptors and inhibits NMDA and other excitatory channels.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4c6e76bc-c964-4955-e0a3-511d3386a9cc"]},
- desflurane:{ name:"Desflurane", brand:"Suprane", cls:"Volatile anesthetic", grp:"inhaled", mh:true,
+ desflurane:{ name:"Desflurane", brand:"Suprane", cls:"Volatile anesthetic", grp:"induction", sub:"Inhaled", mh:true,
   basisNote:"Dosed by inspired concentration, not weight.",
   doses:[],
   mac:"In oxygen: 7.3% at 25 y, 6.0% at 45 y, 5.2% at 70 y. In 60% nitrous oxide: 4.0%, 2.8%, 1.7%. Children peak 10.0% at 9 months. Blood:gas coefficient 0.42, the lowest of the volatiles.",
@@ -2879,7 +2883,7 @@ const ADRUGS = {
   reversal:null,
   mech:"Halogenated ether with very low blood solubility, giving fast onset and offset.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7f977eb6-c7c4-4dc5-ab3b-07414dbe5da5"]},
- isoflurane:{ name:"Isoflurane", brand:"Forane", cls:"Volatile anesthetic", grp:"inhaled", mh:true,
+ isoflurane:{ name:"Isoflurane", brand:"Forane", cls:"Volatile anesthetic", grp:"induction", sub:"Inhaled", mh:true,
   basisNote:"Dosed by inspired concentration, not weight.",
   doses:[
    {use:"Induction", pop:"adult", route:"Inhaled", lo:1.5, hi:3, unit:"%", how:"Surgical anesthesia in 7–10 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3d30eb8d-a62e-475f-926b-78ba63bee9c8"},
@@ -2894,7 +2898,7 @@ const ADRUGS = {
   reversal:null,
   mech:"Halogenated ether volatile anesthetic.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3d30eb8d-a62e-475f-926b-78ba63bee9c8"]},
- nitrous:{ name:"Nitrous oxide", brand:"N₂O", cls:"Inhaled anesthetic gas", grp:"inhaled", mh:false,
+ nitrous:{ name:"Nitrous oxide", brand:"N₂O", cls:"Inhaled anesthetic gas", grp:"induction", sub:"Inhaled", mh:false,
   basisNote:"Dosed by inspired concentration, not weight.",
   doses:[],
   mac:"104% (can't produce anesthesia alone at atmospheric pressure). Blood:gas coefficient 0.47.",
@@ -2907,7 +2911,7 @@ const ADRUGS = {
   reversal:null,
   mech:"NMDA receptor antagonist gas with analgesic properties.",
   srcs:["https://www.ncbi.nlm.nih.gov/books/NBK532922/","https://www.openanesthesia.org/nitrous-oxide/"]},
- ondansetron:{ name:"Ondansetron", brand:"Zofran", cls:"5-HT3 antagonist", grp:"other", mh:false,
+ ondansetron:{ name:"Ondansetron", brand:"Zofran", cls:"5-HT3 antagonist", grp:"antiemetic", sub:"5-HT3 antagonists", mh:false,
   basisNote:"Children ≤40 kg are dosed per kg on actual body weight; adults get a fixed dose.",
   doses:[
    {use:"PONV prevention", pop:"adult", route:"IV", lo:4, hi:4, unit:"mg", sheet:true, how:"Undiluted over at least 30 s (preferably 2–5 min). The label says immediately before induction.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=70437694-0341-4f3b-824c-06843403443f"},
@@ -2922,7 +2926,7 @@ const ADRUGS = {
   reversal:null,
   mech:"Blocks 5-HT3 receptors in the chemoreceptor trigger zone and gut vagal afferents.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=70437694-0341-4f3b-824c-06843403443f","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
- dexamethasone:{ name:"Dexamethasone", brand:"Generic", cls:"Corticosteroid", grp:"other", mh:false,
+ dexamethasone:{ name:"Dexamethasone", brand:"Generic", cls:"Corticosteroid", grp:"antiemetic", sub:"Corticosteroid", mh:false,
   basisNote:"Fixed mg dose for PONV.",
   doses:[{use:"PONV prophylaxis (off-label)", pop:"adult", route:"IV", lo:4, hi:8, unit:"mg", sheet:true, how:"Single intraoperative dose; 8 mg had the best antiemetic and analgesic effect (Fifth PONV Consensus, 2025).", src:"https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"}],
   time:{text:"Timing data not stated in the label."},
@@ -2934,7 +2938,7 @@ const ADRUGS = {
   reversal:null,
   mech:"Glucocorticoid; its antiemetic mechanism isn't fully understood.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ce25183b-cd67-4997-8de9-df59b750883b","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
- dantrolene:{ name:"Dantrolene", brand:"Ryanodex; Dantrium IV; Revonto", cls:"Ryanodine receptor antagonist", grp:"other", mh:false,
+ dantrolene:{ name:"Dantrolene", brand:"Ryanodex; Dantrium IV; Revonto", cls:"Ryanodine receptor antagonist", grp:"rescue", mh:false,
   basisNote:"mg/kg on actual body weight; neither the labels nor MHAUS specify actual vs ideal.",
   doses:[
    {use:"Malignant hyperthermia, initial dose (MHAUS)", pop:"adult", route:"IV", lo:2.5, hi:2.5, unit:"mg/kg", basis:"TBW", how:"Rapidly through a large-bore IV. Repeat until ETCO₂, rigidity, and heart rate improve. Labels cap the cumulative dose at 10 mg/kg; MHAUS notes more may be needed — consider other diagnoses if no response.", src:"https://www.mhaus.org/healthcare-professionals/managing-a-crisis/"},
@@ -2949,7 +2953,7 @@ const ADRUGS = {
   reversal:null,
   mech:"Blocks ryanodine receptor calcium release in skeletal muscle.",
   srcs:["https://www.mhaus.org/healthcare-professionals/managing-a-crisis/","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8f7b3ac0-604d-4c78-b545-5e0f8ea3d698","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ab0efc75-0598-4f4e-91ad-6195bb2661fe"]},
- lipid:{ name:"Lipid emulsion 20%", brand:"Intralipid (for LAST)", cls:"LAST rescue", grp:"other", mh:false,
+ lipid:{ name:"Lipid emulsion 20%", brand:"Intralipid (for LAST)", cls:"LAST rescue", grp:"rescue", mh:false,
   basisNote:"ASRA 2020 doses depend on whether the patient is over or under 70 kg; per-kg doses use actual body weight.",
   doses:[
    {use:"LAST bolus, patient ≤70 kg", maxKg:70, alsoPeds:true, pop:"adult", route:"IV", lo:1.5, hi:1.5, unit:"mL/kg", basis:"TBW", how:"Over 2–3 minutes. If still unstable, repeat the bolus. Max 12 mL/kg total.", src:"https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"},
@@ -2965,12 +2969,308 @@ const ADRUGS = {
   reversal:null,
   mech:"Thought to act as a lipid sink that pulls local anesthetic away from cardiac tissue, plus direct metabolic effects.",
   srcs:["https://asra.com/docs/default-source/guidelines-articles/local-anesthetic-systemic-toxicity-rgb.pdf?sfvrsn=33b348e_2"]},
+// a_analg.js — acetaminophen IV, ketorolac, sufentanil, meperidine. Sources fetched 2026-10-31.
+// CONC acetaminophen: 10 mg/mL (1000 mg/100 mL glass vial or bag) — https://drugs.com/pro/ofirmev.html
+// CONC ketorolac: 15 mg/mL (1 mL, IV/IM); 30 mg/mL (1 mL, IV/IM); 60 mg/2 mL = 30 mg/mL (IM ONLY) — https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8accbb78-fc64-45d5-69b0-35c23a1d2a2e
+// CONC sufentanil: 50 mcg/mL (single-dose vials; label excerpt did not state vial volume) — https://labeling.pfizer.com/ShowLabeling.aspx?id=4634
+// CONC meperidine: 50 mg/mL (30 mL multiple-dose vial); 25, 50, 75, 100 mg/mL (1 mL Carpuject); 25, 50 mg/mL (1 mL NexJect syringe) — https://labeling.pfizer.com/ShowLabeling.aspx?id=4516
+//
+// UNVERIFIED / CAVEATS:
+// - QT: no label mentions QT for any of the four drugs; CredibleMeds was not checked (login required). qt is null for all four.
+// - Acetaminophen: source is the Ofirmev label on drugs.com (Rev 6/2020), not DailyMed. The Ofirmev brand is reportedly discontinued in the US (drugs.com); generics are available.
+//   For children 2–12 y, the label summary gave no mg ceiling per dose, so no cap is set. No onset or duration of analgesia is given in the label or StatPearls.
+// - Ketorolac: the label gives no pediatric dosing ("not indicated"). StatPearls off-label 0.5 mg/kg (max 15 mg), ages 2–16, appears only in pearls, not in doses.
+// - Sufentanil: the current label (Pfizer, Rev 5/2026) does not mention IBW, LBW or obesity. "IBW if >20% above IBW" comes only from a secondary monograph (glowm.com) and is not encoded.
+//   IV onset "1–3 min" also comes only from that secondary source. Dsuvia's withdrawal ("unresolvable manufacturing constraints") is per Wikipedia citing an archived dsuvia.com; the primary page was not opened.
+// - Meperidine: the label gives no numeric IV bolus dose (only "decrease dose, inject very slowly, diluted"). The Beers "avoid" recommendation was verified for the 2019 edition via a secondary article (PMC9680368), not the 2023 primary.
+//   Pediatric mg/kg values are converted from the label's mg/lb (0.5–0.8 mg/lb = 1.1–1.76 mg/kg; 0.5–1 mg/lb = 1.1–2.2 mg/kg). The shivering dose (25 mg IV) comes from one RCT abstract (Schwarzkopf 2001), not a guideline.
+
+ acetaminophen:{ name:"Acetaminophen (IV)", brand:"Ofirmev / generic", cls:"Non-opioid analgesic/antipyretic", grp:"analgesic", sub:"Non-opioid", mh:false,
+  basisNote:"Weight-based dosing applies under 50 kg; the label doesn't specify which weight, so actual body weight is used.",
+  doses:[
+   {use:"Pain/fever, adults and adolescents ≥50 kg", pop:"adult", route:"IV", lo:650, hi:1000, unit:"mg", minKg:50, sheet:true, how:"1000 mg every 6 h or 650 mg every 4 h over 15 min; max 1000 mg/dose, 4 g/day from all sources (label).", src:"https://drugs.com/pro/ofirmev.html"},
+   {use:"Pain/fever, adults and adolescents <50 kg", pop:"adult", route:"IV", lo:12.5, hi:15, unit:"mg/kg", basis:"TBW", cap:750, maxKg:49.99, sheet:true, how:"15 mg/kg every 6 h or 12.5 mg/kg every 4 h; max 75 mg/kg/day (up to 3750 mg) (label).", src:"https://drugs.com/pro/ofirmev.html"},
+   {use:"Pain/fever, children 2–12 y", pop:"peds", route:"IV", lo:12.5, hi:15, unit:"mg/kg", basis:"TBW", how:"15 mg/kg every 6 h or 12.5 mg/kg every 4 h; max 75 mg/kg/day (label).", src:"https://drugs.com/pro/ofirmev.html"},
+   {use:"Pain/fever, adolescents ≥13 y <50 kg", pop:"peds", route:"IV", lo:12.5, hi:15, unit:"mg/kg", basis:"TBW", cap:750, maxKg:49.99, how:"15 mg/kg every 6 h or 12.5 mg/kg every 4 h; max 75 mg/kg/day (up to 3750 mg) (label).", src:"https://drugs.com/pro/ofirmev.html"},
+   {use:"Fever, infants 29 days–2 y", pop:"peds", route:"IV", lo:15, hi:15, unit:"mg/kg", basis:"TBW", how:"Every 6 h (min interval 6 h); max 60 mg/kg/day (label).", src:"https://drugs.com/pro/ofirmev.html"},
+   {use:"Fever, neonates ≥32 wk GA to 28 days", pop:"peds", route:"IV", lo:12.5, hi:12.5, unit:"mg/kg", basis:"TBW", how:"Every 6 h (min interval 6 h); max 50 mg/kg/day (label).", src:"https://drugs.com/pro/ofirmev.html"}],
+  time:{text:"Peak level at end of the 15-min infusion; antipyretic effect shown through 6 h; half-life about 2.4 h in adults (label). No analgesic onset or duration stated."},
+  fx:{bp:["ok","Minimal","No major hemodynamic effect expected."], hr:["ok","Minimal","No major heart rate effect expected."], resp:["ok","None","No respiratory depression."], ponv:["ok","Neutral","Non-opioid; spares opioids."]},
+  qt:null,
+  boxed:"Dosing errors can cause accidental overdose and death; hepatotoxicity, with acute liver failure that may need transplant or be fatal (label).",
+  contra:["Hypersensitivity to acetaminophen or excipients","Severe hepatic impairment or severe active liver disease"],
+  warn:["Hepatotoxicity: count all acetaminophen sources toward the daily max","Caution in alcoholism, hepatic impairment, chronic malnutrition, severe hypovolemia","Severe renal impairment (CrCl ≤30): longer interval and lower daily dose may be needed"],
+  pearls:["Infuse over 15 min.","mg vs mL errors are the main overdose risk: 10 mg/mL, so 15 mg/kg = 1.5 mL/kg.","Hepatic impairment: a reduced total daily dose may be needed (label)."],
+  organ:"Hepatic: contraindicated if severe; consider a lower daily dose otherwise. Renal: CrCl ≤30 needs a longer interval and lower daily dose (label).", preg:"Epidemiologic studies of oral use show no clear link to birth defects, miscarriage or adverse outcomes (label).",
+  reversal:{text:"N-acetylcysteine for overdose"},
+  mech:"Central analgesic and antipyretic; exact mechanism unclear (label).",
+  srcs:["https://drugs.com/pro/ofirmev.html","https://www.ncbi.nlm.nih.gov/books/NBK482369/"]},
+
+ ketorolac:{ name:"Ketorolac", brand:"Toradol", cls:"NSAID", grp:"analgesic", sub:"Non-opioid", mh:false,
+  basisNote:"Fixed mg doses; weight matters only for the reduced dose under 50 kg.",
+  doses:[
+   {use:"Single dose, age <65", pop:"adult", route:"IV", lo:30, hi:30, unit:"mg", minKg:50, sheet:true, how:"One dose; IV bolus over ≥15 s (label).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8accbb78-fc64-45d5-69b0-35c23a1d2a2e"},
+   {use:"Single dose, age <65", pop:"adult", route:"IM", lo:60, hi:60, unit:"mg", minKg:50, how:"One dose (label).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8accbb78-fc64-45d5-69b0-35c23a1d2a2e"},
+   {use:"Multiple dose, age <65", pop:"adult", route:"IV", lo:30, hi:30, unit:"mg", minKg:50, sheet:true, how:"Every 6 h (IV or IM); max 120 mg/day; ≤5 days total including PO (label).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8accbb78-fc64-45d5-69b0-35c23a1d2a2e"},
+   {use:"Single dose, weight <50 kg", pop:"adult", route:"IV", lo:15, hi:15, unit:"mg", maxKg:49.99, how:"One dose; IM single dose is 30 mg (label).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8accbb78-fc64-45d5-69b0-35c23a1d2a2e"},
+   {use:"Multiple dose, weight <50 kg", pop:"adult", route:"IV", lo:15, hi:15, unit:"mg", maxKg:49.99, how:"Every 6 h (IV or IM); max 60 mg/day; ≤5 days (label).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8accbb78-fc64-45d5-69b0-35c23a1d2a2e"},
+   {use:"Single dose, age ≥65", pop:"elderly", route:"IV", lo:15, hi:15, unit:"mg", sheet:true, how:"One dose; IM single dose is 30 mg (label).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8accbb78-fc64-45d5-69b0-35c23a1d2a2e"},
+   {use:"Multiple dose, age ≥65", pop:"elderly", route:"IV", lo:15, hi:15, unit:"mg", how:"Every 6 h (IV or IM); max 60 mg/day; ≤5 days (label).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8accbb78-fc64-45d5-69b0-35c23a1d2a2e"},
+   {use:"Renal impairment (not advanced), single dose", pop:"adult", route:"IV", lo:15, hi:15, unit:"mg", how:"One dose; IM 30 mg. Contraindicated in advanced renal impairment (label).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8accbb78-fc64-45d5-69b0-35c23a1d2a2e"},
+   {use:"Renal impairment (not advanced), multiple dose", pop:"adult", route:"IV", lo:15, hi:15, unit:"mg", how:"Every 6 h (IV or IM); max 60 mg/day; ≤5 days (label).", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8accbb78-fc64-45d5-69b0-35c23a1d2a2e"}],
+  time:{onset:[1800,1800], dur:[14400,21600], onsetTxt:"about 30 min", peakTxt:"max effect 1–2 h", durTxt:"usually 4–6 h", note:"Raising the dose above label recommendations doesn't improve efficacy (label)."},
+  fx:{bp:["ok","Minimal","No major acute hemodynamic effect expected."], hr:["ok","Minimal","No major heart rate effect expected."], resp:["ok","None","No respiratory depression; caution in aspirin-sensitive asthma."], ponv:["ok","Neutral","Non-opioid; spares opioids."]},
+  qt:null,
+  boxed:"Max 5 days total (IV/IM + PO); not for minor or chronic pain. Risks: GI bleeding, ulceration and perforation (higher in elderly); CV thrombosis; renal risk; bleeding; hypersensitivity; contraindicated in labor and delivery; don't exceed recommended doses (label).",
+  contra:["Active or prior peptic ulcer, GI bleed or perforation","Advanced renal impairment or volume depletion","Prophylaxis before major surgery; CABG setting","Suspected cerebrovascular bleed, hemorrhagic diathesis, incomplete hemostasis, high bleeding risk","Labor and delivery","Aspirin/NSAID allergy or aspirin-induced asthma","Concurrent aspirin/NSAIDs, probenecid, pentoxifylline","Neuraxial (epidural/intrathecal) use"],
+  warn:["GI bleeding","Renal toxicity","Bleeding/platelet inhibition","Cardiovascular thrombotic events","Anaphylactoid reactions"],
+  pearls:["The 60 mg/2 mL vial is IM only.","Reduced dose (15 mg IV) applies if ≥65, <50 kg or renally impaired.","Pediatrics: label says not indicated; StatPearls lists off-label 0.5 mg/kg IV/IM, max 15 mg, ages 2–16."],
+  organ:"Renal: contraindicated if advanced; otherwise use the reduced dose and max 60 mg/day (label).", preg:"Avoid from about 30 weeks (ductus closure); limit use at 20–30 weeks (oligohydramnios). Contraindicated in labor and delivery (label).",
+  reversal:null,
+  mech:"Nonselective COX inhibitor; reduces prostaglandin synthesis.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8accbb78-fc64-45d5-69b0-35c23a1d2a2e","https://www.ncbi.nlm.nih.gov/books/NBK545172/"]},
+
+ sufentanil:{ name:"Sufentanil", brand:"Sufenta", cls:"Opioid agonist (C-II)", grp:"analgesic", sub:"Opioids", mh:false,
+  basisNote:"The label doses per kg but doesn't name a weight (no IBW/LBW or obesity statement in the current label); actual body weight is used here by default.",
+  doses:[
+   {use:"Adjunct, 1–2 h case: induction", pop:"adult", route:"IV", lo:1, hi:2, unit:"mcg/kg", basis:"TBW", sheet:true, how:"≥75% before intubation; total ≤1 mcg/kg/h of expected surgery (label).", src:"https://labeling.pfizer.com/ShowLabeling.aspx?id=4634"},
+   {use:"Adjunct, 2–8 h case: induction", pop:"adult", route:"IV", lo:2, hi:8, unit:"mcg/kg", basis:"TBW", how:"≤75% before intubation; total ≤1 mcg/kg/h of expected surgery (label).", src:"https://labeling.pfizer.com/ShowLabeling.aspx?id=4634"},
+   {use:"Adjunct maintenance increments", pop:"adult", route:"IV", lo:10, hi:50, unit:"mcg", sheet:true, how:"10–25 mcg for 1–2 h cases; 10–50 mcg for 2–8 h cases; total ≤1 mcg/kg/h (label).", src:"https://labeling.pfizer.com/ShowLabeling.aspx?id=4634"},
+   {use:"Primary anesthetic: induction", pop:"adult", route:"IV", lo:8, hi:30, unit:"mcg/kg", basis:"TBW", how:"With 100% O2; 25–30 mcg/kg blocks sympathetic response; max total 30 mcg/kg (label).", src:"https://labeling.pfizer.com/ShowLabeling.aspx?id=4634"},
+   {use:"Primary anesthetic: maintenance increments", pop:"adult", route:"IV", lo:0.5, hi:10, unit:"mcg/kg", basis:"TBW", how:"As needed; max total for procedure 30 mcg/kg (label).", src:"https://labeling.pfizer.com/ShowLabeling.aspx?id=4634"},
+   {use:"Cardiac surgery, age <12: induction/maintenance", pop:"peds", route:"IV", lo:10, hi:25, unit:"mcg/kg", basis:"TBW", how:"With 100% O2; supplemental doses up to 25–50 mcg (label).", src:"https://labeling.pfizer.com/ShowLabeling.aspx?id=4634"},
+   {use:"Labor analgesia", pop:"adult", route:"Epidural", lo:10, hi:15, unit:"mcg", sheet:true, how:"With 10 mL bupivacaine 0.125% ± epi; may repeat twice (3 doses total) ≥1 h apart (label).", src:"https://labeling.pfizer.com/ShowLabeling.aspx?id=4634"}],
+  time:{text:"IV: rapid onset (label gives no figure). Epidural labor: onset within 10 min; first dose lasts ~95 min, repeats ~70 min. Adult elimination half-life 164 min (label).", note:"Respiratory depression may outlast analgesia (label)."},
+  fx:{bp:["caution","↓ Lowers","Hypotension and severe cardiovascular depression possible, worse with other CNS depressants (label)."], hr:["caution","↓ Bradycardia","Vagotonic; bradycardia, more so with non-vagolytic relaxants (label)."], resp:["avoid","Depression","Life-threatening respiratory depression; chest wall rigidity (label)."], ponv:["caution","↑ Raises","Postoperative opioids are a PONV risk factor (Apfel)."]},
+  qt:null,
+  boxed:"Addiction, abuse and misuse; life-threatening respiratory depression; risks with benzodiazepines/CNS depressants; CYP3A4 inhibitors (or stopping inducers) can cause fatal overdose (label).",
+  contra:["Hypersensitivity to sufentanil (including anaphylaxis)"],
+  warn:["Muscle rigidity (onset faster than with fentanyl)","Severe cardiovascular depression","Serotonin syndrome","Improper epidural injection","Raised ICP/head injury","Opioid-induced hyperalgesia","Seizure disorders"],
+  pearls:["Use a tuberculin syringe for small volumes (label).","Elderly/debilitated: start at the low end and titrate slowly (label).","Dsuvia (30 mcg SL) has reportedly been withdrawn from the market; not included."],
+  organ:"Hepatic metabolism and renal excretion: use caution, reduce dose and monitor in liver or kidney dysfunction (label). Neonatal clearance is about half the adult value (label).", preg:"Prolonged use can cause neonatal opioid withdrawal syndrome; data are insufficient on birth defects (label).",
+  reversal:{text:"Naloxone", id:"naloxone"},
+  mech:"Potent mu-opioid receptor agonist.",
+  srcs:["https://labeling.pfizer.com/ShowLabeling.aspx?id=4634","https://en.wikipedia.org/wiki/Sufentanil"]},
+
+ meperidine:{ name:"Meperidine", brand:"Demerol", cls:"Opioid agonist (C-II)", grp:"analgesic", sub:"Opioids", mh:false,
+  basisNote:"The label gives peds doses in mg/lb (converted here to mg/kg) without naming a weight; actual body weight is used.",
+  doses:[
+   {use:"Pain", pop:"adult", route:"IM", lo:50, hi:150, unit:"mg", sheet:true, how:"IM or SC every 3–4 h as needed, lowest effective dose. IV: lower dose, given very slowly and diluted (label).", src:"https://labeling.pfizer.com/ShowLabeling.aspx?id=4516"},
+   {use:"Preoperative", pop:"adult", route:"IM", lo:50, hi:100, unit:"mg", how:"IM or SC 30–90 min before anesthesia (label).", src:"https://labeling.pfizer.com/ShowLabeling.aspx?id=4516"},
+   {use:"Obstetric analgesia", pop:"adult", route:"IM", lo:50, hi:100, unit:"mg", how:"IM or SC once pain is regular; may repeat every 1–3 h (label).", src:"https://labeling.pfizer.com/ShowLabeling.aspx?id=4516"},
+   {use:"Postanesthetic shivering (off-label)", pop:"adult", route:"IV", lo:25, hi:25, unit:"mg", sheet:true, how:"Single dose; repeat once if shivering persists >5 min (RCT, Anesth Analg 2001).", src:"https://busqueda.bvsalud.org/portal/resource/es/mdl-11133640"},
+   {use:"Pain", pop:"peds", route:"IM", lo:1.1, hi:1.76, unit:"mg/kg", basis:"TBW", cap:150, how:"IM or SC every 3–4 h as needed, up to the adult dose (label: 0.5–0.8 mg/lb).", src:"https://labeling.pfizer.com/ShowLabeling.aspx?id=4516"},
+   {use:"Preoperative", pop:"peds", route:"IM", lo:1.1, hi:2.2, unit:"mg/kg", basis:"TBW", cap:100, how:"IM or SC 30–90 min before anesthesia, up to the adult dose (label: 0.5–1 mg/lb).", src:"https://labeling.pfizer.com/ShowLabeling.aspx?id=4516"},
+   {use:"Pain", pop:"elderly", route:"IM", lo:50, hi:150, unit:"mg", how:"Use the low end of the range and observe closely (label). Beers: avoid.", src:"https://labeling.pfizer.com/ShowLabeling.aspx?id=4516"}],
+  time:{text:"Onset slightly faster and duration slightly shorter than morphine (label). Normeperidine half-life 15–30 h (label)."},
+  fx:{bp:["caution","↓ Lowers","Hypotension, especially with other CNS depressants."], hr:["caution","↑ Tachycardia","Tachycardia reported with MAOI interaction (label)."], resp:["avoid","Depression","Life-threatening respiratory depression (label)."], ponv:["caution","↑ Raises","Postoperative opioids are a PONV risk factor (Apfel)."]},
+  qt:null,
+  boxed:"Addiction and misuse; life-threatening respiratory depression; risks with benzodiazepines/CNS depressants; neonatal opioid withdrawal; CYP3A4 interactions; MAOI interaction (coma, respiratory depression, cyanosis, hypotension) (label).",
+  contra:["MAOI use now or within 14 days","Significant respiratory depression","GI obstruction or paralytic ileus","Hypersensitivity to meperidine"],
+  warn:["Normeperidine accumulation causes seizures and excitatory toxicity (renal impairment, repeated dosing, CYP3A4 inducers)","Serotonin syndrome with serotonergic drugs","Seizures even without a seizure history","Delirium and hallucinations in the elderly"],
+  pearls:["Avoid in renal impairment and for repeated dosing: normeperidine (renally cleared, half-life 15–30 h) is proconvulsant.","Beers Criteria (2019): avoid in older adults (neurotoxicity, delirium).","Main remaining OR niche is treating postop shivering."],
+  organ:"Renal: meperidine and normeperidine are renally excreted; titrate slowly and monitor (label). Hepatic: titrate slowly (label).", preg:"Prolonged use can cause neonatal opioid withdrawal syndrome (label).",
+  reversal:{text:"Naloxone (doesn't reverse normeperidine seizures)", id:"naloxone"},
+  mech:"Mu-opioid agonist; metabolite normeperidine is neuroexcitatory and serotonergic.",
+  srcs:["https://labeling.pfizer.com/ShowLabeling.aspx?id=4516","https://busqueda.bvsalud.org/portal/resource/es/mdl-11133640","https://pmc.ncbi.nlm.nih.gov/articles/PMC9680368","https://statpearls.com/articlelibrary/viewarticle/25000"]},
+
+// ===== Antiemetic entries (compiled 2026-10-31) =====
+// SOURCE NOTE: DailyMed (search, API and drugInfo pages) was unreachable or returned wrong results from this session.
+//   Label data therefore comes from FDA-hosted labels (nctr-crs.fda.gov FDALabel, accessdata.fda.gov), the manufacturer PI (Barhemsys),
+//   or verbatim FPI reproductions (drugs.com/pro, ndclist, prescriberpoint). Swap to DailyMed setid URLs before release if required.
+// Guideline = Gan TJ et al. Fifth Consensus Guidelines for the Management of PONV (Anesth Analg 2025/2026; supplement SDC1 opened).
+//   The 4th consensus (2020) full text and the 5th consensus main tables (Table 1/2/3, Fig 2/3) could NOT be opened.
+//
+// UNVERIFIED / CAVEATS:
+//  - CredibleMeds categories NOT confirmed (site not reachable); qt levels use label language only.
+//  - Granisetron guideline range used is 0.1–3 mg (5th consensus text). The "0.35–3 mg" range (4th consensus) was not verified.
+//  - No guideline pediatric dose table was readable. Peds doses are included only where the label gives them (droperidol 2–12 y max initial 0.1 mg/kg; the label gives no mg cap).
+//  - Palonosetron: label says pediatric PONV safety/efficacy NOT established (peds CINV only, 1 mo–<17 y). No peds PONV dose included.
+//  - Granisetron: label says PONV use in children "is not recommended". No peds dose included.
+//  - Haloperidol: Haldol injection label = IM only, "NOT APPROVED FOR INTRAVENOUS ADMINISTRATION". IV PONV doses are guideline/off-label. Half-life not captured.
+//  - Metoclopramide: label PONV dose is IM 10–20 mg near end of surgery. The IV 10 mg dose is from the guideline, which says it is not recommended for prophylaxis. QT not checked.
+//  - Promethazine: pregnancy section and QT not captured from the label page. The extracted IV dilution table was incomplete. The label read limits IV concentration to ≤1 mg/mL
+//    (older labels said ≤25 mg/mL; check the current label at the institution).
+//  - Aprepitant: half-life 9–13 h per label (the guideline text cites ~40 h). PONV indication confirmed on a generic (Sandoz) capsule label.
+//  - Scopolamine: label states 1 mg/3 days (contains 1.5 mg). Label timing is the evening before surgery; the guideline also allows day of surgery (onset 2–4 h).
+//
+// CONC granisetron: 1 mg/mL (1 mL single-dose vial; 4 mg/4 mL multiple-dose vial) — https://drugs.com/pro/granisetron-injection.html
+// CONC palonosetron: 0.05 mg/mL (0.075 mg/1.5 mL and 0.25 mg/5 mL single-dose vials) — https://Drugs.com/pro/aloxi.html
+// CONC droperidol: 2.5 mg/mL (5 mg/2 mL single-dose vial) — https://nctr-crs.fda.gov/fdalabel/services/spl/set-ids/147e033d-d997-4ef6-8bb5-a9ba372590b2/spl-doc
+// CONC haloperidol_ponv: 5 mg/mL haloperidol lactate (1 mL ampules) — https://drugs.com/pro/haldol.html
+// CONC amisulpride: 2.5 mg/mL (5 mg/2 mL and 10 mg/4 mL single-dose vials) — https://lxous.bynder.com/asset/1331db21-8541-4023-94af-a16d18b7c19d/Barhemsys-Prescribing-Information.pdf
+// CONC metoclopramide: 5 mg/mL (2, 10, 30 mL single-dose vials) — https://www.drugs.com/pro/metoclopramide-injection.html
+// CONC promethazine: 25 mg/mL and 50 mg/mL (1 mL ampuls); for IV, dilute to ≤1 mg/mL per label — https://prescriberpoint.com/therapies/promethazine-hydrochloride-d545105
+// (scopolamine = transdermal 1 mg/3 days; aprepitant = oral 40 mg capsule; not injectable)
+
+ granisetron:{ name:"Granisetron", brand:"Kytril (generic)", cls:"5-HT3 antagonist", grp:"antiemetic", sub:"5-HT3 antagonists", mh:false,
+  basisNote:"Adults get a fixed dose. The label does not recommend it for pediatric PONV.",
+  doses:[
+   {use:"PONV prevention", pop:"adult", route:"IV", lo:1, hi:1, unit:"mg", sheet:true, how:"Undiluted over 30 s, before induction or immediately before reversal of anesthesia (label).", src:"https://drugs.com/pro/granisetron-injection.html"},
+   {use:"PONV treatment (rescue)", pop:"adult", route:"IV", lo:1, hi:1, unit:"mg", how:"Undiluted over 30 s when N/V occurs after surgery. Guideline: re-dosing the same class after failed 5-HT3 prophylaxis adds no benefit.", src:"https://drugs.com/pro/granisetron-injection.html"},
+   {use:"PONV prevention (guideline range)", pop:"adult", route:"IV", lo:0.1, hi:3, unit:"mg", how:"Guideline suggests 0.1–3 mg IV at end of surgery.", src:"https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"}],
+  time:{text:"Terminal half-life ~8.6 h in adult surgical patients after 1 mg (range 1.8–17.7 h); 4.9 h in young volunteers, 7.7 h in elderly (label)."},
+  fx:{bp:["ok","Not stated","No BP effect described in the label."], hr:["caution","QT reported","QT prolongation reported; caution with arrhythmia, conduction disease or QT drugs."], resp:["ok","Not stated","No respiratory effect described in the label."], ponv:["ok","↓ Prevents","Labeled for PONV prevention and treatment in adults."]},
+  boxed:null, contra:["Hypersensitivity to granisetron or components"],
+  warn:["QT prolongation (reported; adequate QT assessment not done)","Serotonin syndrome","May mask progressive ileus/gastric distention"],
+  pearls:["Don't use as rescue after failed 5-HT3 prophylaxis. Use a different class (guideline).","Pediatric PONV is not recommended per label (lack of efficacy and QT prolongation in a pediatric trial)."],
+  organ:"Hepatic: clearance about halved with neoplastic liver involvement, but the label says no dose adjustment is needed. Renal: clearance unaffected in severe renal failure.",
+  preg:"No adequate human studies. Use only if clearly needed (label).",
+  reversal:null,
+  mech:"Selective 5-HT3 receptor antagonist (CTZ and vagal afferents).",
+  qt:["low","Label: QT prolongation reported; adequate QT assessment not conducted. Use caution with arrhythmias or other QT-prolonging drugs. CredibleMeds category not confirmed.","https://drugs.com/pro/granisetron-injection.html"],
+  srcs:["https://drugs.com/pro/granisetron-injection.html","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
+
+ palonosetron:{ name:"Palonosetron", brand:"Aloxi", cls:"5-HT3 antagonist", grp:"antiemetic", sub:"5-HT3 antagonists", mh:false,
+  basisNote:"Adult fixed dose. Pediatric PONV is not established (peds approval is for CINV only).",
+  doses:[
+   {use:"PONV prevention (up to 24 h)", pop:"adult", route:"IV", lo:0.075, hi:0.075, unit:"mg", sheet:true, how:"Single dose over 10 s, immediately before induction. Guideline: more effective given early. Do not redose in PACU.", src:"https://Drugs.com/pro/aloxi.html"}],
+  time:{text:"Mean terminal half-life ~40 h (label). Efficacy beyond 24 h for PONV not shown."},
+  fx:{bp:["ok","Not stated","No BP effect described."], hr:["ok","Minimal QT","Thorough QT study: no clinically relevant QT prolongation at 9× max dose."], resp:["ok","Not stated","No respiratory effect described."], ponv:["ok","↓ Prevents","Long-acting. Guideline cites benefit for post-discharge N/V (PDNV)."]},
+  boxed:null, contra:["Hypersensitivity to palonosetron"],
+  warn:["Hypersensitivity incl. anaphylaxis (also in those reactive to other 5-HT3 antagonists)","Serotonin syndrome"],
+  pearls:["Guideline: avoid re-dosing palonosetron for rescue in PACU. Use a different class.","Long half-life makes it a PDNV option for high-risk ambulatory patients (guideline)."],
+  organ:"No significant change with hepatic impairment. Severe renal impairment raises exposure ~28%, not clinically meaningful (label).",
+  preg:"No human data. No embryo-fetal effects in animal studies at very high doses (label).",
+  reversal:null,
+  mech:"Long-acting 5-HT3 receptor antagonist with high receptor affinity.",
+  qt:["none","Label: thorough QT study showed no clinically relevant QT prolongation at 9× the max adult dose. QT prolongation listed only as an adverse reaction (5% vs 3% placebo in PONV trials). CredibleMeds not confirmed.","https://Drugs.com/pro/aloxi.html"],
+  srcs:["https://Drugs.com/pro/aloxi.html","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
+
+ droperidol:{ name:"Droperidol", brand:"Inapsine (generic)", cls:"Butyrophenone", grp:"antiemetic", sub:"Dopamine antagonists", mh:false,
+  basisNote:"Adults get a fixed dose. The label gives a per-kg maximum initial dose for children 2–12 y, with no mg cap stated.",
+  doses:[
+   {use:"PONV prevention (guideline)", pop:"adult", route:"IV", lo:0.625, hi:1.25, unit:"mg", sheet:true, how:"At end of surgery. Panel recommends 0.625 mg (adverse effects dose-related).", src:"https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"},
+   {use:"PONV rescue (guideline)", pop:"adult", route:"IV", lo:1, hi:1.25, unit:"mg", how:"Comparable to ondansetron 4–8 mg (low certainty). Use if not given for prophylaxis.", src:"https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"},
+   {use:"N/V with procedures (label max initial)", pop:"adult", route:"IV", lo:2.5, hi:2.5, unit:"mg", cap:2.5, how:"Label max initial dose 2.5 mg IM or slow IV; additional 1.25 mg doses may be given. ECG before, monitor 2–3 h after.", src:"https://nctr-crs.fda.gov/fdalabel/services/spl/set-ids/147e033d-d997-4ef6-8bb5-a9ba372590b2/spl-doc"},
+   {use:"N/V with procedures, 2–12 y (label max initial)", pop:"peds", route:"IV", lo:0.1, hi:0.1, unit:"mg/kg", basis:"TBW", how:"Label MAXIMUM initial dose 0.1 mg/kg, adjusted for age and clinical factors. Not a PONV-specific guideline dose.", src:"https://nctr-crs.fda.gov/fdalabel/services/spl/set-ids/147e033d-d997-4ef6-8bb5-a9ba372590b2/spl-doc"}],
+  time:{onset:[180,600], dur:[7200,14400], onsetTxt:"3–10 min after IM or IV dose (label).", durTxt:"Tranquilizing/sedative effect generally 2–4 h (label)."},
+  fx:{bp:["caution","↓ Mild","Mild to moderate hypotension (label), usually self-limited."], hr:["avoid","QT / TdP","Boxed warning for QT prolongation and torsades. Tachycardia also reported."], resp:["ok","Not stated","No respiratory depression described in the label extract."], ponv:["ok","↓ Prevents","Effective prophylaxis and rescue at low doses (guideline A1)."]},
+  boxed:"QT prolongation and/or torsade de pointes, including fatal cases, at or below recommended doses. Reserve for patients who fail other treatments. 12-lead ECG before use. Do not give if QTc >440 ms (male) or >450 ms (female). Continue ECG monitoring 2–3 h after treatment.",
+  contra:["Known or suspected QT prolongation","Hypersensitivity to droperidol"],
+  warn:["QT prolongation / torsades (boxed)","Hypotension and tachycardia","Sedation (~25% in one rescue review, guideline)","Reduce dose in elderly, debilitated or poor-risk patients"],
+  pearls:["Guideline: at PONV doses (≤1.25 mg), QT effect is similar to ondansetron, and the combination is no worse than either alone.","Avoid combining with amisulpride (Barhemsys label)."],
+  organ:"Use with caution in hepatic and renal dysfunction. Reduce initial dose in elderly or debilitated patients (label).",
+  preg:"Category C on label. Use only if benefit justifies fetal risk.",
+  reversal:null,
+  mech:"Butyrophenone D2 antagonist at the chemoreceptor trigger zone.",
+  qt:["known","Boxed warning: QT prolongation and torsades, including fatal cases, at or below recommended doses. ECG before, monitor 2–3 h after. Contraindicated with known or suspected QT prolongation. CredibleMeds not confirmed.","https://nctr-crs.fda.gov/fdalabel/services/spl/set-ids/147e033d-d997-4ef6-8bb5-a9ba372590b2/spl-doc"],
+  srcs:["https://nctr-crs.fda.gov/fdalabel/services/spl/set-ids/147e033d-d997-4ef6-8bb5-a9ba372590b2/spl-doc","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
+
+ haloperidol_ponv:{ name:"Haloperidol (PONV)", brand:"Haldol", cls:"Butyrophenone antipsychotic", grp:"antiemetic", sub:"Dopamine antagonists", mh:false,
+  basisNote:"Off-label for PONV. The injection label is IM only and not approved for IV, so the IV doses come from the guideline.",
+  doses:[
+   {use:"PONV prevention (guideline, off-label)", pop:"adult", route:"IV", lo:0.5, hi:2, unit:"mg", sheet:true, how:"At induction or end of surgery (2 mg either time had the same 24 h efficacy). 0.35 mg was ineffective.", src:"https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"},
+   {use:"PONV rescue (guideline, off-label)", pop:"adult", route:"IV", lo:1, hi:1, unit:"mg", how:"1 mg matched ondansetron 4 mg for treatment, with more sedation.", src:"https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"}],
+  time:{text:"Half-life not captured from the label read."},
+  fx:{bp:["ok","Not stated","No BP effect captured at PONV doses."], hr:["caution","QT / TdP","Label: IV route and higher doses are linked to QTc prolongation and torsades. Monitor ECG if given IV."], resp:["ok","Not stated","Not described at PONV doses."], ponv:["ok","↓ Prevents","0.5–2 mg effective (guideline A1). Side effects comparable to 5-HT3 antagonists."]},
+  boxed:"Increased mortality in elderly patients with dementia-related psychosis (antipsychotic class warning).",
+  contra:["Parkinson's disease","Dementia with Lewy bodies","Severe toxic CNS depression or coma","Hypersensitivity to haloperidol"],
+  warn:["QTc prolongation / torsades, higher with IV route and high doses","Sedation","Extrapyramidal effects","Not approved for IV administration"],
+  pearls:["Low-dose haloperidol is a practical substitute when droperidol is unavailable (1 mg ≈ droperidol 0.625 mg, guideline).","Guideline: dose-ranging study found no QTc effect at 0.5–2 mg."],
+  organ:"Geriatric pharmacokinetics generally warrant lower doses (label).",
+  preg:"No well-controlled human studies. Use only if benefit justifies fetal risk. Third-trimester exposure can cause neonatal EPS/withdrawal (label).",
+  reversal:null,
+  mech:"D2 antagonist at the chemoreceptor trigger zone.",
+  qt:["known","Label: sudden death, QTc prolongation and torsades reported. Higher doses and IV administration are associated with greater risk. Monitor ECG if given IV. QTc >500 ms raises TdP risk. CredibleMeds not confirmed.","https://drugs.com/pro/haldol.html"],
+  srcs:["https://drugs.com/pro/haldol.html","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
+
+ amisulpride:{ name:"Amisulpride", brand:"Barhemsys", cls:"Benzamide D2/D3 antagonist", grp:"antiemetic", sub:"Dopamine antagonists", mh:false,
+  basisNote:"Adults only, fixed dose. Pediatric safety and efficacy not established.",
+  doses:[
+   {use:"PONV prevention", pop:"adult", route:"IV", lo:5, hi:5, unit:"mg", sheet:true, how:"Single dose over 1–2 min at induction. No dilution needed. Give within 12 h of removing from carton (protect from light).", src:"https://lxous.bynder.com/asset/1331db21-8541-4023-94af-a16d18b7c19d/Barhemsys-Prescribing-Information.pdf"},
+   {use:"PONV treatment (rescue)", pop:"adult", route:"IV", lo:10, hi:10, unit:"mg", how:"Single dose over 1–2 min when N/V occurs. For patients with no prophylaxis or prophylaxis from a different class.", src:"https://lxous.bynder.com/asset/1331db21-8541-4023-94af-a16d18b7c19d/Barhemsys-Prescribing-Information.pdf"}],
+  time:{text:"Mean elimination half-life ~4–5 h (label)."},
+  fx:{bp:["ok","Not stated","No BP effect captured from the label."], hr:["caution","QT (dose-dep.)","Dose- and concentration-dependent QT prolongation. Avoid in congenital long QT or with droperidol."], resp:["ok","Not stated","Not described."], ponv:["ok","↓ Prev / Rx","Labeled for both prevention (5 mg) and rescue (10 mg)."]},
+  boxed:null, contra:["Hypersensitivity to amisulpride"],
+  warn:["QT prolongation (dose- and concentration-dependent)","Hyperprolactinemia (5% vs 1% placebo)","Hypersensitivity"],
+  pearls:["One of the few agents labeled for rescue after failed prophylaxis with a different class.","Guideline: 10 mg IV alone or with ondansetron had no clinically significant QTc effect."],
+  organ:"Severe renal impairment (eGFR <30) roughly doubles AUC. The label does not consider this clinically meaningful. Hepatic not addressed.",
+  preg:"Insufficient human data. No developmental toxicity in rat or rabbit studies (label).",
+  reversal:null,
+  mech:"Selective D2/D3 receptor antagonist at the chemoreceptor trigger zone.",
+  qt:["known","Label: dose- and concentration-dependent QT prolongation. Avoid in congenital long QT or with droperidol. ECG monitoring with arrhythmia, electrolyte abnormality, CHF or other QT drugs (e.g., ondansetron). CredibleMeds not confirmed.","https://lxous.bynder.com/asset/1331db21-8541-4023-94af-a16d18b7c19d/Barhemsys-Prescribing-Information.pdf"],
+  srcs:["https://lxous.bynder.com/asset/1331db21-8541-4023-94af-a16d18b7c19d/Barhemsys-Prescribing-Information.pdf","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
+
+ metoclopramide:{ name:"Metoclopramide", brand:"Reglan", cls:"Benzamide D2 antagonist / prokinetic", grp:"antiemetic", sub:"Dopamine antagonists", mh:false,
+  basisNote:"Adult fixed dose. Pediatric PONV safety and efficacy not established (label).",
+  doses:[
+   {use:"PONV prophylaxis (label)", pop:"adult", route:"IM", lo:10, hi:20, unit:"mg", how:"Single IM dose near the end of surgery (label).", src:"https://www.drugs.com/pro/metoclopramide-injection.html"},
+   {use:"PONV (guideline; weak, not recommended for prophylaxis)", pop:"adult", route:"IV", lo:10, hi:10, unit:"mg", how:"Slow IV over 1–2 min (label rate). Guideline: 10 mg is inferior to other agents and 'not recommended for PONV prophylaxis'.", src:"https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"}],
+  time:{onset:[60,180], dur:null, onsetTxt:"1–3 min after IV dose (label).", durTxt:"Half-life 5–6 h with normal renal function (label)."},
+  fx:{bp:["caution","Pheo crisis","Contraindicated in pheochromocytoma."], hr:["ok","Not stated","No HR effect captured."], resp:["ok","Not stated","Not described."], ponv:["caution","Weak","10 mg is inferior to dexamethasone and droperidol. Rescue 10 mg is less effective than ondansetron or droperidol (guideline)."]},
+  boxed:"Tardive dyskinesia: potentially irreversible. Risk rises with duration and cumulative dose.",
+  contra:["GI hemorrhage, mechanical obstruction or perforation","Pheochromocytoma","History of tardive dyskinesia","Known sensitivity to metoclopramide"],
+  warn:["Tardive dyskinesia (boxed)","Extrapyramidal and parkinsonian symptoms, higher in elderly","Undiluted IV push too fast (give 10 mg over 1–2 min)"],
+  pearls:["Guideline: 25–50 mg is effective but causes more EPS. Use only if other dopamine antagonists are unavailable."],
+  organ:"Renal: no change if CrCl >60. Halve the dose for repeated dosing if CrCl ≤60. Quarter dose in ESRD on dialysis (label). Geriatric: lowest effective dose.",
+  preg:"No adequate human studies. Use only if clearly needed (label).",
+  reversal:null,
+  mech:"D2 antagonist (CTZ) with 5-HT4-mediated prokinetic action.",
+  qt:null,
+  srcs:["https://www.drugs.com/pro/metoclopramide-injection.html","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
+
+ scopolamine:{ name:"Scopolamine (transdermal)", brand:"Transderm Scop", cls:"Antimuscarinic", grp:"antiemetic", sub:"Anticholinergic", mh:false,
+  basisNote:"One patch for adults. Pediatric safety and efficacy not established.",
+  doses:[
+   {use:"PONV prevention", pop:"adult", route:"Transdermal", lo:1, hi:1, unit:"mg", sheet:true, how:"One patch (1 mg/3 days; contains 1.5 mg) behind one ear the evening before surgery; remove 24 h after surgery (label). Guideline: day-of-surgery also OK, onset 2–4 h.", src:"https://www.accessdata.fda.gov/drugsatfda_docs/label/2024/017874s051lbl.pdf"}],
+  time:{onset:[7200,14400], dur:[259200,259200], onsetTxt:"2–4 h after application (guideline). Plasma levels detectable by ~4 h (label).", durTxt:"About 72 h (guideline). Post-removal half-life ~9.5 h (label)."},
+  fx:{bp:["ok","Not stated","No BP effect described."], hr:["ok","Not stated","No HR effect captured from the label."], resp:["ok","Not stated","Not described."], ponv:["ok","↓ Prevents","Not suitable for acute rescue (guideline)."]},
+  boxed:null, contra:["Angle-closure glaucoma","Hypersensitivity to scopolamine or other belladonna alkaloids"],
+  warn:["Acute angle-closure glaucoma","Neuropsychiatric reactions (confusion, psychosis, seizures), especially elderly","Eclamptic seizures in severe preeclampsia","Urinary retention / reduced GI motility","Blurred vision or mydriasis if touched to eye","Remove before MRI (skin burns)","Withdrawal symptoms after removal"],
+  pearls:["Wash hands after applying. Pupil dilation from hand-to-eye contact can mimic a neuro sign.","Common: dry mouth, visual disturbance, dizziness (guideline)."],
+  organ:"Renal/hepatic impairment not studied. Monitor for CNS effects (label). Elderly at higher CNS risk.",
+  preg:"Avoid in severe preeclampsia (eclamptic seizures reported). Observational data show no major birth-defect signal (label).",
+  reversal:null,
+  mech:"Muscarinic antagonist in the vestibular system and vomiting center.",
+  qt:null,
+  srcs:["https://www.accessdata.fda.gov/drugsatfda_docs/label/2024/017874s051lbl.pdf","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
+
+ aprepitant:{ name:"Aprepitant (oral)", brand:"Emend (generic)", cls:"NK1 receptor antagonist", grp:"antiemetic", sub:"NK1 antagonist", mh:false,
+  basisNote:"Adults only, fixed oral dose. Pediatric PONV not established.",
+  doses:[
+   {use:"PONV prevention", pop:"adult", route:"PO", lo:40, hi:40, unit:"mg", sheet:true, how:"Single 40 mg capsule within 3 h before induction. 125 mg adds no benefit. Do not redose in PACU (guideline).", src:"https://ndclist.com/ndc/0781-2321/label"}],
+  time:{text:"Tmax ~3 h after fasted 40 mg dose. Terminal half-life ~9–13 h (label)."},
+  fx:{bp:["ok","Not stated","No BP effect described."], hr:["ok","Not stated","No HR effect described."], resp:["ok","Not stated","Not described."], ponv:["ok","↓ Prevents","Effective in combination (NK1 + 5-HT3 or + dexamethasone, guideline)."]},
+  boxed:null, contra:["Pimozide (QT risk)","Hypersensitivity to components"],
+  warn:["Warfarin: INR may fall. Monitor INR after a single 40 mg dose","Hormonal contraceptives less effective during use and for 28 days after. Use backup contraception for 1 month","CYP3A4 interactions"],
+  pearls:["Not for treating established N/V (label).","IV aprepitant (Aponvie) 32 mg is an alternative formulation (guideline)."],
+  organ:"No adjustment for mild/moderate hepatic impairment; no data in severe (Child-Pugh >9). No renal adjustment, including dialysis (label).",
+  preg:"Insufficient human data. No developmental toxicity in animals at ~1.5× human exposure (label).",
+  reversal:null,
+  mech:"Blocks substance P at central NK1 receptors.",
+  qt:null,
+  srcs:["https://ndclist.com/ndc/0781-2321/label","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
+
+ promethazine:{ name:"Promethazine", brand:"Phenergan", cls:"Phenothiazine H1 antagonist", grp:"antiemetic", sub:"Antihistamine", mh:false,
+  basisNote:"Contraindicated under 2 years. No pediatric PONV dose included.",
+  doses:[
+   {use:"PONV rescue (guideline)", pop:"adult", route:"IV", lo:6.25, hi:6.25, unit:"mg", how:"Lowest dose. No dose response from 6.25–25 mg; higher doses add sedation. Dilute to ≤1 mg/mL via large vein, stop if pain.", src:"https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"},
+   {use:"N/V with anesthesia/surgery (label)", pop:"adult", route:"IM", lo:12.5, hi:25, unit:"mg", how:"Deep IM preferred. Repeat no more often than every 4 h. Reduce concurrent opioid and barbiturate doses.", src:"https://prescriberpoint.com/therapies/promethazine-hydrochloride-d545105"},
+   {use:"PONV prophylaxis (guideline, single trial)", pop:"adult", route:"IV", lo:0.1, hi:0.1, unit:"mg/kg", basis:"TBW", how:"Before induction or at end of surgery (abdominal hysterectomy trial).", src:"https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"}],
+  time:{onset:[300,1200], dur:[14400,21600], onsetTxt:"~5 min IV, ~20 min IM (label).", durTxt:"4–6 h, occasionally up to 12 h. Half-life 9–16 h IV (label)."},
+  fx:{bp:["ok","Not stated","No BP effect captured from the label."], hr:["ok","Not stated","Not captured."], resp:["caution","Resp. dep.","Fatal respiratory depression in children <2 y (boxed). Additive with opioids."], ponv:["ok","↓ Rescue","Useful rescue after failed 5-HT3 prophylaxis (6.25 mg beats ondansetron re-dose, guideline)."]},
+  boxed:"(1) Fatal respiratory depression in children <2 y; do not use. (2) Severe tissue injury, including gangrene, by any parenteral route. Deep IM preferred. IV only diluted through a large-vein catheter (not hand or wrist). Contraindicated intra-arterial, subcutaneous, or IV above 1 mg/mL. Stop infusion if pain occurs.",
+  contra:["Age <2 years","Intra-arterial or subcutaneous injection; IV >1 mg/mL","Comatose states","Hypersensitivity to promethazine or other phenothiazines"],
+  warn:["Severe tissue injury / extravasation / gangrene (boxed)","Respiratory depression (boxed, peds <2 y)","Sedation (dose-related)","Paradoxical stimulation in elderly (overdose)"],
+  pearls:["For rescue, 6.25 mg is as effective as higher doses with less sedation (guideline).","If giving IV, use a large-vein, free-flowing line and stop for any pain or burning."],
+  organ:"Specific renal/hepatic dosing not captured from the label read.",
+  preg:"Not captured from the label read.",
+  reversal:null,
+  mech:"H1 antagonist with anticholinergic and weak D2 blocking actions.",
+  qt:null,
+  srcs:["https://prescriberpoint.com/therapies/promethazine-hydrochloride-d545105","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
+
 };
 for(const id in ADRUGS){ ADRUGS[id].spec="anes"; }
 
 /* Concentrations: first entry is the default. Sources: FDA labels on DailyMed (see crisis/drug cards). */
 const C_ = (amt, unit, label) => ({amt, unit, label});
 const CONC = {
+  acetaminophen:[C_(10,"mg","10 mg/mL")], ketorolac:[C_(30,"mg","30 mg/mL"),C_(15,"mg","15 mg/mL")], sufentanil:[C_(50,"mcg","50 mcg/mL")],
+  meperidine:[C_(50,"mg","50 mg/mL"),C_(25,"mg","25 mg/mL"),C_(100,"mg","100 mg/mL")],
+  granisetron:[C_(1,"mg","1 mg/mL")], palonosetron:[C_(0.05,"mg","0.05 mg/mL")], droperidol:[C_(2.5,"mg","2.5 mg/mL")], haloperidol_ponv:[C_(5,"mg","5 mg/mL")],
+  amisulpride:[C_(2.5,"mg","2.5 mg/mL")], metoclopramide:[C_(5,"mg","5 mg/mL")], promethazine:[C_(25,"mg","25 mg/mL (dilute for IV)")],
   propofol:[C_(10,"mg","10 mg/mL")],
   etomidate:[C_(2,"mg","2 mg/mL")],
   ketamine:[C_(10,"mg","10 mg/mL"),C_(50,"mg","50 mg/mL"),C_(100,"mg","100 mg/mL (dilute for IV)")],
@@ -3129,16 +3429,73 @@ const ORDER = GROUPS.flatMap(([g])=>Object.keys(DRUGS).filter(id=>DRUGS[id].grp=
 const bv = (d,k) => (d.burden||{})[k]||0;
 
 /* ---------- Specialty framework ---------- */
-const AGROUPS = [["induction","Induction & sedation"],["opioid","Opioids"],["nmb","Neuromuscular blockers"],["reversal","Reversal agents"],["pressor","Vasopressors"],["local","Local anesthetics"],["inhaled","Inhaled agents"],["other","Antiemetics & rescue"]];
+const AGROUPS = [["induction","Induction & maintenance"],["analgesic","Analgesics"],["nmb","Neuromuscular blockers"],["reversal","Reversal agents"],["pressor","Vasopressors"],["local","Local anesthetics"],["antiemetic","Antiemetics"],["rescue","Crisis rescue"]];
+const ASUBS = {induction:["IV","Inhaled"], analgesic:["Opioids","Non-opioid","Adjuncts"], nmb:["Depolarizing","Nondepolarizing"], reversal:["Neuromuscular blockade","Opioid & benzodiazepine"], antiemetic:["5-HT3 antagonists","Dopamine antagonists","Corticosteroid","NK1 antagonist","Anticholinergic","Antihistamine"]};
+const inGrp = (d,g) => d.grp===g || (d.also||[]).some(a=>a.split(":")[0]===g);
+const inSub = (d,g,sub) => (d.grp===g && d.sub===sub) || (d.also||[]).includes(g+":"+sub);
 for(const id in DRUGS) if(!DRUGS[id].spec) DRUGS[id].spec="psych";
 Object.assign(DRUGS, ADRUGS);
+const AQT = {
+ propofol:["known","No QT warning in the US label, but CredibleMeds lists it as Known Risk.","CredibleMeds: Known Risk","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e3105799-a4b6-f3f4-e6e2-b2b29bbdb538"],
+ etomidate:["none","No QT language in label; only general arrhythmias listed.","Not listed","https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=b7ed5bf8-ba75-44dc-8f81-96b4ad5766be"],
+ ketamine:["none","No QT language in label; general arrhythmias only.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=14e8f864-8b8a-4e7e-8439-e510d3107063"],
+ midazolam:["none","No QT language in label.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9e3bd5d3-36b3-471c-b8cc-ef48645700c2"],
+ dexmedetomidine:["possible","Postmarketing QT prolongation listed; main rhythm risk is bradycardia, sinus arrest and heart block.","CredibleMeds: Possible Risk","https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=92b7ddaa-e45a-4b64-a802-bb5df8771dd6"],
+ fentanyl:["none","The label's QT warning is about co-given neuroleptics (e.g., droperidol), not fentanyl itself.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ce5db1c2-feb1-4ad2-847a-d02e865bd47e"],
+ remifentanil:["none","No QT language in label.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4dbcb8f9-1987-4b66-bd2f-d251fda0be10"],
+ hydromorphone:["none","No QT language in label.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b325028e-0722-4c8c-9fdb-ab6fb0dc460c"],
+ morphine:["none","No QT language in label.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9362eca1-2bc9-4f72-8895-0b9179bfeb2b"],
+ methadone:["known","Boxed warning: life-threatening QT prolongation and torsades (IV and PO); monitor rhythm when starting or titrating.","CredibleMeds: Known Risk","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=cedfe8fa-b57d-4cb1-a047-0af5a8ef199e"],
+ sufentanil:["none","No QT language in label.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=20293943-46ff-4345-1aa4-929b4e017a25"],
+ meperidine:["none","No QT language in label; caution in atrial flutter/SVT.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b31d1308-28c3-43f4-e0a6-2f3ed76b8975"],
+ succinylcholine:["none","No QT language; risks are bradycardia/asystole and hyperkalemic ventricular dysrhythmias (boxed).","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=04a4e6f5-6fa1-42e1-a3f9-21fca7786b15"],
+ rocuronium:["possible","Label W&P 5.9: pediatric ECG data show QTc prolongation when combined with general anesthetics; no link to rocuronium levels.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=309aeb1b-8022-4df7-8194-ae6529e3395c"],
+ vecuronium:["none","No QT language in label.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=dceeec01-2910-4489-8d70-9c0c711d17ab"],
+ cisatracurium:["none","No QT language in label.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=f78a07e2-0d3b-4460-b29e-8c10c90afbda"],
+ sugammadex:["none","Thorough QT study: no meaningful QTc change at 2x max dose; the bigger risk is marked bradycardia/arrest.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9e3eb206-5c35-2c93-e053-2a95a90a9df0"],
+ neostigmine:["none","No QT language; bradycardia risk, so give an anticholinergic first.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d2f55643-2b0d-4ef9-a9d8-b7138b314372"],
+ glycopyrrolate:["possible","Postmarketing QTc prolongation and heart block reported when combined with an anticholinesterase.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=d5a18d74-0d40-46e2-aa0a-41d18609a536"],
+ naloxone:["none","No QT language; abrupt reversal can cause VT/VF and pulmonary edema.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8535cc84-ad4a-4d67-8480-fb5a2e3406f8"],
+ flumazenil:["none","No QT language; avoid in serious tricyclic overdose (wide QRS, dysrhythmias).","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=11882e93-aa62-4d24-895c-6f01d97fc730"],
+ phenylephrine:["none","No QT language in label.","Not in TdP categories; CredibleMeds Special Risk (avoid in congenital LQTS)","https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=bf7daa65-2a6c-4d59-a6f3-3af70edcc7e2"],
+ ephedrine:["none","No QT language in label.","Not in TdP categories; CredibleMeds Special Risk (avoid in congenital LQTS)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e92f3eda-33eb-4b34-9e8b-db8d32a5dbd9"],
+ epinephrine:["none","No QT language; may cause ventricular arrhythmias, especially with halogenated agents.","Not in TdP categories; CredibleMeds Special Risk (avoid in congenital LQTS)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3b7a4364-668d-4eb2-a20c-04adc35aabe4"],
+ norepinephrine:["none","No QT language; arrhythmias possible, especially with halogenated anesthetics.","Not in TdP categories; CredibleMeds Special Risk (avoid in congenital LQTS)","https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=c4de72a8-2a75-4984-ce90-e4870226dc12"],
+ vasopressin:["possible","Overdose section mentions ventricular tachyarrhythmias, including torsades.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b1147beb-743e-4c62-8927-91192447f8b8"],
+ lidocaine:["none","No QT language; toxicity causes conduction block and arrhythmias.","Not listed","https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=ffc87dfb-0e26-4b42-80fd-3fb7690119e3"],
+ bupivacaine:["none","No QT language; toxic levels cause AV block, VT/VF and arrest.","Not listed","https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=7d94e8e0-0d1e-4af3-973a-a480d7d51737"],
+ ropivacaine:["none","No QT language; toxic levels cause ventricular arrhythmias, with less QRS widening than bupivacaine.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6a2f1f6d-026f-4f39-aee0-5b75b8eb5c02"],
+ sevoflurane:["known","Label warning: QT prolongation with torsades (rarely fatal); use caution in congenital LQTS.","CredibleMeds: Known Risk","https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=c9aa6489-5a36-44ed-9512-b996833d82f7"],
+ desflurane:["known","Label W&P 5.4: QT prolongation with torsades reported; monitor rhythm in susceptible patients.","Not listed","https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=3fe3d468-d283-4dd0-a1a7-29291a9b2d0b"],
+ isoflurane:["known","Label W&P 5.6: QT prolongation with rare torsades; monitor QT in susceptible patients.","CredibleMeds: Possible Risk","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3d30eb8d-a62e-475f-926b-78ba63bee9c8"],
+ nitrous_oxide:["none","DailyMed has only a container label (no prescribing information); no QT language.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=eebd56c1-4ab3-409b-9767-e54dc42f2fce"],
+ ondansetron:["known","Dose-dependent QT prolongation; torsades reported. Avoid in congenital long QT; correct K⁺/Mg²⁺ first.","CredibleMeds: Known Risk","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a5fe05bc-a7a5-4131-8c4d-2edd113441ec"],
+ granisetron:["known","Label W&P 5.2: QT prolongation reported; no adequate thorough QT study.","CredibleMeds: Possible Risk","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e07862df-f324-4575-a1ef-f7e1cbab4c7a"],
+ palonosetron:["possible","Thorough QT study negative, but 'QT prolongation' appears among common PONV adverse reactions.","CredibleMeds: Possible Risk","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=903d7aba-277e-6d28-4fee-fd2d605ab6a9"],
+ dexamethasone:["none","No QT language in label.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2b626a48-c7aa-4443-9164-a08ff069ccd1"],
+ droperidol:["known","Boxed warning: QT prolongation/torsades even at low doses; 12-lead ECG first and do not give if QTc >440 ms (M) or >450 ms (F).","CredibleMeds: Known Risk","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=147e033d-d997-4ef6-8bb5-a9ba372590b2"],
+ haloperidol:["known","Label warns of QT prolongation, torsades and sudden death; risk is higher with IV use (off-label) or high doses.","CredibleMeds: Known Risk","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e69578b5-3e98-4fc6-a5ad-61e8ec4cb8c1"],
+ amisulpride:["known","Label W&P 5.1: dose-dependent QT prolongation (~5 ms at 5 mg); avoid in congenital LQTS or with droperidol.","CredibleMeds: Conditional Risk","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ab23bc6e-b6a8-165f-e053-2a95a90ab144"],
+ metoclopramide:["possible","No QT language in label; CredibleMeds rates it Conditional Risk.","CredibleMeds: Conditional Risk","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=cccf04bd-7463-40b8-a41f-cb1093c358d7"],
+ promethazine:["possible","No QT language in label (2006 label); CredibleMeds rates it Possible Risk.","CredibleMeds: Possible Risk","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=aaaf4d12-4e68-45f9-ac10-2238480a0160"],
+ scopolamine:["none","No QT language in label (transdermal).","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b877a694-a1d0-4280-937a-a06820b12a88"],
+ aprepitant:["none","Thorough QT study (fosaprepitant 200 mg) showed no QTc effect; contraindicated with pimozide (CYP3A4).","Not listed","https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=696f9e80-9cae-403b-de9e-078343ce4713"],
+ dantrolene:["none","No QT language in label.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8f7b3ac0-604d-4c78-b545-5e0f8ea3d698"],
+ acetaminophen:["none","No QT language in label (IV).","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9a38f63a-8852-6dab-e053-2a95a90a90d6"],
+ ketorolac:["none","No QT language in label.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=0c2c75c9-ed7b-46a8-9543-429bf2d8f090"]
+};
+if(AQT.nitrous_oxide&&!AQT.nitrous) AQT.nitrous=AQT.nitrous_oxide;
+
+if(typeof AQT!=="undefined" && AQT.haloperidol && !AQT.haloperidol_ponv) AQT.haloperidol_ponv=AQT.haloperidol;
+const qtOf = id => { const q=(typeof AQT!=="undefined")&&AQT[id]; return q&&q[0]&&q[0]!=="none"?q:null; };
+const QTLV = {known:["avoid","Known risk"], possible:["caution","Possible"]};
 const AORDER = AGROUPS.flatMap(([g])=>Object.keys(ADRUGS).filter(id=>ADRUGS[id].grp===g));
 const SPECS = {
   psych:{name:"Psychiatry", slug:"psychiatry", blurb:"Antidepressants, antipsychotics, mood stabilizers, ADHD, anxiety, sleep, and addiction medications.", groups:GROUPS, order:ORDER,
          cats:CONDS, catOf:(d,c)=>d.conds.includes(c), tabs:[["dex","Drugs"],["path","Pathways"],["cmp","Compare"],["reg","Regimen"]], start:"home",
          title:"Find a psychiatric medication", lede:"Dosing, safety, side effects, and receptor profiles for commonly used psychiatric drugs."},
-  anes:{name:"Anesthesiology", slug:"anesthesia", blurb:"Every dose for your patient on one screen: induction, paralysis, pressors, reversal, plus crisis protocols.", groups:AGROUPS, order:AORDER,
-         cats:AGROUPS.map(g=>g[1]), catOf:(d,c)=>AGROUPS.find(g=>g[1]===c)?.[0]===d.grp, tabs:[["dex","Drugs"],["sheet","Case doses"],["crisis","Crises"]], start:"home",
+  anes:{name:"Anesthesiology", slug:"anesthesia", blurb:"Every dose for your patient on one screen: induction, analgesia, paralysis, pressors, antiemetics, reversal, plus crisis protocols.", groups:AGROUPS, order:AORDER,
+         cats:AGROUPS.map(g=>g[1]), catOf:(d,c)=>{ const g=AGROUPS.find(x=>x[1]===c); return !!g && inGrp(d,g[0]); }, subs:ASUBS, tabs:[["dex","Drugs"],["sheet","Case doses"],["crisis","Crises"]], start:"home",
          title:"Find an anesthesia drug", lede:"Weight-based doses, onset and duration, hemodynamic effects, and reversal for common perioperative drugs."}
 };
 const SPEC_ORDER = ["psych","anes"];
@@ -3218,7 +3575,7 @@ function doseResult(dz, id){
   if(!fitsWeight(dz)) return {main:"Not for this weight", sub:`This dose applies to ${weightRule(dz)}. Choose the dose for this patient's weight.`, perkg:CALC.isPerKg(dz.unit), off:true, vol:""};
   const r=CALC.compute(dz, state.pt);
   const perkg=CALC.isPerKg(dz.unit);
-  const range=CALC.fmtRange(dz.lo,dz.hi,dz.unit);
+  const range=(dz.lo===dz.hi||dz.hi==null)?`${+dz.lo} ${dz.unit}`:`${+dz.lo}–${+dz.hi} ${dz.unit}`;  // authored values shown exactly; only computed doses are rounded
   const conc=concFor(id, dz);
   let main, sub="", vol="";
   if(!perkg){ main=range; vol=volText({lo:dz.lo,hi:dz.hi}, dz.unit, conc); }
@@ -3265,6 +3622,7 @@ function renderACard(){
   const dz=list[state.ause]||list[0];
   const chips=[["Blood pressure",d.fx.bp],["Heart rate",d.fx.hr],["Breathing",d.fx.resp]];
   if(d.mh) chips.push(["MH trigger",["avoid","Triggers MH","Volatile anesthetics and succinylcholine can trigger malignant hyperthermia. Avoid in susceptible patients."]]);
+  const qt=qtOf(id); if(qt) chips.push(["QTc",[QTLV[qt[0]][0],QTLV[qt[0]][1],(qt[1]||"")+(qt[2]?` (${qt[2]})`:"")]]);
   if(d.boxed) chips.push(["Boxed warning",["avoid","Yes",d.boxed]]);
   const open=chips.find(c=>c[0]===state.chip);
   const chipsHTML=`<div class="chips" role="group" aria-label="Effects at a glance">${chips.map(([l,[lv,w]])=>{ const bx=l==="Boxed warning", mh=l==="MH trigger";
@@ -3298,6 +3656,7 @@ function renderACard(){
         <div class="quick">
           <div><h3>Onset &amp; duration</h3>${timelineHTML(d.time)}</div>
           <div class="qrow"><span>Reversal</span><b>${rev}</b></div>
+          ${qt?`<div class="qrow"><span>QTc</span><div class="qtrow"><b class="lv-${QTLV[qt[0]][0]}">${QTLV[qt[0]][1]}</b> ${esc(qt[1]||"")} ${qt[3]?`<a href="${qt[3]}" target="_blank" rel="noopener">↗</a>`:""}<div class="qtalso">Also known QT risk: ${AORDER.filter(x=>x!==id&&qtOf(x)&&qtOf(x)[0]==="known").map(x=>`<button class="goto-n" data-goto="${x}">${esc(DRUGS[x].name)}</button>`).join(", ")}. Check K⁺ and Mg²⁺; ECG if combining.</div></div></div>`:""}
           ${d.contra.length?`<div class="qrow"><span>Avoid in</span><div class="tags">${d.contra.map(c=>`<span class="tag red">✕ ${esc(c)}</span>`).join("")}</div></div>`:""}
         </div>
       </section>
@@ -3326,7 +3685,7 @@ function phaseOf(id, dz){
   if(dz.ph) return dz.ph;
   switch(d.grp){
     case "induction": return isRate(dz.unit) ? "maint" : "induction";
-    case "opioid": return isRate(dz.unit) ? "maint" : (/induction/i.test(dz.use) ? "induction" : "analgesia");
+    case "analgesic": return d.sub!=="Opioids" ? "analgesia" : isRate(dz.unit) ? "maint" : (/induction/i.test(dz.use) ? "induction" : "analgesia");
     case "nmb": return "paralysis";
     case "pressor": return "pressor";
     case "reversal": return "reversal";
@@ -3360,7 +3719,7 @@ function renderSheet(){
       const res=doseResult(dz,id);
       const needsHt = ["LBW","IBW","IBW30","AdjBW"].includes(dz.basis) && (!(state.pt.cm>0) || !state.pt.sex);
       const htTag = needsHt ? ` <span class="httag">add ${!(state.pt.cm>0)&&!state.pt.sex?"height & sex":!(state.pt.cm>0)?"height":"sex"}</span>` : "";
-      const line=`<button class="sr" data-row="${key}" aria-expanded="${open}"><span class="sr-n">${d.name}${dz.sl && !(perDrug[id]===1 && (REDUNDANT[k]||[]).includes(dz.sl))?` <span class="sr-u">${esc(dz.sl)}</span>`:""}${htTag}</span><span class="sr-d">${esc(res.main)}</span><span class="sr-v">${esc(res.vol||"")}</span></button>`;
+      const line=`<button class="sr" data-row="${key}" aria-expanded="${open}"><span class="sr-n">${d.name}${dz.sl && !(perDrug[id]===1 && (REDUNDANT[k]||[]).includes(dz.sl))?` <span class="sr-u">${esc(dz.sl)}</span>`:""}${htTag}${qtOf(id)&&qtOf(id)[0]==="known"?' <span class="httag qt">QT</span>':""}</span><span class="sr-d">${esc(res.main)}</span><span class="sr-v">${esc(res.vol||"")}</span></button>`;
       if(!open) return line;
       return line + `<div class="sr-x">
         <p><b>${esc(dz.use)}</b>${dz.route?` · ${esc(dz.route)}`:""}</p>
@@ -3816,13 +4175,16 @@ function listHTML(q, cond){
   q=(q||"").trim().toLowerCase();
   const ok = id => { const d=DRUGS[id];
     return (!q || (d.name+" "+(d.brand||"")+" "+d.cls).toLowerCase().includes(q)) && (!cond || cond==="All" || spec().catOf(d,cond)); };
+  const row = id=>{ const d=DRUGS[id];
+      return `<button class="entry" data-id="${id}" aria-current="${id===state.drug}"><span class="dot" style="background:${col(id)}"></span><b>${d.name}</b><small>${esc(d.brand||"")}</small></button>`; };
+  const SUBS = spec().subs||{};
   return spec().groups.map(([g,label])=>{
-    const ids = spec().order.filter(id=>DRUGS[id].grp===g && ok(id));
-    if(!ids.length) return "";
-    return `<div class="grp-h">${label}</div>` + ids.map(id=>{
-      const d=DRUGS[id];
-      return `<button class="entry" data-id="${id}" aria-current="${id===state.drug}"><span class="dot" style="background:${col(id)}"></span><b>${d.name}</b><small>${esc(d.brand||"")}</small></button>`;
-    }).join("");
+    if(spec().subs && cond && cond!=="All" && label!==cond) return "";
+    const subs = SUBS[g];
+    if(!subs){ const ids = spec().order.filter(id=>DRUGS[id].grp===g && ok(id)); return ids.length?`<div class="grp-h">${label}</div>`+ids.map(row).join(""):""; }
+    const plain = spec().order.filter(id=>DRUGS[id].grp===g && !DRUGS[id].sub && ok(id));
+    const parts = subs.map(sb=>{ const ids=spec().order.filter(id=>inSub(DRUGS[id],g,sb) && ok(id)); return ids.length?`<div class="grp-s">${esc(sb)}</div>`+ids.map(row).join(""):""; }).join("");
+    return (plain.length||parts)?`<div class="grp-h">${label}</div>`+plain.map(row).join("")+parts:"";
   }).join("");
 }
 function renderHome(){
