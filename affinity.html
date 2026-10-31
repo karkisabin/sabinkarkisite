@@ -6,12 +6,16 @@
 <meta name="description" content="Affinity: psychiatric medication cards and regimen burden checker by Sabin Karki.">
 <title>Affinity</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script>/* apply saved look before first paint */
+(function(){ try{ var r=document.documentElement, st=localStorage.getItem("affinity.style"), md=localStorage.getItem("affinity.mode");
+  if(st==="swiss") r.setAttribute("data-style","swiss"); if(md==="light"||md==="dark") r.setAttribute("data-theme",md); }catch(e){} })();
+</script>
 <style>
-/* Layout: red "dex" band on top; drug index rail + one-page card (overview | side effects / mechanism); regimen view stacks burden bars and interaction flags. */
+/* Layout: neutral top band with one cobalt accent (color is reserved for safety and drug class); drug index rail + one-page card (overview | side effects / mechanism); regimen view stacks burden bars and interaction flags. */
 :root{
-  --bg:#eef1f4; --surface:#ffffff; --surface-2:#f6f8fa; --ink:#16202b; --muted:#5a6676; --line:#dbe1e7;
-  --accent:#c0283b; --accent-ink:#ffffff;
+  --bg:#fafaf8; --surface:#ffffff; --surface-2:#f3f3f0; --ink:#111111; --muted:#5f5f5a; --line:#e4e4df;
+  --accent:#2b4eff; --accent-ink:#ffffff;
   --c-sertraline:#16907f; --c-escitalopram:#2a74c9; --c-bupropion:#c47f0c; --c-quetiapine:#7552c4; --c-aripiprazole:#bd3b86;
   --sev-avoid:#b9262a; --sev-adjust:#a8680a; --sev-monitor:#2c67a8; --ok:#2f7d4f;
   --f-display:"Figtree", "Proxima Nova", "Helvetica Neue", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -19,32 +23,48 @@
   --f-mono:"Figtree", "Proxima Nova", "Helvetica Neue", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#0e1318; --surface:#161c23; --surface-2:#1b222b; --ink:#e5eaf0; --muted:#95a1b0; --line:#29323d;
-  --accent:#a8202f; --accent-ink:#ffffff;
+  --bg:#0d0d0e; --surface:#17171a; --surface-2:#1e1e22; --ink:#f2f2f0; --muted:#9c9c96; --line:#2c2c30;
+  --accent:#6e86ff; --accent-ink:#ffffff;
   --c-sertraline:#3cc2ae; --c-escitalopram:#5c9ff0; --c-bupropion:#e8a93a; --c-quetiapine:#a184ec; --c-aripiprazole:#e46cb0;
   --sev-avoid:#f0676a; --sev-adjust:#eaa53c; --sev-monitor:#6aa6ea; --ok:#5fc08a; color-scheme:dark }}
 :root[data-theme="dark"]{
-  --bg:#0e1318; --surface:#161c23; --surface-2:#1b222b; --ink:#e5eaf0; --muted:#95a1b0; --line:#29323d;
-  --accent:#a8202f; --accent-ink:#ffffff;
+  --bg:#0d0d0e; --surface:#17171a; --surface-2:#1e1e22; --ink:#f2f2f0; --muted:#9c9c96; --line:#2c2c30;
+  --accent:#6e86ff; --accent-ink:#ffffff;
   --c-sertraline:#3cc2ae; --c-escitalopram:#5c9ff0; --c-bupropion:#e8a93a; --c-quetiapine:#a184ec; --c-aripiprazole:#e46cb0;
   --sev-avoid:#f0676a; --sev-adjust:#eaa53c; --sev-monitor:#6aa6ea; --ok:#5fc08a; color-scheme:dark }
 
 *{box-sizing:border-box}
+/* Swiss box style: grotesk type, square corners, hard rules, a solid drug-class band. */
+:root[data-style="swiss"]{--f-display:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;--f-body:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;--f-mono:"IBM Plex Mono",ui-monospace,monospace;--bg:#ffffff;--surface:#ffffff;--surface-2:#f4f4f2;--line:#d6d6d2;--accent:#111111;--accent-ink:#ffffff}
+:root[data-style="swiss"][data-theme="dark"]{--bg:#0b0b0c;--surface:#0b0b0c;--surface-2:#18181a;--line:#38383c;--accent:#f2f2f0;--accent-ink:#0b0b0c}
+@media (prefers-color-scheme: dark){ :root[data-style="swiss"]:not([data-theme="light"]){--bg:#0b0b0c;--surface:#0b0b0c;--surface-2:#18181a;--line:#38383c;--accent:#f2f2f0;--accent-ink:#0b0b0c} }
+[data-style="swiss"] *:not(.lens){border-radius:0 !important}
+[data-style="swiss"] .panel,[data-style="swiss"] .usebox,[data-style="swiss"] .cc,[data-style="swiss"] .dosebox{border:1px solid var(--ink);box-shadow:none}
+[data-style="swiss"] .card-head{border-bottom:1.5px solid var(--ink);border-left:14px solid var(--drug);padding-left:14px}
+[data-style="swiss"] .card-head h1{font-weight:600;letter-spacing:-.025em}
+[data-style="swiss"] .chip{background:var(--drug);color:var(--surface);text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+[data-style="swiss"] .sc{background:transparent;border-color:var(--ink)}
+[data-style="swiss"] .panel h2{text-transform:uppercase;letter-spacing:.06em;font-size:13px;border-bottom:1.5px solid var(--ink);padding-bottom:8px}
+[data-style="swiss"] .cc.top{border-top:6px solid var(--drug)}
+[data-style="swiss"] .entry .dot{border-radius:0}
+[data-style="swiss"] .band{border-bottom-width:3px}
+[data-style="swiss"] code,[data-style="swiss"] .num,[data-style="swiss"] .dz-main{font-family:var(--f-mono)}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14.5px;line-height:1.5;font-variant-numeric:tabular-nums}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--accent)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 button,select,input{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1280px;margin:0 auto}
 
 /* top band */
-.band{background:var(--accent);color:var(--accent-ink);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.band{background:var(--bg);color:var(--ink);border-bottom:1.5px solid var(--ink);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
 .band .wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-block:10px}
 .mark{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:700;font-size:22px;letter-spacing:-.01em}
-.lens{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#bfe6ff 0 18%,#2d8fd6 40%,#0f4f86 100%);box-shadow:0 0 0 3px rgba(255,255,255,.9)}
-.views{display:flex;gap:4px;background:rgba(0,0,0,.18);padding:3px;border-radius:999px}
-.views button{border:0;background:transparent;color:var(--accent-ink);padding:6px 14px;border-radius:999px;cursor:pointer;font-weight:600}
-.views button[aria-pressed="true"]{background:var(--accent-ink);color:var(--accent)}
-.badge{margin-left:auto;font-size:12px;opacity:.92;border:1px solid rgba(255,255,255,.5);padding:3px 10px;border-radius:999px}
+.lens{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#bfe6ff 0 18%,#2d8fd6 40%,#0f4f86 100%);box-shadow:0 0 0 1.5px var(--ink)}
+.views{display:flex;gap:2px;background:transparent;padding:3px;border-radius:999px}
+.views button{border:0;background:transparent;color:var(--ink);padding:6px 14px;border-radius:999px;cursor:pointer;font-weight:600}
+.views button:hover{background:var(--surface-2)}
+.views button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.badge{margin-left:auto;font-size:12px;color:var(--muted);border:1px solid var(--line);padding:3px 10px;border-radius:999px}
 
 main{padding-block:20px 40px}
 
@@ -213,8 +233,12 @@ button.mark{border:0;background:transparent;color:inherit;cursor:pointer;padding
 .about-more[open] summary{margin-bottom:8px}
 @media (max-width:640px){ .condgrid{grid-template-columns:repeat(2,minmax(0,1fr))} .tools{grid-template-columns:minmax(0,1fr)} }
 .specwrap{position:relative}
-.specbtn{border:1px solid rgba(255,255,255,.55);background:rgba(0,0,0,.14);color:var(--accent-ink);border-radius:999px;padding:6px 12px;font-weight:600;cursor:pointer}
+.specbtn{border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:6px 12px;font-weight:600;cursor:pointer}
 .specmenu{position:absolute;top:calc(100% + 6px);left:0;min-width:200px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:6px;z-index:30;display:flex;flex-direction:column}
+.setbtn{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;width:32px;height:32px;padding:0;font-size:17px;line-height:1;font-weight:600;cursor:pointer;white-space:nowrap}
+.setmenu{left:auto;right:0;min-width:250px;padding:12px;gap:4px}
+.setmenu .seg{margin-bottom:8px}.setmenu .seg button{border:0;background:transparent;padding:6px 12px;cursor:pointer;font-weight:600}
+.setmenu .seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
 .specmenu button{border:0;background:transparent;text-align:left;padding:9px 10px;border-radius:6px;cursor:pointer;font-weight:500}
 .specmenu button:hover,.specmenu button[aria-current="true"]{background:var(--surface-2);font-weight:700}
 .speccards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:10px}
@@ -421,6 +445,54 @@ body.mini-open{overflow:hidden}
 .pathpick{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 .pathsub{margin-bottom:12px}
 .fl-gap{width:100%;max-width:560px;border-top:2px dashed var(--line);margin:22px 0 14px}
+.ckt-r{display:flex;justify-content:space-between;align-items:center;gap:8px;height:30px;border-bottom:1px solid var(--line);font-size:13.5px}
+.ckt-r:last-child{border-bottom:0}.ckt-r.none b{color:var(--muted);font-weight:500}.ckt-na{font-size:11.5px;color:var(--muted)}
+.usebox{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;margin:14px 0 4px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.usebox h3{margin:0 0 4px}
+@media (max-width:640px){.usebox{grid-template-columns:1fr}}
+ul.use{list-style:none;margin:0 0 6px;padding:0;font-size:14px;line-height:1.35}
+ul.use li{position:relative;padding:3px 0 3px 20px}
+ul.use li::before{position:absolute;left:0;top:3px;font-weight:700}
+ul.use li.y::before{content:"✓";color:var(--ok)}
+ul.use li.n::before{content:"!";color:var(--sev-adjust);left:4px}
+.use-src{grid-column:1/-1;margin:2px 0 0;font-size:11.5px;color:var(--muted)}
+.use-src a{color:inherit}
+#laicard{scroll-margin-top:120px}
+.rxjump{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}.rxjump a{font-size:13px;font-weight:600;color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--surface)}
+.rxfam{font-family:var(--f-display);font-size:18px;margin:26px 0 10px;scroll-margin-top:110px}
+.rxgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:12px}
+.rxc{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;scroll-margin-top:110px}
+.rxc.flash{outline:2px solid var(--accent);outline-offset:2px}
+.rxh{margin:0 0 4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}.rxh b{font-size:18px}.rxh span{font-size:12.5px;color:var(--muted);font-weight:500}
+.rxn{margin:0 0 8px;font-size:14px;line-height:1.45}
+.rxa{margin-top:6px}.rxl{margin:0 0 2px;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.rxd{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin:8px 0 0;padding-top:8px;border-top:1px solid var(--line);font-size:12.5px}.rxd>span{color:var(--muted);font-weight:600;margin-right:2px}
+.rxdrug{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:transparent;border-radius:999px;padding:2px 9px;font-size:12.5px;cursor:pointer;color:var(--ink)}
+.rxdrug i{width:7px;height:7px;border-radius:50%;background:var(--drug)}
+.rxlink{border:0;background:none;padding:0;font:inherit;font-weight:700;font-size:14.5px;color:var(--ink);cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;display:block;text-align:left}
+[data-style="swiss"] .rxc{border-color:var(--ink)}
+.laidose{display:flex;flex-direction:column;gap:2px}.laidose b{font-weight:600;color:var(--muted);font-size:12px;margin-right:4px}
+.views{max-width:100%;overflow-x:auto;scrollbar-width:none}.views::-webkit-scrollbar{display:none}.views button{white-space:nowrap}
+@media (max-width:520px){ .views{gap:0} .views button{padding:6px 8px;font-size:14px} }
+.laibox{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:6px}
+.laiseg{flex-wrap:wrap;margin-bottom:8px}.laiseg button{border:0;background:transparent;padding:6px 10px;cursor:pointer;font-weight:600;font-size:13px}
+.laiseg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.laihead{margin:0 0 8px;font-size:13.5px}
+.laidl{display:grid;grid-template-columns:120px minmax(0,1fr);gap:6px 12px;margin:0;font-size:13.5px;line-height:1.4}
+.laidl dt{color:var(--muted);font-size:12px;font-weight:600;padding-top:1px}.laidl dd{margin:0}.laidl dd.muted{color:var(--muted)}
+@media (max-width:520px){.laidl{grid-template-columns:1fr}.laidl dd{margin-bottom:4px}}
+table.laiconv{border-collapse:collapse;margin-top:6px;font-size:12.5px}table.laiconv th,table.laiconv td{border:1px solid var(--line);padding:3px 8px;text-align:left}table.laiconv th{font-weight:600;background:var(--surface-2)}
+.linkbtn{border:0;background:none;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font:inherit}
+.laipage .pagetitle{font-family:var(--f-display);font-size:clamp(26px,3.5vw,34px);margin:4px 0 6px;letter-spacing:-.02em}
+.laiwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;margin:12px 0}
+table.laitab{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+table.laitab th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line)}
+table.laitab td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.laitab tr.laigrp td{font-weight:700;padding-top:14px;border-bottom:2px solid var(--drug);color:var(--drug)}
+table.laitab tr.laigrp .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--drug);margin-right:8px}
+table.laitab .goto-n{border:0;background:transparent;padding:0;cursor:pointer;color:var(--ink);font:inherit;font-weight:600;text-decoration:underline;text-underline-offset:3px;text-align:left}
+table.laitab td.ov-none{color:var(--ok);font-weight:600}table.laitab td.muted{color:var(--muted)}
+[data-style="swiss"] .laiwrap,[data-style="swiss"] .laibox{border-color:var(--ink)}
 .kx{display:grid;gap:2px;margin-bottom:6px}
 .kx-r{display:grid;grid-template-columns:78px minmax(0,1fr) auto;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
 .kx-r:last-child{border-bottom:0}
@@ -551,7 +623,16 @@ details.allbind[open]>summary{margin-bottom:6px}
     </div>
     <div class="views" id="views" role="group" aria-label="View"></div>
     <span class="badge">Prototype · verify before prescribing</span>
-    <a href="/" style="color:var(--accent-ink);font-size:13px;text-decoration:underline">← sabinkarki.com</a>
+    <div class="specwrap setwrap">
+      <button class="setbtn" id="setbtn" aria-haspopup="dialog" aria-expanded="false" aria-label="Display settings" title="Display settings">⚙</button>
+      <div class="specmenu setmenu" id="setmenu" role="dialog" aria-label="Display settings" hidden>
+        <span class="ctx-label">Style</span>
+        <div class="seg" role="group" aria-label="Style"><button data-setstyle="modern">Modern</button><button data-setstyle="swiss">Swiss box</button></div>
+        <span class="ctx-label">Appearance</span>
+        <div class="seg" role="group" aria-label="Appearance"><button data-setmode="system">System</button><button data-setmode="light">Light</button><button data-setmode="dark">Dark</button></div>
+      </div>
+    </div>
+    <a href="/" style="color:var(--ink);font-size:13px;text-decoration:underline">← sabinkarki.com</a>
   </div>
 </header>
 
@@ -577,6 +658,8 @@ details.allbind[open]>summary{margin-bottom:6px}
     </div>
   </section>
   <section id="path" hidden><div id="pathbody"></div></section>
+  <section id="lai" class="laipage" hidden><div id="laibody"></div></section>
+  <section id="rx" class="laipage" hidden><div id="rxbody"></div></section>
   <div id="mini" class="mini" hidden></div>
   <section id="cmp" hidden>
     <div class="reg-head"><h1>Compare</h1><p>Pick up to three medications. Doses shown are adult doses for the first listed indication.</p></div>
@@ -1029,6 +1112,18 @@ const DRUGS = {
    peds:{"Psychosis or Tourette's (ages 3–12)":D("0.5 mg/day","0.05–0.15 mg/kg/day","0.15 mg/kg/day","Increase by 0.5 mg every 5–7 days.")},
    older:{"Agitation or psychosis":D("0.5–1 mg/day","Lowest effective dose","Much lower than adult","Watch EPS, falls, QTc.")}
   }},
+ fluphenazine:{ name:"Fluphenazine", brand:"Prolixin (generics only)", cls:"First-gen antipsychotic", grp:"ap", conds:["Schizophrenia"], d6inh:1,
+  d6sub:"Mainly CYP2D6-metabolized; poor metabolizers or 2D6 inhibitors may raise levels. Watch EPS.",
+  mech:"High-potency piperazine phenothiazine. Potent D2 antagonist with notable α1 and modest H1 binding, and almost no muscarinic binding.",
+  receptors:[["D2",0.8,"Antagonist"],["α1",9.5,"Antagonist"],["H1",42,"Antagonist"],["5-HT2A",80,"Antagonist"],["α2",490,"Antagonist"],["M1",2165,"Antagonist"]],
+  cyp:{sub:"2D6 (primary)", inh:"CYP2D6 (in vitro, Ki 9.4 µM)", note:"The label gives no CYP data. 2D6 inhibitors (fluoxetine, paroxetine, quinidine) may raise levels."},
+  burden:{qtc:1,sed:1,metab:1,eps:3,prl:3,ac:0,cv:1},
+  ae:[["common","EPS: dystonia, parkinsonism, akathisia"],["common","Drowsiness, prolactin elevation"],["serious","Tardive dyskinesia, NMS"],["serious","Leukopenia/agranulocytosis, cholestatic jaundice"]],
+  boxed:{peds:DEMENTIA, adult:DEMENTIA, older:DEMENTIA},
+  agenote:{peds:"Safety and efficacy in children not established (label).", adult:"High-potency FGA. Use the lowest effective dose to limit EPS/TD. Can bridge to decanoate.", older:"Start 1–2.5 mg/day (label). High EPS/TD and fall risk. Boxed dementia mortality warning."},
+  s:{preg:["caution","Caution","Label: safety not established. Third-trimester exposure risks neonatal EPS/withdrawal."],lact:["caution","Limited data","No published breastfeeding experience (LactMed). Other antipsychotics may be preferred."],hep:["avoid","Contraindicated","Label: liver damage precludes use. Cholestatic jaundice reported."],ren:["caution","Monitor","Monitor renal function long-term. Stop if BUN becomes abnormal (label)."],
+   contra:["Suspected or established subcortical brain damage","Comatose or severely depressed states; large doses of hypnotics","Blood dyscrasia or liver damage","Hypersensitivity (phenothiazine cross-sensitivity possible)"],monitor:["EPS / AIMS","CBC, frequently in first months if low WBC history","Liver and renal function","Prolactin-related symptoms"]},
+  dosing:{ adult:{ "Psychotic disorders (oral)":D("2.5–10 mg/day divided q6–8h","Maintenance 1–5 mg/day, often once daily","40 mg/day","Adjust to response; once controlled, taper gradually to maintenance") }, peds:{}, older:{ "Psychotic disorders (oral)":D("1–2.5 mg/day","Adjust to response","Not stated in label","Adjust according to response") } }},
  clozapine:{ name:"Clozapine", brand:"Clozaril", cls:"Second-gen antipsychotic", grp:"ap", conds:["Schizophrenia"],
   mech:"Weak, loosely bound D2 antagonist with strong action at 5-HT2A, H1, M1, α1, and D4. The unique efficacy in treatment-resistant schizophrenia isn't fully explained.",
   receptors:[["H1",1.1,"Antagonist"],["5-HT2A",5.4,"Antagonist"],["M1",6.2,"Antagonist"],["α1",7,"Antagonist"],["5-HT2C",9.4,"Antagonist"],["D4",24,"Antagonist"],["D2",160,"Antagonist (fast off)"]],
@@ -3508,7 +3603,7 @@ const QTLV = {known:["avoid","Known risk"], possible:["caution","Possible"]};
 const AORDER = AGROUPS.flatMap(([g])=>Object.keys(ADRUGS).filter(id=>ADRUGS[id].grp===g));
 const SPECS = {
   psych:{name:"Psychiatry", slug:"psychiatry", blurb:"Antidepressants, antipsychotics, mood stabilizers, ADHD, anxiety, sleep, and addiction medications.", groups:GROUPS, order:ORDER,
-         cats:CONDS, catOf:(d,c)=>d.conds.includes(c), tabs:[["dex","Drugs"],["path","Pathways"],["cmp","Compare"],["reg","Regimen"]], start:"home",
+         cats:CONDS, catOf:(d,c)=>d.conds.includes(c), tabs:[["dex","Drugs"],["path","Pathways"],["cmp","Compare"],["reg","Regimen"],["rx","Receptors"]], start:"home",
          title:"Find a psychiatric medication", lede:"Dosing, safety, side effects, and receptor profiles for commonly used psychiatric drugs."},
   anes:{name:"Anesthesiology", slug:"anesthesia", blurb:"Every dose for your patient on one screen: induction, analgesia, paralysis, pressors, antiemetics, reversal, plus crisis protocols.", groups:AGROUPS, order:AORDER,
          cats:AGROUPS.map(g=>g[1]), catOf:(d,c)=>{ const g=AGROUPS.find(x=>x[1]===c); return !!g && inGrp(d,g[0]); }, subs:ASUBS, tabs:[["dex","Drugs"],["sheet","Case doses"],["crisis","Crises"]], start:"home",
@@ -4227,14 +4322,23 @@ function renderCompare(){
   const g=$("#cmpgrid");
   if(!sel.length){ g.style.gridTemplateColumns="1fr"; g.innerHTML=`<div class="empty">Choose a medication from the menu above, then add one or two more to see them side by side.</div>`; return; }
   g.style.gridTemplateColumns=`repeat(${sel.length}, minmax(240px, 1fr))`;
+  // Key targets aligned across columns: union of each drug's key targets, most clinically central first.
+  const KT={}, U=new Map();
+  sel.forEach(id=>{ KT[id]={}; (DRUGS[id].receptors?keyReceptors(id):[]).forEach(r=>r.tgt.split(" / ").forEach(t=>{ KT[id][t]=r; const v=U.get(t); if(v===undefined||r.rank<v) U.set(t,r.rank); })); });
+  const UT=[...U.keys()].sort((a,b)=>U.get(a)-U.get(b));
+  const ktCls=r=>r.kind==="tx"?(r.tag==="Main effect"?"kt-main":"kt-contrib"):"kt-l"+r.lv;
+  const ktRow = UT.length ? [["", (d,id)=>`<h3>Key targets</h3><div class="ckt">${UT.map(t=>{ const r=KT[id][t];
+      return `<div class="ckt-r${r?"":" none"}"><b>${esc(t)}</b>${r?`<span class="kt ${ktCls(r)}" title="${esc([r.tx,r.se].filter(Boolean).join(" · "))}">${esc(r.tag)}</span>`:`<span class="ckt-na">not key</span>`}</div>`; }).join("")}</div>`]] : [];
   const rows = [
     ["top", d=>`<p class="cname">${d.name}</p><div class="ccls">${esc(d.brand)} · ${d.cls}${d.sched?` · ${d.sched}`:""}</div>`],
+    ...(sel.some(id=>USE[id])?[["", (d,id)=>USE[id]?useHTML(id,true):`<p class="note" style="margin:0">No guidance yet.</p>`]]:[]),
     ["", d=>{ const b=[...new Set(Object.values(d.boxed))];
       const items=[["Pregnancy",d.s.preg],["Lactation",d.s.lact],["Hepatic",d.s.hep],["Renal",d.s.ren],["QTc",QTC[bv(d,"qtc")]],["Boxed warning",b.length?["avoid",b.map(x=>BOXLAB.get(x)).join(" · ")]:["ok","None"]]];
       return `<h3>Safety</h3>`+items.map(([l,[lv,w]])=>`<div class="cv lv-${lv}"><span>${l}</span><b>${esc(w)}</b></div>`).join(""); }],
     ["", d=>{ const a=d.dosing.adult||{}, k=Object.keys(a)[0];
       return `<h3>Adult dosing${k?` · ${esc(k)}`:""}</h3>` + (k?rulerHTML(a[k]):`<p class="note" style="margin:0">No adult FDA indication.</p>`); }],
     ["", d=>`<h3>Burden profile</h3><div class="meters">${DOMAINS.map(([k,label])=>{ const v=bv(d,k); return `<div class="meter"><span>${label}</span><span class="pips">${[1,2,3].map(i=>`<span class="pip ${i<=v?"l"+v:""}"></span>`).join("")}</span></div>`; }).join("")}</div>`],
+    ...ktRow,
     ["", d=>{ const ae=d.ae.filter(([k])=>k==="serious").map(([,t])=>`<li>${esc(t)}</li>`).join(""); return `<h3>Serious adverse effects</h3>${ae?`<ul class="serious">${ae}</ul>`:`<p class="note" style="margin:0">None listed.</p>`}`; }],
     ["", d=>`<h3>CYP</h3><p style="margin:0;font-size:13px">Inhibits: ${esc(d.cyp.inh)}</p>`],
     ["bottom", (d,id)=>`<button class="goto" data-goto="${id}">Open full card →</button>`]
@@ -4247,6 +4351,8 @@ function hashFor(){
   if(state.view==="cmp") return ["compare",...state.cmp].join(".");
   if(state.view==="reg") return ["regimen",...state.regimen].join(".");
   if(state.view==="path") return "pathway."+state.path;
+  if(state.view==="lai") return "lais";
+  if(state.view==="rx") return "receptors";
   if(state.view==="sheet") return "dosesheet";
   if(state.view==="crisis") return "crises";
   return spec().slug;
@@ -4259,6 +4365,8 @@ function readHash(){
   else if(k==="compare"){ state.spec="psych"; if(good.length) state.cmp=good.slice(0,3); state.view="cmp"; }
   else if(k==="pathway"){ state.spec="psych"; if(PATHS[ids[0]]) state.path=ids[0]; state.view="path"; }
   else if(k==="regimen"){ state.spec="psych"; if(good.length) state.regimen=new Set(good); state.view="reg"; }
+  else if(k==="receptors"){ state.spec="psych"; state.view="rx"; }
+  else if(k==="lais"){ state.spec="psych"; state.view="lai"; }
   else if(k==="dosesheet"){ state.spec="anes"; state.view="sheet"; }
   else if(k==="crises"){ state.spec="anes"; state.view="crisis"; }
   else { const sp=Object.keys(SPECS).find(x=>SPECS[x].slug===k); if(sp){ state.spec=sp; state.view=SPECS[sp].start; } else state.view="root"; }
@@ -4377,11 +4485,568 @@ function keyReceptors(id){
   const out=[]; for(const r of all){ const m=out.find(o=>o.tx===r.tx&&o.se===r.se&&o.tag===r.tag&&o.note===r.note); if(m) m.tgt+=" / "+r.tgt; else out.push({...r}); }
   return out.slice(0,6);
 }
+/* When to use: sourced reasons to choose or hesitate, vs classmates. */
+const USE = {
+ fluphenazine:{ pick:["Very inexpensive generic FGA","Label-defined oral-to-decanoate conversion path","Little sedation, orthostasis, anticholinergic burden"],
+   avoid:["High EPS and tardive dyskinesia risk","Contraindicated with liver damage or blood dyscrasia","Persistent prolactin elevation"],
+   src:[["Fluphenazine HCl tablets label (Upsher-Smith 2022)","https://ndclist.com/ndc/0832-6003/label"],["Fluphenazine HCl tablets label (Camber 2025)","https://www.camberpharma.com/wp-content/uploads/2026/05/2089823-PIL-FLUPHENAZINE-TAB-CAMB-US.pdf"],["Fluphenazine decanoate label (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8d7ba627-cf3f-4b94-aee8-8b44cc9400be"],["Carlat fluphenazine fact sheet","https://thecarlatreport.com/ext/resources/factsheets/MFB7e/FLUPHENAZINE-(Prolixin)-Fact-Sheet-[G].pdf"]] },
+sertraline:{pick:["Breastfeeding (first-line; low infant serum levels)","Post-MI or unstable angina (studied in SADHART)","Broad labels: MDD, OCD, panic, PTSD, SAD, PMDD","Pediatric OCD from age 6"],
+ avoid:["GI-sensitive patients (nausea 26%, diarrhea 20%)","CYP2D6 substrates may need dose reduction","QT risk factors: label urges caution"],
+ src:[["FDA label","https://nctr-crs.fda.gov/fdalabel/services/spl/set-ids/4f6f2412-8085-45bf-be4f-63e44490a34e/spl-doc"],["Breastfeeding meta-analysis (Arch Womens Ment Health 2015)","https://link.springer.com/article/10.1007/s00737-015-0499-y"],["SADHART (ACC summary)","https://www.acc.org/Latest-in-Cardiology/Clinical-Trials/2010/02/23/19/19/SADHART"]]},
+escitalopram:{pick:["Top efficacy plus acceptability (Cipriani 2018 NMA)","Few CYP interactions (no 3A4/2C19 inhibition)","Pediatric GAD from 7, MDD from 12","Start dose often effective (10 mg)"],
+ avoid:["Dose-related QTc prolongation; caution with QT risks","Narrow range: max 20 mg; 10 mg elderly/hepatic","Modest CYP2D6 inhibition (desipramine AUC doubled)"],
+ src:[["FDA label (Lexapro 2024)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2024/021365s041lbl.pdf"],["FDA label (generic, DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=be260933-66ea-486c-8e79-1a209417e9ef"],["NIHR summary of Cipriani 2018","https://evidence.nihr.ac.uk/alert/the-most-effective-antidepressants-for-adults-revealed-in-major-review"]]},
+fluoxetine:{pick:["Pediatric depression from 8, OCD from 7","Long half-life buffers missed doses, tapering","Bulimia nervosa (FDA-approved)","Once-weekly 90 mg option (Prozac Weekly)"],
+ avoid:["Strong CYP2D6 inhibitor (interaction-heavy regimens)","Needs 5-week washout before MAOI/thioridazine","Activation: anxiety, insomnia, nervousness"],
+ src:[["FDA label (Prozac)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2008/018936s083,020101s038,021235s010lbl.pdf"]]},
+citalopram:{pick:["Once-daily generic SSRI, simple dosing","Kinetics unaffected by CYP2D6 inhibitors"],
+ avoid:["Dose-dependent QTc; avoid long QT, bradycardia, hypokalemia","Avoid after recent MI or uncompensated HF","Max 20 mg: >60y, hepatic, 2C19 PM, omeprazole"],
+ src:[["FDA label (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c91684c7-fddb-4cf0-9711-b0484c8c7e8b"]]},
+paroxetine:{pick:["Broad anxiety labels: panic, SAD, GAD, PTSD, OCD","Menopausal hot flashes (7.5 mg Brisdelle)","High efficacy/acceptability in Cipriani 2018 NMA"],
+ avoid:["Pregnancy: first-trimester cardiac malformation risk","Strong CYP2D6 inhibitor; avoid with tamoxifen","Older adults: anticholinergic (Beers); discontinuation symptoms"],
+ src:[["FDA label (Paxil 2023)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2023/020031s082lbl.pdf"],["FDA label (Brisdelle)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/204516s009s014lbl.pdf"],["Beers anticholinergic list (Drugs.com)","https://drugs.com/article/anticholinergic-drugs-elderly.html"]]},
+fluvoxamine:{pick:["OCD (its only US indication)","Pediatric OCD from age 8"],
+ avoid:["Contraindicated with tizanidine, thioridazine, alosetron, pimozide","Inhibits 1A2/2C19/3A4: warfarin, clozapine, theophylline","Lower acceptability in NMA; BID above 100 mg"],
+ src:[["FDA label","https://www.accessdata.fda.gov/drugsatfda_docs/label/2023/021519s026lbl.pdf"],["NIHR summary of Cipriani 2018","https://evidence.nihr.ac.uk/alert/the-most-effective-antidepressants-for-adults-revealed-in-major-review"]]},
+venlafaxine:{pick:["Comorbid anxiety: labeled MDD, GAD, SAD, panic","Often tried after SSRI nonresponse (expert practice)"],
+ avoid:["Hypertension: dose-related BP rise; monitor","Overdose risk: more fatal than SSRIs","Marked discontinuation symptoms; taper slowly"],
+ src:[["FDA label (Effexor XR)","https://www.drugs.com/pro/effexor-xr.html"],["NIHR summary (NICE overdose caution)","https://evidence.nihr.ac.uk/alert/the-most-effective-antidepressants-for-adults-revealed-in-major-review"]]},
+duloxetine:{pick:["Depression with pain: DPN, fibromyalgia, musculoskeletal pain","Pediatric GAD from 7; fibromyalgia from 13"],
+ avoid:["Heavy alcohol use or chronic liver disease","Severe renal impairment (GFR <30): avoid","Potent 1A2 inhibitors (fluvoxamine); urinary hesitation"],
+ src:[["FDA label (Cymbalta)","https://uspl.lilly.com/cymbalta/cymbalta.html"]]},
+desvenlafaxine:{pick:["No titration: start dose is target (50 mg)","Not CYP2D6-metabolized (PMs, 2D6 inhibitors)","Simple renal dosing (25 mg daily if severe)"],
+ avoid:["No added benefit above 50 mg; MDD only","BP elevation; monitor, may need dose cut","Raises cholesterol, LDL, triglycerides"],
+ src:[["FDA label (Pristiq 2023)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2023/021992s051lbl.pdf"]]}
+,
+bupropion:{pick:["Sexual side effects a concern (minimal sexual dysfunction)","Weight concern (weight loss 14% vs 6% placebo)","Smoking cessation wanted (FDA-approved as Zyban)","Seasonal pattern (approved for SAD prevention)"],
+ avoid:["Seizure disorder, bulimia/anorexia (contraindicated)","Abrupt alcohol/benzo withdrawal (lowers seizure threshold)","Prominent insomnia/agitation, or key CYP2D6 substrates (e.g. tamoxifen)"],
+ src:[["FDA label (Wellbutrin XL)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/021515s049lbl.pdf"],["StatPearls","https://www.ncbi.nlm.nih.gov/books/NBK470212/"]]},
+mirtazapine:{pick:["Insomnia (sedating; dose at bedtime)","Poor appetite or low weight (stimulates appetite)","Sexual side effects a concern (less than SSRIs)","Nausea-prone patients (antiemetic effect)"],
+ avoid:["Obesity or metabolic syndrome (weight gain, lipids up)","Needs daytime alertness (drowsiness ~54%)","Older adults: monitor sodium (Beers: SIADH caution)"],
+ src:[["StatPearls","https://www.statpearls.com/point-of-care/25185"],["AGS Beers 2023","https://uconn-hub-dev.vercel.app/-/media/uch-intranet/pdfs/2023-american-geriatrics-society-beers-criteria-1.pdf"]]},
+trazodone:{pick:["Depression with insomnia (5-HT2A/H1/alpha-1 blockade)","Less sexual dysfunction, insomnia, anxiety than SSRIs"],
+ avoid:["Primary insomnia alone (AASM 2017 suggests against)","Priapism risk (counsel men; sickle cell caution)","Older or cardiac patients (orthostasis, QT prolongation)"],
+ src:[["StatPearls","https://www.ncbi.nlm.nih.gov/books/NBK470560/"],["AASM 2017 insomnia","https://aasm.org/wp-content/uploads/2018/01/PharmInsomnia-Guideline-at-a-Glance.pdf"]]},
+vortioxetine:{pick:["Cognitive complaints (DSST gains in label; mixed evidence)","SSRI sexual dysfunction (beat escitalopram in switch trial)","Weight neutral in placebo-controlled trials"],
+ avoid:["Nausea-prone patients (up to 32%, dose-related)","CYP2D6 poor metabolizer/strong inhibitor: max 10 mg, halve dose"],
+ src:[["FDA label (Trintellix)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2023/204447s026lbl.pdf"],["Waters, Ment Health Clin 2022","https://mhc.kglmeridian.com/downloadpdf/view/journals/mhcl/12/5/article-p309.pdf"]]},
+vilazodone:{pick:["Low reported sexual AEs in trials (limited data)","Weight neutral in trials (gain 1-2% vs 1%)"],
+ avoid:["Can't reliably take with food (fasted levels ~50% lower)","GI sensitivity (diarrhea ~26-29%, nausea ~22-24%)","Strong CYP3A4 inhibitors (cap 20 mg); needs titration"],
+ src:[["FDA label (Viibryd)","https://www.rxabbvie.com/pdf/viibryd_pi.pdf"],["Waters, Ment Health Clin 2022","https://mhc.kglmeridian.com/downloadpdf/view/journals/mhcl/12/5/article-p309.pdf"]]},
+esketamine:{pick:["Treatment-resistant MDD (failed 2+ adequate antidepressants)","Acute suicidal ideation with MDD (adjunct to oral AD)","TRD monotherapy option, non-oral route"],
+ avoid:["Aneurysm, AVM, or intracerebral hemorrhage (contraindicated)","Uncontrolled hypertension (BP rises, peaks ~40 min)","Substance misuse (CIII); no ride home (REMS, no driving)"],
+ src:[["FDA label (Spravato)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/211243s026lbl.pdf"],["Drugs.com label","https://Drugs.com/pro/spravato.html"]]},
+dmbupropion:{pick:["Faster onset (separated from placebo at week 1)","Also approved for Alzheimer's dementia agitation (2026)","Oral NMDA-antagonist mechanism after monoaminergic failures"],
+ avoid:["Bupropion contraindications (seizures, eating disorders, withdrawal)","CYP2D6 PM, strong inhibitor, eGFR 30-59: max once daily","Other serotonergics (SSRIs, TCAs) or fall risk (dizziness 16%)"],
+ src:[["FDA label (Auvelity)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/215430s009s018lbl.pdf"]]},
+zuranolone:{pick:["Postpartum depression (only oral PPD-specific agent)","Short fixed course: 14 days, alone or adjunct","Breastfeeding (relative infant dose ~0.36%; limited data)"],
+ avoid:["Can't avoid driving 12 h post-dose (boxed warning)","CYP3A4 inducers (avoid); other CNS depressants","Not using contraception (embryofetal toxicity in animals)"],
+ src:[["FDA label (Drugs.com)","https://www.drugs.com/pro/zurzuvae.html"]]},
+nortriptyline:{pick:["Level-guided dosing (therapeutic window 50-150 ng/mL)","Better tolerated, less sedating than tertiary TCAs","Very low cost generic"],
+ avoid:["Overdose risk (fatal with ~10-day supply)","Conduction disease, recent MI; CYP2D6 inhibitors raise levels","Older adults (still on Beers avoid list)"],
+ src:[["Carlat TCA fact sheet","https://www.thecarlatreport.com/ext/resources/factsheets/MFB7e/TRICYCLIC-ANTIDEPRESSANTS-(TCAs)-Fact-Sheet-[G].pdf"],["AGS Beers 2023","https://uconn-hub-dev.vercel.app/-/media/uch-intranet/pdfs/2023-american-geriatrics-society-beers-criteria-1.pdf"],["FDA label (bupropion; 2D6 interaction)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/021515s049lbl.pdf"]]},
+amitriptyline:{pick:["Comorbid neuropathic pain (NICE first-line option)","Comorbid migraine or insomnia (off-label; sedating)","Very low cost generic"],
+ avoid:["Older adults (Beers: avoid, highly anticholinergic)","Overdose risk (fatal with ~10-day supply)","Cardiac disease (arrhythmia, QT, AV block; get ECG)"],
+ src:[["NICE CG173","https://www.nice.org.uk/guidance/cg173/resources/2019-exceptional-surveillance-of-neuropathic-pain-in-adults-pharmacological-management-in-nonspecialist-settings-nice-guideline-cg173-7014450925/chapter/Exceptional-surveillance-summary"],["Carlat TCA fact sheet","https://www.thecarlatreport.com/ext/resources/factsheets/MFB7e/TRICYCLIC-ANTIDEPRESSANTS-(TCAs)-Fact-Sheet-[G].pdf"],["AGS Beers 2023","https://uconn-hub-dev.vercel.app/-/media/uch-intranet/pdfs/2023-american-geriatrics-society-beers-criteria-1.pdf"]]},
+clomipramine:{pick:["OCD, especially after SSRI failure (possibly more effective)","FDA-approved for OCD from age 10","Refractory OCD: experts add fluvoxamine (raises clomipramine)"],
+ avoid:["Seizure risk (dose-related; max 250 mg/day)","Heart block, long QTc, recent MI (baseline ECG)","Poor tolerance of weight gain, sedation, sexual effects"],
+ src:[["StatPearls","https://www.statpearls.com/point-of-care/42905"]]},
+phenelzine:{pick:["Atypical depression (strongest evidence there)","Treatment-resistant depression after first-line failures","Comorbid social anxiety or panic (off-label evidence)"],
+ avoid:["Can't follow tyramine diet (hypertensive crisis)","Serotonergic or sympathomimetic co-meds (serotonin syndrome, crisis)","Liver disease or abnormal LFTs (contraindicated)"],
+ src:[["StatPearls (MAOIs)","https://www.statpearls.com/sp/md/81/27111/"]]}
+,
+aripiprazole:{pick:["Prolactin-sparing (lowers prolactin vs placebo)","Weight-light as monotherapy (~+0.3 kg short-term)","Pediatric autism irritability (6–17) and Tourette's (6–18)","LAI options: monthly Maintena, 2-monthly Asimtufii, Aristada"],
+ avoid:["Akathisia, esp. adjunctive MDD (25% vs 4%)","Impulse-control urges (gambling, shopping, binge eating)","CYP2D6 poor metabolizers/strong inhibitors: halve dose"],
+ src:[["FDA label (Abilify)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2022/021436s048lbledit.pdf"],["Huhn 2019 Lancet NMA","https://ora.ox.ac.uk/objects/uuid:ce8bb547-4368-4899-8269-26aaf4d65087/files/me72613f5cdd36ffc4b0db3bd54cb50e0"],["LAI comparison (UConn)","https://pharmacy.media.uconn.edu/wp-content/uploads/sites/2740/2024/01/LAI-appendix-Updated-Verison-2025-Revised.pdf"]]},
+quetiapine:{pick:["Bipolar depression, mania, maintenance: first-line for all (CANMAT)","Adjunct for MDD (XR)","Sedation wanted (somnolence 25–52% in trials)"],
+ avoid:["Metabolic risk: weight, glucose, lipids","Orthostasis and falls, esp. elderly or cardiac","Parkinson's psychosis: little benefit over placebo"],
+ src:[["FDA label (Seroquel XR)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/022047s043lbl.pdf"],["CANMAT/ISBD 2018 bipolar","https://core.ac.uk/download/361364868.pdf"],["PD psychosis review 2024","https://mdpi.com/2227-9059/12/10/2317"]]},
+risperidone:{pick:["Pediatric autism irritability (5–17) and mania (10–17)","Liquid and ODT forms","LAIs incl. Uzedy (1–2 monthly, no oral overlap)","First-line for acute mania (CANMAT)"],
+ avoid:["Highest prolactin of class (galactorrhea, sexual effects)","Dose-related EPS","Renal/hepatic impairment: start 0.5 mg BID"],
+ src:[["FDA label (Risperdal)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/020272s082%2C020588s070%2C021444s056lbl.pdf"],["LAI comparison (UConn)","https://pharmacy.media.uconn.edu/wp-content/uploads/sites/2740/2024/01/LAI-appendix-Updated-Verison-2025-Revised.pdf"],["CANMAT/ISBD 2018 bipolar","https://core.ac.uk/download/361364868.pdf"]]},
+olanzapine:{pick:["Among most efficacious non-clozapine options (NMA)","Monthly LAI available (Relprevv)","Low weight or poor appetite (weight gain common)"],
+ avoid:["Large weight gain (64% gain ≥7% long-term)","Adolescents: mean ~11 kg gain","Relprevv: 3-hour post-injection observation (PDSS, REMS)"],
+ src:[["FDA label (olanzapine/Relprevv)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/022173s043lbl022173s040lbl.pdf"],["Huhn 2019 Lancet NMA","https://ora.ox.ac.uk/objects/uuid:ce8bb547-4368-4899-8269-26aaf4d65087/files/me72613f5cdd36ffc4b0db3bd54cb50e0"]]},
+lurasidone:{pick:["Bipolar I depression: first-line, mono or adjunct (CANMAT)","Pediatric bipolar depression (10–17)","Weight/metabolic-light (~+0.4 kg short-term)","Minimal QTc effect (lowest in NMA)"],
+ avoid:["Must take with ≥350 kcal meal","Strong CYP3A4 inhibitors/inducers contraindicated","Dose-related akathisia; not effective for mania"],
+ src:[["FDA label (Latuda)","https://drugs.com/pro/latuda.html"],["CANMAT/ISBD 2018 bipolar","https://core.ac.uk/download/361364868.pdf"],["Huhn 2019 Lancet NMA","https://ora.ox.ac.uk/objects/uuid:ce8bb547-4368-4899-8269-26aaf4d65087/files/me72613f5cdd36ffc4b0db3bd54cb50e0"]]},
+haloperidol:{pick:["Monthly decanoate LAI (needs oral overlap)","Tourette's tics (label indication)"],
+ avoid:["Parkinson's disease or Lewy body dementia (contraindicated)","High EPS and tardive dyskinesia risk","QT/torsades with IV use or high doses"],
+ src:[["FDA label (Haldol Decanoate)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/018701s073lbl.pdf"],["Haloperidol oral label","https://prescriberpoint.com/therapies/haloperidol-c559b0b"],["CANMAT/ISBD 2018 bipolar","https://core.ac.uk/download/361364868.pdf"]]},
+clozapine:{pick:["Treatment-resistant schizophrenia (APA recommended)","Persistent suicide risk (APA; FDA indication)","Parkinson's psychosis: best evidence, little motor worsening","Lowest EPS of class (NMA)"],
+ avoid:["ANC monitoring required (REMS ended 2025; labs still advised)","Myocarditis, seizures, orthostasis on titration","Constipation/ileus can be fatal; frequent sialorrhea"],
+ src:[["FDA label (Clozaril)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/019758Orig1s107lbl.pdf"],["APA 2020 schizophrenia","https://www.psychiatry.org/News-room/News-Releases/apa-releases-new-practice-guideline-on-treatment-o"],["FDA REMS removal 2025","https://www.fda.gov/drugs/drug-safety-and-availability/fda-removes-risk-evaluation-and-mitigation-strategy-rems-program-antipsychotic-drug-clozapine"]]},
+brexpiprazole:{pick:["Agitation in Alzheimer's dementia (only approved antipsychotic)","Adjunct for MDD","Less akathisia than aripiprazole in MDD (cross-trial)"],
+ avoid:["Long-term weight gain (30% gain ≥7% in MDD)","CYP2D6 poor metabolizers/inhibitors: dose adjust","Not for PRN dementia agitation; boxed mortality warning"],
+ src:[["FDA label (Rexulti)","https://drugs.com/pro/rexulti.html"],["FDA label (Abilify)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2022/021436s048lbledit.pdf"]]},
+cariprazine:{pick:["Covers bipolar mania and bipolar depression","Adjunct for MDD","Long half-life (active metabolite lasts weeks)"],
+ avoid:["Akathisia/EPS common (akathisia up to 20% in mania)","Slow washout: AEs may appear or persist weeks later","CYP3A4 inducers not recommended"],
+ src:[["FDA label (Vraylar)","https://drugs.com/pro/vraylar.html"]]},
+lumateperone:{pick:["Bipolar I or II depression, mono or adjunct","No titration: 42 mg once daily","Weight, metabolic, EPS near placebo in trials"],
+ avoid:["CYP3A4 inducers: avoid (exposure falls ~98%)","Somnolence (up to 24% vs 10%)","No pediatric indication"],
+ src:[["FDA label (Caplyta)","https://drugs.com/pro/caplyta.html"]]},
+cobenfy:{pick:["Avoids D2 blockade: EPS ~placebo, no weight gain signal","Prior D2 side effects (EPS, prolactin, weight)"],
+ avoid:["Urinary retention/BPH, glaucoma, moderate–severe hepatic impairment","GI effects common; tachycardia, hypertension","BID on empty stomach; adherence burden"],
+ src:[["FDA label (Cobenfy)","https://drugs.com/pro/cobenfy.html"]]},
+paliperidone:{pick:["Minimal hepatic metabolism (renally cleared)","LAI ladder: monthly, 3-monthly, 6-monthly","Sustenna needs no oral overlap","First-line for acute mania (CANMAT)"],
+ avoid:["Renal impairment: dose-limited; Hafyera not if CrCl <50","Highest prolactin elevation in NMA"],
+ src:[["FDA label (Invega Hafyera)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/022264s038lbl.pdf"],["LAI comparison (UConn)","https://pharmacy.media.uconn.edu/wp-content/uploads/sites/2740/2024/01/LAI-appendix-Updated-Verison-2025-Revised.pdf"],["Huhn 2019 Lancet NMA","https://ora.ox.ac.uk/objects/uuid:ce8bb547-4368-4899-8269-26aaf4d65087/files/me72613f5cdd36ffc4b0db3bd54cb50e0"]]},
+ziprasidone:{pick:["Weight-neutral (lowest gain in NMA)","IM form for acute agitation"],
+ avoid:["QT history, recent MI, HF, QT drugs (contraindicated)","Must take BID with food (absorption doubles)","DRESS/severe skin reactions reported"],
+ src:[["FDA label (Geodon)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/020825s065%2C020919s053lbl.pdf"],["Huhn 2019 Lancet NMA","https://ora.ox.ac.uk/objects/uuid:ce8bb547-4368-4899-8269-26aaf4d65087/files/me72613f5cdd36ffc4b0db3bd54cb50e0"]]},
+lybalvi:{pick:["Olanzapine efficacy with less weight gain (4.2% vs 6.6%)","Schizophrenia or bipolar I"],
+ avoid:["Any opioid use or withdrawal (contraindicated)","Needs 7–14 opioid-free days; complicates surgery/pain care","Overdose risk if blockade overridden or stopped"],
+ src:[["FDA label (Lybalvi)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/213378s011lbl.pdf"]]}
+,
+lithium:{pick:["Classic euphoric mania, few prior episodes","Family history of lithium response","Suicide risk (anti-suicide evidence; CANMAT)","First-line across mania, depression, and maintenance"],
+ avoid:["Renal impairment (renally cleared; nephrogenic DI)","NSAIDs, ACEi/ARBs, thiazides raise levels","Dehydration risk: vomiting, heat, low-salt diet"],
+ src:[["CANMAT/ISBD 2018","https://core.ac.uk/download/361364868.pdf"],["StatPearls: Lithium toxicity","https://www.statpearls.com/point-of-care/30345"]]},
+lamotrigine:{pick:["Depression-predominant bipolar (first-line depression, maintenance)","Labeled for bipolar I maintenance (delays episodes)"],
+ avoid:["Acute mania (not effective; not recommended)","Needs ~6-week titration (SJS risk if rushed)","Valproate (halve dose) or estrogen OCs (~50% lower levels)"],
+ src:[["CANMAT/ISBD 2018","https://core.ac.uk/download/361364868.pdf"],["FDA label (Lamictal)","https://www.drugs.com/pro/lamictal.html"]]},
+divalproex:{pick:["Irritable/dysphoric mania or mixed features","Multiple prior mood episodes","Comorbid substance use or head trauma","Fast titration for acute mania (labeled)"],
+ avoid:["Women of childbearing potential (NTDs, lower IQ)","Liver disease, POLG, urea cycle disorders","Lamotrigine co-use (doubles levels); thrombocytopenia"],
+ src:[["CANMAT/ISBD 2018","https://core.ac.uk/download/361364868.pdf"],["FDA label (Depakote)","https://www.drugs.com/pro/depakote.html"]]},
+carbamazepine:{pick:["Head trauma, comorbid anxiety or substance use","Mood-incongruent delusions; no bipolar family history","ER form labeled for manic or mixed episodes"],
+ avoid:["Asian ancestry: test HLA-B*1502 first (SJS/TEN)","Strong inducer: OCs fail, antipsychotic levels drop","Elderly or diuretics (hyponatremia); needs CBC monitoring"],
+ src:[["CANMAT/ISBD 2018","https://core.ac.uk/download/361364868.pdf"],["FDA label (Equetro)","https://drugs.com/pro/equetro.html"]]},
+methylphenidate:{pick:["First-line in children/teens (best benefit-tolerability balance)","Preschoolers 4-5 (AAP first-line, off-label)","Can't swallow pills: liquid, chewable, ODT, sprinkle forms"],
+ avoid:["Adults: amphetamines ranked first (Cortese 2018)","Diversion or active substance use (Schedule II)"],
+ src:[["AAP 2019 ADHD guideline","https://pmc.ncbi.nlm.nih.gov/articles/PMC7067282"],["Cortese 2018 NMA (NIHR)","https://evidence.nihr.ac.uk/alert/methylphenidate-remains-first-choice-drug-treatment-for-children-and-young-people-with-adhd"],["MPH formulations review","https://eprints.soton.ac.uk/413493/1/Cortese_et_al_CNS_Drugs_R1_CLEAN.doc"]]},
+amphetamine:{pick:["Adults (first-line per Cortese 2018 NMA)","Largest effect size of ADHD drugs","XR capsule can be sprinkled on applesauce"],
+ avoid:["Antacids/urinary alkalinizers raise levels","CYP2D6 inhibitors or serotonergic drugs (serotonin syndrome)","Diversion or active substance use (Schedule II)"],
+ src:[["Cortese 2018 (Oxford summary)","https://www.psych.ox.ac.uk/news/adhd-medications-recommendations"],["FDA label (Adderall XR)","https://Drugs.com/pro/adderall-xr.html"]]},
+lisdexamfetamine:{pick:["Comorbid binge eating disorder (FDA-approved, adults)","Can't swallow: open into water/yogurt, or chewable","Prodrug; no CYP metabolism (fewer PK interactions)","Adults (amphetamines ranked first-line)"],
+ avoid:["Under age 6 (not recommended; more weight loss)","Diversion risk still high (Schedule II, boxed)"],
+ src:[["FDA label (Vyvanse)","https://www.drugs.com/pro/vyvanse.html"],["Cortese 2018 (Oxford summary)","https://www.psych.ox.ac.uk/news/adhd-medications-recommendations"]]},
+atomoxetine:{pick:["Not controlled: substance use or diversion concerns","Approved for adults and children 6+"],
+ avoid:["Smaller effect than stimulants (SMD ~0.56)","Strong CYP2D6 inhibitors or poor metabolizers","Narrow-angle glaucoma, liver injury, severe cardiac disease"],
+ src:[["FDA label (Strattera)","https://www.drugs.com/pro/strattera.html"],["AAP 2019 ADHD guideline","https://pmc.ncbi.nlm.nih.gov/articles/PMC7067282"],["Cortese 2018 NMA (NIHR)","https://evidence.nihr.ac.uk/alert/methylphenidate-remains-first-choice-drug-treatment-for-children-and-young-people-with-adhd"]]},
+guanfacine:{pick:["Comorbid tics (alpha-2 agonists, AAN level B)","Add-on to partial stimulant response (labeled)","Not controlled; once daily"],
+ avoid:["Sedation common (~38% vs 11% placebo)","Bradycardia, hypotension, syncope; must taper off","CYP3A4 inhibitors/inducers need dose change; adults off-label"],
+ src:[["FDA label (Intuniv)","https://fda.gov/media/135180/download"],["AAN 2019 tic guideline (summary)","https://www.neurologylive.com/view/new-guideline-tourette-syndrome-tic-disorders-emphasizes-behavioral-therapy-firstline-intervention"]]},
+viloxazine:{pick:["Not controlled; approved for adults and children 6+","Capsule can be sprinkled on applesauce/pudding","Once daily"],
+ avoid:["Strong CYP1A2 inhibitor (sensitive substrates contraindicated)","Boxed suicidality warning; monitor closely","Severe renal impairment (cap 200 mg/day)"],
+ src:[["FDA label (Qelbree)","https://www.drugs.com/pro/qelbree.html"]]},
+clonidine:{pick:["Comorbid tics (alpha-2 agonists, AAN level B)","Add-on to partial stimulant response (labeled)","Not controlled; larger dose given at bedtime"],
+ avoid:["Sedation common (up to ~38% vs 4%)","Heart block or syncope history; must taper off","Not mg-for-mg interchangeable with IR clonidine"],
+ src:[["FDA label (Kapvay)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2016/022331s013lbl.pdf"],["AAN 2019 tic guideline (summary)","https://www.neurologylive.com/view/new-guideline-tourette-syndrome-tic-disorders-emphasizes-behavioral-therapy-firstline-intervention"]]}
+,
+buspirone:{pick:["Substance-use history (no dependence, negligible abuse potential)","GAD where benzodiazepines are best avoided","SSRI-related sexual dysfunction (minimal sexual effects; may relieve)","SSRI augmentation (off-label)"],
+ avoid:["Needs acute relief (onset 2–4 weeks)","Benzo taper cover (no cross-tolerance)","MAOIs, strong CYP3A4 inhibitors, grapefruit; severe hepatic/renal impairment"],
+ src:[["FDA label (BuSpar)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2010/018731s051lbl.pdf"],["StatPearls: Buspirone","https://www.ncbi.nlm.nih.gov/books/NBK531477/"]]},
+hydroxyzine:{pick:["Non-controlled PRN option instead of a benzodiazepine","Comorbid pruritus or urticaria (labeled for both)","Substance-use history (not a controlled substance)"],
+ avoid:["Prolonged QT or other QT-prolonging drugs (contraindicated)","Early pregnancy (contraindicated in label)","Older adults (anticholinergic; Beers avoid; confusion)"],
+ src:[["FDA label (Atarax/Vistaril)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2016/011459s050%2C011795s027lbl.pdf"],["Drugs.com: Beers anticholinergics","https://drugs.com/article/anticholinergic-drugs-elderly.html"]]},
+lorazepam:{pick:["Liver disease (glucuronidated only; inactive metabolite)","Older adults (kinetics not age-affected; still dose low)","Needs IM/IV route (status epilepticus, preanesthetic)"],
+ avoid:["Hepatic encephalopathy (may worsen it)","Substance-use disorder (abuse/addiction boxed warning)","Opioid co-use (respiratory depression boxed warning)"],
+ src:[["FDA label (Ativan tablets)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2021/017794s048lbl.pdf"],["FDA label (Ativan injection)","https://www.drugs.com/pro/ativan-injection.html"]]},
+clonazepam:{pick:["Panic disorder needing steady coverage (t½ 30–40 h)","Twice-daily dosing; less interdose rebound than alprazolam","Comorbid seizure disorder (labeled indication)","ODT wafer available"],
+ avoid:["Significant liver disease (contraindicated)","Older adults (long half-life; no trial data ≥65)","Daytime sedation concerns (long-acting)"],
+ src:[["FDA label (Klonopin)","https://ndclist.com/ndc/16590-935/label"]]},
+alprazolam:{pick:["Panic disorder or GAD (both FDA-labeled)","XR form allows once-daily panic dosing"],
+ avoid:["Strong CYP3A inhibitors, e.g., ketoconazole (contraindicated)","Interdose/early-morning rebound anxiety with IR","Withdrawal seizures; taper ≤0.5 mg every 3 days"],
+ src:[["FDA label (Xanax)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2021/018276s055lbl.pdf"],["FDA label (Xanax XR)","https://www.drugs.com/pro/xanax-xr.html"]]},
+prazosin:{pick:["PTSD nightmares (VA/DoD 2023: weak for)","Add-on to existing PTSD meds or therapy","Non-controlled; no dependence risk"],
+ avoid:["Global PTSD symptoms (no monotherapy evidence); modest effect","Orthostasis/first-dose syncope; start 1 mg qHS","PDE5 inhibitors, beta-blockers, CCBs (additive hypotension)"],
+ src:[["Tools for Practice #384 (VA/DoD 2023)","https://cfpclearn.ca/tfp384/"],["NHS Highland prazosin guideline","https://www.rightdecisions.scot.nhs.uk/tam-treatments-and-medicines-nhs-highland/adult-therapeutic-guidelines/mental-health/prazosin-for-ptsd-related-nightmares-guidelines/"]]},
+diazepam:{pick:["Alcohol withdrawal front-loading (long-acting; ASAM)","Comorbid muscle spasm or spasticity (labeled adjunct)","IV option after withdrawal seizure"],
+ avoid:["Older adults (accumulates; metabolite t½ up to 100 h)","Cirrhosis (t½ 2–5× longer); sleep apnea, myasthenia (contraindicated)","CYP3A4/2C19 inhibitors (fluvoxamine, fluoxetine, omeprazole)"],
+ src:[["FDA label (diazepam, DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9424ce71-f04c-4d70-89de-b7858931c53d"],["ASAM 2020 AWS guideline review","https://community.the-hospitalist.org/content/clinical-guideline-highlights-hospitalist-2020-american-society-addiction-medicine-clinical"]]},
+chlordiazepoxide:{pick:["Alcohol withdrawal (preferred long-acting with diazepam)","Oral front-loading for severe withdrawal (ASAM)","Labeled for both anxiety and acute withdrawal"],
+ avoid:["Liver disease (hepatically metabolized, long-acting)","Older adults (Beers: falls, cognition, fractures)","Alcohol/opioid co-use after detox (CNS depression)"],
+ src:[["StatPearls: Chlordiazepoxide","https://www.statpearls.com/point-of-care/41623"],["ASAM 2020 AWS guideline review","https://community.the-hospitalist.org/content/clinical-guideline-highlights-hospitalist-2020-american-society-addiction-medicine-clinical"]]},
+gabapentin:{pick:["AUD after naltrexone/acamprosate fail or intolerance (APA 2C)","Not hepatically metabolized; few drug interactions","Non-controlled federally (vs benzodiazepines)","Mild–moderate withdrawal only if benzos contraindicated (ASAM)"],
+ avoid:["Opioids, COPD, elderly (FDA respiratory depression warning)","Polysubstance-use history (misuse reports)","Renal impairment (dose by CrCl)"],
+ src:[["APA AUD guideline 2018 summary","https://psychopharmacologyinstitute.com/publication/2018-apa-alcohol-use-disorder-guideline-summary-of-recommendations-2238/"],["FDA label (Neurontin)","https://www.drugs.com/pro/neurontin.html"],["FDA gabapentinoid warning 2019","https://www.fda.gov/news-events/fda-brief/fda-brief-fda-requires-new-warnings-gabapentinoids-about-risk-respiratory-depression"]]},
+zolpidem:{pick:["Sleep onset and maintenance (AASM: weak for both)","Generic; IR, CR, and sublingual forms"],
+ avoid:["Prior complex sleep behavior (boxed; contraindicated)","Women, elderly, liver disease: 5 mg; avoid severe hepatic","Under 7–8 h in bed (next-morning impairment)"],
+ src:[["AASM 2017 insomnia guideline","https://aasm.org/wp-content/uploads/2018/01/PharmInsomnia-Guideline-at-a-Glance.pdf"],["FDA label (Ambien)","https://www.drugs.com/pro/ambien.html"]]},
+suvorexant:{pick:["Sleep maintenance insomnia (AASM: weak for)","Insomnia in mild–moderate Alzheimer's (label RCT)","Alternative to benzodiazepine-receptor agonists"],
+ avoid:["Narcolepsy (contraindicated)","Strong CYP3A inhibitors (not recommended); moderate: 5 mg","20 mg: next-day driving impairment; sleep paralysis"],
+ src:[["AASM 2017 insomnia guideline","https://aasm.org/wp-content/uploads/2018/01/PharmInsomnia-Guideline-at-a-Glance.pdf"],["FDA label (Belsomra)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/204569s006lbl.pdf"]]},
+lemborexant:{pick:["Sleep onset and maintenance (labeled for both)","Mild–severe OSA, COPD (no AHI change; short studies)","Simple dosing: 5 mg, max 10 mg"],
+ avoid:["Narcolepsy (contraindicated); severe hepatic impairment","Moderate/strong CYP3A inhibitors or inducers (avoid)","10 mg: next-day driving impairment; falls in elderly"],
+ src:[["FDA label (Dayvigo)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/212028s011lbl.pdf"]]},
+doxepinld:{pick:["Sleep maintenance insomnia (AASM: weak for)","Substance-use history (not a controlled substance)","Older adults (3 mg start; labeled dosing)"],
+ avoid:["Sleep-onset complaints (labeled for maintenance only)","MAOI within 2 weeks; untreated narrow-angle glaucoma","Severe urinary retention; cimetidine (max 3 mg)"],
+ src:[["AASM 2017 insomnia guideline","https://aasm.org/wp-content/uploads/2018/01/PharmInsomnia-Guideline-at-a-Glance.pdf"],["FDA label (Silenor)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=1bec1223-5239-4eb6-a9e8-62444106d2c0"]]}
+,
+benztropine:{pick:["Acute dystonia needing IM/IV (works in 20-30 min)","Antipsychotic-induced parkinsonism","Longer acting than diphenhydramine (less frequent dosing)"],
+ avoid:["Older adults or dementia (Beers list; delirium)","Tardive dyskinesia (can worsen it)","Glaucoma, BPH/retention, heat exposure (anhidrosis)"],
+ src:[["StatPearls: Benztropine","https://www.ncbi.nlm.nih.gov/books/NBK560633/"],["BJP review: akathisia revisited","https://www.cambridge.org/core/services/aop-cambridge-core/content/view/BF5042E428267A0D22A12C1C1A22FE13/S0007125000251519a.pdf/acute_antipsychoticinduced_akathisia_revisited.pdf"]]},
+propranolol:{pick:["Long-standing first-line for akathisia (RCT-supported)","Low dose works (40-80 mg/day, divided)","Anticholinergics help akathisia only with parkinsonism"],
+ avoid:["Asthma or bronchospasm","Bradycardia, conduction disease, orthostasis (20% stopped)","Diabetes; consider low-dose mirtazapine (better tolerated)"],
+ src:[["BJP review: akathisia revisited","https://www.cambridge.org/core/services/aop-cambridge-core/content/view/BF5042E428267A0D22A12C1C1A22FE13/S0007125000251519a.pdf/acute_antipsychoticinduced_akathisia_revisited.pdf"]]},
+valbenazine:{pick:["Once daily, with or without food","Simple titration (40 mg to 80 mg after 1 week)","Sprinkle capsule for swallowing difficulty","Hepatic impairment OK at 40 mg (deutetrabenazine contraindicated)"],
+ avoid:["Strong CYP3A4 inducers (not recommended)","CYP2D6 poor metabolizer or inhibitors: cap 40 mg","Congenital long QT; early parkinsonism risk"],
+ src:[["FDA label (Ingrezza)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/209241s029lbl.pdf"]]},
+deutetrabenazine:{pick:["XR once daily option (tablets need BID with food)","Fine 6 mg weekly steps for gradual titration","Direct next-day switch from tetrabenazine"],
+ avoid:["Any hepatic impairment (contraindicated)","HD with untreated depression or suicidality (contraindicated)","Paroxetine, fluoxetine, bupropion: max 36 mg/day"],
+ src:[["FDA label (Austedo/Austedo XR)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2024/216354s007lbl.pdf"]]},
+buprenorphine:{pick:["Office-based prescribing; take-homes as stability allows","Respiratory-depression ceiling (safer than full agonists)","Less QT effect than methadone (≤15 ms)","Less sedation than methadone in comparative data"],
+ avoid:["Not in moderate withdrawal yet (precipitated withdrawal)","Severe hepatic impairment (combo product; naloxone accumulates)","Needs more structure: flexible-dose retention below methadone"],
+ src:[["FDA label (Suboxone)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/022410s056lbl.pdf"],["AFP Cochrane summary: bup vs methadone","https://www.aafp.org/pubs/afp/issues/2015/0201/p165.html"]]},
+methadone:{pick:["Best retention vs flexible-dose buprenorphine (Cochrane)","Full agonist; no precipitated withdrawal at induction","Daily supervised OTP structure; liquid dosing","Pregnancy: established option (dose may need increase)"],
+ avoid:["QTc prolongation or other QT drugs (boxed warning)","Many CYP interactions (3A4, 2B6, 2C19, 2D6)","Benzos/alcohol; slow titration (steady state 3-5 days)"],
+ src:[["FDA label (Methadose)","https://www.drugs.com/pro/methadose.html"],["AFP Cochrane summary: bup vs methadone","https://www.aafp.org/pubs/afp/issues/2015/0201/p165.html"]]},
+naltrexone:{pick:["Co-occurring AUD and OUD (one drug, both)","Goal is reducing drinking, not abstinence (APA 1B)","Monthly XR injection when adherence is poor","No agonist, no OTP needed"],
+ avoid:["Needs or uses opioids; 7-10 days opioid-free first","Acute hepatitis or liver failure","Overdose risk after stopping; carry naloxone"],
+ src:[["APA AUD guideline 2018 (summary)","https://psychopharmacologyinstitute.com/publication/2018-apa-alcohol-use-disorder-guideline-summary-of-recommendations-2238/"],["FDA label (Vivitrol)","https://labeling.alkermes.com/uspi_vivitrol.pdf"]]},
+acamprosate:{pick:["Liver disease (not hepatically metabolized)","On or needing opioids (naltrexone barred)","Few drug interactions"],
+ avoid:["CrCl ≤30 (contraindicated); reduce dose at 30-50","Pill burden: 2 tabs three times daily","Still drinking at start (efficacy shown only in abstinent)"],
+ src:[["FDA label (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a4cf69bc-8142-1a08-2223-37a62820190b"],["APA AUD guideline 2018 (summary)","https://psychopharmacologyinstitute.com/publication/2018-apa-alcohol-use-disorder-guideline-summary-of-recommendations-2238/"]]},
+disulfiram:{pick:["Firm abstinence goal; motivated, informed patient","After naltrexone/acamprosate fail or not tolerated (APA 2C)","Deterrent effect lasts up to 14 days"],
+ avoid:["Severe myocardial disease, coronary occlusion, psychosis","Metronidazole, warfarin, phenytoin, isoniazid interactions","Hepatotoxicity risk; needs LFT monitoring"],
+ src:[["FDA label (DrugCentral)","https://drugcentral.org/label/d3832a1a-a140-49c1-a7df-134fa81341e3/view"],["APA AUD guideline 2018 (summary)","https://psychopharmacologyinstitute.com/publication/2018-apa-alcohol-use-disorder-guideline-summary-of-recommendations-2238/"]]},
+varenicline:{pick:["Most effective single agent (ATS: over patch, bupropion)","Psychiatric comorbidity (ATS: preferred over patch)","Not ready to quit: start anyway, gradual reduction","Combine with patch for added effect (conditional)"],
+ avoid:["Nausea-prone patients (up to 30%)","Seizure history; sleepwalking reports","CrCl <30: max 0.5 mg twice daily"],
+ src:[["ATS 2020 guideline (ACP summary)","https://acpinternist.org/weekly/archives/2020/07/21/3.htm"],["FDA label (Chantix)","https://www.pfizermedical.com/chantix/highlights"]]}
+
+};
+function useHTML(id,compact){
+  const u=USE[id]; if(!u) return "";
+  const li=(a,c)=>a.map(t=>`<li class="${c}">${esc(t)}</li>`).join("");
+  const src=(u.src||[]).map(([l,h])=>`<a href="${h}" target="_blank" rel="noopener">${esc(l)}</a>`).join(" · ");
+  if(compact) return `<h3>Pick it when</h3><ul class="use">${li(u.pick,"y")}</ul><h3>Think twice when</h3><ul class="use">${li(u.avoid,"n")}</ul>`;
+  return `<section class="usebox"><div><h3>Pick it when</h3><ul class="use">${li(u.pick,"y")}</ul></div><div><h3>Think twice when</h3><ul class="use">${li(u.avoid,"n")}</ul></div>${src?`<p class="use-src">Sources: ${src}</p>`:""}</section>`;
+}
+/* Long-acting injectables: FDA-label data per product. */
+const LAI = {
+ari_maintena:{ drug:"aripiprazole", name:"Abilify Maintena", generic:"aripiprazole monohydrate",
+  interval:"Monthly (no sooner than 26 days after prior injection)", days:28, site:"Deltoid or gluteal IM",
+  oralTrial:"Aripiprazole-naive: establish tolerability with oral aripiprazole first (may take up to 2 weeks).",
+  overlap:"1-day start: two 400 mg injections (separate muscles) + one oral 20 mg dose — OR 14-day start: one 400 mg injection + 14 consecutive days oral aripiprazole 10–20 mg.",
+  start:"400 mg monthly", range:"300–400 mg monthly (300 mg if ADRs at 400 mg)", max:"400 mg monthly",
+  conv:[],
+  missed:"2nd or 3rd dose: >4 and <5 weeks since last → inject ASAP; >5 weeks → restart with 1-day or 14-day start. 4th+ dose: >4 and <6 weeks → ASAP; >6 weeks → restart with 1-day or 14-day start.",
+  d6:"CYP2D6 PM: 300 mg (PM + 3A4 inhibitor: 200 mg; avoid 1-day start). Strong 2D6 or 3A4 inhibitor >14 d: 400→300, 300→200. Both: 400→200, 300→160. 3A4 inducer >14 d: avoid.",
+  special:"Reconstitute and inject immediately; do not massage site. 200/160 mg doses require the 300 or 400 mg vial.",
+  ind:"Schizophrenia (adults); bipolar I maintenance monotherapy (adults)",
+  src:[["FDA label rev. 3/2025 (Maintena/Asimtufii)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/202971s018,217006s001lbl.pdf"]] },
+ari_asimtufii:{ drug:"aripiprazole", name:"Abilify Asimtufii", generic:"aripiprazole monohydrate (extended-release)",
+  interval:"Every 2 months (56 days; may give up to 2 weeks before/after)", days:56, site:"Gluteal IM only",
+  oralTrial:"Aripiprazole-naive: establish tolerability with oral aripiprazole first (may take up to 2 weeks).",
+  overlap:"1-day start: 960 mg gluteal + Maintena 400 mg (separate muscle) + oral 20 mg once — OR 960 mg + 14 days oral 10–20 mg. From Maintena 400 mg: give 960 mg in place of next Maintena dose.",
+  start:"960 mg every 2 months", range:"720–960 mg every 2 months (720 mg if ADRs at 960 mg)", max:"960 mg every 2 months",
+  conv:[],
+  missed:">8 and <14 weeks since last injection → give ASAP, then resume q2-month schedule. >14 weeks → restart with 1-day or 14-day initiation.",
+  d6:"CYP2D6 PM: 720 mg (PM + 3A4 inhibitor: avoid). Strong 2D6 or strong 3A4 inhibitor >14 d: 720 mg. Both strong inhibitors: avoid. 3A4 inducer: avoid.",
+  special:"Prefilled syringe, no reconstitution: tap ≥10 times, shake ≥10 s; do not massage site. Needle 22G 1.5\" (21G 2\" if obese).",
+  ind:"Schizophrenia (adults); bipolar I maintenance monotherapy (adults)",
+  src:[["Otsuka PI rev. 3/2025","https://www.otsuka-us.com/media/static/Abilify-Asimtufii-PI.pdf"]] },
+ari_aristada:{ drug:"aripiprazole", name:"Aristada", generic:"aripiprazole lauroxil",
+  interval:"Monthly (441/662/882 mg), every 6 weeks (882 mg), or every 2 months (1064 mg)", days:28, site:"441 mg: deltoid or gluteal IM; 662/882/1064 mg: gluteal IM",
+  oralTrial:"Aripiprazole-naive: establish tolerability with oral aripiprazole first (may take up to 2 weeks).",
+  overlap:"Option 1: Aristada Initio 675 mg IM (deltoid or gluteal) + one oral 30 mg dose; 1st Aristada same day or up to 10 days later (not same muscle). Option 2: 21 consecutive days oral aripiprazole.",
+  start:"By oral dose (table below): 441, 662 or 882 mg monthly; 882 mg q6wk; or 1064 mg q2mo", range:"441–882 mg monthly; 882 mg q6wk; 1064 mg q2mo", max:"Not stated in label (highest regimens: 882 mg monthly; 1064 mg q2mo)",
+  conv:[["Oral 10 mg/day","441 mg monthly"],["Oral 15 mg/day","662 mg monthly, 882 mg q6wk, or 1064 mg q2mo"],["Oral ≥20 mg/day","882 mg monthly"]],
+  missed:"Give next dose ASAP. No supplement if ≤6 wk (441), ≤8 wk (662/882), ≤10 wk (1064) since last. Up to 7 wk (441) / 12 wk (others): add one Initio dose or 7 days oral. Beyond that: re-initiate (Initio + oral 30 mg, or 21 days oral).",
+  d6:">2 wk strong 3A4 or 2D6 inhibitor: next lower strength (441 mg: no change if tolerated); 2D6 PM on 3A4 inhibitor: 441 mg. Both: avoid 662+. 3A4 inducer: 441→662 mg.",
+  special:"Initio is single-dose only and not interchangeable with Aristada (different PK). Do not inject sooner than 14 days after previous injection.",
+  ind:"Schizophrenia (adults)",
+  src:[["Alkermes USPI rev. 01/2025","https://labeling.alkermes.com/uspi_aristada.pdf"]] },
+olz_relprevv:{ drug:"olanzapine", name:"Zyprexa Relprevv", generic:"olanzapine pamoate",
+  interval:"Every 2 or 4 weeks", days:14, site:"Deep gluteal IM only (never IV/SC)",
+  oralTrial:"Establish tolerability with oral olanzapine before starting (label).",
+  overlap:"Not stated in label",
+  start:"By target oral dose (table below): 210–300 mg q2wk or 405 mg q4wk for first 8 weeks", range:"150–300 mg q2wk or 300–405 mg q4wk", max:"300 mg q2wk or 405 mg q4wk (higher not evaluated)",
+  conv:[["Oral 10 mg/day","First 8 wk: 210 mg q2wk or 405 mg q4wk → then 150 mg q2wk or 300 mg q4wk"],["Oral 15 mg/day","First 8 wk: 300 mg q2wk → then 210 mg q2wk or 405 mg q4wk"],["Oral 20 mg/day","300 mg q2wk (first 8 wk and maintenance)"]],
+  missed:"Not stated in label",
+  d6:"Debilitated, hypotension-prone, slow metabolizers (e.g. nonsmoking women ≥65): start 150 mg q4wk. CYP1A2: fluvoxamine ↓clearance (consider lower dose); carbamazepine, omeprazole, rifampin ↑clearance.",
+  special:"PDSS (<0.1% of injections): REMS-certified facility; observe ≥3 h after every injection, then patient must be alert, accompanied, and not drive that day.",
+  ind:"Schizophrenia",
+  src:[["FDA label rev. 05/2026","https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/022173s043lbl022173s040lbl.pdf"],["Lilly USPI (Table 1)","https://uspl.lilly.com/zyprexa-relprevv/zyprexarelprevv.html"]] },
+ris_consta:{ drug:"risperidone", name:"Risperdal Consta", generic:"risperidone long-acting injection (microspheres)",
+  interval:"Every 2 weeks", days:14, site:"Deltoid (1-inch 21G) or gluteal (2-inch 20G) IM",
+  oralTrial:"Establish tolerability with oral risperidone first (label).",
+  overlap:"Oral risperidone (or another antipsychotic) with the 1st injection and for 3 weeks after, then stop.",
+  start:"25 mg q2wk", range:"25–50 mg q2wk (12.5 mg option)", max:"50 mg q2wk",
+  conv:[],
+  missed:"Not stated in label.",
+  d6:"Renal/hepatic: oral titration to ≥2 mg/day, then 25 mg (or 12.5 mg). Strong 2D6 inhib: consider 12.5 mg. 3A4 inducers: monitor 4–8 wk, may need ↑ dose/oral.",
+  special:"Dose ↑ no more often than every 4 wk; effect of ↑ not seen for ≥3 wk. Refrigerated; reconstitute with supplied diluent only.",
+  ind:"Schizophrenia; bipolar I maintenance (mono or adjunct to lithium/valproate)",
+  src:[["FDA label (Revised 1/2025, via Drugs.com)","https://drugs.com/pro/risperdal-consta.html"],["FDA label 2024 (accessdata)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2024/021346s052Lbl.pdf"]] },
+
+ris_perseris:{ drug:"risperidone", name:"Perseris", generic:"risperidone ER injectable suspension (SC)",
+  interval:"Monthly", days:28, site:"SC abdomen or back of upper arm",
+  oralTrial:"Establish tolerability with oral risperidone first (label).",
+  overlap:"None — no loading dose, no oral supplementation. 1st injection the day after last oral dose.",
+  start:"90 mg or 120 mg monthly (per oral dose)", range:"90–120 mg monthly", max:"120 mg monthly; never >1 dose/month",
+  conv:[["Oral risperidone 3 mg/day","90 mg monthly"],["Oral risperidone 4 mg/day","120 mg monthly"]],
+  missed:"Give the next injection as soon as possible.",
+  d6:"Renal/hepatic: oral titration to ≥3 mg/day, then 90 mg. Strong 2D6 inhib: switch to 90 mg 2–4 wk before. Strong 3A4 inducer: 90→120 mg, ± oral risperidone.",
+  special:"Patients stable on <3 or >4 mg/day oral may not be candidates. Refrigerate; unopened kit OK at room temp up to 30 days. Don't rub site.",
+  ind:"Schizophrenia (adults)",
+  src:[["FDA label (Revised 1/2025, via Drugs.com)","https://www.drugs.com/pro/perseris.html"]] },
+
+ris_uzedy:{ drug:"risperidone", name:"Uzedy", generic:"risperidone ER injectable suspension (SC)",
+  interval:"Monthly or every 2 months (bipolar: monthly only)", days:28, site:"SC abdomen or upper arm (back/outer)",
+  oralTrial:"Establish tolerability with oral risperidone first (label).",
+  overlap:"None — no loading dose, no oral supplementation. 1st injection the day after last oral dose.",
+  start:"Per oral dose (table)", range:"50–125 mg monthly or 100–250 mg q2mo", max:"125 mg monthly / 250 mg q2mo",
+  conv:[["Oral 2 mg/day","50 mg monthly or 100 mg q2mo"],["Oral 3 mg/day","75 mg monthly or 150 mg q2mo"],["Oral 4 mg/day","100 mg monthly or 200 mg q2mo"],["Oral 5 mg/day (schizophrenia only)","125 mg monthly or 250 mg q2mo"]],
+  missed:"Give the next injection as soon as possible; do not dose more often than recommended.",
+  d6:"Renal/hepatic: oral titration to ≥2 mg/day, then 50 mg monthly. Strong 2D6 inhib: lower dose before starting. Strong 3A4 inducer: monitor 4–8 wk, ↑ dose or add oral.",
+  special:"From Consta (bipolar): start ≥5 wk after last IM; 25→50, 37.5→75, 50→100 mg monthly. Refrigerated; room temp ≥30 min before injection.",
+  ind:"Schizophrenia; bipolar I maintenance (mono or adjunct to lithium/valproate)",
+  src:[["FDA label (Revised 10/2025, via Drugs.com)","https://www.drugs.com/pro/uzedy.html"]] },
+
+ris_rykindo:{ drug:"risperidone", name:"Rykindo", generic:"risperidone ER injectable suspension (microspheres)",
+  interval:"Every 2 weeks", days:14, site:"Gluteal IM only (upper-outer quadrant)",
+  oralTrial:"Establish tolerability with oral risperidone first (label).",
+  overlap:"Oral risperidone for 7 days with the 1st injection. From Consta: same dose, 4 wk (≤5 wk) after last Consta, no oral.",
+  start:"25 mg q2wk", range:"25–50 mg q2wk (12.5 mg option)", max:"50 mg q2wk",
+  conv:[],
+  missed:"Not stated in label (reinitiation: prior dose + oral supplementation; no specific data).",
+  d6:"Renal/hepatic: oral titration to ≥2 mg/day, then 25 mg (or 12.5 mg). Strong 2D6 inhib: consider 12.5 mg. Strong 3A4 inducer: monitor, may need ↑ dose/oral.",
+  special:"Titrate no more often than every 4 wk. Refrigerated; room temp ≥30 min, reconstitute and shake ≥30 s.",
+  ind:"Schizophrenia; bipolar I maintenance (mono or adjunct to lithium/valproate)",
+  src:[["FDA label (Revised 5/2023, manufacturer PI)","https://www.luye.cn/lvye_en/rykindo.pdf"]] },
+
+pal_sustenna:{ drug:"paliperidone", name:"Invega Sustenna", generic:"paliperidone palmitate (1-month)",
+  interval:"Monthly (±7 days)", days:28, site:"Initiation deltoid; maintenance deltoid or gluteal IM",
+  oralTrial:"If never on oral/injectable risperidone or paliperidone, establish tolerability with oral first (label).",
+  overlap:"No oral overlap needed. Day 1: 234 mg deltoid; Day 8 (±4 days): 156 mg deltoid. From other LAI: start at next scheduled injection, no initiation.",
+  start:"117 mg monthly (schizophrenia), from week 5", range:"39–234 mg (schizophrenia); 78–234 mg (schizoaffective)", max:"234 mg monthly",
+  conv:[["Paliperidone ER 12 mg/day","234 mg"],["Paliperidone ER 9 mg/day","156 mg"],["Paliperidone ER 6 mg/day","117 mg"],["Paliperidone ER 3 mg/day","39–78 mg"]],
+  missed:"Maintenance: 4–6 wk → resume ASAP. >6 wk–6 mo → stabilized dose deltoid ASAP + again 1 wk later (if 234 mg, use 156 mg ×2), then monthly. >6 mo → restart 234/156 mg initiation. Missed Day 8: <4 wk → 156 mg ASAP then 117 mg at wk 5; 4–7 wk → 156 mg ×2 one wk apart; >7 wk → restart.",
+  d6:"Mild renal (CrCl 50–<80): 156 mg D1, 117 mg D8, then 78 mg monthly (max 156). CrCl <50: not recommended. Strong 3A4/P-gp inducers: avoid; consider oral paliperidone ER.",
+  special:"Deltoid needle: <90 kg 1-inch 23G; ≥90 kg 1½-inch 22G. Gluteal: 1½-inch 22G.",
+  ind:"Schizophrenia; schizoaffective disorder (mono or adjunct)",
+  src:[["FDA label (Revised 9/2024)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2024/022264s037lbl.pdf"]] },
+
+pal_trinza:{ drug:"paliperidone", name:"Invega Trinza", generic:"paliperidone palmitate (3-month)",
+  interval:"Every 3 months (±7 days at start; ±2 wk thereafter)", days:91, site:"Deltoid or gluteal IM",
+  oralTrial:"Only after ≥4 months adequately treated on Invega Sustenna (label); last 2 Sustenna doses ideally same strength.",
+  overlap:"None. Give in place of the next Sustenna dose (±7 days).",
+  start:"Per last Sustenna dose (table below)", range:"273–819 mg q3mo", max:"819 mg q3mo",
+  conv:[["Sustenna 78 mg","Trinza 273 mg"],["Sustenna 117 mg","Trinza 410 mg"],["Sustenna 156 mg","Trinza 546 mg"],["Sustenna 234 mg","Trinza 819 mg"]],
+  missed:"3½–<4 mo → give prior dose ASAP. 4–9 mo → no Trinza; Sustenna deltoid D1 + D8 (273→78, 410→117, 546→156, 819→156 mg), then Trinza 1 mo after D8. >9 mo → restart Sustenna ≥4 mo.",
+  d6:"Mild renal: stabilize on Sustenna, then convert. CrCl <50: not recommended. Strong 3A4/P-gp inducers: avoid; consider oral paliperidone ER.",
+  special:"Conversion from Sustenna 39 mg not studied. Shake vigorously ≥15 s tip-up within 5 min of injection; use supplied thin-wall needles.",
+  ind:"Schizophrenia (after ≥4 mo on Sustenna)",
+  src:[["FDA label (Revised 1/2025)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/207946s017lbl.pdf"]] },
+
+pal_hafyera:{ drug:"paliperidone", name:"Invega Hafyera", generic:"paliperidone palmitate (6-month)",
+  interval:"Every 6 months (−2 wk / +3 wk window)", days:182, site:"Gluteal IM only",
+  oralTrial:"Only after ≥4 months adequately treated on Sustenna, or ≥1 Trinza (3-month) cycle (label).",
+  overlap:"None. Give in place of the next Sustenna or Trinza dose. Last 2 Sustenna doses should be same strength.",
+  start:"1,092 or 1,560 mg (table below)", range:"1,092–1,560 mg q6mo", max:"1,560 mg q6mo",
+  conv:[["Sustenna 156 mg","Hafyera 1,092 mg"],["Sustenna 234 mg","Hafyera 1,560 mg"],["Trinza 546 mg","Hafyera 1,092 mg"],["Trinza 819 mg","Hafyera 1,560 mg"]],
+  missed:"6 mo 3 wk–<8 mo → no Hafyera; Sustenna deltoid D1 (156 mg for 1,092 / 234 mg for 1,560), Hafyera 1 mo later. 8–11 mo → Sustenna 156 mg deltoid D1 + D8, Hafyera 1 mo after D8. >11 mo → restart Sustenna ≥4 mo.",
+  d6:"Mild renal: stabilize on Sustenna (or Trinza) first. CrCl <50: not recommended. Strong 3A4/P-gp inducers: avoid; consider oral paliperidone ER.",
+  special:"Lower Sustenna (39/78/117 mg) and Trinza (273/410 mg) doses not studied for conversion. Single gluteal injection; shake thoroughly; supplied needle only.",
+  ind:"Schizophrenia (after Sustenna ≥4 mo or Trinza ≥1 cycle)",
+  src:[["FDA label (Revised 1/2025)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/022264s038lbl.pdf"]] },
+
+pal_erzofri:{ drug:"paliperidone", name:"Erzofri", generic:"paliperidone palmitate ER injectable suspension (1-month)",
+  interval:"Monthly (±7 days)", days:28, site:"Initiation deltoid; maintenance deltoid or gluteal IM",
+  oralTrial:"If new to oral/injectable paliperidone or risperidone, establish tolerability with oral first (label).",
+  overlap:"No oral overlap needed. Single 351 mg deltoid dose on Day 1 (no Day 8 dose). From other LAI: start at next scheduled injection, no initiation dose.",
+  start:"117 mg monthly (schizophrenia), from 4 wk after Day 1", range:"39–234 mg (schizophrenia); 78–234 mg (schizoaffective)", max:"234 mg monthly",
+  conv:[["Paliperidone ER 12 mg/day","234 mg"],["Paliperidone ER 9 mg/day","156 mg"],["Paliperidone ER 6 mg/day","117 mg"],["Paliperidone ER 3 mg/day","39–78 mg"]],
+  missed:"4–6 wk → resume ASAP at stabilized dose. >6 wk–6 mo → stabilized dose deltoid ×2 one wk apart (if 234 mg, use 156 mg ×2), monthly 1 mo after. >6 mo → 351 mg deltoid D1, stabilized dose 1 mo later.",
+  d6:"Mild renal (CrCl 50–<80): 234 mg D1 deltoid, then 78 mg monthly (39–156; max 156). CrCl <50: not recommended. Strong 3A4/P-gp inducers: avoid; consider oral paliperidone ER.",
+  special:"FDA-approved 2024 (label Revised 7/2024). Key difference vs Sustenna: one 351 mg loading dose instead of 234/156 mg D1/D8.",
+  ind:"Schizophrenia; schizoaffective disorder (mono or adjunct)",
+  src:[["FDA label (Revised 7/2024, manufacturer PI)","https://luye.cn/lvye_en/erzofri.pdf"]] },
+hal_dec:{ drug:"haloperidol", name:"Haloperidol decanoate", generic:"haloperidol decanoate",
+  interval:"Every 4 weeks", days:28, site:"Deep IM only (label names no muscle); 21-gauge needle; max 3 mL per site",
+  oralTrial:"Indicated only for adults already on a stable dose of oral IR haloperidol (label).",
+  overlap:"Not stated in label. If symptoms worsen during dose changes, consider adding oral IR haloperidol (label 2.2).",
+  start:"10–15× prior oral daily dose (oral ≤10 mg/day); 10–20× if oral >10 mg/day. If >100 mg: give 100 mg, remainder 3–7 days later.",
+  range:"Typical 50–200 mg every 4 wk; maintenance 10–15× prior oral daily dose",
+  max:"Not stated in label; experience above 450 mg every 4 wk is limited",
+  conv:[["Oral ≤10 mg/day","First and maintenance: 10–15× daily dose q4wk"],["Oral >10 mg/day","First: 10–20× daily dose; maintenance 10–15× q4wk"]],
+  missed:"Not stated in label.",
+  d6:"Strong 3A4/2D6 inhibitors: decrease dose as needed. 3A4 inducers (rifampin ~70% lower levels, carbamazepine): monitor, may increase. Age ≥65 or hepatic impairment: start at low end.",
+  special:"Never IV. Titrate by ≤50 mg every 4 wk. Contraindicated in Parkinson's disease and dementia with Lewy bodies.",
+  ind:"Schizophrenia (adults stable on oral haloperidol)",
+  src:[["FDA label (Gland) rev. Jul 2026","https://nctr-crs.fda.gov/fdalabel/services/spl/set-ids/1a0e38cb-fd9f-4962-9f81-5c0023ca6b4c/spl-doc"]] },
+flu_dec:{ drug:"fluphenazine", name:"Fluphenazine decanoate", generic:"fluphenazine decanoate",
+  interval:"Individualized by response; label conversion based on every 3 wk; one dose may last 4+ wk (up to 6 wk in a few)", days:21,
+  site:"IM or subcutaneous; dry syringe and needle ≥21-gauge",
+  oralTrial:"Phenothiazine-naive: establish response and dose with a shorter-acting fluphenazine first (label).",
+  overlap:"Not stated in label. Severely agitated: rapid-acting phenothiazine first, then decanoate 25 mg once acute symptoms subside.",
+  start:"12.5–25 mg (0.5–1 mL) for most patients",
+  range:"Individualized; above 50 mg increase cautiously in 12.5 mg steps",
+  max:"100 mg per dose",
+  conv:[["Oral 10 mg/day","12.5 mg every 3 wk"],["Oral 20 mg/day","25 mg every 3 wk"]],
+  missed:"Not stated in label.",
+  d6:"Not stated in label. Liver damage is a contraindication; monitor renal function long-term and stop if BUN becomes abnormal.",
+  special:"Wet syringe clouds solution. Onset 24–72 h, marked effect 48–96 h. Contraindicated with blood dyscrasia, liver damage, age <12.",
+  ind:"Patients needing prolonged parenteral antipsychotic therapy (e.g. chronic schizophrenia)",
+  src:[["DailyMed label (Novadoz/MSN) Mar 2025","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8d7ba627-cf3f-4b94-aee8-8b44cc9400be"]] },
+};
+const LAI_SHORT = { // [every, route, oral overlap, how it starts] — compact labels for the comparison table
+ ari_maintena:["Monthly","IM","14 days, or 1-day start","400 mg"],
+ ari_asimtufii:["2 months","IM gluteal","14 days, or 1-day start","960 mg"],
+ ari_aristada:["1–2 months","IM","21 days, or Initio + 30 mg PO","441–882 mg by oral dose"],
+ olz_relprevv:["2 or 4 weeks","IM gluteal","Not stated","Higher dose for 8 weeks"],
+ ris_consta:["2 weeks","IM","3 weeks","25 mg"],
+ ris_perseris:["Monthly","SC","None","90 or 120 mg"],
+ ris_uzedy:["1 or 2 months","SC","None","By oral dose"],
+ ris_rykindo:["2 weeks","IM","7 days","25 mg"],
+ pal_sustenna:["Monthly","IM","None","234 mg day 1 + 156 mg day 8"],
+ pal_trinza:["3 months","IM","None (after ≥4 mo Sustenna)","By Sustenna dose"],
+ pal_hafyera:["6 months","IM gluteal","None (after Sustenna or Trinza)","1,092 or 1,560 mg"],
+ pal_erzofri:["Monthly","IM","None","351 mg day 1"],
+ hal_dec:["4 weeks","IM","Not stated","10–20× oral daily dose"],
+ flu_dec:["~3 weeks (varies)","IM or SC","Not stated","12.5 mg per 10 mg/day oral"]
+};
+const laiFor = id => Object.keys(LAI).filter(k=>LAI[k].drug===id);
+const LAI_ROWS = [["Oral trial first","oralTrial"],["Start and overlap","overlap"],["Dose","dose"],["Missed dose","missed"],["Interactions and organ","d6"],["Watch for","special"]];
+function laiHTML(id){
+  const ks=laiFor(id); if(!ks.length) return "";
+  state.laiSel=state.laiSel||{}; const k=ks.includes(state.laiSel[id])?state.laiSel[id]:ks[0], L=LAI[k];
+  const val=f=>f==="dose"?`<span class="laidose"><span><b>Start</b> ${esc(L.start)}</span><span><b>Range</b> ${esc(L.range)}</span><span><b>Max</b> ${esc(L.max)}</span></span>`:esc(L[f]||"");
+  const conv=(L.conv||[]).length?`<table class="laiconv"><thead><tr><th>${/Sustenna|Trinza/.test(L.conv[0][0])?"Current":"Oral dose"}</th><th>${esc(L.name)}</th></tr></thead><tbody>${L.conv.map(([a,b])=>`<tr><td>${esc(a)}</td><td>${esc(b)}</td></tr>`).join("")}</tbody></table>`:"";
+  return `<h3 id="laicard">Long-acting injectables</h3>
+  <div class="laibox">
+    <div class="seg laiseg" role="group" aria-label="Formulation">${ks.map(x=>`<button data-lai="${x}" aria-pressed="${x===k}">${esc(LAI[x].name)}</button>`).join("")}</div>
+    <p class="laihead"><b>${esc(L.interval)}</b> · ${esc(L.site)}${L.ind?` · ${esc(L.ind)}`:""}</p>
+    <dl class="laidl">${LAI_ROWS.filter(([,f])=>f==="dose"||(L[f]&&L[f].trim())).map(([l,f])=>`<dt>${l}</dt><dd${/^Not stated/.test(L[f]||"")?' class="muted"':""}>${val(f)}${f==="dose"?conv:""}</dd>`).join("")}</dl>
+    <p class="use-src">Sources: ${(L.src||[]).map(([l,h])=>`<a href="${h}" target="_blank" rel="noopener">${esc(l)}</a>`).join(" · ")} · <button class="linkbtn" data-tab="lai">Compare all LAIs →</button></p>
+  </div>`;
+}
+function renderLAIPage(){
+  const byDrug=[...new Set(Object.values(LAI).map(L=>L.drug))];
+  $("#laibody").innerHTML = `<h1 class="pagetitle">Long-acting injectables</h1>
+  <p class="note">Every product's FDA-label dosing in one place. Tap a product for the full schedule, oral conversion and missed-dose rules.</p>
+  <div class="laiwrap"><table class="laitab"><thead><tr><th>Product</th><th>Every</th><th>Route</th><th>Oral overlap</th><th>Starts with</th></tr></thead><tbody>
+  ${byDrug.map(dr=>`<tr class="laigrp" style="--drug:${col(dr)}"><td colspan="5"><span class="dot"></span>${esc(DRUGS[dr].name)}</td></tr>`+
+    Object.keys(LAI).filter(k=>LAI[k].drug===dr).map(k=>{ const [ev,rt,ov,st]=LAI_SHORT[k]||["","","",""];
+      return `<tr style="--drug:${col(dr)}"><td><button class="goto-n" data-laigo="${k}">${esc(LAI[k].name)}</button></td><td>${esc(ev)}</td><td>${esc(rt)}</td><td class="${/^None/.test(ov)?"ov-none":/^Not stated/.test(ov)?"muted":""}">${esc(ov)}</td><td>${esc(st)}</td></tr>`; }).join("")).join("")}
+  </tbody></table></div>
+  <p class="note">"Oral overlap" is how long the patient keeps taking the oral drug after the first injection. Every product requires proven oral tolerability first unless the patient is already on the same molecule.</p>`;
+}
+/* Receptor guide: what each target normally does and what drugs that act on it cause.
+   acts: [label, [therapeutic effects], [side effects]] */
+const RX_FAM = [["mono","Monoamine transporters and enzymes"],["da","Dopamine"],["5ht","Serotonin"],["adr","Adrenergic"],["ach","Histamine and acetylcholine"],["gaba","GABA and glutamate"],["other","Other targets"]];
+const RXINFO = [
+ {k:"SERT", fam:"mono", full:"Serotonin transporter", m:/^SERT$/,
+  normal:"Pulls serotonin back into the neuron after release, ending its signal.",
+  acts:[["Block (SSRIs, SNRIs, clomipramine, vortioxetine)",["Antidepressant and anti-anxiety effect, building over 2–6 weeks","OCD, panic, PTSD, PMDD"],["Nausea and loose stools early","Sexual dysfunction","Bleeding risk (platelets need serotonin)","Hyponatremia, especially in older adults","Serotonin syndrome when combined with other serotonergic drugs"]]]},
+ {k:"NET", fam:"mono", full:"Norepinephrine transporter", m:/^NET$/,
+  normal:"Recycles norepinephrine. In the prefrontal cortex it also clears dopamine, because DAT is sparse there.",
+  acts:[["Block (SNRIs, bupropion, atomoxetine, viloxazine, TCAs)",["Energy, attention, focus","Pain relief (duloxetine, TCAs)","ADHD (non-stimulants)"],["Raised heart rate and blood pressure","Sweating, tremor","Urinary hesitancy, constipation","Insomnia"]]]},
+ {k:"DAT", fam:"mono", full:"Dopamine transporter", m:/^DAT$/,
+  normal:"Recycles dopamine in reward and motor circuits.",
+  acts:[["Block or reverse (methylphenidate, amphetamines, bupropion weakly)",["Attention, motivation, wakefulness","ADHD"],["Insomnia, appetite loss","Raised heart rate and blood pressure","Euphoria and misuse when exposure is fast or high"]]]},
+ {k:"MAO", fam:"mono", full:"Monoamine oxidase A and B", m:/^MAO/,
+  normal:"Enzyme that breaks down serotonin, norepinephrine, dopamine and dietary tyramine.",
+  acts:[["Irreversible inhibition (phenelzine)",["Raises all three monoamines: effective in atypical and treatment-resistant depression"],["Hypertensive crisis with tyramine-rich foods or sympathomimetics","Serotonin syndrome with serotonergic drugs","Orthostasis, weight gain, sexual dysfunction"]]]},
+ {k:"VMAT2", fam:"mono", full:"Vesicular monoamine transporter 2", m:/^VMAT2$/,
+  normal:"Loads dopamine and other monoamines into vesicles so they can be released.",
+  acts:[["Inhibit (valbenazine, deutetrabenazine)",["Less dopamine release: treats tardive dyskinesia and Huntington's chorea"],["Sleepiness","Parkinsonism","Depression and suicidality (label warning in Huntington's)"]]]},
+ {k:"D2", fam:"da", full:"Dopamine D2 receptor", m:/^D2$/,
+  normal:"Carries dopamine's signal in four pathways: reward and salience (mesolimbic), movement (nigrostriatal), prolactin control (tuberoinfundibular) and the frontal cortex.",
+  acts:[["Block (antipsychotics, at about 60–80% occupancy)",["Reduces hallucinations, delusions and agitation","Anti-mania","Anti-nausea"],["EPS above about 80% occupancy: dystonia, parkinsonism, akathisia","Prolactin rise: galactorrhea, amenorrhea, sexual dysfunction","Tardive dyskinesia with long-term use","Flattened motivation"]],
+        ["Partial agonist (aripiprazole, brexpiprazole, cariprazine)",["Antipsychotic, while keeping prolactin low"],["Akathisia is the typical problem"]]]},
+ {k:"D3", fam:"da", full:"Dopamine D3 receptor", m:/^D3$/,
+  normal:"Concentrated in limbic reward areas; tunes motivation and reward.",
+  acts:[["Block or partial agonist (cariprazine most strongly)",["Proposed benefit for negative symptoms and bipolar depression (evidence still limited)"],[]]]},
+ {k:"5-HT1A", fam:"5ht", full:"Serotonin 1A receptor", m:/^5-HT1A$/,
+  normal:"Acts as a brake on serotonin neurons and calms downstream circuits.",
+  acts:[["Agonist or partial agonist (buspirone, vilazodone, vortioxetine, aripiprazole, brexpiprazole, cariprazine, lurasidone)",["Anti-anxiety and antidepressant effect","May offset EPS and sexual side effects"],["Dizziness, nausea"]]]},
+ {k:"5-HT2A", fam:"5ht", full:"Serotonin 2A receptor", m:/^5-HT2A$/,
+  normal:"Excites cortical neurons and restrains dopamine release in the striatum. Stimulating it (psilocybin, LSD) causes hallucinations.",
+  acts:[["Block (most second-gen antipsychotics, trazodone, mirtazapine)",["Less EPS than D2 block alone (frees striatal dopamine)","Deeper, more consolidated sleep","May help negative symptoms and SSRI-related sexual dysfunction"],[]]]},
+ {k:"5-HT2C", fam:"5ht", full:"Serotonin 2C receptor", m:/^5-HT2C$/,
+  normal:"Signals fullness and puts a brake on dopamine and norepinephrine release.",
+  acts:[["Block (olanzapine, quetiapine's metabolite, mirtazapine, fluoxetine)",["Possibly activating and antidepressant (frees dopamine and norepinephrine)"],["Appetite and weight gain, especially combined with H1 block"]],
+        ["Stimulate (indirectly, early in SSRI treatment)",[],["Early jitteriness and anxiety"]]]},
+ {k:"5-HT3", fam:"5ht", full:"Serotonin 3 receptor (ion channel)", m:/^5-HT3$/,
+  normal:"Triggers nausea and vomiting from the gut and the brainstem vomiting centre.",
+  acts:[["Block (ondansetron; also mirtazapine, vortioxetine)",["Less nausea"],[]],["Stimulate (extra serotonin from SSRIs and SNRIs)",[],["Nausea and diarrhea, usually fading in 1–2 weeks"]]]},
+ {k:"5-HT7", fam:"5ht", full:"Serotonin 7 receptor", m:/^5-HT7$/,
+  normal:"Involved in circadian rhythm, mood and thinking.",
+  acts:[["Block (lurasidone, vortioxetine, some others)",["Proposed antidepressant and pro-cognitive effect (mostly animal data)"],[]]]},
+ {k:"α1", fam:"adr", full:"Alpha-1 adrenergic receptor", m:/^α1/,
+  normal:"Keeps blood vessels constricted; also supports alertness.",
+  acts:[["Block (quetiapine, clozapine, risperidone, trazodone, TCAs, prazosin)",["Fewer trauma nightmares (prazosin)"],["Orthostatic hypotension, dizziness, falls","Reflex fast heart rate","Nasal congestion","Priapism (trazodone, rare)"]]]},
+ {k:"α2", fam:"adr", full:"Alpha-2 adrenergic receptor", m:/^α2(A|C)?$/,
+  normal:"A presynaptic brake: when stimulated it cuts norepinephrine (and serotonin) release and sympathetic outflow.",
+  acts:[["Agonist (guanfacine, clonidine)",["ADHD: attention and impulse control (α2A in the prefrontal cortex)","Calms hyperarousal and opioid-withdrawal symptoms","Tics"],["Sedation","Low blood pressure and heart rate","Rebound hypertension if stopped suddenly"]],
+        ["Block (mirtazapine)",["Releases more norepinephrine and serotonin: antidepressant"],[]]]},
+ {k:"β", fam:"adr", full:"Beta-1 and beta-2 adrenergic receptors", m:/^β[12]$/,
+  normal:"Speed the heart (β1) and open airways and drive tremor (β2).",
+  acts:[["Block (propranolol)",["Akathisia","Tremor, racing heart and other physical anxiety symptoms (performance anxiety)"],["Slow heart rate, low blood pressure, fatigue","Bronchospasm in asthma","Can hide signs of low blood sugar"]]]},
+ {k:"H1", fam:"ach", full:"Histamine H1 receptor", m:/^H1$/,
+  normal:"Histamine neurons keep the brain awake and help regulate appetite.",
+  acts:[["Block (quetiapine, olanzapine, clozapine, mirtazapine, doxepin, hydroxyzine, TCAs)",["Sleep (low-dose doxepin, hydroxyzine)"],["Daytime sedation","Increased appetite and weight gain"]]]},
+ {k:"M1", fam:"ach", full:"Muscarinic acetylcholine receptors", m:/^M1$|^Muscarinic$/,
+  normal:"Acetylcholine supports memory and attention centrally and drives 'rest and digest' functions in the body.",
+  acts:[["Block (clozapine, olanzapine, TCAs, paroxetine, benztropine)",["Reduces EPS (benztropine)"],["Dry mouth, constipation, urinary retention, blurred vision","Fast heart rate","Confusion and delirium, especially in older adults"]]]},
+ {k:"M4", fam:"ach", full:"Muscarinic M1 and M4 receptors (agonism)", m:/^M4$/,
+  normal:"M4 receptors on striatal neurons dampen dopamine release; M1 supports cognition.",
+  acts:[["Agonist (xanomeline in xanomeline-trospium)",["Antipsychotic without blocking D2: little EPS, prolactin or weight gain"],["Nausea, vomiting, dyspepsia (trospium blocks muscarinic receptors outside the brain to limit these)","Urinary retention, constipation from trospium"]]]},
+ {k:"GABA-A", fam:"gaba", full:"GABA-A receptor (chloride channel)", m:/^GABA(-A)?/,
+  normal:"The brain's main inhibitory channel. Opening it quiets neurons.",
+  acts:[["Enhance (benzodiazepines, zolpidem, zuranolone; valproate raises GABA levels)",["Fast anxiety relief","Sleep","Anticonvulsant, alcohol withdrawal","Postpartum depression (zuranolone)"],["Sedation, falls, memory problems","Tolerance and dependence; withdrawal can cause seizures","Dangerous breathing suppression with opioids or alcohol"]]]},
+ {k:"NMDA", fam:"gaba", full:"NMDA glutamate receptor", m:/^NMDA$|^Glutamate$/,
+  normal:"The main excitatory receptor; central to learning and synaptic plasticity.",
+  acts:[["Block (esketamine, dextromethorphan)",["Rapid antidepressant effect (hours to days)"],["Dissociation, dizziness","Raised blood pressure","Misuse potential"]],
+        ["Modulate (acamprosate)",["Steadies glutamate overactivity after alcohol withdrawal: helps maintain abstinence"],[]]]},
+ {k:"μ-opioid", fam:"other", full:"Mu and kappa opioid receptors", m:/opioid/,
+  normal:"Mu receptors drive pain relief, reward and breathing suppression; kappa receptors mediate dysphoria and stress.",
+  acts:[["Full agonist (methadone)",["Prevents opioid withdrawal and craving"],["Breathing suppression, QTc prolongation","Constipation, sedation"]],
+        ["Partial agonist (buprenorphine)",["Treats opioid use disorder with a ceiling on breathing suppression"],["Can precipitate withdrawal if started too soon after a full agonist"]],
+        ["Block (naltrexone, samidorphan)",["Reduces alcohol and opioid reward","Limits olanzapine weight gain (samidorphan)"],["Blocks opioid pain relief","Precipitates withdrawal in anyone taking opioids"]]]},
+ {k:"OXR", fam:"other", full:"Orexin receptors OX1R and OX2R", m:/^OX[12]R$/,
+  normal:"Orexin keeps you awake and stabilizes the sleep–wake switch.",
+  acts:[["Block (suvorexant, lemborexant)",["Sleep onset and maintenance without GABA effects"],["Next-day drowsiness","Sleep paralysis, vivid dreams","Avoid in narcolepsy"]]]},
+ {k:"Nic", fam:"other", full:"α4β2 nicotinic acetylcholine receptor", m:/nicotinic/,
+  normal:"Where nicotine binds to release dopamine and produce reward.",
+  acts:[["Partial agonist (varenicline)",["Eases craving and withdrawal","Blunts the reward from smoking"],["Nausea","Vivid dreams, insomnia"]]]},
+ {k:"Na", fam:"other", full:"Voltage-gated sodium channels", m:/^Na⁺ channels?$/,
+  normal:"Let neurons fire repeatedly.",
+  acts:[["Block (lamotrigine, carbamazepine, divalproex partly)",["Stabilize overactive firing: anticonvulsant and mood stabilizing"],["Dizziness, double vision, unsteadiness","Low sodium (carbamazepine)"]]]},
+ {k:"a2d", fam:"other", full:"α2δ subunit of calcium channels", m:/α2δ/,
+  normal:"Helps calcium channels trigger release of excitatory neurotransmitters.",
+  acts:[["Bind (gabapentin)",["Less excitatory release: anxiety, alcohol use disorder, pain (off-label psych uses)"],["Sedation, dizziness","Misuse, and breathing suppression combined with opioids"]]]},
+ {k:"Li", fam:"other", full:"GSK-3 and inositol monophosphatase", m:/^GSK-3$|^IMPase$/,
+  normal:"Intracellular signaling enzymes that shape how neurons respond over time.",
+  acts:[["Inhibit (lithium)",["Mood stabilization and suicide prevention (proposed mechanism)"],[]]]},
+ {k:"ALDH", fam:"other", full:"Aldehyde dehydrogenase", m:/^ALDH$/,
+  normal:"Clears acetaldehyde, the toxic product of alcohol breakdown.",
+  acts:[["Inhibit (disulfiram)",["Drinking causes flushing, nausea and palpitations: deters alcohol use"],["Severe reactions with any alcohol, including hidden sources","Hepatotoxicity"]]]},
+ {k:"σ1", fam:"other", full:"Sigma-1 receptor", m:/^σ1$/,
+  normal:"An intracellular chaperone protein; its role in mood is still being worked out.",
+  acts:[["Agonist (dextromethorphan, fluvoxamine)",["Proposed antidepressant contribution"],[]]]},
+ {k:"CYP2D6", fam:"other", full:"CYP2D6 enzyme (used as a target)", m:/^CYP2D6$/,
+  normal:"Liver enzyme that metabolizes many psychiatric drugs.",
+  acts:[["Inhibit (bupropion in dextromethorphan-bupropion)",["Raises dextromethorphan levels so it works as an antidepressant"],["Raises levels of other 2D6 drugs too"]]]}
+];
+
+const rxOf = tgt => RXINFO.find(x=>x.m.test(tgt.split(" / ")[0]));
+function rxDrugs(){ // which psych drugs list each receptor among their key targets
+  const out={}; for(const id of ORDER){ if(DRUGS[id].spec==="anes") continue;
+    for(const r of keyReceptors(id)) for(const t of r.tgt.split(" / ")){ const x=RXINFO.find(e=>e.m.test(t)); if(x){ (out[x.k]=out[x.k]||new Set()).add(id); } } }
+  return out;
+}
+function renderRx(){
+  const DR=rxDrugs();
+  const card=x=>`<article class="rxc" id="rx-${x.k.replace(/[^\w-]/g,"")}">
+    <h3 class="rxh"><b>${esc(x.k==="OXR"?"OX1R / OX2R":x.k==="Nic"?"α4β2 nicotinic":x.k==="Na"?"Na⁺ channels":x.k==="a2d"?"α2δ":x.k==="Li"?"GSK-3 / IMPase":x.k==="β"?"β1 / β2":x.k)}</b><span>${esc(x.full)}</span></h3>
+    <p class="rxn">${esc(x.normal)}</p>
+    ${x.acts.map(([l,g,b])=>`<div class="rxa"><p class="rxl">${esc(l)}</p><ul class="use">${g.map(t=>`<li class="y">${esc(t)}</li>`).join("")}${b.map(t=>`<li class="n">${esc(t)}</li>`).join("")}</ul></div>`).join("")}
+    ${DR[x.k]?`<p class="rxd"><span>Key target for</span> ${[...DR[x.k]].map(id=>`<button class="rxdrug" data-goto="${id}" style="--drug:${col(id)}"><i></i>${esc(DRUGS[id].short||DRUGS[id].name)}</button>`).join("")}</p>`:""}
+  </article>`;
+  $("#rxbody").innerHTML = `<h1 class="pagetitle">Receptors</h1>
+  <p class="note">What each target does, and what happens when a drug blocks or stimulates it. <span class="tx">✓ Green</span> = why it's used · <span class="se">! amber</span> = side effects. Tap a drug to open its card.</p>
+  <nav class="rxjump" aria-label="Jump to family">${RX_FAM.map(([f,l])=>`<a href="#" data-rxfam="${f}">${esc(l)}</a>`).join("")}</nav>
+  ${RX_FAM.map(([f,l])=>`<h2 class="rxfam" id="rxf-${f}">${esc(l)}</h2><div class="rxgrid">${RXINFO.filter(x=>x.fam===f).map(card).join("")}</div>`).join("")}
+  <p class="use-src">Textbook pharmacology, cross-checked with the <a href="https://www.guidetopharmacology.org/" target="_blank" rel="noopener">IUPHAR/BPS Guide to Pharmacology</a> and the drugs' FDA labels. Binding strengths on each card come from the <a href="https://pdsp.unc.edu/databases/kidb.php" target="_blank" rel="noopener">PDSP Ki database</a>.</p>`;
+  if(state.rx){ const el=$("#rx-"+state.rx.replace(/[^\w-]/g,"")); state.rx=null; if(el){ el.scrollIntoView({block:"start"}); el.classList.add("flash"); } }
+}
 function keyRxHTML(id){
   const K=keyReceptors(id); if(!K.length) return "";
   const cls=r=>r.kind==="tx"?(r.tag==="Main effect"?"kt-main":"kt-contrib"):"kt-l"+r.lv;
   return `<h3>Key targets</h3><div class="kx">${K.map(r=>`<div class="kx-r">
-    <div class="kx-n"><b>${esc(r.tgt)}</b><small>${RX_VERB(r.act)}</small></div>
+    <div class="kx-n">${rxOf(r.tgt)?`<button class="rxlink" data-rx="${rxOf(r.tgt).k}" title="What does ${esc(r.tgt)} do?">${esc(r.tgt)}</button>`:`<b>${esc(r.tgt)}</b>`}<small>${RX_VERB(r.act)}</small></div>
     <div class="kx-e">${r.tx?`<span class="tx">${esc(r.tx)}</span>`:""}${r.se?`<span class="se">${esc(r.se)}</span>`:""}${r.note?`<small>${esc(r.note)}</small>`:""}</div>
     <span class="kt ${cls(r)}">${esc(r.tag)}</span></div>`).join("")}</div>
     <p class="note kx-key"><span class="tx">Green</span> = why it works · <span class="se">amber</span> = side effect · High / Moderate / Low match this drug's side-effect ratings</p>`;
@@ -4447,6 +5112,7 @@ function renderCard(){
     </div>
 
     ${chipsHTML}
+    ${useHTML(state.drug)}
 
     <div class="panels">
       <section class="panel overview">
@@ -4461,6 +5127,7 @@ function renderCard(){
           ${doseHTML}
           <p class="agenote"><b>${ageLabel}.</b> ${esc(d.agenote[state.age])}</p>
         </div>
+        ${laiHTML(state.drug)}
         <h3>Contraindications</h3>${S.contra.length?`<div class="tags">${S.contra.map(c=>`<span class="tag red">✕ ${esc(c)}</span>`).join("")}</div>`:`<div class="tags"><span class="tag">None beyond hypersensitivity</span></div>`}
         <h3>Monitoring</h3><div class="tags">${S.monitor.map(m=>`<span class="tag mon">${esc(m)}</span>`).join("")}</div>
         <p class="srcs">Verify: <a href="https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=${encodeURIComponent(DMQ[state.drug]||d.name)}" target="_blank" rel="noopener">FDA label (DailyMed) ↗</a> · <a href="https://www.ncbi.nlm.nih.gov/books/?term=${encodeURIComponent(d.name.split(" ")[0]+" LactMed")}" target="_blank" rel="noopener">LactMed ↗</a></p>
@@ -4620,20 +5287,28 @@ function renderRoot(){
 }
 function setView(v){
   if(v==="dex" && !state.drug) v="home";
-  if((v==="cmp"||v==="reg"||v==="path") && state.spec!=="psych") v="home";
+  if((v==="cmp"||v==="reg"||v==="path"||v==="lai"||v==="rx") && state.spec!=="psych") v="home";
   if((v==="sheet"||v==="crisis") && state.spec!=="anes") v="home";
   state.view=v;
-  for(const id of ["root","home","dex","cmp","reg","sheet","crisis","path"]) $("#"+id).hidden = id!==v;
+  for(const id of ["root","home","dex","cmp","reg","sheet","crisis","path","lai","rx"]) $("#"+id).hidden = id!==v;
   const showPt = state.spec==="anes" && (v==="dex"||v==="sheet"||v==="crisis");
   $("#ptbar").hidden = !showPt; if(showPt) renderPtbar();
   if(v!=="dex") $("#namepill").hidden=true;
   closeMini();
   closeSpecMenu(); renderTabs();
-  if(v==="root") renderRoot(); else if(v==="home") renderHome(); else if(v==="dex"){ renderConds(); renderEntries(); renderCard(); } else if(v==="cmp") renderCompare(); else if(v==="reg") renderRegimen(); else if(v==="path") renderPath(); else if(v==="crisis") renderCrisis(); else renderSheet();
+  if(v==="root") renderRoot(); else if(v==="home") renderHome(); else if(v==="dex"){ renderConds(); renderEntries(); renderCard(); } else if(v==="cmp") renderCompare(); else if(v==="reg") renderRegimen(); else if(v==="path") renderPath(); else if(v==="lai") renderLAIPage(); else if(v==="rx") renderRx(); else if(v==="crisis") renderCrisis(); else renderSheet();
   syncHash();
 }
 function rerenderAnes(){ if(state.view==='sheet') renderSheet(); else if(state.view==='crisis') renderCrisis(); else if(state.view==='dex') renderCard(); }
 function setSpec(k){ if(state.spec!==k){ state.spec=k; state.hcond=null; state.cond="All"; state.chip=null; $("#hq").value=""; $("#q").value=""; } setView(SPECS[k].start); window.scrollTo(0,0); }
+function getPref(k,d){ try{ return localStorage.getItem("affinity."+k)||d; }catch(e){ return d; } }
+function setPref(k,v){ try{ localStorage.setItem("affinity."+k,v); }catch(e){} }
+function applyLook(){ const r=document.documentElement, st=getPref("style","modern"), md=getPref("mode","system");
+  if(st==="swiss") r.setAttribute("data-style","swiss"); else r.removeAttribute("data-style");
+  if(md==="system") r.removeAttribute("data-theme"); else r.setAttribute("data-theme",md);
+  document.querySelectorAll("[data-setstyle]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.setstyle===st)));
+  document.querySelectorAll("[data-setmode]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.setmode===md))); }
+function closeSetMenu(){ const m=$("#setmenu"); if(m){ m.hidden=true; $("#setbtn").setAttribute("aria-expanded","false"); } }
 function closeSpecMenu(){ const m=$("#specmenu"); if(m){ m.hidden=true; $("#specbtn").setAttribute("aria-expanded","false"); } }
 
 document.addEventListener("click", e=>{
@@ -4641,6 +5316,14 @@ document.addEventListener("click", e=>{
   if(e.target.closest("#specbtn")){ const m=$("#specmenu"); m.hidden=!m.hidden; $("#specbtn").setAttribute("aria-expanded", String(!m.hidden));
     m.innerHTML = SPEC_ORDER.map(k=>`<button role="menuitem" data-spec="${k}" aria-current="${k===state.spec&&state.view!=="root"}">${SPECS[k].name}</button>`).join("") + `<button role="menuitem" data-root="1">All specialties</button>`; return; }
   if(!e.target.closest("#specmenu")) closeSpecMenu();
+  const rxb=e.target.closest("[data-rx]"); if(rxb){ state.rx=rxb.dataset.rx; setView("rx"); return; }
+  const rf=e.target.closest("[data-rxfam]"); if(rf){ e.preventDefault(); const el=$("#rxf-"+rf.dataset.rxfam); if(el) el.scrollIntoView({block:"start"}); return; }
+  const lb=e.target.closest("[data-lai]"); if(lb){ state.laiSel=state.laiSel||{}; state.laiSel[state.drug]=lb.dataset.lai; renderCard(); const h=$("#laicard"); if(h) h.scrollIntoView({block:"nearest"}); return; }
+  const lg=e.target.closest("[data-laigo]"); if(lg){ const L=LAI[lg.dataset.laigo]; state.laiSel=state.laiSel||{}; state.laiSel[L.drug]=lg.dataset.laigo; state.drug=L.drug; setView("dex"); const h=$("#laicard"); if(h) h.scrollIntoView({block:"start"}); return; }
+  if(e.target.closest("#setbtn")){ const m=$("#setmenu"); m.hidden=!m.hidden; $("#setbtn").setAttribute("aria-expanded",String(!m.hidden)); applyLook(); return; }
+  const ss=e.target.closest("[data-setstyle]"); if(ss){ setPref("style",ss.dataset.setstyle); applyLook(); return; }
+  const sm=e.target.closest("[data-setmode]"); if(sm){ setPref("mode",sm.dataset.setmode); applyLook(); return; }
+  if(!e.target.closest("#setmenu")) closeSetMenu();
   const sp = e.target.closest("[data-spec]"); if(sp){ setSpec(sp.dataset.spec); return; }
   if(e.target.closest("[data-root]")){ setView("root"); window.scrollTo(0,0); return; }
   const tab = e.target.closest("[data-tab]"); if(tab){ setView(tab.dataset.tab==="dex"?"home":tab.dataset.tab); window.scrollTo(0,0); return; }
