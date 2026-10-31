@@ -289,7 +289,8 @@ button.concbtn:hover{border-color:var(--ink);color:var(--ink)}
 .sr[aria-expanded="true"]{border-bottom-color:transparent;background:var(--surface)}
 .sr-n{font-weight:600;font-size:15px;min-width:0}
 .qtrow{font-size:13.5px}.qtrow b.lv-avoid{color:var(--sev-avoid)}.qtrow b.lv-caution{color:var(--sev-adjust)}.qtrow a{color:inherit}
-.qtalso{margin-top:4px;color:var(--muted);font-size:12.5px}.qtalso .goto-n{font-size:12.5px}
+.qtalso .goto-n{border:0;background:transparent;padding:0;font:inherit;color:var(--ink);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.qtalso{display:block;margin-top:6px;color:var(--muted);font-size:12.5px}.qtalso .goto-n{font-size:12.5px}
 .httag.qt{color:var(--sev-avoid);background:color-mix(in srgb,var(--sev-avoid) 12%,transparent)}
 .httag{display:inline-block;font-size:11px;font-weight:700;color:var(--sev-adjust);background:color-mix(in srgb,var(--sev-adjust) 14%,transparent);border-radius:999px;padding:1px 7px;vertical-align:1px;white-space:nowrap}
 .sr-u{font-weight:400;font-size:13px;color:var(--muted)}
@@ -420,6 +421,21 @@ body.mini-open{overflow:hidden}
 .pathpick{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 .pathsub{margin-bottom:12px}
 .fl-gap{width:100%;max-width:560px;border-top:2px dashed var(--line);margin:22px 0 14px}
+.kx{display:grid;gap:2px;margin-bottom:6px}
+.kx-r{display:grid;grid-template-columns:78px minmax(0,1fr) auto;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.kx-r:last-child{border-bottom:0}
+.kx-n b{display:block;font-size:14.5px}.kx-n small{display:block;font-size:11.5px;color:var(--muted);line-height:1.2}
+.kx-p{display:flex;gap:3px}.kx-p i{width:10px;height:10px;border-radius:50%;background:var(--line)}.kx-p i.on{background:var(--drug)}
+.kx-e{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:13.5px;line-height:1.35}
+.kx-e small{flex-basis:100%;font-size:11.5px;color:var(--muted)}
+.tx{color:var(--ok);font-weight:600}.se{color:var(--sev-adjust);font-weight:600}
+.kt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border-radius:999px;padding:2px 8px;white-space:nowrap;justify-self:end}
+.kt-main{background:var(--ok);color:var(--surface)}.kt-contrib{color:var(--ok);border:1px solid color-mix(in srgb,var(--ok) 50%,transparent)}
+.kt-l3{background:var(--sev-avoid);color:var(--surface)}.kt-l2{color:var(--sev-adjust);background:color-mix(in srgb,var(--sev-adjust) 15%,transparent)}.kt-l1{color:var(--muted);border:1px solid var(--line)}
+.kx-key{font-size:12px;margin:2px 0 10px}
+details.allbind{margin-top:8px}
+details.allbind>summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--muted);padding:4px 0}
+details.allbind[open]>summary{margin-bottom:6px}
 .glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:16px}
 .gl{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 12px;min-width:0}
 .gl span{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--lv);font-weight:700}
@@ -3612,6 +3628,10 @@ function concButton(id, dz){
   if(dz && dz.c) return `<span class="concbtn fixed">${esc(fmtConc(c))}</span>`;
   return L.length>1 ? `<button class="concbtn" data-conc="${id}" title="Tap to change concentration">${esc(fmtConc(c))} ⇄</button>` : `<span class="concbtn fixed">${esc(fmtConc(c))}</span>`;
 }
+function qtAlsoHTML(id,qt){
+  const others=AORDER.filter(x=>x!==id&&qtOf(x)&&qtOf(x)[0]==="known");
+  return `${qt&&qt[3]?` <a href="${qt[3]}" target="_blank" rel="noopener">Source ↗</a>`:""}<span class="qtalso">Also known QT risk (${others.length}): ${others.map(x=>`<button class="goto-n" data-goto="${x}">${esc(DRUGS[x].name)}</button>`).join(", ")}. Check K⁺ and Mg²⁺; ECG if combining.</span>`;
+}
 function renderACard(){
   const d=DRUGS[state.drug], p=state.pt, id=state.drug;
   const all=d.doses, popD=all.filter(x=>forPop(x,p.pop)), list=popD.length?popD:all;
@@ -3620,15 +3640,18 @@ function renderACard(){
   if(state.autoPick && list[0] && !fitsWeight(list[0])){ const k=list.findIndex(fitsWeight); if(k>0) state.ause=k; }
   state.autoPick=false;
   const dz=list[state.ause]||list[0];
-  const chips=[["Blood pressure",d.fx.bp],["Heart rate",d.fx.hr],["Breathing",d.fx.resp]];
+  const qt=qtOf(id);
+  const EMPTYFX=/^(not stated|none|minimal|neutral|not described)$/i, QTWORD=/QT|torsade|TdP/i;
+  const chips=[["Blood pressure",d.fx.bp],["Heart rate",d.fx.hr],["Breathing",d.fx.resp]]
+    .filter(([,f])=>f && !(f[0]==="ok" && EMPTYFX.test(f[1])) && !(qt && QTWORD.test(f[1]+" "+(f[2]||""))));
   if(d.mh) chips.push(["MH trigger",["avoid","Triggers MH","Volatile anesthetics and succinylcholine can trigger malignant hyperthermia. Avoid in susceptible patients."]]);
-  const qt=qtOf(id); if(qt) chips.push(["QTc",[QTLV[qt[0]][0],QTLV[qt[0]][1],(qt[1]||"")+(qt[2]?` (${qt[2]})`:"")]]);
+  if(qt) chips.push(["QTc",[QTLV[qt[0]][0],QTLV[qt[0]][1],(qt[1]||"")+(qt[2]?` (${qt[2]})`:"")]]);
   if(d.boxed) chips.push(["Boxed warning",["avoid","Yes",d.boxed]]);
   const open=chips.find(c=>c[0]===state.chip);
   const chipsHTML=`<div class="chips" role="group" aria-label="Effects at a glance">${chips.map(([l,[lv,w]])=>{ const bx=l==="Boxed warning", mh=l==="MH trigger";
       const txt=bx?"FDA boxed warning":mh?"MH trigger":`${l==="Blood pressure"?"BP":l==="Heart rate"?"HR":l}: ${w}`;
       return `<button class="sc lv-${lv}${bx?" bx":""}" data-chip="${l}" aria-pressed="${l===state.chip}" aria-expanded="${l===state.chip}">${esc(txt)}<span class="chev" aria-hidden="true">▾</span></button>`; }).join("")}</div>`
-    + (open?`<p class="sc-detail lv-${open[1][0]}"><b>${open[0]}: ${esc(open[1][1])}.</b> ${esc(open[1][2]||"")}</p>`:"");
+    + (open?`<p class="sc-detail lv-${open[1][0]}"><b>${open[0]}: ${esc(open[1][1])}.</b> ${esc(open[1][2]||"")}${open[0]==="QTc"?qtAlsoHTML(id,qt):""}</p>`:"");
   const res=dz?doseResult(dz,id):null;
   const rev=d.reversal?(d.reversal.id&&DRUGS[d.reversal.id]?`<button class="goto-n" data-goto="${d.reversal.id}">${esc(d.reversal.text)}</button>`:esc(d.reversal.text)):"None";
   $("#card").style.setProperty("--drug", `var(--g-${d.grp})`);
@@ -3656,7 +3679,6 @@ function renderACard(){
         <div class="quick">
           <div><h3>Onset &amp; duration</h3>${timelineHTML(d.time)}</div>
           <div class="qrow"><span>Reversal</span><b>${rev}</b></div>
-          ${qt?`<div class="qrow"><span>QTc</span><div class="qtrow"><b class="lv-${QTLV[qt[0]][0]}">${QTLV[qt[0]][1]}</b> ${esc(qt[1]||"")} ${qt[3]?`<a href="${qt[3]}" target="_blank" rel="noopener">↗</a>`:""}<div class="qtalso">Also known QT risk: ${AORDER.filter(x=>x!==id&&qtOf(x)&&qtOf(x)[0]==="known").map(x=>`<button class="goto-n" data-goto="${x}">${esc(DRUGS[x].name)}</button>`).join(", ")}. Check K⁺ and Mg²⁺; ECG if combining.</div></div></div>`:""}
           ${d.contra.length?`<div class="qrow"><span>Avoid in</span><div class="tags">${d.contra.map(c=>`<span class="tag red">✕ ${esc(c)}</span>`).join("")}</div></div>`:""}
         </div>
       </section>
@@ -4245,6 +4267,126 @@ function renderEntries(){
   $("#entries").innerHTML = listHTML($("#q").value, state.cond) || `<div class="hint">No match.</div>`;
 }
 
+/* Key receptors: the few targets that explain the drug clinically, with relative strength within the drug.
+   Side-effect wording follows each drug's own burden ratings, so the two sections never disagree. */
+const KXE = { // effect builders: (d) => [therapeutic, side effect]
+ sert_inh: d=>["↑ serotonin: mood, anxiety","GI upset, sexual dysfunction"],
+ sert_rel: d=>["↑ serotonin release",""],
+ net_inh:  d=>["↑ norepinephrine: energy, focus, pain","↑ BP and HR, sweating"],
+ net_rel:  d=>["↑ norepinephrine: focus, alertness","↑ BP and HR, appetite ↓"],
+ dat_inh:  d=>["↑ dopamine: focus, activation","Insomnia"],
+ dat_rel:  d=>["↑ dopamine: focus","Insomnia, misuse potential"],
+ h1:   d=>["", "Sedation"+(bv(d,"metab")>=2?", weight gain":"")],
+ m1:   d=>["", "Dry mouth, constipation, confusion"],
+ a1:   d=>["", "Orthostasis, dizziness"],
+ a2_ant: d=>[d.grp==="otherad"?"↑ norepinephrine and serotonin release":"↑ norepinephrine and serotonin release (proposed)",""],
+ a2_ag:  d=>["Focus, impulse control","Sedation, ↓ BP and HR"],
+ d2_part: d=>["Antipsychotic", bv(d,"eps")>=2?"Akathisia; prolactin stays low":bv(d,"eps")===1?"Some akathisia; prolactin stays low":"Little EPS; prolactin stays low"],
+ d2_ant:  d=>["Antipsychotic", [bv(d,"eps")>=2?"EPS":bv(d,"eps")===1?"Some EPS":"Little EPS", bv(d,"prl")>=2?"prolactin ↑":""].filter(Boolean).join(", ")],
+ d3_part: d=>["Mood, negative symptoms (proposed)",""],
+ ht2a: d=>[d.grp==="ap"?"Less EPS, deeper sleep":"Deeper sleep, fewer sexual side effects",""],
+ ht2c: d=>bv(d,"metab")>=2?["","Appetite and weight ↑"]:["Activating (proposed)",""],
+ ht1a: d=>["Anxiolytic, antidepressant",""],
+ ht3:  d=>["Less nausea",""],
+ ht7:  d=>["Mood, sleep (proposed)",""],
+ orx:  d=>["Blocks the wake signal → sleep","Next-day drowsiness"],
+ mu_ant: d=>["Limits olanzapine weight gain","Blocks opioids"],
+ gaba: d=>["Anxiolysis, sedation, anticonvulsant","Dependence, falls, ↓ breathing"],
+ vmat: d=>["↓ dopamine release → less TD and chorea","Sedation, parkinsonism"],
+ musc_ag: d=>["Antipsychotic without D2 block","Nausea, GI effects"]
+};
+const RX_EFFECT = [ // [target, action, effect key]
+ [/^SERT/,/substrate|releas/i,"sert_rel"],[/^SERT/,/inhib/i,"sert_inh"],
+ [/^NET/,/substrate|releas/i,"net_rel"],[/^NET/,/inhib/i,"net_inh"],
+ [/^DAT/,/substrate|releas/i,"dat_rel"],[/^DAT/,/inhib/i,"dat_inh"],
+ [/^H1/,/antag/i,"h1"],[/^(M1|Muscarinic)$/,/antag/i,"m1"],[/^α1/,/antag/i,"a1"],
+ [/^α2(C)?$/,/antag/i,"a2_ant"],[/^α2A/,/agon/i,"a2_ag"],
+ [/^D2/,/partial/i,"d2_part"],[/^D2/,/antag/i,"d2_ant"],[/^D3/,/partial/i,"d3_part"],
+ [/^5-HT2A/,/antag/i,"ht2a"],[/^5-HT2C/,/antag/i,"ht2c"],[/^5-HT1A/,/agon/i,"ht1a"],[/^5-HT3/,/antag/i,"ht3"],[/^5-HT7/,/antag/i,"ht7"],
+ [/^OX[12]R/,/antag/i,"orx"],[/μ-opioid/,/antag/i,"mu_ant"],[/^GABA-A/,/modul/i,"gaba"],[/^VMAT2/,/inhib/i,"vmat"],[/^M[14]$/,/agon/i,"musc_ag"]
+];
+const RX_VERB = a => /partial/i.test(a)?"partial agonist":/antag/i.test(a)?"blocks":/agon/i.test(a)?"agonist":/releas|substrate/i.test(a)?"releaser":/inhib/i.test(a)?"reuptake block":/modul/i.test(a)?"enhances":"binds";
+/* Per-drug judgment: targets that bind but don't matter clinically, class-defining targets that must show, dose notes,
+   and qualitative rows for drugs with no binding constants (strength not shown). */
+const KX = {
+ suvorexant:{main:["OX2R","OX1R"]},
+ bupropion:{drop:["SERT"], add:[["NET","Inhibitor (mainly hydroxybupropion)","net_inh"]]},
+ atomoxetine:{drop:["SERT","DAT"]},
+ buspirone:{drop:["D2","D3"]},
+ venlafaxine:{dose:{NET:"higher doses"}},
+ mirtazapine:{prim:["α2","5-HT2A","5-HT2C","5-HT3"], main:["α2"], dose:{H1:"most prominent at 7.5–15 mg"}},
+ quetiapine:{dose:{H1:"any dose","α1":"any dose",D2:"≥300 mg/day"}},
+ trazodone:{main:["5-HT2A","SERT"], dose:{"5-HT2A":"sleep doses","α1":"sleep doses",H1:"sleep doses",SERT:"≥150 mg/day"}},
+ hydroxyzine:{tx:{H1:"Anxiolysis, sedation"}, se:{H1:"Daytime drowsiness"}},
+ doxepinld:{add:[["H1","Antagonist (very potent at 3–6 mg)",d=>["Sleep maintenance","Next-day sedation"]]]},
+ nortriptyline:{add:[["H1","Antagonist","h1"],["M1","Antagonist","m1"],["α1","Antagonist","a1"],["Na⁺ channel","Blocks (overdose)",d=>["","QRS widening, arrhythmia in overdose"],"qtc"]]},
+ amitriptyline:{add:[["H1","Antagonist","h1"],["M1","Antagonist","m1"],["α1","Antagonist","a1"],["Na⁺ channel","Blocks",d=>["Neuropathic pain relief (proposed)","QRS widening, arrhythmia in overdose"],"qtc"]]},
+ clomipramine:{add:[["H1","Antagonist","h1"],["M1","Antagonist","m1"],["α1","Antagonist","a1"]]},
+ fluvoxamine:{add:[["SERT","Inhibitor","sert_inh"]]},
+ phenelzine:{add:[["MAO-A/B","Irreversible inhibitor",d=>["↑ serotonin, norepinephrine, dopamine","Hypertensive crisis with tyramine or sympathomimetics"]]]},
+ esketamine:{add:[["NMDA","Blocks",d=>["Rapid antidepressant effect","Dissociation, ↑ BP, sedation"]]]},
+ dmbupropion:{main:["NMDA"], add:[["NMDA","Blocks (dextromethorphan)",d=>["Antidepressant (proposed)","Dizziness"]],["σ1","Agonist (dextromethorphan)",d=>["Antidepressant (proposed)",""]],["CYP2D6","Inhibitor (bupropion)",d=>["Keeps dextromethorphan levels up","Raises other 2D6 drugs"]]]},
+ zuranolone:{add:[["GABA-A","Positive modulator (neurosteroid)","gaba"]]},
+ alprazolam:{add:[["GABA-A","Positive modulator","gaba"]]}, diazepam:{add:[["GABA-A","Positive modulator","gaba"]]}, chlordiazepoxide:{add:[["GABA-A","Positive modulator","gaba"]]},
+ zolpidem:{add:[["GABA-A α1","Positive modulator",d=>["Sleep onset","Complex sleep behaviors, falls"]]]},
+ lemborexant:{add:[["OX1R / OX2R","Antagonist","orx"]]},
+ deutetrabenazine:{add:[["VMAT2","Inhibitor (metabolites)","vmat"]]},
+ clonidine:{add:[["α2","Agonist",d=>["Focus, sleep, less hyperarousal","Sedation, ↓ BP, rebound hypertension"]]]},
+ prazosin:{add:[["α1","Antagonist",d=>["Fewer nightmares (proposed)","Orthostasis, first-dose syncope"]]]},
+ propranolol:{add:[["β1 / β2","Antagonist",d=>["Less tremor, akathisia, performance anxiety","Bradycardia, ↓ BP, bronchospasm"]]]},
+ benztropine:{add:[["M1","Antagonist",d=>["Treats dystonia and parkinsonism","Dry mouth, constipation, confusion"]]]},
+ gabapentin:{add:[["α2δ (Ca²⁺ channel)","Binds",d=>["Anxiolysis, pain relief","Sedation, dizziness"]]]},
+ buprenorphine:{main:["μ-opioid"], add:[["μ-opioid","Partial agonist",d=>["Treats withdrawal and craving; ceiling on breathing depression","Precipitated withdrawal if started too early"]],["κ-opioid","Antagonist",d=>["Mood (proposed)",""]]]},
+ methadone:{add:[["μ-opioid","Full agonist",d=>["Suppresses withdrawal and craving","Respiratory depression, QTc prolongation"]]]},
+ naltrexone:{add:[["μ-opioid","Antagonist",d=>["Blocks opioid and alcohol reward","Precipitated withdrawal"]]]},
+ varenicline:{add:[["α4β2 nicotinic","Partial agonist",d=>["Less craving and withdrawal","Nausea, vivid dreams"]]]},
+ disulfiram:{add:[["ALDH","Irreversible inhibitor",d=>["Aversive reaction to alcohol","Hepatitis; reaction lasts up to 2 weeks"]]]},
+ acamprosate:{add:[["Glutamate / GABA","Modulator",d=>["Supports abstinence (proposed)","Diarrhea"]]]},
+ lithium:{add:[["GSK-3 / IMPase","Inhibits",d=>["Mood stabilization, ↓ suicide","Tremor, thyroid and kidney effects"]]]},
+ lamotrigine:{add:[["Na⁺ channel","Blocks",d=>["Prevents bipolar depression","Rash (SJS/TEN)"]]]},
+ divalproex:{add:[["GABA / Na⁺ channels","Enhances / blocks",d=>["Antimanic, anticonvulsant","Liver, weight, tremor, fetal harm"]]]},
+ carbamazepine:{add:[["Na⁺ channel","Blocks",d=>["Antimanic, anticonvulsant","Sedation, rash; strong enzyme inducer"]]]}
+};
+/* Side-effect domain each effect maps to, so its tag uses the drug's own burden rating. */
+const KX_DOM = {h1:"sed", m1:"achol", a1:"cv", ht2c:"metab", d2_ant:"eps", d2_part:"eps", net_inh:"cv", net_rel:"cv", sert_inh:"sero", orx:"sed", gaba:"sed", vmat:"sed", a2_ag:"cv"};
+const KX_LV = ["","Low","Moderate","High"];
+function keyReceptors(id){
+  const d=DRUGS[id], X=KX[id]||{};
+  const mk=(tgt,ki,act,ek,met,dom)=>{ const f=typeof ek==="function"?ek:KXE[ek]; if(!f) return null; let [tx,se]=f(d); if(X.tx&&X.tx[tgt]) tx=X.tx[tgt]; if(X.se&&X.se[tgt]) se=X.se[tgt];
+    const paren=(act.match(/\(([^)]*)\)/)||[])[1];
+    return {tgt,ki,act,met,tx,se,dom:dom||(typeof ek==="string"?KX_DOM[ek]:null),note:(X.dose||{})[tgt]||(paren&&!/IC50|fast off/i.test(paren)?paren:"")||(met?"metabolite":"")}; };
+  let rows=d.receptors.map(r=>{ const tgt=r[0].replace(/ \(.*\)$/,""); if((X.drop||[]).includes(tgt)) return null;
+    const e=RX_EFFECT.find(([t,a])=>t.test(tgt)&&a.test(r[2])); return e&&r[1]>0?mk(tgt,r[1],r[2],e[2],!!r[3]||/metabolite|norquetiapine/i.test(r[0])):null; }).filter(Boolean);
+  const qual=(X.add||[]).filter(([t])=>!rows.some(r=>r.tgt===t)).map(([t,a,ek,dom])=>mk(t,null,a,ek,/metabolite|hydroxy/i.test(a),dom)).filter(Boolean);
+  const P = d.grp==="ap"?/^(D2|M4)$/ : d.grp==="snri"?/^(SERT|NET)$/ : d.sri?/^SERT$/ : d.stim?/^(DAT|NET)$/ : null;
+  const prim=new Set(X.prim||[]);
+  if(rows.length){
+    rows.forEach(r=>{ if(P&&P.test(r.tgt)) prim.add(r.tgt); });
+    const min=Math.min(...rows.map(r=>r.ki)); const seen=new Set();
+    rows=rows.sort((a,b)=>a.ki-b.ki).filter(r=>{ const k=r.tgt.replace(/^(α1|α2)[AB]?$/,"$1"); if(seen.has(k)) return false; seen.add(k); return true; });
+    rows=rows.filter(r=>prim.has(r.tgt)||r.ki<=min*30);
+  }
+  let all=[...rows,...qual];
+  // Clinical tags: therapeutic rows are "Main effect" or "Contributes"; side-effect rows take the drug's burden level.
+  const main=new Set(X.main||[...prim].filter(t=>!X.prim||!X.prim.length||(X.main||[]).includes(t)));
+  if(!main.size){ const firstTx=all.find(r=>r.tx); if(firstTx) main.add(firstTx.tgt); }
+  all=all.map(r=>{ if(r.tx) return {...r, kind:"tx", tag:main.has(r.tgt)?"Main effect":"Contributes", rank:main.has(r.tgt)?0:1};
+    const lv=r.dom?bv(d,r.dom):0; return {...r, kind:"se", lv, tag:KX_LV[lv], rank:2+(3-lv)}; })
+    .filter(r=>r.kind==="tx"||r.lv>0)            // side-effect-only rows with no clinical burden are dropped
+    .sort((a,b)=>a.rank-b.rank||((a.ki||1e9)-(b.ki||1e9)));
+  const out=[]; for(const r of all){ const m=out.find(o=>o.tx===r.tx&&o.se===r.se&&o.tag===r.tag&&o.note===r.note); if(m) m.tgt+=" / "+r.tgt; else out.push({...r}); }
+  return out.slice(0,6);
+}
+function keyRxHTML(id){
+  const K=keyReceptors(id); if(!K.length) return "";
+  const cls=r=>r.kind==="tx"?(r.tag==="Main effect"?"kt-main":"kt-contrib"):"kt-l"+r.lv;
+  return `<h3>Key targets</h3><div class="kx">${K.map(r=>`<div class="kx-r">
+    <div class="kx-n"><b>${esc(r.tgt)}</b><small>${RX_VERB(r.act)}</small></div>
+    <div class="kx-e">${r.tx?`<span class="tx">${esc(r.tx)}</span>`:""}${r.se?`<span class="se">${esc(r.se)}</span>`:""}${r.note?`<small>${esc(r.note)}</small>`:""}</div>
+    <span class="kt ${cls(r)}">${esc(r.tag)}</span></div>`).join("")}</div>
+    <p class="note kx-key"><span class="tx">Green</span> = why it works · <span class="se">amber</span> = side effect · High / Moderate / Low match this drug's side-effect ratings</p>`;
+}
+
 function fpPos(ki){ const p = 9 - Math.log10(ki); return Math.max(0, Math.min(100, (p-5)/5*100)); }
 function fmtKi(ki){ if(ki>=10000) return "&gt;10 µM"; if(ki>=1000) return "~"+(ki/1000).toFixed(1)+" µM"; return "~"+(ki<1?ki:Math.round(ki))+" nM"; }
 
@@ -4284,13 +4426,13 @@ function renderCard(){
       <span class="fp-act">${esc(act)} · <code>${fmtKi(ki)}</code></span></div>`;
   }).join("");
 
-  const fpBlock = d.receptors.length ? `
-        <h3>Binding strength</h3>
+  const fpBlock = d.receptors.length ? `${keyRxHTML(state.drug)}
+        <details class="allbind"><summary>All binding data (Ki)</summary>
         <p class="note" style="margin:0 0 8px">How tightly the drug binds each target. Further right = tighter binding at lower concentrations (smaller Ki). Each gridline is a 10× step.</p>
         <div class="fp-scale"><span></span><span class="ticks"><span style="left:0">10 µM</span><span style="left:40%;transform:translateX(-50%)">100 nM</span><span style="left:80%;transform:translateX(-50%)">1 nM</span></span><span></span></div>
         <div class="fp">${fp}</div>
-        ${d.receptors.some(r=>r[3])?`<p class="note">Hollow marker = active metabolite.</p>`:""}`
-    : `<h3>Binding strength</h3><p class="note" style="margin:0">${esc(d.rnote)}</p>`;
+        ${d.receptors.some(r=>r[3])?`<p class="note">Hollow marker = active metabolite.</p>`:""}</details>`
+    : `${keyRxHTML(state.drug)}<p class="note" style="margin:0">${esc(d.rnote)}</p>`;
 
   $("#card").style.setProperty("--drug", col(state.drug));
   $("#card").innerHTML = `
