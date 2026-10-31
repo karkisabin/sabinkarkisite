@@ -248,9 +248,9 @@ button.mark{border:0;background:transparent;color:inherit;cursor:pointer;padding
 .pt-in input{width:76px;border:0;padding:7px 8px;font-size:15px;background:transparent}.pt-in input:focus{outline:none}.pt-in:focus-within{outline:2px solid var(--ink)}
 .pt-in i{font-style:normal;color:var(--muted);padding:0 9px 0 2px;font-size:13px}
 .pt-derived{margin:8px 0 0;font-size:13px;color:var(--muted)}
-.ad-main{font-family:var(--f-display);font-size:26px;font-weight:700;margin:10px 0 0;line-height:1.15}
-.ad-main span{font-size:14px;font-weight:600;color:var(--muted)}
-.ad-sub{margin:4px 0 0;font-size:13px;color:var(--muted)}
+.dz-main{font-family:var(--f-display);font-size:26px;font-weight:700;margin:10px 0 0;line-height:1.15}
+.dz-main span{font-size:14px;font-weight:600;color:var(--muted)}
+.dz-sub{margin:4px 0 0;font-size:13px;color:var(--muted)}
 #ause{width:100%;margin-top:4px}
 .tl{position:relative;height:48px;margin:6px 8px 0}
 .tl-track{position:absolute;left:0;right:0;top:14px;height:10px;background:var(--surface-2);border:1px solid var(--line);border-radius:5px}
@@ -267,13 +267,13 @@ table.sheet thead th{font-size:11px;text-transform:uppercase;letter-spacing:.07e
 table.sheet tr.sh-g th{background:var(--surface-2);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
 table.sheet td.num b{font-size:15px}.muted{color:var(--muted)}
 @media (max-width:640px){ .speccards{grid-template-columns:minmax(0,1fr)} .ptbar{position:static} .pv{min-height:0} }
-.ad-main.off{color:var(--sev-adjust);font-size:20px}
+.dz-main.off{color:var(--sev-adjust);font-size:20px}
 .fb{font-size:11.5px;color:var(--sev-adjust)}
 .pt-pair{display:inline-flex;gap:6px}.pt-pair input{width:56px}
 .panels.one{grid-template-columns:minmax(0,1fr)}
-.ad-row{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:6px 16px;margin-top:10px}
-.ad-row .ad-main{margin:0}
-.ad-vol{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.ad-vol b{font-family:var(--f-display);font-size:22px}
+.dz-row{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:6px 16px;margin-top:10px}
+.dz-row .dz-main{margin:0}
+.dz-vol{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.dz-vol b{font-family:var(--f-display);font-size:22px}
 .concbtn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
 .concbtn.fixed{cursor:default}
 button.concbtn:hover{border-color:var(--ink);color:var(--ink)}
@@ -3645,11 +3645,11 @@ function renderACard(){
           ${popD.length?"":`<p class="note" style="margin:0 0 8px">No ${PTPOP.find(x=>x[0]===p.pop)[1].toLowerCase()}-specific dosing listed; showing all doses.</p>`}
           <label class="ctx-label" for="ause">Use</label>
           <select id="ause">${list.map((x,i)=>`<option value="${i}" ${i===state.ause?"selected":""}>${esc(x.use)}${x.route?` (${x.route})`:""}</option>`).join("")}</select>
-          <div class="ad-row">
-            <div><p class="ad-main${res.off?" off":""}">${esc(res.main)}${dz.route&&!res.off?` <span>${esc(dz.route)}</span>`:""}</p></div>
-            ${res.vol?`<div class="ad-vol"><b>${esc(res.vol)}</b>${concButton(id,dz)}</div>`:(res.conc&&!res.off&&!/mL/.test(dz.unit)?`<div class="ad-vol">${concButton(id,dz)}</div>`:"")}
+          <div class="dz-row">
+            <div><p class="dz-main${res.off?" off":""}">${esc(res.main)}${dz.route&&!res.off?` <span>${esc(dz.route)}</span>`:""}</p></div>
+            ${res.vol?`<div class="dz-vol"><b>${esc(res.vol)}</b>${concButton(id,dz)}</div>`:(res.conc&&!res.off&&!/mL/.test(dz.unit)?`<div class="dz-vol">${concButton(id,dz)}</div>`:"")}
           </div>
-          ${res.sub?`<p class="ad-sub">${esc(res.sub)}</p>`:""}
+          ${res.sub?`<p class="dz-sub">${esc(res.sub)}</p>`:""}
           ${dz.how?`<p class="titr">${esc(dz.how)}</p>`:""}
           ${dz.src?`<p class="srcs" style="margin-top:6px"><a href="${dz.src}" target="_blank" rel="noopener">Source ↗</a></p>`:""}`}
         </div>
