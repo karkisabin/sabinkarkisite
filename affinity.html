@@ -2839,7 +2839,7 @@ const ADRUGS = {
   reversal:null,
   mech:"Quaternary antimuscarinic that blocks acetylcholine at muscarinic receptors.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=685aaf64-1a64-42f9-a96f-4764d650c26f"]},
- phenylephrine:{ name:"Phenylephrine", brand:"Biorphen; generic", cls:"Alpha-1 agonist", grp:"pressor", mh:false,
+ phenylephrine:{ name:"Phenylephrine", brand:"Biorphen; generic", cls:"Alpha-1 agonist", grp:"pressor", sub:"Vasopressors", mh:false,
   basisNote:"Fixed doses (mcg and mcg/min), not weight-based, per label.",
   doses:[
    {use:"Hypotension, initial bolus", pop:"adult", route:"IV", lo:40, hi:100, unit:"mcg", sheet:true, how:"Then boluses up to 200 mcg every 1–2 min to BP goal. The 10 mg/mL vial must be diluted (1 mL in 99 mL = 100 mcg/mL); the 100 mcg/mL ready-to-use product is not diluted.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2f715e4e-b269-b935-d2c9-003cb29770be"},
@@ -2854,7 +2854,7 @@ const ADRUGS = {
   reversal:{text:"No antidote. Extravasation: consider subcutaneous phentolamine."},
   mech:"Direct alpha-1 agonist with minimal beta activity.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2f715e4e-b269-b935-d2c9-003cb29770be","https://www.statpearls.com/point-of-care/27119"]},
- ephedrine:{ name:"Ephedrine", brand:"Akovaz; generic", cls:"Mixed alpha/beta agonist", grp:"pressor", mh:false,
+ ephedrine:{ name:"Ephedrine", brand:"Akovaz; generic", cls:"Mixed alpha/beta agonist", grp:"pressor", sub:"Vasopressors", mh:false,
   basisNote:"Fixed mg doses, not weight-based, per label.",
   doses:[
    {use:"Hypotension during anesthesia, bolus", pop:"adult", route:"IV", lo:5, hi:10, unit:"mg", sheet:true, how:"Repeat as needed. Total not to exceed 50 mg. Dilute 50 mg/mL to 5 mg/mL; prefilled 5 mg/mL syringes are not diluted.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e92f3eda-33eb-4b34-9e8b-db8d32a5dbd9"},
@@ -2868,7 +2868,7 @@ const ADRUGS = {
   reversal:{text:"No antidote. Severe hypertension: parenteral antihypertensive."},
   mech:"Direct alpha-1 and beta-1/beta-2 agonist that also releases norepinephrine from nerve terminals.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e92f3eda-33eb-4b34-9e8b-db8d32a5dbd9","https://www.statpearls.com/point-of-care/21194"]},
- epinephrine:{ name:"Epinephrine", brand:"Adrenalin", cls:"Alpha/beta agonist", grp:"pressor", mh:false,
+ epinephrine:{ name:"Epinephrine", brand:"Adrenalin", cls:"Alpha/beta agonist", grp:"pressor", sub:"Vasopressors", also:["pressor:Inotropes"], mh:false,
   basisNote:"Septic-shock infusion and pediatric doses are weight-based (actual body weight); adult anaphylaxis and arrest doses are fixed.",
   doses:[
    {use:"Anaphylaxis (adults and children ≥30 kg)", minKg:30, alsoPeds:true, pop:"adult", route:"IM", lo:0.3, hi:0.5, unit:"mg", how:"Anterolateral thigh, undiluted 1 mg/mL. Max 0.5 mg per injection; repeat every 5–10 min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3b7a4364-668d-4eb2-a20c-04adc35aabe4"},
@@ -2887,7 +2887,7 @@ const ADRUGS = {
   reversal:{text:"Extravasation: phentolamine 5–10 mg in 10–15 mL saline."},
   mech:"Endogenous catecholamine acting at alpha-1, beta-1, and beta-2 receptors; beta effects predominate at low doses, alpha at high doses.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3b7a4364-668d-4eb2-a20c-04adc35aabe4","https://www.statpearls.com/point-of-care/21248","https://www.emdocs.net/push-dose-vasopressors-an-update-for-2019/"]},
- norepinephrine:{ name:"Norepinephrine", brand:"Levophed", cls:"Alpha-1/beta-1 agonist", grp:"pressor", mh:false,
+ norepinephrine:{ name:"Norepinephrine", brand:"Levophed", cls:"Alpha-1/beta-1 agonist", grp:"pressor", sub:"Vasopressors", mh:false,
   basisNote:"Adult label doses are fixed mcg/min; pediatric doses are weight-based.",
   doses:[
    {use:"Severe hypotension, initial infusion", pop:"adult", route:"IV", lo:8, hi:12, unit:"mcg/min", sheet:true, how:"4 mg in 1000 mL D5W ≈ 4 mcg/mL. Check BP every 2 min until at target. Large vein.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2c7dd2b0-cc10-4db6-bf56-6eb154ebeb10"},
@@ -2902,7 +2902,7 @@ const ADRUGS = {
   reversal:{text:"Extravasation: phentolamine 5–10 mg in 10–15 mL saline, infiltrated promptly."},
   mech:"Alpha-1 and beta-1 agonist with minimal beta-2 activity.",
   srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2c7dd2b0-cc10-4db6-bf56-6eb154ebeb10","https://www.statpearls.com/point-of-care/25972"]},
- vasopressin:{ name:"Vasopressin", brand:"Vasostrict", cls:"V1/V2 agonist", grp:"pressor", mh:false,
+ vasopressin:{ name:"Vasopressin", brand:"Vasostrict", cls:"V1/V2 agonist", grp:"pressor", sub:"Vasopressors", mh:false,
   basisNote:"Fixed units/min, not weight-based, per label.",
   doses:[
    {use:"Septic (vasodilatory) shock", pop:"adult", route:"IV", lo:0.01, hi:0.07, unit:"units/min", how:"Start 0.01 units/min; increase by 0.005 units/min every 10–15 min. Data are limited above 0.07 units/min.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b1147beb-743e-4c62-8927-91192447f8b8"},
@@ -3371,13 +3371,74 @@ const ADRUGS = {
   mech:"H1 antagonist with anticholinergic and weak D2 blocking actions.",
   qt:null,
   srcs:["https://prescriberpoint.com/therapies/promethazine-hydrochloride-d545105","https://cdn-links.lww.com/permalink/aa/f/aa_1_1_2025_09_14_gan_aa-d-25-00465_sdc1.pdf"]},
-
+ dobutamine:{ name:"Dobutamine", brand:"Dobutrex (discontinued); generic premix", cls:"Beta-1 agonist", grp:"pressor", sub:"Inotropes", mh:false,
+  basisNote:"Infusion is weight-based (actual body weight). Label gives no pediatric dose and says the premix may be inappropriate for patients under 30 kg.",
+  doses:[
+   {use:"Inotropic support, cardiac decompensation (infusion)", pop:"adult", route:"IV", lo:2, hi:20, unit:"mcg/kg/min", basis:"TBW", sheet:true, how:"Start 0.5–1 mcg/kg/min and titrate every few minutes. Usual 2–20; rarely up to 40 mcg/kg/min. Correct hypovolemia first.", src:"https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/020201Orig1s047lbl.pdf"}],
+  time:{text:"Onset 1–2 min; peak effect may take up to 10 min. Plasma half-life about 2 min (label). Duration after stopping: not stated in label."},
+  fx:{bp:["caution","↑ SBP usually","Most patients: SBP +10–20 mmHg; ~7.5% rise ≥50 mmHg. Hypotension can occur."], hr:["caution","↑ Raises","Usually +5–15 bpm; ~10% rise ≥30 bpm. Speeds AV conduction in atrial fibrillation."], resp:["ok","Dyspnea uncommon","Shortness of breath in 1–3%; bronchospasm rarely (hypersensitivity)."], ponv:["ok","Nausea 1–3%","Nausea reported in 1–3% of adults."]},
+  boxed:null, contra:["Idiopathic hypertrophic subaortic stenosis","Prior hypersensitivity to dobutamine"],
+  warn:["Marked rise in HR or SBP; rapid ventricular response in AF (digitalize first)","Can provoke ventricular ectopy (~5% more PVCs); rarely VT","Contains sulfite: allergic-type reactions","Mild hypokalemia possible"],
+  pearls:["Beta-blockers may make dobutamine ineffective (label).","Continuous ECG and BP monitoring required; correct hypovolemia before starting."],
+  organ:"No renal or hepatic adjustment stated in label. Elderly: start at the low end.", preg:"No adequate human studies; no fetal harm in rat/rabbit studies. Use only if clearly needed (label).",
+  reversal:{text:"No antidote. Stop or slow infusion (half-life 2 min). Label: propranolol or lidocaine for severe ventricular tachyarrhythmias."},
+  mech:"Direct-acting beta-1 agonist; raises contractility with comparatively mild chronotropic, pressor, and vasodilator effects.",
+  srcs:["https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/020201Orig1s047lbl.pdf","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9794e9d0-c8b7-4d18-8cd1-15cc4f2a9a55","https://www.ncbi.nlm.nih.gov/books/NBK470431/"]},
+ milrinone:{ name:"Milrinone", brand:"Primacor (discontinued); generic", cls:"PDE3 inhibitor (inodilator)", grp:"pressor", sub:"Inotropes", mh:false,
+  basisNote:"Loading dose and infusion are weight-based (actual body weight). Reduce infusion in renal impairment. Label: pediatric safety not established.",
+  doses:[
+   {use:"Acute decompensated heart failure, loading dose", pop:"adult", route:"IV", lo:50, hi:50, unit:"mcg/kg", basis:"TBW", how:"Give slowly over 10 min, undiluted or diluted to 10–20 mL.", src:"https://www.pfizermedical.com/milrinone-lactate/dosage-admin"},
+   {use:"Acute decompensated heart failure, maintenance infusion", pop:"adult", route:"IV", lo:0.375, hi:0.75, unit:"mcg/kg/min", basis:"TBW", sheet:true, how:"Standard 0.5 mcg/kg/min. Max 1.13 mg/kg/day. Lower rate if CrCl ≤50 (see organ). No controlled-trial experience beyond 48 h.", src:"https://www.pfizermedical.com/milrinone-lactate/dosage-admin"},
+   {use:"Infusion (off-label, pediatric home administration)", pop:"peds", route:"IV", lo:0.3, hi:1, unit:"mcg/kg/min", basis:"TBW", how:"StatPearls range for pediatric home infusion; no loading dose given. Label: pediatric safety not established.", src:"https://www.ncbi.nlm.nih.gov/books/NBK532943/"}],
+  time:{text:"Hemodynamic improvement within 5–15 min of starting. Terminal half-life about 2.3–2.4 h in heart failure (label); longer in renal impairment."},
+  fx:{bp:["caution","↓ Lowers","Vasodilator; hypotension in 2.9%. Overdose causes hypotension."], hr:["caution","Arrhythmias","Ventricular arrhythmias in 12.1%; rare torsades de pointes postmarketing."], resp:["ok","Not stated","Not described in the label."], ponv:["ok","Not stated","Not described in the label."]},
+  boxed:null, contra:["Hypersensitivity to milrinone"],
+  warn:["Ventricular arrhythmias incl. NSVT: continuous ECG","Not shown safe or effective beyond 48 h; long-term oral use raised sudden death","Hypotension from vasodilation: correct preload first","Accumulates in renal impairment: lower infusion rate"],
+  pearls:["Long half-life (hours) versus catecholamines: hypotension persists after stopping.","Does not depend on beta receptors, so it still works with beta-blockade."],
+  organ:"Renal: reduce infusion by CrCl (mL/min/1.73 m²): 50→0.43, 40→0.38, 30→0.33, 20→0.28, 10→0.23, 5→0.20 mcg/kg/min (label). Hepatic: Not stated in label.", preg:"Use only if potential benefit justifies potential risk to the fetus (label).",
+  reversal:null,
+  mech:"Selective phosphodiesterase-3 inhibitor; raises cAMP in cardiac and vascular smooth muscle, increasing contractility and causing vasodilation.",
+  srcs:["https://www.pfizermedical.com/milrinone-lactate/dosage-admin","https://ndclist.com/ndc/65145-177/label","https://www.drugs.com/pro/milrinone.html","https://www.ncbi.nlm.nih.gov/books/NBK532943/"]},
+ dopamine:{ name:"Dopamine", brand:"Generic premix (Intropine discontinued)", cls:"Dopamine/beta-1/alpha-1 agonist", grp:"pressor", sub:"Inotropes", mh:false,
+  basisNote:"Infusion is weight-based (actual body weight); same labeled dosing for adults and pediatric patients.",
+  doses:[
+   {use:"Shock (distributive or low cardiac output), infusion", pop:"adult", route:"IV", lo:2, hi:50, unit:"mcg/kg/min", basis:"TBW", sheet:true, how:"Start 2–5 mcg/kg/min; titrate in 5–10 mcg/kg/min steps; max 50. MAOI within 2–3 wk: start ≤1/10 of usual dose. Large vein.", src:"https://ndclist.com/ndc/0409-7810/label"},
+   {use:"Shock (distributive or low cardiac output), infusion", pop:"peds", route:"IV", lo:2, hi:50, unit:"mcg/kg/min", basis:"TBW", how:"Same as adult per label: start 2–5, titrate in 5–10 steps, max 50 mcg/kg/min. Avoid umbilical artery infusion.", src:"https://ndclist.com/ndc/0409-7810/label"}],
+  time:{text:"Onset within 5 min of IV administration; effect lasts less than about 10 min after stopping. Half-life under 2 min in adults (label)."},
+  fx:{bp:["ok","↑ Raises","Dose-dependent pressor effect; hypertension listed. Hypotension after abrupt discontinuation."], hr:["caution","↑ / arrhythmias","Tachyarrhythmias, palpitations, and angina reported."], resp:["ok","Dyspnea","Dyspnea listed among adverse reactions."], ponv:["caution","Nausea/vomiting","Nausea and vomiting listed among adverse reactions."]},
+  boxed:null, contra:["Pheochromocytoma"],
+  warn:["Extravasation: tissue ischemia/gangrene; infiltrate phentolamine","Cardiac arrhythmias","Hypotension after abrupt discontinuation: taper","Contains sulfite; MAOIs: start ≤1/10 dose"],
+  pearls:["Low doses do not protect the kidneys (StatPearls).","Effects shift with dose: beta-1 at moderate rates, alpha-1 vasoconstriction at higher rates (StatPearls)."],
+  organ:"No renal or hepatic adjustment stated in label.", preg:"No human data; adverse developmental outcomes in rats. Do not withhold life-sustaining therapy (label).",
+  reversal:{text:"Extravasation: phentolamine 5–10 mg in 10–15 mL 0.9% NaCl infiltrated into the area (adults, label)."},
+  mech:"Endogenous catecholamine; dose-dependent stimulation of dopamine D1, beta-1, then alpha-1 receptors, plus norepinephrine release.",
+  srcs:["https://ndclist.com/ndc/0409-7810/label","https://www.ncbi.nlm.nih.gov/books/NBK535451/"]},
+ isoproterenol:{ name:"Isoproterenol", brand:"Isuprel", cls:"Nonselective beta agonist", grp:"pressor", sub:"Inotropes", mh:false,
+  basisNote:"Adult doses are fixed (mcg/min, mcg). Pediatric doses are weight-based (actual body weight) and off-label; label says pediatric safety not established.",
+  doses:[
+   {use:"Shock (distributive or low cardiac output), infusion", pop:"adult", route:"IV", lo:0.5, hi:5, unit:"mcg/min", sheet:true, how:"1 mg in 500 mL D5W (2 mcg/mL) = 0.25–2.5 mL/min. Titrate to HR, CVP, BP, urine output; reduce or pause if HR >110.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=743515bf-af8c-4014-9e4a-bf6972811ea1"},
+   {use:"Bronchospasm during anesthesia, bolus", pop:"adult", route:"IV", lo:10, hi:20, unit:"mcg", how:"Dilute 0.2 mg (1 mL) to 10 mL (20 mcg/mL); give 0.5–1 mL. Repeat when necessary.", src:"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=743515bf-af8c-4014-9e4a-bf6972811ea1"},
+   {use:"Bradycardia / AV block, infusion (off-label)", pop:"adult", route:"IV", lo:2, hi:10, unit:"mcg/min", how:"Titrate to effect (StatPearls). Heart block is no longer a labeled indication.", src:"https://www.statpearls.com/point-of-care/23788"},
+   {use:"Bradycardia / AV block, infusion (off-label)", pop:"peds", route:"IV", lo:0.05, hi:0.5, unit:"mcg/kg/min", basis:"TBW", how:"Titrate to effect; max 2 mcg/kg/min (StatPearls).", src:"https://www.statpearls.com/point-of-care/23788"}],
+  time:{text:"Acts immediately on infusion; elimination half-life 2.5–5 min (StatPearls). Label: duration brief, somewhat longer than epinephrine."},
+  fx:{bp:["caution","↑ or ↓","Hypertension or hypotension; beta-2 vasodilation lowers SVR and diastolic pressure."], hr:["caution","↑↑ Raises","Strong chronotrope; HR >130 raises risk of ventricular arrhythmias."], resp:["ok","Bronchodilates","Labeled for bronchospasm during anesthesia; dyspnea and pulmonary edema reported."], ponv:["ok","Nausea possible","Nausea listed among adverse reactions."]},
+  boxed:null, contra:["Tachycardia","Ventricular arrhythmias","Angina pectoris"],
+  warn:["Arrhythmias and myocardial ischemia, especially in CAD or cardiomyopathy","Raises myocardial oxygen demand","Contains sulfite: allergic reactions incl. anaphylaxis","Avoid in second stage of labor or maternal BP >130/80"],
+  pearls:["Pure beta agonist: raises HR and contractility while lowering SVR, so BP may fall.","Refractory asthmatic children on 0.05–2.7 mcg/kg/min had myocardial necrosis and deaths (label)."],
+  organ:"No renal or hepatic adjustment stated in label.", preg:"No known drug-associated risk of birth defects or miscarriage from published use; inhibits uterine contractions. Avoid in second stage of labor (label).",
+  reversal:null,
+  mech:"Nonselective beta-1 and beta-2 agonist; positive inotropy and chronotropy with peripheral vasodilation and bronchodilation.",
+  srcs:["https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=743515bf-af8c-4014-9e4a-bf6972811ea1","https://www.drugs.com/pro/isuprel.html","https://www.statpearls.com/point-of-care/23788"]},
 };
 for(const id in ADRUGS){ ADRUGS[id].spec="anes"; }
 
 /* Concentrations: first entry is the default. Sources: FDA labels on DailyMed (see crisis/drug cards). */
 const C_ = (amt, unit, label) => ({amt, unit, label});
 const CONC = {
+  dobutamine:[C_(1000,"mcg","1 mg/mL (250 mg/250 mL)"),C_(2000,"mcg","2 mg/mL (500 mg/250 mL)"),C_(4000,"mcg","4 mg/mL (1000 mg/250 mL)")],
+milrinone:[C_(200,"mcg","200 mcg/mL (20 mg/100 mL or 40 mg/200 mL premix)"),C_(1000,"mcg","1 mg/mL vial (undiluted loading dose)")],
+dopamine:[C_(800,"mcg","800 mcg/mL (200 mg/250 mL or 400 mg/500 mL)"),C_(1600,"mcg","1.6 mg/mL (400 mg/250 mL or 800 mg/500 mL)"),C_(3200,"mcg","3.2 mg/mL (800 mg/250 mL)")],
+isoproterenol:[C_(2,"mcg","2 mcg/mL (1 mg/500 mL D5W)"),C_(20,"mcg","20 mcg/mL (0.2 mg diluted to 10 mL, bolus)")],
   acetaminophen:[C_(10,"mg","10 mg/mL")], ketorolac:[C_(30,"mg","30 mg/mL"),C_(15,"mg","15 mg/mL")], sufentanil:[C_(50,"mcg","50 mcg/mL")],
   meperidine:[C_(50,"mg","50 mg/mL"),C_(25,"mg","25 mg/mL"),C_(100,"mg","100 mg/mL")],
   granisetron:[C_(1,"mg","1 mg/mL")], palonosetron:[C_(0.05,"mg","0.05 mg/mL")], droperidol:[C_(2.5,"mg","2.5 mg/mL")], haloperidol_ponv:[C_(5,"mg","5 mg/mL")],
@@ -3540,13 +3601,17 @@ const ORDER = GROUPS.flatMap(([g])=>Object.keys(DRUGS).filter(id=>DRUGS[id].grp=
 const bv = (d,k) => (d.burden||{})[k]||0;
 
 /* ---------- Specialty framework ---------- */
-const AGROUPS = [["induction","Induction & maintenance"],["analgesic","Analgesics"],["nmb","Neuromuscular blockers"],["reversal","Reversal agents"],["pressor","Vasopressors"],["local","Local anesthetics"],["antiemetic","Antiemetics"],["rescue","Crisis rescue"]];
-const ASUBS = {induction:["IV","Inhaled"], analgesic:["Opioids","Non-opioid","Adjuncts"], nmb:["Depolarizing","Nondepolarizing"], reversal:["Neuromuscular blockade","Opioid & benzodiazepine"], antiemetic:["5-HT3 antagonists","Dopamine antagonists","Corticosteroid","NK1 antagonist","Anticholinergic","Antihistamine"]};
+const AGROUPS = [["induction","Induction & maintenance"],["analgesic","Analgesics"],["nmb","Neuromuscular blockers"],["reversal","Reversal agents"],["pressor","Vasopressors & inotropes"],["local","Local anesthetics"],["antiemetic","Antiemetics"],["rescue","Crisis rescue"]];
+const ASUBS = {induction:["IV","Inhaled"], analgesic:["Opioids","Non-opioid","Adjuncts"], nmb:["Depolarizing","Nondepolarizing"], reversal:["Neuromuscular blockade","Opioid & benzodiazepine"], pressor:["Vasopressors","Inotropes"], antiemetic:["5-HT3 antagonists","Dopamine antagonists","Corticosteroid","NK1 antagonist","Anticholinergic","Antihistamine"]};
 const inGrp = (d,g) => d.grp===g || (d.also||[]).some(a=>a.split(":")[0]===g);
 const inSub = (d,g,sub) => (d.grp===g && d.sub===sub) || (d.also||[]).includes(g+":"+sub);
 for(const id in DRUGS) if(!DRUGS[id].spec) DRUGS[id].spec="psych";
 Object.assign(DRUGS, ADRUGS);
 const AQT = {
+dobutamine:["none","Label does not mention QT; warns of ventricular ectopy and rare VT.","CredibleMeds: Special Risk (avoid in congenital long QT)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/020201Orig1s047lbl.pdf"],
+milrinone:["possible","Label: rare torsades de pointes reported postmarketing; no QT language.","CredibleMeds: Not listed on congenital-LQTS avoid list; TdP-risk listing not confirmed","https://www.pfizermedical.com/milrinone-lactate/dosage-admin"],
+dopamine:["none","Label does not mention QT; warns of cardiac arrhythmias.","CredibleMeds: Special Risk (avoid in congenital long QT)","https://ndclist.com/ndc/0409-7810/label"],
+isoproterenol:["none","Label does not mention QT; warns of arrhythmias and ischemia.","CredibleMeds: Special Risk (avoid in congenital long QT)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=743515bf-af8c-4014-9e4a-bf6972811ea1"],
  propofol:["known","No QT warning in the US label, but CredibleMeds lists it as Known Risk.","CredibleMeds: Known Risk","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e3105799-a4b6-f3f4-e6e2-b2b29bbdb538"],
  etomidate:["none","No QT language in label; only general arrhythmias listed.","Not listed","https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=b7ed5bf8-ba75-44dc-8f81-96b4ad5766be"],
  ketamine:["none","No QT language in label; general arrhythmias only.","Not listed","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=14e8f864-8b8a-4e7e-8439-e510d3107063"],
