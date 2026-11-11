@@ -18,7 +18,7 @@
       --accent-light: #e8f0fe;
       --border: #e8e8e8;
       --max: 680px;
-      --nav-h: 96px;
+      --nav-h: 128px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -82,6 +82,16 @@
     .nav-tabs button:hover::after { width: 100%; }
     .nav-tabs button.active { color: var(--accent); font-weight: 500; }
     .nav-tabs button.active::after { width: 100%; }
+    .aff-pill {
+      align-self: flex-start; display: inline-flex; align-items: center; gap: 0.35rem;
+      border: 1px solid var(--accent); color: var(--accent); border-radius: 999px;
+      padding: 0.3rem 0.9rem; font-size: 0.8rem; font-weight: 400; margin-top: 0.25rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .aff-pill span { color: var(--ink3); transition: color 0.2s; }
+    .aff-pill:hover { background: var(--accent); color: var(--white); text-decoration: none; }
+    .aff-pill:hover span { color: var(--accent-light); }
+    @media (max-width: 640px) { .aff-pill { font-size: 0.72rem; padding: 0.25rem 0.75rem; margin-top: 0.15rem; } }
     .nav-tabs .nav-link {
       font-family: 'Jost', sans-serif; font-size: 0.82rem; font-weight: 300;
       color: var(--ink3); position: relative; transition: color 0.2s; text-decoration: none;
@@ -208,7 +218,7 @@
 
     /* MOBILE */
     @media (max-width: 640px) {
-      :root { --nav-h: 72px; }
+      :root { --nav-h: 112px; }
       body { overflow: auto; font-size: 14px; }
       .pages-wrap { position: static; overflow: visible; height: auto; }
       .pages-track { flex-direction: column; transform: none !important; transition: none; width: 100% !important; }
@@ -247,8 +257,8 @@
     <li><button data-page="6">writing</button></li>
     <li><button data-page="7">awards</button></li>
     <li><button data-page="8">library</button></li>
-    <li><a class="nav-link" href="/affinity">affinity ↗</a></li>
   </ul>
+  <a class="aff-pill" href="/affinity">affinity <span>· psych + anesthesia drug guide</span> try it →</a>
 </nav>
 
 <div class="pages-wrap">
