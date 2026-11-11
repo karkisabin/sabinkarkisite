@@ -235,6 +235,8 @@ button.mark{border:0;background:transparent;color:inherit;cursor:pointer;padding
 .specwrap{position:relative}
 .specbtn{border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:6px 12px;font-weight:600;cursor:pointer}
 .specmenu{position:absolute;top:calc(100% + 6px);left:0;min-width:200px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:6px;z-index:30;display:flex;flex-direction:column}
+.navbtns{display:flex;gap:2px;margin-right:-4px}.navbtns button{width:30px;height:30px;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;font-size:20px;line-height:1;padding:0 0 3px;cursor:pointer}
+.navbtns button:disabled{opacity:.35;cursor:default}.navbtns button:not(:disabled):hover{background:var(--surface-2)}
 .setbtn{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;width:32px;height:32px;padding:0;font-size:17px;line-height:1;font-weight:600;cursor:pointer;white-space:nowrap}
 .setmenu{left:auto;right:0;min-width:250px;padding:12px;gap:4px}
 .setmenu .seg{margin-bottom:8px}.setmenu .seg button{border:0;background:transparent;padding:6px 12px;cursor:pointer;font-weight:600}
@@ -448,6 +450,7 @@ body.mini-open{overflow:hidden}
 .ckt-r{display:flex;justify-content:space-between;align-items:center;gap:8px;height:30px;border-bottom:1px solid var(--line);font-size:13.5px}
 .ckt-r:last-child{border-bottom:0}.ckt-r.none b{color:var(--muted);font-weight:500}.ckt-na{font-size:11.5px;color:var(--muted)}
 .usebox{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;margin:14px 0 4px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.usebox.anes{margin:0}
 .usebox h3{margin:0 0 4px}
 @media (max-width:640px){.usebox{grid-template-columns:1fr}}
 ul.use{list-style:none;margin:0 0 6px;padding:0;font-size:14px;line-height:1.35}
@@ -616,6 +619,7 @@ details.allbind[open]>summary{margin-bottom:6px}
 
 <header class="band">
   <div class="wrap">
+    <div class="navbtns"><button id="nav-back" aria-label="Back" title="Back" onclick="history.back()" disabled>‹</button><button id="nav-fwd" aria-label="Forward" title="Forward" onclick="history.forward()" disabled>›</button></div>
     <button class="mark" id="home-link" aria-label="Affinity home"><span class="lens" aria-hidden="true"></span>Affinity</button>
     <div class="specwrap">
       <button class="specbtn" id="specbtn" aria-haspopup="menu" aria-expanded="false">Choose a specialty ▾</button>
@@ -3842,6 +3846,7 @@ function renderACard(){
           ${d.contra.length?`<div class="qrow"><span>Avoid in</span><div class="tags">${d.contra.map(c=>`<span class="tag red">✕ ${esc(c)}</span>`).join("")}</div></div>`:""}
         </div>
       </section>
+      ${useHTML(id).replace('class="usebox"','class="usebox anes"')}
       <details class="panel mech" id="mech" ${state.moreOpen?"open":""}>
         <summary><h2>More: warnings, pearls, pharmacology</h2></summary>
         ${d.basisNote?`<p class="note" style="margin-top:0"><b>Dosing weight.</b> ${esc(d.basisNote)}</p>`:""}
@@ -4422,7 +4427,13 @@ function hashFor(){
   if(state.view==="crisis") return "crises";
   return spec().slug;
 }
-function syncHash(){ try{ const h=hashFor(); history.replaceState(null,"",h?"#"+h:location.pathname+location.search); }catch(e){} }
+/* History: each new screen is a browser history entry, so Back/Forward move within Affinity. */
+let NAV_I = (history.state&&history.state.ai)||0, NAV_MAX = NAV_I;
+function syncHash(){ try{ const h=hashFor(), url=h?"#"+h:location.pathname+location.search;
+  if(location.hash.slice(1)===h) history.replaceState({ai:NAV_I},"",url);
+  else { NAV_I++; NAV_MAX=NAV_I; history.pushState({ai:NAV_I},"",url); }
+  updateNavBtns(); }catch(e){} }
+function updateNavBtns(){ const b=$("#nav-back"), f=$("#nav-fwd"); if(b) b.disabled=NAV_I<=0; if(f) f.disabled=NAV_I>=NAV_MAX; }
 function readHash(){
   const h=location.hash.slice(1); if(!h){ state.view="root"; return; }
   const [k,...ids]=h.split("."); const good=ids.filter(id=>DRUGS[id]&&DRUGS[id].spec==="psych");
@@ -4552,6 +4563,163 @@ function keyReceptors(id){
 }
 /* When to use: sourced reasons to choose or hesitate, vs classmates. */
 const USE = {
+propofol:{pick:["High PONV risk (TIVA lowers PONV vs volatiles)","MH-susceptible patient (non-triggering TIVA)","Rapid awakening, even after prolonged infusion","Lower climate impact than inhaled agents (TIVA)"],
+ avoid:["Hypovolemia, elderly, ASA III-IV: hypotension (reduce dose)","Long high-dose infusion (>5 mg/kg/h, >48 h): PRIS","Egg/soy allergy (labeled contraindication)"],
+ src:[["FDA label (Diprivan)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/019627s062lbl.pdf"],["PONV review (TCRM 2020)","https://www.dovepress.com/prevention-and-treatment-of-postoperative-nausea-and-vomiting-ponv-a-r-peer-reviewed-fulltext-article-TCRM"],["MHAUS safe/unsafe agents","https://www.mhaus.org/healthcare-professionals/be-prepared/safe-and-unsafe-anesthetics/"]]},
+etomidate:{pick:["Hemodynamically unstable induction (minimal CV depression)","Low EF, severe CAD, or aortic stenosis","Raised ICP with need to preserve MAP/CPP","ECT anesthesia (prolongs seizure duration)"],
+ avoid:["Sepsis: 24–48 h adrenal suppression (debated)","Porphyria; seizure history (activates epileptogenic foci)","High PONV risk; myoclonus in 30–60%"],
+ src:[["OpenAnesthesia: Etomidate","https://openanesthesia.org/keywords/etomidate"]]},
+ketamine:{pick:["Asthma or active bronchospasm (potent bronchodilator)","Hypotension/shock induction (sympathomimetic)","Opioid tolerance: low-dose opioid-sparing analgesia","No IV access (IM); airway reflexes preserved"],
+ avoid:["Severe CAD or aortic stenosis (tachycardia, hypertension)","Catecholamine-depleted shock (direct myocardial depression)","Emergence delirium risk; pheochromocytoma"],
+ src:[["OpenAnesthesia: Ketamine","https://www.openanesthesia.org/keywords/ketamine/"]]},
+midazolam:{pick:["Preop anxiolysis with anterograde amnesia","Many routes: IV, IM, oral, intranasal (peds premed)","Short elimination half-life (~1.5–2.5 h)","Reversible with flumazenil"],
+ avoid:["With opioids: profound respiratory depression (boxed warning)","Elderly, CHF, renal impairment: prolonged effect (cut dose)","Strong CYP3A4 inhibitors (azoles, macrolides) raise levels"],
+ src:[["US label summary (medicine.com)","https://www.medicine.com/drug/midazolam/hcp"],["Medsafe data sheet","https://www.Medsafe.govt.nz/profs/Datasheet/m/MidazolaminjPfizer.pdf"]]},
+dexmedetomidine:{pick:["Sedation with preserved respiratory drive","Awake fiberoptic intubation (less discomfort; weak evidence)","ICU delirium concern (more delirium-free days vs lorazepam)","Opioid-sparing adjunct; arousable, cooperative sedation"],
+ avoid:["Bradycardia, advanced heart block, high vagal tone","Hypovolemia, elderly, diabetes: more hypotension","Need fast onset or reliable amnesia (weak amnesia)"],
+ src:[["FDA label (Precedex)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/021038s061lbl.pdf"],["Afonso & Reis review (RBA 2012)","https://scielo.br/j/rba/a/HdNtkgKHyKPQcdgRyFWKSQC/?lang=en"],["Cochrane: dex for AFOI","https://www.cochrane.org/evidence/CD009798_dexmedetomidine-good-option-patients-undergoing-awake-fibreoptic-intubation"]]},
+sevoflurane:{pick:["Inhalational (mask) induction, esp. pediatrics (nonpungent)","Less airway irritation than desflurane or isoflurane","Lowest climate impact of volatiles (GWP100 ~130)"],
+ avoid:["MH susceptibility (trigger; use TIVA)","Renal impairment/low flow: Compound A (keep ≥1 L/min)","Long QT or QT-prolonging drugs (torsades reports)"],
+ src:[["FDA label (Ultane)","https://Drugs.com/pro/ultane.html"],["Dalal 2017, Indian J Anaesth","https://pmc.ncbi.nlm.nih.gov/articles/PMC5416721/"],["Lopes et al., climate review","https://eprints.lancs.ac.uk/161805/1/Inhalational_anaesthetics_ozone_depletion_and_greenhouse_warming_the_basics_and_status_of_our_efforts_in_environmental_mitigation_accepted_version.pdf"]]},
+desflurane:{pick:["Fastest emergence (blood:gas 0.45 vs sevo 0.65)","Ambulatory cases prioritizing rapid awakening"],
+ avoid:["Mask induction in kids (pungent; contraindicated)","CAD: rapid increases spike HR and BP","Climate: GWP100 ~2540; many advise avoiding"],
+ src:[["FDA label (Suprane)","https://drugs.com/pro/suprane.html"],["Dalal 2017, Indian J Anaesth","https://pmc.ncbi.nlm.nih.gov/articles/PMC5416721/"],["Lopes et al., climate review","https://eprints.lancs.ac.uk/161805/1/Inhalational_anaesthetics_ozone_depletion_and_greenhouse_warming_the_basics_and_status_of_our_efforts_in_environmental_mitigation_accepted_version.pdf"]]},
+isoflurane:{pick:["Cardiac output maintained, stable rhythm (controlled ventilation)","Lower climate impact than desflurane (GWP100 510)"],
+ avoid:["Mask induction (cough, breath-holding, laryngospasm)","Raised ICP risk (marked CBF increase at depth)","MH susceptibility; Duchenne/neuromuscular disease (hyperkalemia)"],
+ src:[["FDA label (Forane)","https://Drugs.com/pro/forane.html"],["Lopes et al., climate review","https://eprints.lancs.ac.uk/161805/1/Inhalational_anaesthetics_ozone_depletion_and_greenhouse_warming_the_basics_and_status_of_our_efforts_in_environmental_mitigation_accepted_version.pdf"]]},
+nitrous:{pick:["Analgesia/sedation with rapid onset and offset","MH-susceptible: non-triggering inhaled agent","Adjunct to speed mask induction (small benefit)"],
+ avoid:["Trapped gas: pneumothorax, obstruction, middle ear, intraocular bubble","Untreated B12/folate deficiency; prolonged exposure","High PONV risk; climate (114-yr lifetime, ozone)"],
+ src:[["SmPC (Air Liquide, Sweden)","https://docetp.mpa.se/LMF/Medicinsk%20Lustgas%20Air%20Liquide%20medicinal%20gas,%20liquefied%20ENG%20SmPC_09001be680314a29.pdf"],["ASRA News 2022: N2O cons","https://asra.com/news-publications/asra-newsletter/newsletter-item/asra-news/2022/07/29/global-warming-and-ozone-depletion-the-real-cons-of-nitrous-oxide-use"],["MHAUS safe/unsafe agents","https://www.mhaus.org/healthcare-professionals/be-prepared/safe-and-unsafe-anesthetics/"]]}
+,
+fentanyl:{pick:["Renal or hepatic failure (inactive metabolites; generally appropriate)","Near-immediate IV onset, 30–60 min single-dose duration","Precise titration for brief stimulation (intubation, short cases)"],
+ avoid:["Long infusions (tissue accumulation; context-sensitive half-time rises)","CYP3A4 inhibitors (ritonavir, azoles, macrolides) prolong effect","Serotonergic drugs (label serotonin syndrome warning)"],
+ src:[["FDA label (fentanyl citrate inj)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2023/019115s042lbl.pdf"],["OpenAnesthesia: CSHT","https://www.openanesthesia.org/context-sensitive-half-time"],["UF: Opioids in renal/hepatic dysfunction","https://anest.ufl.edu/wordpress/files/2021/09/Opioids-Renal-Hepatic-Dysfunction.pdf"]]},
+remifentanil:{pick:["Rapid predictable offset (5–10 min), regardless of infusion length","Renal or hepatic failure (PK unchanged; esterase metabolism)","Intense but brief stimulation with fast wake-up needed"],
+ avoid:["Postop pain expected (no residual analgesia; bridge first)","High doses: hyperalgesia, higher postop opioid needs","Neuraxial contraindicated (glycine); flush IV line after"],
+ src:[["FDA label (Ultiva)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2004/20630se5-005_ultiva_lbl.pdf"],["OpenAnesthesia: CSHT","https://www.openanesthesia.org/context-sensitive-half-time"],["Remifentanil hyperalgesia review (Local Reg Anesth 2018)","https://www.dovepress.com/remifentanil-induced-postoperative-hyperalgesia-current-perspectives-o-peer-reviewed-fulltext-article-LRA"]]},
+hydromorphone:{pick:["No CYP metabolism (glucuronidated; fewer drug interactions)","Opioid rotation from another agent (halve converted dose)"],
+ avoid:["Renal impairment: start 1/4–1/2 dose (H3G accumulates)","Moderate hepatic impairment (≈4-fold exposure)","Sulfite allergy (contains metabisulfite)"],
+ src:[["FDA label (Dilaudid inj, DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9eebd88a-5632-460f-b7b6-26c8a180540d"],["UF: Opioids in renal/hepatic dysfunction","https://anest.ufl.edu/wordpress/files/2021/09/Opioids-Renal-Hepatic-Dysfunction.pdf"]]},
+morphine:{pick:["No CYP3A4 interactions (hepatic glucuronidation)","Normal renal function; longer-acting intermittent dosing acceptable"],
+ avoid:["Renal failure (active metabolites accumulate)","Asthma or bronchospasm (histamine release; acute asthma contraindicated)","Rapid IV titration (peak CNS effect delayed ~30 min)"],
+ src:[["FDA label (morphine sulfate inj)","https://labeling.pfizer.com/ShowLabeling.aspx?id=4537"],["UF: Opioids in renal/hepatic dysfunction","https://anest.ufl.edu/wordpress/files/2021/09/Opioids-Renal-Hepatic-Dysfunction.pdf"]]},
+sufentanil:{pick:["Cardiac/major surgery, high-dose opioid anesthesia","Labor epidural, combined with low-dose bupivacaine","Very potent (≈5–10x fentanyl) for balanced anesthesia"],
+ avoid:["Hypovolemia or shock (severe bradycardia, hypotension)","CYP3A4 inhibitors raise levels (fatal respiratory depression)","No postop monitoring/ventilation available after anesthetic doses"],
+ src:[["FDA label (sufentanil citrate)","https://www.drugs.com/pro/sufentanil-citrate.html"]]},
+meperidine:{pick:["Postoperative shivering (likely kappa-receptor effect)","Short-term only (<48 h) when alternatives unsuitable"],
+ avoid:["Renal/hepatic impairment or seizures (normeperidine accumulates)","MAOI within 14 days; serotonergic drugs (serotonin syndrome)","Elderly (delirium) or repeated/chronic dosing"],
+ src:[["FDA label (Demerol inj)","https://labeling.pfizer.com/ShowLabeling.aspx?id=15311"],["OpenAnesthesia: meperidine","https://www.openanesthesia.org/keywords/meperidine/"],["StatPearls: meperidine","https://statpearls.com/point-of-care/25000"]]},
+acetaminophen:{pick:["NPO or cannot take oral (IV route)","Opioid-sparing multimodal adjunct; also treats fever","Faster onset than oral (small clinical difference)"],
+ avoid:["Can take PO (oral gives similar analgesia)","Severe hepatic impairment/active liver disease (contraindicated)","<50 kg: weight-based dose; count all APAP sources"],
+ src:[["FDA label (Ofirmev)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2010/022450lbl.pdf"],["UIC Drug Info: IV vs oral APAP","https://dig.pharmacy.uic.edu/faqs/2018-2/july-2018-faqs/"]]},
+ketorolac:{pick:["Parenteral NSAID when oral not possible","Opioid-sparing (cut PCA morphine ~26% in trials)"],
+ avoid:["CABG, bleeding risk, cerebrovascular bleed (contraindicated)","Renal impairment/hypovolemia; ≥65 y or <50 kg max 60 mg/day","Over 5 days total; labor; neuraxial (contraindicated)"],
+ src:[["FDA label (ketorolac inj, DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8accbb78-fc64-45d5-69b0-35c23a1d2a2e"]]},
+lidocaine:{pick:["Rapid onset, short duration (infiltration, quick blocks)","IV regional (Bier) block, plain solution only","IV infusion in colorectal/abdominal ERAS (pain, ileus)"],
+ avoid:["Spinal use: TNS risk ~7x bupivacaine","IV infusion: heart block, EF<20%, recent amiodarone","Liver dysfunction (half-life at least doubled)"],
+ src:[["FDA label (Xylocaine)","https://medlibrary.org/lib/rx/meds/xylocaine-7/"],["APSF: systemic lidocaine (2018)","https://www.apsf.org/article/systemic-lidocaine-an-effective-and-safe-modality-for-postoperative-pain-management-and-early-recovery/"],["OpenAnesthesia: TNS","https://www.openanesthesia.org/keywords/local_anesthetic_transient_neurologic_symptoms/"]]},
+bupivacaine:{pick:["Long-duration blocks, epidurals, spinal anesthesia","Dense motor block needed (0.75%, non-obstetric surgery)","Low TNS risk vs lidocaine for spinal"],
+ avoid:["Most cardiotoxic LA; resuscitation may be difficult","Bier block contraindicated; 0.75% not for obstetrics","Intra-articular infusion (chondrolysis); hepatic impairment"],
+ src:[["FDA label (Marcaine warnings)","https://www.pfizermedical.com/marcaine/warnings"],["LITFL: local anaesthetics","https://partone.litfl.com/local_anaesthetics.html"],["OpenAnesthesia: TNS","https://www.openanesthesia.org/keywords/local_anesthetic_transient_neurologic_symptoms/"]]},
+ropivacaine:{pick:["Less cardiotoxic than bupivacaine (animal, QRS data)","Less motor block (labor epidural, ambulatory nerve blocks)","Continuous catheter infusions or higher LAST risk"],
+ avoid:["Dense surgical motor block needed (bupivacaine deeper)","Shorter duration than bupivacaine at equal doses","Large block doses still near CNS toxicity threshold"],
+ src:[["FDA label (Naropin)","https://medlibrary.org/lib/rx/meds/naropin-1/"],["OpenAnesthesia: LA onset/duration","https://www.openanesthesia.org/keywords/local-anesthetics-onset-duration-of-action-and-termination-of-action/"],["LITFL: local anaesthetics","https://partone.litfl.com/local_anaesthetics.html"]]}
+,
+succinylcholine:{pick:["Fastest onset (~1 min) for RSI","Shortest duration (4–6 min); quick spontaneous recovery","IM option when no IV access"],
+ avoid:["Burns, trauma, denervation past acute phase (hyperkalemia)","MH susceptibility or myopathy (kids: Duchenne arrest)","Pseudocholinesterase deficiency; open globe/raised IOP"],
+ src:[["FDA label (Anectine)","https://www.drugs.com/pro/anectine.html"],["OpenAnesthesia: MH","https://www.openanesthesia.org/keywords/malignant-hyperthermia/"]]},
+rocuronium:{pick:["RSI when succinylcholine contraindicated (1.2 mg/kg, <2 min)","Fully reversible by sugammadex, even immediately","Obesity: dose by actual body weight"],
+ avoid:["Hepatic impairment (duration ~1.5x longer)","Elderly: longer block, residual weakness risk","Prior NMBA anaphylaxis (cross-reactivity)"],
+ src:[["FDA label (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c8e9bdfb-1121-6f5b-e053-2a95a90a4627"],["Sugammadex FDA label","https://www.accessdata.fda.gov/drugsatfda_docs/label/2022/022225Orig1s012lbl.pdf"]]},
+vecuronium:{pick:["Hemodynamically neutral (no histamine release, minimal HR change)","Reversible by sugammadex (2–4 mg/kg)","Lyophilized powder stored at room temperature"],
+ avoid:["RSI: slow onset; bigger dose only prolongs block","Cirrhosis/cholestasis (recovery may double)","Immediate 16 mg/kg sugammadex rescue unstudied for vec"],
+ src:[["FDA label (Drugs.com)","https://www.drugs.com/pro/vecuronium.html"],["Sugammadex FDA label","https://www.accessdata.fda.gov/drugsatfda_docs/label/2022/022225Orig1s012lbl.pdf"]]},
+cisatracurium:{pick:["Renal or hepatic failure (organ-independent Hofmann elimination)","ICU/ARDS infusions; no cumulative effect","Less laudanosine than atracurium"],
+ avoid:["RSI (onset 1.5–2 min; not advised)","Not reversed by sugammadex; neostigmine only","Temperature-sensitive: lower dose in hypothermia/CPB"],
+ src:[["StatPearls: Cisatracurium","https://www.statpearls.com/point-of-care/19570"],["Sugammadex FDA label","https://www.accessdata.fda.gov/drugsatfda_docs/label/2022/022225Orig1s012lbl.pdf"]]},
+sugammadex:{pick:["Deep roc/vec block (PTC 1–2: 4 mg/kg)","Immediate rocuronium rescue (16 mg/kg, ~3 min post-dose)","ASA 2023: preferred over neostigmine for roc/vec"],
+ avoid:["CrCl <30 or dialysis (not recommended)","Hormonal contraceptives: backup method for 7 days","Bradycardia/anaphylaxis; re-paralysis needs nonsteroidal NMBA"],
+ src:[["FDA label (Bridion)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2022/022225Orig1s012lbl.pdf"],["ASA 2023 NMB guideline (summary)","https://www.healthday.com/medical-news-licensing/health-technology/recommendations-developed-for-managing-neuromuscular-blockade-2659010587.html"]]},
+neostigmine:{pick:["Reverses any nondepolarizer, incl. cisatracurium","Alternative when sugammadex unsuitable (CrCl <30)","Shallow block with spontaneous recovery underway"],
+ avoid:["Deep block: needs T1 ≥10% of baseline","Always pair with anticholinergic (bradycardia)","Bowel/urinary obstruction, peritonitis; caution CAD/arrhythmia"],
+ src:[["FDA label (Bloxiverz)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2023/204078Orig1s014lbl.pdf"],["Sugammadex FDA label","https://www.accessdata.fda.gov/drugsatfda_docs/label/2022/022225Orig1s012lbl.pdf"]]},
+glycopyrrolate:{pick:["Pair with neostigmine (0.2 mg per 1 mg; same syringe)","Elderly: fewer CNS effects than atropine (quaternary)","Obstetrics: minimal placental transfer, no FHR effect","Long antisialagogue effect (up to 7 h)"],
+ avoid:["Pre-existing tachycardia, CAD, CHF, hyperthyroidism","Glaucoma (great caution, if at all)","Infants, Down syndrome: exaggerated response"],
+ src:[["FDA label (Hikma)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/017558Orig1s069lbl.pdf"]]},
+naloxone:{pick:["Postop opioid respiratory depression (titrate 0.1–0.2 mg)","IM/SC when no IV (IM lasts longer)"],
+ avoid:["Opioid-dependent patients/neonates (acute withdrawal)","Large boluses: pain, HTN, pulmonary edema, VT/VF","Short duration (resedation); buprenorphine needs larger doses"],
+ src:[["FDA label (naloxone inj)","https://ndclist.com/ndc/0641-6260/label"]]},
+flumazenil:{pick:["Benzo oversedation after procedural/conscious sedation","Small 0.2 mg increments titrated to effect"],
+ avoid:["Chronic benzo use or cyclic antidepressant overdose (seizures)","Benzo given for ICP or status epilepticus","Resedation risk; does not reverse opioids"],
+ src:[["FDA label (flumazenil)","https://drugcentral.org/label/436f5616-9626-4b6a-9deb-2986444179d0/view"]]},
+dantrolene:{pick:["MH: rising CO2 despite ventilation, rigidity, tachycardia","Give 2.5 mg/kg rapidly; repeat (avg ~5 mg/kg)","Ryanodex: 250 mg in 5 mL, fast prep"],
+ avoid:["Calcium channel blockers (hyperkalemia, CV collapse)","Old formulations: 60 mL per 20 mg vial (slow)","No response >10 mg/kg: reconsider diagnosis"],
+ src:[["OpenAnesthesia: MH","https://www.openanesthesia.org/keywords/malignant-hyperthermia/"],["FDA label (Ryanodex)","https://www.drugs.com/pro/ryanodex.html"]]},
+lipid:{pick:["LAST with cardiac arrest: give alongside ACLS","LAST with CV instability or neurotoxicity","Bolus 1.5 mL/kg (100 mL if >70 kg), then infusion"],
+ avoid:["Propofol is not a substitute","Max ~12 mL/kg cumulative","With it: avoid vasopressin, CCB, β-blockers; epi ≤1 mcg/kg"],
+ src:[["ASRA LAST checklist (UCSF)","https://pain.ucsf.edu/node/566"],["Assoc. Anaesthetists QRH 3-10","https://anaesthetists.org/Portals/0/PDFs/QRH/QRH_3-10_Local_anaesthetic_toxicity_v2_June%202023.pdf"],["APSF LAST checklist","https://www.apsf.org/article/a-checklist-for-treating-local-anesthetic-systemic-toxicity/"]]}
+,
+phenylephrine:{pick:["Hypotension with normal or fast heart rate","Obstetric spinal hypotension (consensus: prophylactic infusion)","Anesthetic vasodilation with normal cardiac function","Pure alpha-1: no beta-driven tachycardia or arrhythmia"],
+ avoid:["Bradycardia (baroreflex slowing worsens it)","Severe LV dysfunction (afterload rise can drop CO)","Pulmonary hypertension or angina (may worsen)"],
+ src:[["StatPearls: Phenylephrine","https://www.statpearls.com/point-of-care/27119"],["Review citing 2018 OB consensus","https://synapse.koreamed.org/articles/1516087040"]]},
+ephedrine:{pick:["Hypotension with bradycardia or low-normal heart rate","Quick bolus fix; no infusion needed","OB hypotension with maternal bradycardia"],
+ avoid:["Repeated doses (tachyphylaxis; depletes norepinephrine stores)","MAOI within 14 days (hypertensive crisis)","Tachycardia, aortic stenosis, or ischemia (raises O2 demand)"],
+ src:[["StatPearls: Ephedrine","https://www.statpearls.com/point-of-care/21194"]]},
+epinephrine:{pick:["Anaphylaxis: first-line (titrated IV boluses intraop)","Shock with cardiac dysfunction (inotrope plus pressor)","Septic shock add-on after norepinephrine ± vasopressin"],
+ avoid:["CAD or cardiomyopathy (arrhythmia, ischemia)","Raises lactate and glucose (confounds lactate trending)","MAOI/TCA use (severe prolonged hypertension)"],
+ src:[["FDA label (Adrenalin)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/204640Orig1s022lbl.pdf"],["SSC 2021 vasoactive infographic","https://www.sccm.org/sccm/media/PDFs/Surviving-Sepsis-Campaign-2021-Guidelines-Infographic_Vasoactive-Agent.pdf?lang=en-US"],["Perioperative anaphylaxis review","https://www.dovepress.com/management-of-suspected-life-threatening-perioperative-anaphylaxis-and-peer-reviewed-fulltext-article-TCRM"]]},
+norepinephrine:{pick:["Septic shock first-line vasopressor (SSC 2021)","Fewer arrhythmias than dopamine (SOAP II)","Can start peripherally short-term (proximal vein)","OB spinal hypotension alternative (less bradycardia; emerging)"],
+ avoid:["Uncorrected hypovolemia (label: replace volume first)","Mesenteric or peripheral vascular thrombosis","Extravasation risk (phentolamine ready); MAOI/TCA caution"],
+ src:[["SSC 2021 vasoactive infographic","https://www.sccm.org/sccm/media/PDFs/Surviving-Sepsis-Campaign-2021-Guidelines-Infographic_Vasoactive-Agent.pdf?lang=en-US"],["FDA label (Levophed)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2007/007513Orig1s024lbl.pdf"],["SOAP II summary","https://clincalc.com/blog/2013/10/soap-ii-brief-summary-dopamine-vs-norepinephrine-shock/"]]},
+vasopressin:{pick:["Second agent with norepinephrine (catecholamine-sparing)","Post-CPB vasoplegia (first-line adjunct)","Refractory hypotension on ACE inhibitors under anesthesia","Acidosis or hypoxia (potency maintained)"],
+ avoid:["Impaired cardiac function (may lower cardiac output)","Ischemia: gut, skin, myocardium (esp. >0.03 U/min)","Hyponatremia risk; CAD or thrombotic history"],
+ src:[["FDA label (Vasostrict)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2014/204485s000lbl.pdf"],["OpenAnesthesia: Vasopressin","https://www.openanesthesia.org/keywords/vasopressin/"]]},
+dobutamine:{pick:["Low cardiac output with persistent hypoperfusion","Add to norepinephrine for septic cardiac dysfunction","Very short half-life (~2 min); easy titration","Pharmacologic stress echo"],
+ avoid:["HOCM/IHSS (contraindicated)","AF (rapid ventricular response) or PVCs","Chronic beta-blockade (milrinone often preferred)"],
+ src:[["StatPearls: Dobutamine","https://www.statpearls.com/articlelibrary/viewarticle/20644/"],["SSC 2021 vasoactive infographic","https://www.sccm.org/sccm/media/PDFs/Surviving-Sepsis-Campaign-2021-Guidelines-Infographic_Vasoactive-Agent.pdf?lang=en-US"],["OpenAnesthesia: Milrinone","https://www.openanesthesia.org/keywords/milrinone/"]]},
+milrinone:{pick:["Chronic beta-blocker use (acts downstream of receptor)","Pulmonary hypertension or RV failure (lowers PVR)","Weaning from CPB (less tachycardia than dobutamine)","Inhaled for pulmonary vasodilation (off-label)"],
+ avoid:["Hypotension, vasoplegia, or low preload (profound hypotension)","Renal impairment (accumulates; reduce infusion rate)","Ventricular arrhythmia risk (not dose-dependent)"],
+ src:[["OpenAnesthesia: Milrinone","https://www.openanesthesia.org/keywords/milrinone/"],["StatPearls: Milrinone","https://www.statpearls.com/point-of-care/25168"]]},
+dopamine:{pick:["Hypotension with bradycardia (selected patients only)","Dose-dependent inotropy then vasoconstriction, one drug"],
+ avoid:["Arrhythmia-prone patients (2x arrhythmias vs norepinephrine)","Cardiogenic shock (higher mortality vs norepinephrine, SOAP II)","Recent MAOI (start at 1/10 dose); pheochromocytoma"],
+ src:[["FDA label (Pfizer)","https://www.pfizermedical.com/dopamine"],["SOAP II summary","https://clincalc.com/blog/2013/10/soap-ii-brief-summary-dopamine-vs-norepinephrine-shock/"],["StatPearls: Dopamine","https://statpearls.com/pharmacist/ce/activity/76193"]]},
+isoproterenol:{pick:["Bradycardia or heart block when pacing unavailable","Refractory torsades de pointes (off-label)","Bradycardia after heart transplant (off-label)","Bronchospasm during anesthesia (labeled)"],
+ avoid:["Angina or ischemia (raises myocardial O2 demand)","Tachyarrhythmias, ventricular arrhythmias, digoxin toxicity","Distributive shock (beta-2 vasodilation lowers SVR)"],
+ src:[["StatPearls: Isoproterenol","https://www.statpearls.com/point-of-care/23788"],["FDA label (Isuprel)","https://drugs.com/pro/isuprel.html"]]}
+,
+ondansetron:{pick:["Default first-line prophylaxis (4 mg IV, end of surgery)","Pair with dexamethasone (best-supported combo, incl. peds)","Labeled PONV dosing from 1 month of age","IV or IM options"],
+ avoid:["Congenital long QT syndrome (label: avoid)","On apomorphine (contraindicated: profound hypotension)","Rescue after ondansetron prophylaxis (re-dosing adds nothing)"],
+ src:[["FDA label (ondansetron inj)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=993cd1d7-70a1-a431-e053-2a95a90a5771"],["APSF summary, 2020 PONV consensus","https://www.apsf.org/podcast/142-ponv-updated-guidelines-and-medication-options/"],["Elias 2023, Front Pharmacol","https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2023.1274214/pdf"]]},
+granisetron:{pick:["5-HT3 alternative: 1 mg IV, prevention or treatment","Flexible timing: before induction or before reversal","Hepatic impairment: no dose adjustment (label)"],
+ avoid:["Children: label advises against for PONV (QT)","Arrhythmia, electrolyte issues, or other QT drugs","Rescue within 6 h of 5-HT3 prophylaxis"],
+ src:[["FDA label (granisetron inj)","https://ndclist.com/ndc/55150-176/label"],["Elias 2023, Front Pharmacol","https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2023.1274214/pdf"]]},
+palonosetron:{pick:["Long half-life (~40 h); single 0.075 mg preinduction","Least QTc effect of 5-HT3s (no clinically relevant QT)","CYP2D6 ultrarapid metabolizers (no CYP2D6 metabolism)"],
+ avoid:["Children: PONV use not established (failed noninferiority)","Labeled efficacy only to 24 h post-op","Rescue after 5-HT3 prophylaxis (switch class)"],
+ src:[["FDA label (Aloxi)","https://www.helsinn.com/media/qwop5lkf/aloxi_uspi.pdf"],["Gan, MPOG 2025 (consensus slides)","https://mpog.org/files/meetings/2025/Gan.html"]]},
+dexamethasone:{pick:["Cheap first-line partner (4–8 mg IV at induction)","Pair with ondansetron (best pediatric evidence)","Single 8 mg dose did not raise SSI (PADDI)"],
+ avoid:["Diabetes: expect ~36 mg/dL peak glucose rise","Late dosing (works best given at start of surgery)","Small rise in hyperglycemia events in non-diabetics"],
+ src:[["APSF summary, 2020 PONV consensus","https://www.apsf.org/podcast/142-ponv-updated-guidelines-and-medication-options/"],["Diabetes meta-analysis, Periop Med 2023","https://doaj.org/article/a5da7c6166434217bcaf76a3c524addc"],["Gan, MPOG 2025 (PADDI, glucose data)","https://mpog.org/files/meetings/2025/Gan.html"]]},
+droperidol:{pick:["Very effective at tiny dose (0.625 mg IV, end)","1–1.25 mg roughly equals ondansetron 4–8 mg","Adds D2 class for high-risk (4-factor) patients","Low-dose QT risk debated (few events ≤1.25 mg)"],
+ avoid:["Boxed QT warning: label wants pre-dose 12-lead ECG","QTc >440 (M) / >450 (F): contraindicated","Combined with amisulpride or other QT drugs"],
+ src:[["FDA label/boxed warning (American Regent)","https://americanregent.com/our-products/droperidol-injection-usp"],["Elias 2023, Front Pharmacol","https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2023.1274214/pdf"],["APSF summary, 2020 PONV consensus","https://www.apsf.org/podcast/142-ponv-updated-guidelines-and-medication-options/"]]},
+haloperidol_ponv:{pick:["Droperidol alternative: 0.5–<2 mg IV/IM","Adds D2 class to 5-HT3 + steroid","Guideline-listed despite no FDA PONV indication"],
+ avoid:["Off-label; IV route not FDA-approved (QT/TdP risk)","Parkinson's disease (contraindicated)","Higher doses (5 mg): more sedation"],
+ src:[["APSF summary, 2020 PONV consensus","https://www.apsf.org/podcast/142-ponv-updated-guidelines-and-medication-options/"],["FDA label (Haldol inj)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2016/015923s094%2C018701s072lbl.pdf"],["Elias 2023, Front Pharmacol","https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2023.1274214/pdf"]]},
+amisulpride:{pick:["Only drug FDA-approved for rescue after failed prophylaxis","Rescue: 10 mg IV after 5-HT3/dexamethasone failure","Prevention: 5 mg at induction with another class","Single 10 mg dose: no clinically significant QT"],
+ avoid:["Prior D2 antagonist prophylaxis (excluded from rescue trials)","On levodopa (reciprocal antagonism; label: avoid)","Congenital long QT, or given with droperidol"],
+ src:[["FDA label (Barhemsys)","https://lxous.bynder.com/asset/1331db21-8541-4023-94af-a16d18b7c19d/Barhemsys-Prescribing-Information.pdf"],["Elias 2023, Front Pharmacol","https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2023.1274214/pdf"],["APSF summary, 2020 PONV consensus","https://www.apsf.org/podcast/142-ponv-updated-guidelines-and-medication-options/"]]},
+metoclopramide:{pick:["Labeled PONV use: 10–20 mg IM near surgery end","When NG suction is undesirable (labeled setting)"],
+ avoid:["Weak at 10 mg (near placebo in network meta-analysis)","Pheochromocytoma, epilepsy, GI obstruction/bleed (contraindicated)","Parkinson's, prior TD/dystonia; halve dose if CrCl ≤60"],
+ src:[["FDA label (Reglan inj)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/017862s64lbl.pdf"],["Elias 2023, Front Pharmacol","https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2023.1274214/pdf"]]},
+scopolamine:{pick:["Long coverage: patch evening before, off 24 h post-op","Ambulatory surgery: may help post-discharge nausea","Non-IV, different class for multimodal prophylaxis"],
+ avoid:["Elderly: confusion, hallucinations (label)","Angle-closure glaucoma (contraindicated)","Urinary retention risk; remove before MRI (burns)"],
+ src:[["FDA label (Transderm Scop)","https://www.accessdata.fda.gov/drugsatfda_docs/label/2024/017874s051lbl.pdf"],["Antor 2014, Front Pharmacol","https://pmc.ncbi.nlm.nih.gov/articles/PMC3988383/"],["APSF summary, 2020 PONV consensus","https://www.apsf.org/podcast/142-ponv-updated-guidelines-and-medication-options/"]]},
+aprepitant:{pick:["Vomiting is the main concern (beats ondansetron on emesis)","Monotherapy ≈ ondansetron + dexamethasone (network meta-analysis)","High-risk patients needing an extra class (NK1)"],
+ avoid:["Hormonal contraceptives: backup method for 1 month","Oral US label now CINV only (PONV off-label)","CYP3A4 interactions; contraindicated with pimozide"],
+ src:[["FDA label (Emend)","https://www.merck.com/product/usa/pi_circulars/e/emend/emend_pi.pdf"],["Liu 2015 NK1 meta-analysis","https://pmc.ncbi.nlm.nih.gov/articles/PMC4602579"],["Elias 2023, Front Pharmacol","https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2023.1274214/pdf"]]},
+promethazine:{pick:["Low-dose (6.25 mg) rescue from a different class","Multi-receptor (H1, D2, muscarinic) when others failed","Works better combined with non-D2 agents"],
+ avoid:["IV use: boxed tissue injury/gangrene; deep IM preferred","Children <2 y: fatal respiratory depression (contraindicated)","No hand/wrist IVs; dilute, infuse over 20–40 min"],
+ src:[["FDA safety alerts (promethazine)","https://drugs.com/fda-alerts/1949-0.html"],["APSF summary, 2020 PONV consensus","https://www.apsf.org/podcast/142-ponv-updated-guidelines-and-medication-options/"],["Elias 2023, Front Pharmacol","https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2023.1274214/pdf"]]},
  fluphenazine:{ pick:["Very inexpensive generic FGA","Label-defined oral-to-decanoate conversion path","Little sedation, orthostasis, anticholinergic burden"],
    avoid:["High EPS and tardive dyskinesia risk","Contraindicated with liver damage or blood dyscrasia","Persistent prolactin elevation"],
    src:[["Fluphenazine HCl tablets label (Upsher-Smith 2022)","https://ndclist.com/ndc/0832-6003/label"],["Fluphenazine HCl tablets label (Camber 2025)","https://www.camberpharma.com/wp-content/uploads/2026/05/2089823-PIL-FLUPHENAZINE-TAB-CAMB-US.pdf"],["Fluphenazine decanoate label (DailyMed)","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8d7ba627-cf3f-4b94-aee8-8b44cc9400be"],["Carlat fluphenazine fact sheet","https://thecarlatreport.com/ext/resources/factsheets/MFB7e/FLUPHENAZINE-(Prolixin)-Fact-Sheet-[G].pdf"]] },
@@ -5436,6 +5604,7 @@ document.addEventListener("input", e=>{
   if(/^pt-(kg|cm|lb|ft|inch)$/.test(e.target.id)){ readPtInputs(); updatePtDerived(); rerenderAnes(); }
 });
 document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeSpecMenu(); });
+window.addEventListener("popstate", e=>{ NAV_I=(e.state&&e.state.ai)||0; if(NAV_I>NAV_MAX) NAV_MAX=NAV_I; if(location.hash.slice(1)!==hashFor()){ readHash(); setView(state.view); } updateNavBtns(); window.scrollTo(0,0); });
 window.addEventListener("hashchange", ()=>{ if(location.hash.slice(1)!==hashFor()){ readHash(); setView(state.view); } });
 $("#q").addEventListener("input", ()=>{ if($("#q").value.trim()) setRail(true); renderEntries(); });
 document.addEventListener("keydown", e=>{ if(e.key==="/" && !["INPUT","SELECT"].includes(document.activeElement.tagName)){ e.preventDefault(); if(state.view==="root") return; setView("home"); $("#hq").focus(); }});
