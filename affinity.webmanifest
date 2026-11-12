@@ -1,0 +1,14 @@
+{
+  "name": "Affinity: psych + anesthesia drug guide",
+  "short_name": "Affinity",
+  "description": "A color-coded drug reference for psychiatry and anesthesiology.",
+  "start_url": "/affinity",
+  "scope": "/affinity",
+  "display": "standalone",
+  "background_color": "#fafaf8",
+  "theme_color": "#fafaf8",
+  "icons": [
+    { "src": "/affinity-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/affinity-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
