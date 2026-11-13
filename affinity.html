@@ -555,6 +555,11 @@ details.more>summary::before{content:"+ "}details.more[open]>summary::before{con
 .gsr:hover{border-color:var(--accent)}.gsr small{grid-column:1;color:var(--muted);font-size:12.5px}.gst{grid-row:1/span 2;grid-column:2;align-self:center;font-size:11.5px;font-weight:700;color:var(--accent)}
 @media (max-width:600px){.minibig{display:none}.gsearch input{font-size:17px;padding:12px 14px}}
 .clsm{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}.clsx{border:1px dashed var(--line);border-radius:999px;padding:6px 12px;font-size:13.5px;color:var(--muted);text-transform:capitalize}
+.tracc .tre{display:flex;align-items:center;gap:8px}.tracc .tre i{margin-left:auto;font-style:normal;font-size:18px;color:var(--muted)}
+.trin{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:2px 0 10px;background:var(--surface)}.trin .lprompt{display:none}
+#msheet{position:fixed;inset:0;z-index:1000}.msbg{position:absolute;inset:0;background:rgba(0,0,0,.35)}
+.mspanel{position:absolute;left:0;right:0;bottom:0;max-height:86vh;overflow:auto;border-radius:16px 16px 0 0;background:#fbfbf9;padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -8px 30px rgba(0,0,0,.2)}
+@media (prefers-color-scheme:dark){.mspanel{background:#121418}}
 .trmeta{color:var(--muted);font-size:13.5px;margin:0 0 10px}
 .trrow{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:14.5px;line-height:1.5}.trrow b{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding-top:2px}
 .trnums{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:6px 0 10px}.trnums div{background:var(--surface-2);border-radius:10px;padding:9px 12px}.trnums span{display:block;font-size:12px;color:var(--muted)}.trnums b{font-size:15.5px;line-height:1.35}
@@ -828,7 +833,7 @@ details.allbind[open]>summary{margin-bottom:6px}
 
 <main class="wrap">
   <section id="root" class="home" hidden>
-    <div class="gsearch"><input id="gq" type="search" placeholder="Search every drug, problem and scale" autocomplete="off" spellcheck="false" aria-label="Search all of Affinity"><button class="minibig" data-mwin="1" title="Open a small lookup window you can keep next to UWorld">Mini lookup window ⧉</button></div>
+    <div class="gsearch"><input id="gq" type="search" placeholder="Search for drugs, diseases, or clinical tools" autocomplete="off" spellcheck="false" aria-label="Search all of Affinity"><button class="minibig" data-mwin="1" title="Open a small lookup window you can keep next to UWorld">Mini lookup window ⧉</button></div>
     <div id="gres" class="gres"></div>
     <div class="speccards" id="speccards"></div>
   </section>
@@ -15836,7 +15841,7 @@ function miniFacts(id){
   const d=DRUGS[id], rows=[]; if(!d) return rows;
   const first=a=>Array.isArray(a)?a[0]:a;
   if(d.dosing){ const ad=d.dosing.adult||Object.values(d.dosing)[0]||{}; const [ind,dz]=Object.entries(ad)[0]||[];
-    if(dz) rows.push(["Dose",`${ind}: start ${dz.start}; usual ${dz.range}; max ${dz.max}`]); }
+    if(dz) rows.push(["Dose",`${ind}: start ${dz.start}; usual ${dz.range}; max ${String(dz.max).replace(/^About/,"about")}`]); }
   else if(d.doses&&d.doses.length){ const dz=d.doses[0], r=doseResult(dz,id);
     rows.push(["Dose",`${dz.use}: ${r.main}${dz.route?" "+dz.route:""}${dz.freq?" "+dz.freq:""}`]);
     if(d.doses[1]) rows.push(["Also",`${d.doses[1].use}: ${d.doses[1].lo}${d.doses[1].hi!==d.doses[1].lo?"–"+d.doses[1].hi:""} ${d.doses[1].unit} ${d.doses[1].route||""}`]); }
@@ -15848,13 +15853,14 @@ function miniFacts(id){
   const u=(typeof USE!=="undefined"&&USE[id])||d.use||{}; if(u.pick&&u.pick[0]) rows.push(["Pick it when",u.pick[0]]);
   return rows.filter(r=>r[1]);
 }
-const MINI_CSS=`*{box-sizing:border-box}body{margin:0;font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;background:#fbfbf9;color:#16181d}
+const MINI_CSS=`*{box-sizing:border-box}:host,body{margin:0;font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;background:#fbfbf9;color:#16181d}
 .mp{padding:10px 12px}.mp input{width:100%;font:inherit;font-size:15px;padding:9px 11px;border:1.5px solid #c9ccd4;border-radius:10px;background:#fff;color:inherit;outline:none}.mp input:focus{border-color:#2f5bff}
 .mpl{margin-top:6px;display:grid;gap:2px}.mpl button{all:unset;cursor:pointer;padding:7px 9px;border-radius:8px;display:flex;justify-content:space-between;gap:8px}.mpl button:hover,.mpl button.on{background:#e9edff}
 .mpl small{color:#6b7280;font-size:12px}.mc{margin-top:8px;border:1px solid #e3e5ea;border-radius:12px;padding:10px 12px;background:#fff}
 .mc h2{margin:0;font-size:17px}.mc .cl{color:#6b7280;font-size:12.5px;margin:1px 0 8px}.mr{display:grid;grid-template-columns:86px 1fr;gap:8px;padding:5px 0;border-top:1px solid #eef0f3;font-size:13.5px}.mr b{color:#6b7280;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;padding-top:2px}
+.mptop{display:flex;justify-content:space-between;align-items:center;margin:0 2px 8px}.mptop button{all:unset;cursor:pointer;color:#2f5bff;font-weight:600;padding:4px 6px}
 .mo{margin-top:10px;width:100%;font:inherit;font-weight:600;padding:8px;border:0;border-radius:9px;background:#2f5bff;color:#fff;cursor:pointer}.mh{color:#6b7280;font-size:12.5px;margin:8px 2px 0}
-@media (prefers-color-scheme:dark){body{background:#121418;color:#e8eaee}.mp input{background:#1b1e24;border-color:#3a3f4a}.mc{background:#1b1e24;border-color:#2c313a}.mr{border-color:#2c313a}.mpl button:hover,.mpl button.on{background:#232a45}}`;
+@media (prefers-color-scheme:dark){:host,body{background:#121418;color:#e8eaee}.mp input{background:#1b1e24;border-color:#3a3f4a}.mc{background:#1b1e24;border-color:#2c313a}.mr{border-color:#2c313a}.mpl button:hover,.mpl button.on{background:#232a45}}`;
 let MINIW=null;
 function miniRender(doc,st){
   const q=st.q||"", res=gsFind(q,"drug"), sel=st.sel&&DRUGS[st.sel]?st.sel:null, d=sel&&DRUGS[sel];
@@ -15863,26 +15869,39 @@ function miniRender(doc,st){
     ${miniFacts(sel).map(([k,v])=>`<div class="mr"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join("")}
     <button class="mo" data-mopen="${sel}">Open full card in Affinity</button></div>` : "";
 }
-function miniMount(doc){
+function miniMount(root, box, styleAt, onOpen){
   const st={q:"",sel:null};
-  doc.body.innerHTML=`<div class="mp"><input id="mpq" placeholder="Look up a drug…" autocomplete="off" spellcheck="false"><div class="mpl" id="mpres"></div><div id="mpcard"></div></div>`;
-  const s=doc.createElement("style"); s.textContent=MINI_CSS; doc.head.appendChild(s);
-  const inp=doc.querySelector("#mpq");
-  inp.addEventListener("input",()=>{ st.q=inp.value; st.sel=null; miniRender(doc,st); });
-  inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ const r=gsFind(st.q,"drug"); if(r[0]){ st.sel=r[0].id; miniRender(doc,st); } } if(e.key==="Escape"){ inp.value=""; st.q=""; st.sel=null; miniRender(doc,st); } });
-  doc.addEventListener("click",e=>{ const b=e.target.closest("[data-mid]"); if(b){ st.sel=b.dataset.mid; miniRender(doc,st); return; }
-    const o=e.target.closest("[data-mopen]"); if(o){ window.focus(); location.hash="#"+o.dataset.mopen; } });
-  miniRender(doc,st); setTimeout(()=>inp.focus(),50);
+  box.innerHTML=`<div class="mp">${onOpen?`<div class="mptop"><b>Quick lookup</b><button data-mclosew="1" aria-label="Close">Close</button></div>`:""}<input id="mpq" placeholder="Look up a drug…" autocomplete="off" spellcheck="false"><div class="mpl" id="mpres"></div><div id="mpcard"></div></div>`;
+  const s=document.createElement("style"); s.textContent=MINI_CSS; styleAt.appendChild(s);
+  const inp=root.querySelector("#mpq");
+  inp.addEventListener("input",()=>{ st.q=inp.value; st.sel=null; miniRender(root,st); });
+  inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ const r=gsFind(st.q,"drug"); if(r[0]){ st.sel=r[0].id; miniRender(root,st); inp.blur(); } } if(e.key==="Escape"){ inp.value=""; st.q=""; st.sel=null; miniRender(root,st); } });
+  root.addEventListener("click",e=>{ const b=e.target.closest("[data-mid]"); if(b){ st.sel=b.dataset.mid; miniRender(root,st); return; }
+    if(e.target.closest("[data-mclosew]")){ closeSheet(); return; }
+    const o=e.target.closest("[data-mopen]"); if(o){ if(onOpen) closeSheet(); else window.focus(); location.hash="#"+o.dataset.mopen; } });
+  miniRender(root,st); setTimeout(()=>inp.focus(),60);
 }
+/* Phones: a slide-up sheet inside the page (pop-up windows become full tabs there) */
+function openSheet(){
+  if($("#msheet")){ return; }
+  const wrap=document.createElement("div"); wrap.id="msheet"; wrap.innerHTML=`<div class="msbg" data-msbg="1"></div><div class="mspanel"></div>`;
+  document.body.appendChild(wrap); document.documentElement.style.overflow="hidden";
+  const sr=wrap.querySelector(".mspanel").attachShadow({mode:"open"}); const box=document.createElement("div"); sr.appendChild(box);
+  miniMount(sr, box, sr, true);
+  wrap.querySelector("[data-msbg]").addEventListener("click", closeSheet);
+}
+function closeSheet(){ const w=$("#msheet"); if(w) w.remove(); document.documentElement.style.overflow=""; }
 async function openMiniWin(){
+  const phone = (window.matchMedia&&matchMedia("(pointer:coarse)").matches) && !window.documentPictureInPicture || innerWidth<700;
+  if(phone) return openSheet();
   try{
     if(MINIW&&!MINIW.closed){ MINIW.focus(); return; }
-    if(window.documentPictureInPicture){ MINIW=await documentPictureInPicture.requestWindow({width:380,height:560}); MINIW.document.title="Affinity mini"; miniMount(MINIW.document); return; }
+    if(window.documentPictureInPicture){ MINIW=await documentPictureInPicture.requestWindow({width:380,height:560}); MINIW.document.title="Affinity mini"; miniMount(MINIW.document, MINIW.document.body, MINIW.document.head, null); return; }
     MINIW=window.open("","affinity_mini","popup,width=400,height=600");
-    if(!MINIW){ alertMini(); return; }
+    if(!MINIW){ openSheet(); return; }
     MINIW.document.open(); MINIW.document.write('<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Affinity mini</title></head><body></body></html>'); MINIW.document.close();
-    miniMount(MINIW.document);
-  }catch(e){ alertMini(); }
+    miniMount(MINIW.document, MINIW.document.body, MINIW.document.head, null);
+  }catch(e){ openSheet(); }
 }
 function alertMini(){ const n=$("#gres")||document.body; const p=document.createElement("p"); p.className="note"; p.textContent="Your browser blocked the mini window. Allow pop-ups for this site, then try again."; n.prepend(p); }
 
@@ -17878,7 +17897,7 @@ function renderTrials(){
   const el=$("#trvbody"), sp=state.spec, ks=Object.keys(TRIALS).filter(k=>TRIALS[k].spec===sp);
   if(!TRIALS[state.trial]||TRIALS[state.trial].spec!==sp) state.trial=null;
   const topics=[...new Set(ks.map(k=>TRIALS[k].topic||"Other"))];
-  const list=`<nav class="aflist">${topics.map(t=>`<p class="grp-h">${esc(t)}</p>${ks.filter(k=>(TRIALS[k].topic||"Other")===t).sort((a,b)=>TRIALS[a].year-TRIALS[b].year).map(k=>`<button class="entry" data-trial="${k}" aria-current="${k===state.trial}"><b>${esc(TRIALS[k].name)}</b><small>${TRIALS[k].year}</small></button>`).join("")}`).join("")}</nav>`;
+  const narrow=(window.matchMedia?matchMedia("(max-width:760px)").matches:innerWidth<760);
   const T=TRIALS[state.trial];
   const link=id=>DRUGS[id]?`<button class="bpill" data-goto="${id}">${esc(DRUGS[id].name)}</button>`:PROB[id]?`<a class="bpill" href="#${({fm:"visits",neuro:"neuro-problems"}[probType(id)]||"problems")}.${id}">${esc(PROB[id].name)}</a>`:"";
   const main=T?`<h2 class="lprompt" style="margin-top:0">${esc(T.name)}</h2>
@@ -17892,6 +17911,9 @@ function renderTrials(){
     ${(T.links||[]).map(link).join("")?`<div class="blinks" style="margin-top:10px">${(T.links||[]).map(link).join("")}</div>`:""}
     ${T.doi?`<p class="use-src"><a href="${T.doi}" target="_blank" rel="noopener">Original paper ↗</a></p>`:""}`
     :`<div class="empty">Pick a trial.</div>`;
+  const entry=k=>`<button class="entry tre" data-trial="${k}" aria-current="${k===state.trial}" aria-expanded="${k===state.trial}"><b>${esc(TRIALS[k].name)}</b><small>${TRIALS[k].year}</small>${narrow?`<i aria-hidden="true">${k===state.trial?"−":"+"}</i>`:""}</button>${narrow&&k===state.trial?`<div class="trin">${main}</div>`:""}`;
+  const list=`<nav class="aflist${narrow?" tracc":""}">${topics.map(t=>`<p class="grp-h">${esc(t)}</p>${ks.filter(k=>(TRIALS[k].topic||"Other")===t).sort((a,b)=>TRIALS[a].year-TRIALS[b].year).map(entry).join("")}`).join("")}</nav>`;
+  if(narrow){ el.innerHTML=`<h1 class="pagetitle">Landmark trials</h1><p class="note">The trials people in ${esc(SPECS[sp].name.toLowerCase())} are expected to know. Tap one to open it.</p>${ks.length?list:`<div class="empty">Trials for this specialty are coming.</div>`}`; return; }
   el.innerHTML=`<h1 class="pagetitle">Landmark trials</h1><p class="note">The trials people in ${esc(SPECS[sp].name.toLowerCase())} are expected to know, with the numbers from each paper.</p>
   ${ks.length?`<div class="afwrap">${list}<div class="afmain">${main}</div></div>`:`<div class="empty">Trials for this specialty are coming.</div>`}`;
 }
@@ -18185,7 +18207,7 @@ document.addEventListener("click", e=>{
     m.innerHTML = SPEC_ORDER.map(k=>`<button role="menuitem" data-spec="${k}" aria-current="${k===state.spec&&state.view!=="root"}">${SPECS[k].name}</button>`).join("") + `<button role="menuitem" data-root="1">All specialties</button>`; return; }
   if(!e.target.closest("#specmenu")) closeSpecMenu();
   const pk=e.target.closest("[data-prisk]"); if(pk){ state.prisk[pk.dataset.prisk]=!state.prisk[pk.dataset.prisk]; state.priskOpen=true; renderPrev(); return; }
-  const trb=e.target.closest("[data-trial]"); if(trb){ state.trial=trb.dataset.trial; setView("trv"); if(innerWidth<760) $("#trvbody .afmain").scrollIntoView(); return; }
+  const trb=e.target.closest("[data-trial]"); if(trb){ const k=trb.dataset.trial, nar=(window.matchMedia?matchMedia("(max-width:760px)").matches:innerWidth<760); state.trial=(nar&&state.trial===k)?null:k; setView("trv"); if(nar){ const b=$(`#trvbody [data-trial="${k}"]`); if(b){ const y=b.getBoundingClientRect().top; if(y<70||y>innerHeight*0.6) window.scrollBy(0,y-80); } } return; }
   const clb=e.target.closest("[data-cls]"); if(clb){ state.cls=clb.dataset.cls; setView("cls"); window.scrollTo(0,0); return; }
   const tlb=e.target.closest("[data-tool]"); if(tlb){ state.tool=tlb.dataset.tool; setView("tools"); if(innerWidth<760) $("#toolsbody .afmain").scrollIntoView(); return; }
   const ta=e.target.closest("[data-tans]"); if(ta){ const [id,k,v]=ta.dataset.tans.split("|"); setToolAns(id,k,+v); return; }
