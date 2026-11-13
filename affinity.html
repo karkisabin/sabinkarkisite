@@ -6483,7 +6483,7 @@ function laiHTML(id){
 function renderLAIPage(){
   const byDrug=[...new Set(Object.values(LAI).map(L=>L.drug))];
   $("#laibody").innerHTML = `<h1 class="pagetitle">Long-acting injectables</h1>
-  <p class="note">Every product's FDA-label dosing in one place. Tap a product for the full schedule, oral conversion and missed-dose rules.</p>
+  
   <div class="laiwrap"><table class="laitab"><thead><tr><th>Product</th><th>Every</th><th>Route</th><th>Oral overlap</th><th>Starts with</th></tr></thead><tbody>
   ${byDrug.map(dr=>`<tr class="laigrp" style="--drug:${col(dr)}"><td colspan="5"><span class="dot"></span>${esc(DRUGS[dr].name)}</td></tr>`+
     Object.keys(LAI).filter(k=>LAI[k].drug===dr).map(k=>{ const [ev,rt,ov,st]=LAI_SHORT[k]||["","","",""];
@@ -6605,7 +6605,7 @@ function renderRx(){
     ${DR[x.k]?`<p class="rxd"><span>Key target for</span> ${[...DR[x.k]].map(id=>`<button class="rxdrug" data-goto="${id}" style="--drug:${col(id)}"><i></i>${esc(DRUGS[id].short||DRUGS[id].name)}</button>`).join("")}</p>`:""}
   </article>`;
   $("#rxbody").innerHTML = `<h1 class="pagetitle">Receptors</h1>
-  <p class="note">What each target does, and what happens when a drug blocks or stimulates it. <span class="tx">✓ Green</span> = why it's used · <span class="se">! amber</span> = side effects. Tap a drug to open its card.</p>
+  <p class="note"><span class="tx">✓ Green</span> = why it's used · <span class="se">! amber</span> = side effects. Tap a drug to open its card.</p>
   <nav class="rxjump" aria-label="Jump to family">${RX_FAM.map(([f,l])=>`<a href="#" data-rxfam="${f}">${esc(l)}</a>`).join("")}</nav>
   ${RX_FAM.map(([f,l])=>`<h2 class="rxfam" id="rxf-${f}">${esc(l)}</h2><div class="rxgrid">${RXINFO.filter(x=>x.fam===f).map(card).join("")}</div>`).join("")}
   <p class="use-src">Textbook pharmacology, cross-checked with the <a href="https://www.guidetopharmacology.org/" target="_blank" rel="noopener">IUPHAR/BPS Guide to Pharmacology</a> and the drugs' FDA labels. Binding strengths on each card come from the <a href="https://pdsp.unc.edu/databases/kidb.php" target="_blank" rel="noopener">PDSP Ki database</a>.</p>`;
@@ -6716,7 +6716,7 @@ function renderLearn(){
   const R=LRN.round, el=$("#learnbody");
   if(!R){
     el.innerHTML=`<h1 class="pagetitle">Learn</h1>
-    <p class="note">Quick 10-question rounds that make you tell similar drugs apart. Questions are built from the drug cards, and drugs you miss come back more often.</p>
+    
     <div class="lstart"><button class="lgo" data-lgrp="">Start mixed round →</button><span class="note">or practice one class:</span></div>
     <div class="lgrid">${lProgressHTML()}</div>
     <p class="use-src">Progress is saved in this browser only. <button class="linkbtn" data-lreset="1">Reset progress</button></p>`;
@@ -15074,7 +15074,7 @@ function renderProb(){
   const el=$("#probbody");
   if(!state.prob||!PROB[state.prob]){
     el.innerHTML=`<h1 class="pagetitle">Ward problems</h1>
-    <p class="note">How an attending works through each admission: is it really this, how sick, day-0 orders dosed for your patient, the 48–72 h check, getting home, and a draft A&amp;P for rounds.</p>
+    
     ${PROB_AREAS.map(a=>{ const ks=Object.keys(PROB).filter(k=>PROB[k].area===a); return ks.length?`<h2 class="rxfam">${a}</h2><div class="pgrid">${ks.map(k=>`<button class="pcard" data-prob="${k}"><b>${esc(PROB[k].name)}</b><small>${(PROB_SCORES[k]||[]).map(s=>SCORES[s].name).join(" · ")}</small></button>`).join("")}</div>`:""; }).join("")}
     <p class="use-src">More problems coming: chest pain, VTE.</p>`;
     return;
@@ -15108,7 +15108,7 @@ function renderProb(){
 function renderAbxF(){
   const el=$("#abxfbody"), cur=ABXF.find(x=>x.k===state.abxf);
   el.innerHTML=`<h1 class="pagetitle">Antibiotic finder</h1>
-  <p class="note">Pick an infection for guideline first-line regimens, dosed for your patient. Local resistance patterns may change the choice.</p>
+  
   <div class="afwrap"><nav class="aflist">${ABXF_AREAS.map(a=>{ const xs=ABXF.filter(x=>x.area===a); return xs.length?`<p class="grp-h">${a}</p>${xs.map(x=>`<button class="entry" data-abxf="${x.k}" aria-current="${x.k===state.abxf}"><b>${esc(x.inf)}</b></button>`).join("")}`:""; }).join("")}</nav>
   <div class="afmain">${cur?`<h2 class="lprompt" style="margin-top:0">${esc(cur.inf)}</h2>
     <p class="olab">First line${cur.first.length>1?" (any one)":""}</p>${cur.first.map((r,i)=>`<div class="oblk">${cur.first.length>1?`<p class="olab sm">Option ${i+1}</p>`:""}${regimenHTML(r)}</div>`).join("")}
@@ -15194,7 +15194,7 @@ function renderBund(){
   if(!B){
     const areas=[...new Set([...BUND_AREAS,...Object.values(BUNDLES).map(b=>b.area||"Other")])];
     el.innerHTML=`<h1 class="pagetitle">Long-term regimens</h1>
-    <p class="note">What GDMT and its cousins actually contain: each pillar, start and target doses, when to start, and what to check. Most are started or optimized before discharge.</p>
+    
     ${areas.map(a=>{ const ks=Object.keys(BUNDLES).filter(k=>(BUNDLES[k].area||"Other")===a); return ks.length?`<h2 class="rxfam">${esc(a)}</h2><div class="pgrid">${ks.map(k=>`<button class="pcard" data-bund="${k}"><b>${esc(BUNDLES[k].short||BUNDLES[k].name)}</b><small>${esc((BUNDLES[k].pillars||[]).map(p=>p.name.split(/[,(]/)[0].trim()).join(" · "))}</small></button>`).join("")}</div>`:""; }).join("")}`;
     return;
   }
@@ -15232,9 +15232,8 @@ function renderProb(){
   if(!state.prob||!PROB[state.prob]){
     const fm=state.spec==="fm", nr=state.spec==="neuro";
     el.innerHTML=`<h1 class="pagetitle">${fm?"Clinic visits":nr?"Neurology problems":"Ward problems"}</h1>
-    <p class="note">${fm?"Pick a visit. Each page has four tabs: assess, treat, follow-up, and when to refer.":"Pick a problem. Each page has four tabs: workup, admit orders dosed for your patient, day 1–3, and going home."}</p>
     ${(fm?FM_AREAS:nr?NEURO_AREAS:PROB_AREAS).map(a=>{ const ks=Object.keys(PROB).filter(k=>PROB[k].area===a&&probType(k)===state.spec); return ks.length?`<h2 class="rxfam">${a}</h2><div class="pgrid">${ks.map(k=>`<button class="pcard" data-prob="${k}"><b>${esc(PROB[k].name)}</b></button>`).join("")}</div>`:""; }).join("")}
-    <h2 class="rxfam">Long-term regimens</h2><p class="note" style="margin-top:-4px">What to start or optimize before discharge.</p>
+    <h2 class="rxfam">Long-term regimens</h2>
     <div class="pgrid">${Object.keys(BUNDLES).map(b=>`<button class="pcard" data-bund="${b}"><b>${esc(BUNDLES[b].short||BUNDLES[b].name)}</b></button>`).join("")}</div>`;
     if(nr) el.querySelectorAll(".rxfam,.pgrid,.note").forEach(x=>{ if(x.textContent.startsWith("Long-term")||x.textContent.startsWith("What to start")||[...x.querySelectorAll("[data-bund]")].length) x.remove(); });
     return;
@@ -15772,7 +15771,7 @@ function renderTools(){
     ${T.link?`<p><a class="linkbtn" href="#problems.${T.link}">Open the alcohol withdrawal page (internal medicine) →</a></p>`:""}
     <p class="use-src">${T.license?esc(T.license[0].toUpperCase()+T.license.slice(1))+". ":""}Sources: ${(T.src||[]).map(([l,h])=>`<a href="${h}" target="_blank" rel="noopener">${esc(l)}</a>`).join(" · ")}</p>`;
   }
-  el.innerHTML=`<h1 class="pagetitle">Scales</h1><p class="note">Tap through a scale; it totals itself and tells you what the score means. Screening tools don't make a diagnosis.</p><div class="afwrap">${list}<div class="afmain">${main}</div></div>`;
+  el.innerHTML=`<h1 class="pagetitle">Scales</h1><div class="afwrap">${list}<div class="afmain">${main}</div></div>`;
 }
 function setToolAns(id,k,v){ const a=state.tans[id]=state.tans[id]||{}; if(a[k]===v) delete a[k]; else a[k]=v; renderTools(); }
 
@@ -15792,7 +15791,7 @@ function renderPrev(){
   const item=x=>`<div class="pvi"><div><b>${esc(x.name)}</b>${x.grade?` <span class="pvg">USPSTF ${esc(x.grade)}</span>`:""}<p>${esc(x.how||"")}${x.note?` <span class="pvn">${esc(x.note)}</span>`:""}</p></div>${x.src&&x.src[1]?`<a href="${x.src[1]}" target="_blank" rel="noopener" class="pvs">${esc(x.src[0])} ↗</a>`:""}</div>`;
   const groups=[["screen","Screening"],["vaccine","Vaccines"],["counsel","Counseling"],["med","Preventive medicines"]];
   el.innerHTML=`<h1 class="pagetitle">Prevention</h1>
-  <p class="note">What's due for this patient: USPSTF A and B recommendations and the CDC vaccine schedule. Enter age and sex in the patient bar (use decimals for infants, e.g. 0.5 for 6 months).</p>
+  <p class="note">Enter age and sex in the patient bar. For infants, use decimals (0.5 = 6 months).</p>
   <details class="more" ${state.priskOpen?"open":""} data-prd="1"><summary>Risk factors${Object.values(R).filter(Boolean).length?` (${Object.values(R).filter(Boolean).length} selected)`:""}</summary><div class="pvrisk">${P.risks.map(([k,l])=>`<button data-prisk="${k}" aria-pressed="${!!R[k]}">${esc(l)}</button>`).join("")}</div></details>
   ${!ok?`<div class="empty">Add age and sex above to see the checklist.</div>`:`
   <p class="olab">Due now · ${age<2?CALC.round(age*12)+" months":CALC.round(age)+" y"} ${sex==="F"?"female":"male"}</p>
@@ -17168,8 +17167,8 @@ const XMEMBERS={
 function tabMembers(tab){ return [...Object.keys(XDRUGS).filter(id=>XDRUGS[id].tab===tab), ...(XMEMBERS[tab]||[]).filter(id=>DRUGS[id])]; }
 function tabSpec(tabs){ const order=[...new Set(tabs.flatMap(tabMembers))];
   return {groups:tabs.map(t=>[t,t]), order, cats:tabs, catOf:(d,c)=>tabMembers(c).some(id=>DRUGS[id]===d)}; }
-Object.assign(SPECS.fm, tabSpec(FM_TABS), {tabs:[["prob","Visits"],["dex","Drugs"],["prev","Prevention"],["trv","Trials"]], title:"Family medicine drugs", lede:"Outpatient drugs by topic, with class pages that compare members."});
-Object.assign(SPECS.neuro, tabSpec(NEURO_TABS), {tabs:[["prob","Problems"],["dex","Drugs"],["tools","Scales"],["trv","Trials"]], title:"Neurology drugs", lede:"Antiseizure, migraine, stroke and neuromuscular drugs."});
+Object.assign(SPECS.fm, tabSpec(FM_TABS), {tabs:[["prob","Visits"],["dex","Drugs"],["prev","Prevention"],["trv","Trials"]], title:"Family medicine drugs", lede:""});
+Object.assign(SPECS.neuro, tabSpec(NEURO_TABS), {tabs:[["prob","Problems"],["dex","Drugs"],["tools","Scales"],["trv","Trials"]], title:"Neurology drugs", lede:""});
 SPECS.fm.subs=null; SPECS.neuro.subs=null;
 function clsOf(id){ return typeof CLASSES==="undefined"?null:Object.keys(CLASSES).find(k=>(CLASSES[k].members||[]).includes(id)); }
 function tabListHTML(q,cond){
@@ -17913,9 +17912,8 @@ function renderTrials(){
     :`<div class="empty">Pick a trial.</div>`;
   const entry=k=>`<button class="entry tre" data-trial="${k}" aria-current="${k===state.trial}" aria-expanded="${k===state.trial}"><b>${esc(TRIALS[k].name)}</b><small>${TRIALS[k].year}</small>${narrow?`<i aria-hidden="true">${k===state.trial?"−":"+"}</i>`:""}</button>${narrow&&k===state.trial?`<div class="trin">${main}</div>`:""}`;
   const list=`<nav class="aflist${narrow?" tracc":""}">${topics.map(t=>`<p class="grp-h">${esc(t)}</p>${ks.filter(k=>(TRIALS[k].topic||"Other")===t).sort((a,b)=>TRIALS[a].year-TRIALS[b].year).map(entry).join("")}`).join("")}</nav>`;
-  if(narrow){ el.innerHTML=`<h1 class="pagetitle">Landmark trials</h1><p class="note">The trials people in ${esc(SPECS[sp].name.toLowerCase())} are expected to know. Tap one to open it.</p>${ks.length?list:`<div class="empty">Trials for this specialty are coming.</div>`}`; return; }
-  el.innerHTML=`<h1 class="pagetitle">Landmark trials</h1><p class="note">The trials people in ${esc(SPECS[sp].name.toLowerCase())} are expected to know, with the numbers from each paper.</p>
-  ${ks.length?`<div class="afwrap">${list}<div class="afmain">${main}</div></div>`:`<div class="empty">Trials for this specialty are coming.</div>`}`;
+  if(narrow){ el.innerHTML=`<h1 class="pagetitle">Landmark trials</h1>${ks.length?list:`<div class="empty">Trials for this specialty are coming.</div>`}`; return; }
+  el.innerHTML=`<h1 class="pagetitle">Landmark trials</h1>${ks.length?`<div class="afwrap">${list}<div class="afmain">${main}</div></div>`:`<div class="empty">Trials for this specialty are coming.</div>`}`;
 }
 
 function keyRxHTML(id){
