@@ -1,7 +1,7 @@
 /* Affinity offline support.
    Pages: network first (so new uploads show up right away), cached copy when offline.
    Fonts and icons: cache first. Bump VERSION to clear old caches. */
-const VERSION = "affinity-v2";
+const VERSION = "affinity-v3";
 const PRECACHE = ["/affinity", "/affinity-192.png", "/affinity-512.png", "/affinity-180.png", "/affinity.webmanifest"];
 
 // Safari refuses redirected responses for page loads, so store a clean copy.

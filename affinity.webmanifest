@@ -1,7 +1,7 @@
 {
-  "name": "Affinity: psych + anesthesia drug guide",
+  "name": "Affinity: clinical + drug guide",
   "short_name": "Affinity",
-  "description": "A color-coded drug reference for psychiatry and anesthesiology.",
+  "description": "Clinical and drug guide for psychiatry, internal medicine, neurology, family medicine and anesthesiology.",
   "start_url": "/affinity",
   "scope": "/affinity",
   "display": "standalone",
