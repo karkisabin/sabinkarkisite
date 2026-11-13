@@ -17897,6 +17897,7 @@ function renderTrials(){
   if(!TRIALS[state.trial]||TRIALS[state.trial].spec!==sp) state.trial=null;
   const topics=[...new Set(ks.map(k=>TRIALS[k].topic||"Other"))];
   const narrow=(window.matchMedia?matchMedia("(max-width:760px)").matches:innerWidth<760);
+  if(!narrow&&!state.trial&&ks.length) state.trial=ks.slice().sort((a,b)=>(topics.indexOf(TRIALS[a].topic||"Other")-topics.indexOf(TRIALS[b].topic||"Other"))||TRIALS[a].year-TRIALS[b].year)[0];
   const T=TRIALS[state.trial];
   const link=id=>DRUGS[id]?`<button class="bpill" data-goto="${id}">${esc(DRUGS[id].name)}</button>`:PROB[id]?`<a class="bpill" href="#${({fm:"visits",neuro:"neuro-problems"}[probType(id)]||"problems")}.${id}">${esc(PROB[id].name)}</a>`:"";
   const main=T?`<h2 class="lprompt" style="margin-top:0">${esc(T.name)}</h2>
